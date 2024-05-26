@@ -1,18 +1,29 @@
 import { Link } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import useOAuth from "../../hooks/useOAuth";
-import { HTMLAttributes, ReactNode, useEffect } from "react";
+import { HTMLAttributes, ReactNode, useEffect, useState } from "react";
 
 interface PolygonProps extends HTMLAttributes<HTMLDivElement> {
 	children: ReactNode,
-	className?: string
+	className?: string,
+	onClick?: () => {}
 }
 
-const Polygon = ({children, className, ...props}: PolygonProps) => {
+const Polygon = ({children, className, onClick, ...props}: PolygonProps) => {
+	const [clicked, setClicked] = useState(false);
+
 	return (
-		<div className="relative">
-			<div 
-				className={"triangle relative px-10 h-[42px] bg-primary flex justify-center items-center text-bg font-semibold z-10" + (className ? ' ' + className : '')}
+		<div className="relative select-none">
+			<div
+				onClick={() => {
+					if (!clicked) {
+						setClicked(true);
+						setTimeout(() => setClicked(false), 200)
+					}
+					if (onClick) onClick();
+				}}
+				className={"triangle duration-200 px-10 h-[42px] bg-primary flex justify-center items-center text-bg font-semibold relative z-10 cursor-pointer" + (className ? ' ' + className : '')}
+				style={{transform: clicked ? 'translate(5px, 8px)' : 'translate(0, 0)'}}
 				{...props}
 				>
 				{children}
@@ -39,7 +50,7 @@ const Index = () => {
 					<Link to="/signup">
 						{/* <Button>Get Started</Button> */}
 					</Link>
-					<Polygon onClick={() => {console.log('clicked')}}>Get Started</Polygon>
+					<Polygon>Get Started</Polygon>
 				</div>
 			</div>
 		</>
