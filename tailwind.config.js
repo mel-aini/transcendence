@@ -7,15 +7,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#5E4AE3',
+        primary: '#14FFEC',
         secondary: '#555363',
         third: '#E3BC4B',
         dark: '#2F2E39',
-        bg: '#1E1E1E',
+        bg: '#0C0D0F',
         white: '#FFFFFF',
         gray1: '#858585',
         gray2: '#313131',
-        gray3: '#1E1E1E',
+        gray3: '#0C0D0F',
         gray4: '#222222',
         black: '#000000',
         invalid: '#E3BC4B'

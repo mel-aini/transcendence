@@ -66,7 +66,7 @@ const NavBarElem = ( {className, type, ...props }: NavBarElemProps) => {
 				</svg>
 				{ type != 'Empty' && <div onClick={clickHandler} className={divClass}>
 					<img src={renderedIcon} alt="" />
-					<h1 className="pointer-events-none opacity-0 group-hover:opacity-100 duration-300">{type}</h1>
+					<h1 className="pointer-events-none opacity-0 group-hover:opacity-100 duration-300 text-primary">{type}</h1>
 				</div> }
 				{ 
 					type == 'Empty' && 

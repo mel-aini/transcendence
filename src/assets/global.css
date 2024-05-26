@@ -5,15 +5,15 @@
 
 
 :root {
-	--primary-color: #5E4AE3;
+	--primary-color: #14FFEC;
 	--secondary-color: #555363;
 	--third-color: #E3BC4B;
 	--dark-color: #2F2E39;
-	--bg-color: #1E1E1E;
+	--bg-color: #0C0D0F;
 	--white-color: #FFFFFF;
 	--gray-shade1: #858585;
 	--gray-shade2: #313131;
-	--gray-shade3: #1E1E1E;
+	--gray-shade3: #0C0D0F;
 	--black-color: #000000;
 	--invalid-color: #FA7070;
 	--i: 75%;
@@ -33,4 +33,12 @@ input::-webkit-inner-spin-button {
 
 input[type=number]{
     -moz-appearance: textfield;
+}
+
+body {
+	background-color: var(--bg-color);
+}
+
+.triangle {
+	clip-path: polygon(50% 0%, 100% 0%, 50% 100%, 0% 100%);
 }
