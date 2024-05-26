@@ -16,7 +16,9 @@
 	--gray-shade3: #0C0D0F;
 	--black-color: #000000;
 	--invalid-color: #FA7070;
-	--i: 75%;
+
+	/* button border */
+	--strock-width: 3px;
 }
 
 * {
@@ -34,11 +36,27 @@ input::-webkit-inner-spin-button {
 input[type=number]{
     -moz-appearance: textfield;
 }
+/* remove spiner from input type number */
 
 body {
 	background-color: var(--bg-color);
 }
 
 .triangle {
-	clip-path: polygon(50% 0%, 100% 0%, 50% 100%, 0% 100%);
+	clip-path: polygon(21px 0%, 100% 0%, calc(100% - 21px) 100%, 0% 100%);
+}
+
+.button-border {
+	clip-path: polygon(
+	calc(100% - 30px) 0%, 
+	100% 0%, 
+	calc(100% - 21px) 100%, 
+	0% 100%, 
+	21px 0,
+	calc(21px + var(--strock-width)) 0,
+	calc(var(--strock-width) * 2) calc(100% - var(--strock-width)),
+	calc(100% - 21px - var(--strock-width)) calc(100% - var(--strock-width)),
+	calc(100% - (var(--strock-width) * 2)) var(--strock-width),
+	calc(100% - 30px - var(--strock-width)) var(--strock-width)
+	);
 }

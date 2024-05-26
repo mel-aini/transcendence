@@ -1,15 +1,23 @@
 import { Link } from "react-router-dom";
-import Button from "../../components/Button";
 import NavBar from "../../components/NavBar";
 import useOAuth from "../../hooks/useOAuth";
-import { ReactNode, useEffect } from "react";
+import { HTMLAttributes, ReactNode, useEffect } from "react";
 
-const Polygon = ({children}: {children: ReactNode}) => {
+interface PolygonProps extends HTMLAttributes<HTMLDivElement> {
+	children: ReactNode,
+	className?: string
+}
+
+const Polygon = ({children, className, ...props}: PolygonProps) => {
 	return (
-		<div className="relative w-full h-[42px] bg-primary flex justify-center items-center text-bg font-semibold">
-			<div className="absolute top-0 left-[-21px] triangle h-[42px] w-[42px] bg-primary"></div>
-			{children}
-			<div className="absolute top-0 right-[-21px] triangle h-[42px] w-[42px] bg-primary"></div>
+		<div className="relative">
+			<div 
+				className={"triangle relative px-10 h-[42px] bg-primary flex justify-center items-center text-bg font-semibold z-10" + (className ? ' ' + className : '')}
+				{...props}
+				>
+				{children}
+			</div>
+			<div className="button-border absolute top-[8px] left-[5px] w-full px-10 h-[42px] bg-white flex justify-center items-center text-bg font-semibold"></div>
 		</div>
 	)
 }
@@ -31,7 +39,7 @@ const Index = () => {
 					<Link to="/signup">
 						{/* <Button>Get Started</Button> */}
 					</Link>
-						<Polygon>Get Started</Polygon>
+					<Polygon onClick={() => {console.log('clicked')}}>Get Started</Polygon>
 				</div>
 			</div>
 		</>
