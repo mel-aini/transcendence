@@ -7,19 +7,22 @@ interface ArrowType extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Arrow = (props: ArrowType) => {
+
 	return (
 		<div {...props} 
 			className="cursor-pointer w-[40px] h-[40px] absolute top-0 flex flex-col justify-evenly items-center"
-			style={{left: props.left}}
+			style={{left: props.left == 0 ? 0 : -40}}
 			>
-				{props.left == 15 && <IoIosArrowBack className="text-3xl fill-primary rotate-180" />}
-				{props.left != 15 && <IoIosArrowBack className="text-3xl fill-primary" />}
+				<IoIosArrowBack 
+					className="text-3xl fill-primary duration-300" 
+					style={{rotate: props.left == 0 ? '180deg' : '0deg'}}
+				/>
 		</div>
 	)
 }
 
 const NavBar = () => {
-	const [xPos, setXPos] = useState<number>(0);
+	const [xPos, setXPos] = useState<number>(400);
 	const [event, setEvent] = useState<any>('auto');
 
 	const clickHandler = async () => {
@@ -39,15 +42,15 @@ const NavBar = () => {
 			<div
 				className="relative flex justify-end duration-300"
 				style={{transform: `translateX(${xPos}px)`, pointerEvents: event}}
-			>
-				<Arrow onClick={clickHandler} left={xPos == 0 ? 15 : -15} />
-				<NavBarElem type="Home" className="translate-x-[84px]" />
-				<NavBarElem type="Chat" className="translate-x-[56px]" />
-				<NavBarElem type="Notifications" className="translate-x-[28px]" />
+			> 
+				<Arrow onClick={clickHandler} left={xPos} />
+				<NavBarElem type="Home" />
+				<NavBarElem type="Chat" />
+				<NavBarElem type="Notifications" />
 				<NavBarElem type="Settings" className="cursor-pointer" />
 			</div>
-			<div className="w-[40px] h-[40px] bg-bg z-10">
-				<div className="w-[40px] h-[40px] rounded-full bg-gray1 z-10"></div>
+			<div className="w-[42px] h-[42px] bg-bg z-10">
+				<div className="w-[42px] h-[42px] rounded-full bg-gray1 z-10"></div>
 			</div>
 		</div>
 	)
