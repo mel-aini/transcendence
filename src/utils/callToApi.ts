@@ -16,7 +16,8 @@ const callToApi = async (endPoint: string, data?: Object) => {
 
 	const body = await response.json();
 
-	if (!response.ok || response.status >= 400) throw new Error('response error');
+	if (response.status >= 500) throw new Error('500 Internal server error');
+	if (response.status >= 400) throw body
 	return body
 }
 

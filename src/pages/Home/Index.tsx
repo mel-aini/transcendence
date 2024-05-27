@@ -16,12 +16,11 @@ const Index = () => {
 		<>
 			<NavBar />
 			<div className="bg-bg w-full h-[100vh] px-10 flex justify-center items-center">
-				<div className="flex flex-col gap-6 items-end absolute bottom-20 right-20">
-					{/* <h1 className=" text-7xl">SOON...</h1> */}
+				<div className="flex flex-col items-center gap-10">
+					<p className=" text-7xl text-center leading-normal">Lorem ipsum dolor sit amet consectetur.</p>
 					<Link to="/signup">
-						{/* <Button>Get Started</Button> */}
+						<NewButton>Get Started</NewButton>
 					</Link>
-					<NewButton>Get Started</NewButton>
 				</div>
 			</div>
 		</>

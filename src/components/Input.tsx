@@ -13,17 +13,17 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	onFocus?: TOnBlur
 }
 
-const Input = ({height = 40, style, className, type, onBlur, onFocus, placeholder, ...props  } : InputProps ) => {
+const Input = ({height = 48, style, className, type, onBlur, onFocus, placeholder, ...props  } : InputProps ) => {
 	const [isFocus, setIsFocus] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const inputRef: LegacyRef<HTMLInputElement> = useRef<HTMLInputElement>(null)
 
 	return (
-		<div className="relative text-[14px] w-full">
+		<div className="relative w-full">
 			<input
 				ref={inputRef}
 				type={type != 'password' ? type : showPassword ? 'text' : 'password'}
-				className={"bg-transparent border border-primary font-normal px-2 focus:outline-none" + " " + className}
+				className={"bg-transparent border border-primary font-normal px-2 rounded-[5px] focus:outline-none" + " " + className}
 				style={{height, ...style}}
 				{...props}
 				onFocus={() => { 
@@ -35,7 +35,7 @@ const Input = ({height = 40, style, className, type, onBlur, onFocus, placeholde
 					if (onBlur) onBlur();
 				}}
 			/>
-			<span className={isFocus ? "px-2 absolute text-[12px] top-[-9px] left-[15px] text-primary bg-bg duration-200" : "pointer-events-none px-3 absolute top-[9px] left-0 text-gray1 opacity-50 duration-200" } >{placeholder}</span>
+			<span className={isFocus ? "px-2 absolute text-[12px] top-[-9px] left-[15px] text-primary bg-bg duration-200" : "pointer-events-none px-3 absolute top-[11px] left-0 text-gray1 opacity-50 duration-200" } >{placeholder}</span>
 			{
 				type == 'password' && inputRef.current && inputRef.current.value != '' &&
 				<span 

@@ -1,10 +1,11 @@
 import { FC, useRef } from "react";
 import OAuth from "../../components/OAuth";
 import { BACKEND_END_POINT } from "../../utils/global";
+import NewButton from "../../components/NewButton";
 
 // const clientID = 'u-s4t2ud-789ae11f20ba1b43a81ff49a1393e1f82bfd2a2c180d46f5d37b6af4d2be33af';
 
-const OAuthBar: FC = () => {
+const OAuthBar = () => {
 	const OAuthLink = useRef<string>('');
 
 	const generateLink = async (type: 'google' | '42') => {
@@ -26,9 +27,24 @@ const OAuthBar: FC = () => {
 	}
 
 	return (
-		<div className="flex justify-end gap-2">
-			<OAuth onClick={() => generateLink('42')} type="42"/>
-			<OAuth onClick={() => generateLink('google')} type="google"/>
+		<div className="w-full">
+			<NewButton 
+				onClick={() => generateLink('42')}
+				className="w-full" 
+				variant="secondary"
+			>
+				<p>sign up with</p>
+				<OAuth type="42"/>
+			</NewButton>
+			<NewButton 
+				onClick={() => generateLink('42')}
+				className="w-full mt-6" 
+				variant="secondary"
+			>
+				<p>sign up with</p>
+				<OAuth type="google"/>
+			</NewButton>
+			{/* <OAuth onClick={() => generateLink('google')} type="google"/> */}
 		</div>
 	)
 }
