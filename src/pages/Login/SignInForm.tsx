@@ -6,6 +6,7 @@ import { invalidColor } from "../../utils/colors";
 import { useGlobalContext } from "../../contexts/store";
 import callToApi from "../../utils/callToApi";
 import OAuthBar from "../Sign-up/OAuthBar";
+import NewButton from "../../components/NewButton";
 
 interface IResponse {
 	type: string,
@@ -95,9 +96,9 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 
 	}
     return (
-        <div className="w-full flex flex-col py-20 max-w-[300px] items-center">
-            <h1 className="font-semibold text-2xl mb-14">Sign In</h1>
-            <form onSubmit={(e) => submitHandler(e)} className="flex flex-col justify-between w-full h-[235px]">
+        <>
+            <h1 className="font-semibold text-2xl mb-14">Welcome Back!</h1>
+            <form onSubmit={(e) => submitHandler(e)} className="flex flex-col justify-between w-full h-[265px]">
 				<div className="flex flex-col gap-5 w-full">
 					<Input
 						onChange={(e) => usernameHandler(e.target.value)}
@@ -121,23 +122,11 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 					{(emptyInput && !invalidLogin) ? <p className="text-sm self-end text-invalid">Please fill the Sign In form</p> : ''}
 					{(invalidLogin) ? <p className="text-sm self-end text-invalid">invalid Username or Password</p> : ''}
 				</div>
-				<Button 
-					type="submit"
-					className="self-end">Sign In
-				</Button>
+				<NewButton 
+					type="submit">Sign In
+				</NewButton>
 			</form>
-            <div className="flex flex-col gap-5 items-end w-full mt-6">
-				<div className="flex flex-col items-end w-full sm:flex-row sm:justify-between sm:max-w-[200px]">
-					<span className="text-xs text-gray1">Don't have an account?</span>
-					<Link to="/signup" className="text-xs font-semibold text-primary cursor-pointer select-none">Sign up</Link>
-				</div>
-				<hr className="my-1 w-full border-primary" />
-				<div className="flex flex-col gap-5 items-center w-full sm:flex-row sm:justify-between">
-					<span className="text-xs text-gray1 place-self-center">or you can sign in with:</span>
-					<OAuthBar />
-				</div>
-			</div>
-        </div>
+		</>
     );
 }
 

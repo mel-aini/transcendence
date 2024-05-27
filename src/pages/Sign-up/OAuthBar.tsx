@@ -5,7 +5,7 @@ import NewButton from "../../components/NewButton";
 
 // const clientID = 'u-s4t2ud-789ae11f20ba1b43a81ff49a1393e1f82bfd2a2c180d46f5d37b6af4d2be33af';
 
-const OAuthBar = () => {
+const OAuthBar = ({type}: {type: 'sign up' | 'sign in'}) => {
 	const OAuthLink = useRef<string>('');
 
 	const generateLink = async (type: 'google' | '42') => {
@@ -33,7 +33,7 @@ const OAuthBar = () => {
 				className="w-full" 
 				variant="secondary"
 			>
-				<p>sign up with</p>
+				<p>{type} with</p>
 				<OAuth type="42"/>
 			</NewButton>
 			<NewButton 
@@ -41,7 +41,7 @@ const OAuthBar = () => {
 				className="w-full mt-6" 
 				variant="secondary"
 			>
-				<p>sign up with</p>
+				<p>{type} with</p>
 				<OAuth type="google"/>
 			</NewButton>
 			{/* <OAuth onClick={() => generateLink('google')} type="google"/> */}

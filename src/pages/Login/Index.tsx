@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
+import OAuthBar from "../Sign-up/OAuthBar";
+import Welcome from "../Sign-up/Welcome";
 import SignInForm from "./SignInForm";
-import Welcome from "./Welcome";
 import SignIn2FA from "./SingIn2FA";
 import { useState } from "react";
 
@@ -7,20 +9,22 @@ const Index = () => {
 	const [isTwoFA, setIsTwoFA] = useState(false);
 
 	return (
-		<div className="bg-bg smh:h-[100vh] flex">
-			{/* Left */}
-			<div className=" hidden xl:block w-full">
-				<Welcome />
-			</div>
-			{/* Right */}
-			<div className=" flex justify-center items-center p-5 sm:p-20 w-full">
-				<div className="relative h-full w-full flex justify-center items-center">
-					{!isTwoFA && <SignInForm setIsTwoFA={setIsTwoFA} />}
-					{isTwoFA && <SignIn2FA />}
-					<span className="absolute w-10 h-10 bottom-0 right-0 border-r border-b border-primary lg:block hidden"></span>
+		<div className="bg-bg min-h-[100vh] flex">
+			<Welcome />
+			<div className="flex justify-center items-center p-5 sm:p-20 w-full">
+				<div className="w-full flex flex-col gap-9 items-center max-w-[350px]">
+					<div className="relative w-full flex flex-col items-center place-content-center">
+						{!isTwoFA && <SignInForm setIsTwoFA={setIsTwoFA} />}
+						{isTwoFA && <SignIn2FA />}
+					</div>
+					<p>or</p>
+					<OAuthBar type="sign in" />
+					<div className="flex items-center gap-2 text-sm">
+						<p className="text-gray1">Don't have an account?</p>
+						<Link to='/signup'>Sign up</Link>
+					</div>
 				</div>
 			</div>
-			{/* <OAuth/> */}
 		</div>
 	);
 }
