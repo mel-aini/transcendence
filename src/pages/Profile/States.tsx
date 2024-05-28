@@ -32,8 +32,8 @@ const States = () => {
 	
 	return (
 		<div className="w-full">
-			<Title width={105} height={30} title={"States"} />
-			<div className="w-full bg-gray4 p-10 sm:px-16 border border-primary flex flex-col sm:flex-row gap-10 items-center">
+			{/* <Title width={105} height={30} title={"States"} /> */}
+			<div className="rounded-xl w-full p-10 sm:px-16 border border-primary flex flex-col sm:flex-row gap-10 items-center">
 				<div className="flex sm:flex-col justify-between w-full self-stretch">
 					<h3 className="text-xl font-medium">{total} matches</h3>
 					<WinsAndLoses total={total} wins={wins} type="desktop" />

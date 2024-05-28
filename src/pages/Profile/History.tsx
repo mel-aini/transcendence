@@ -19,8 +19,8 @@ const History = () => {
 
 	return (
 		<div className="w-full flex flex-col">
-			<Title width={105} height={30} title="History"/>
-			<div ref={parentRef} className="w-full flex flex-col justify-around items-center border border-primary bg-[#222222]">
+			{/* <Title width={105} height={30} title="History"/> */}
+			<div ref={parentRef} className="rounded-xl w-full flex flex-col justify-around items-center border border-primary">
 				<h1 className="text-2xl m-8">last 10 matches</h1>
 				<HistoryChart width={width * 90 / 100} height={200}/>
 				<div className="flex flex-col m-8 gap-3">

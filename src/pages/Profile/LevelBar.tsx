@@ -1,38 +1,22 @@
-import { useEffect, useRef, useState } from "react";
-
-const Bar = ({percentage}) => {
-	const parentRef = useRef();
-	const [width, setWidth] = useState<number | null>(null);
-
-	useEffect(() => {
-		setWidth(parentRef.current.offsetWidth);
-		window.addEventListener('resize', () => {
-			setWidth(parentRef.current.offsetWidth);
-		})
-		// return () => {
-		// 	window.removeEventListener('resize')
-		// }
-	}, [])
-	return (
-		<div ref={parentRef} className="w-[384px] xl:w-[585px] h-[33px]">
-			<svg width={width} height={9} viewBox={`0 0 ${width} 9`} className={"fill-none"}>
-				<polygon points={`0 0, ${width * 97 / 100} 0, ${width} 9, 0 9`} className="fill-[#2F2F2F]"/>
-				<polygon points={`0 0, ${(width * percentage / 100) * 97 / 100} 0, ${(width * percentage / 100)} 9, 0 9`} className="fill-primary"/>
-			</svg>
-		</div>
-	)
-}
+import { useState } from "react";
 
 const LevelBar = () => {
+	const [level, setLevel] = useState(30);
 	const currentLevel = 0;
+	const nextLevel = currentLevel + 1;
 
 	return (
-		<div className="w-[384px] xl:w-[585px] h-[33px] flex flex-col justify-between">
-			<div className="flex justify-between opacity-70">
-				<span className="font-[275]">LVL {currentLevel}</span>
-				<span className="font-[275]">LVL {currentLevel + 1}</span>
+		<div className="w-full flex flex-col justify-between">
+			<div className="flex justify-between">
+				<span>LVL {currentLevel}</span>
+				<span>LVL {nextLevel}</span>
 			</div>
-			<Bar percentage={60}/>
+			<div className="level-bar w-full bg-[#2F2F2F] h-[10px]">
+				<div 
+					className="level-bar w-full bg-primary h-full"
+					style={{transform: `translateX(${level - 100}%)`}}
+					></div>
+			</div>
 		</div>
 	)
 }

@@ -18,8 +18,8 @@ const Friends = () => {
 	}, [])
 	return (
 		<div className="w-full">
-			<Title width={105} height={30} title="Friends"/>
-			<div ref={parentRef} className="flex justify-center gap-5 items-center border-primary border bg-[#222222] h-[95px]">
+			{/* <Title width={105} height={30} title="Friends"/> */}
+			<div ref={parentRef} className="rounded-xl flex justify-center gap-5 items-center border-primary border h-[95px]">
 				{friends.map((friend, key) => {
 					if ((width <= 400 && n >= 3) || (width <= 500 && n >= 5) || n >= 6)
 						return (<></>)
