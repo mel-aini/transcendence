@@ -25,7 +25,7 @@ const Friends = () => {
 						return (<></>)
 					n++;
 					return (
-						<img className="w-[38px] h-[38px] rounded-full" src={`./src/assets/${friend.name}.jpeg`}/>
+						<img key={key} className="w-[38px] h-[38px] rounded-full" src={`./src/assets/${friend.name}.jpeg`}/>
 					)
 				})}
 				<span className="cursor-pointer">see all</span>

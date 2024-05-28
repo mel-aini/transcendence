@@ -1,6 +1,7 @@
 import { HTMLAttributes, useState } from "react";
 import NavBarElem from "./NavBarElem";
 import { IoIosArrowBack } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 interface ArrowType extends HTMLAttributes<HTMLDivElement> {
 	left: number
@@ -38,7 +39,7 @@ const NavBar = () => {
 	}
 
 	return (
-		<div className="container h-[100px] w-[95%] max-w-[1200px] mx-auto bg-bg flex justify-end items-center overflow-hidden">
+		<div className="w-full h-[100px] flex justify-end items-center overflow-hidden">
 			<div
 				className="relative flex justify-end duration-300"
 				style={{transform: `translateX(${xPos}px)`, pointerEvents: event}}
@@ -50,7 +51,9 @@ const NavBar = () => {
 				<NavBarElem type="Settings" className="cursor-pointer" />
 			</div>
 			<div className="w-[42px] h-[42px] bg-bg z-10">
-				<div className="w-[42px] h-[42px] rounded-full bg-gray1 z-10"></div>
+				<Link to='/profile'>
+					<div className="w-[42px] h-[42px] rounded-full bg-gray1 z-10"></div>
+				</Link>
 			</div>
 		</div>
 	)

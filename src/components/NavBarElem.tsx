@@ -5,6 +5,7 @@ import notificationIcon from '/notification.svg'
 import settingsIcon from '/settings.svg'
 import { HTMLAttributes } from 'react';
 import Polygon from './Polygon';
+import { useGlobalContext } from '../contexts/store';
 
 interface NavBarElemProps extends HTMLAttributes<HTMLDivElement> {
 	className?: string,
@@ -12,6 +13,7 @@ interface NavBarElemProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const NavBarElem = ( {className, type, ...props }: NavBarElemProps) => {
+	const {dispatch} = useGlobalContext();
 	const navigate = useNavigate();
 	let marginRight: string = ' ';
 	let renderedIcon;
@@ -22,7 +24,7 @@ const NavBarElem = ( {className, type, ...props }: NavBarElemProps) => {
 	switch (type) {
 		case 'Home':
 			index = 3;
-			routeToNavigate = '/';
+			routeToNavigate = '/dashboard';
 			renderedIcon = homeIcon
 			marginRight += 'mr-[-60px]';
 			break;
@@ -48,6 +50,7 @@ const NavBarElem = ( {className, type, ...props }: NavBarElemProps) => {
 	}
 
 	const navigateTo = (route: string) => {
+		dispatch({type: 'LOADING'})
 		navigate(route);
 	}
 

@@ -10,7 +10,7 @@ const Index = () => {
 	const {dispatch} = useGlobalContext();
 
 	return (
-		<div className="bg-bg w-11/12 mx-auto max-w-[1500px] min-h-[100vh] flex flex-col justify-center items-center">
+		<div className="flex flex-col justify-center items-center">
 			<ProfileHeader />
 			<div className="w-full 2xl:px-0 ">
 				<div className="flex flex-col xl:flex-row pt-20 xl:mt-[75px] gap-5">

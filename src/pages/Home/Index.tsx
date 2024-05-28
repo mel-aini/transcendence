@@ -14,7 +14,7 @@ const Index = () => {
 
 	return (
 		<>
-			<NavBar />
+			{/* <NavBar /> */}
 			<div className="bg-bg w-full h-[100vh] px-10 flex justify-center items-center">
 				<div className="flex flex-col items-center gap-10">
 					<p className=" text-7xl text-center leading-normal">Lorem ipsum dolor sit amet consectetur.</p>

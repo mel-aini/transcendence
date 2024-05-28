@@ -9,7 +9,7 @@ export default {
       colors: {
         primary: '#14FFEC',
         secondary: '#555363',
-        third: '#E3BC4B',
+        third: '#14FF67',
         dark: '#2F2E39',
         bg: '#0C0D0F',
         white: '#FFFFFF',
@@ -18,7 +18,7 @@ export default {
         gray3: '#0C0D0F',
         gray4: '#222222',
         black: '#000000',
-        invalid: '#E3BC4B'
+        invalid: '#14FF67'
       },
       keyframes: {
         test: {

@@ -9,6 +9,7 @@ import { default as Profile } from "./pages/Profile/Index";
 import { default as Dashboard } from "./pages/Dashboard/Index";
 import Loading from "./components/Loading";
 import GlobalContextProvider from "./contexts/store";
+import Layout from "./components/Layout";
 
 function App() {
   return (
@@ -19,10 +20,12 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
               <Route path="/chat" element={<Chat />} />
-              <Route path="/game" element={<Game />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route element={<Layout />}>
+                <Route path="/game" element={<Game />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+              </Route>
             </Routes>
       </GlobalContextProvider>
   )
