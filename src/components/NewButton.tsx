@@ -19,7 +19,7 @@ const NewButton = ({children, className, onClick, type, variant = 'primary', ...
 	const appliedStyle = variant == 'primary' ? primaryStyle : secondaryStyle
 
 	return (
-		<button type={type} className={"relative select-none" + (className ? ' ' + className : '')}>
+		<button type={type || 'button'} className={"relative select-none" + (className ? ' ' + className : '')}>
 			<Polygon 
 				className={"bg-primary duration-200 " + appliedStyle}
 				style={{transform: clicked ? 'translate(5px, 8px)' : 'translate(0, 0)'}}
