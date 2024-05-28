@@ -6,10 +6,10 @@ const LevelBar = () => {
 	const nextLevel = currentLevel + 1;
 
 	return (
-		<div className="w-full flex flex-col justify-between">
+		<div className="w-full flex flex-col justify-between xl:w-[585px]">
 			<div className="flex justify-between">
-				<span>LVL {currentLevel}</span>
-				<span>LVL {nextLevel}</span>
+				<span className="font-thin">LVL {currentLevel}</span>
+				<span className="font-thin">LVL {nextLevel}</span>
 			</div>
 			<div className="level-bar w-full bg-[#2F2F2F] h-[10px]">
 				<div 

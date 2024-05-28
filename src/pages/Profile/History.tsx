@@ -18,7 +18,7 @@ const History = () => {
 	}, [])
 
 	return (
-		<div className="w-full flex flex-col">
+		<div className="w-full flex flex-col sm:min-w-[560px]">
 			{/* <Title width={105} height={30} title="History"/> */}
 			<div ref={parentRef} className="rounded-xl w-full flex flex-col justify-around items-center border border-primary">
 				<h1 className="text-2xl m-8">last 10 matches</h1>
@@ -40,7 +40,7 @@ const History = () => {
 							color = "#FFFFFF";
 						}
 						return (
-							<div key={key} className="flex justify-around items-center border-primary border-2 h-[56px]" style={{width:`${width * 90 / 100}px`}}>
+							<div key={key} className="flex justify-around items-center border-primary border rounded-md h-[56px]" style={{width:`${width * 90 / 100}px`}}>
 								{(status == "win") && <img className="w-[25px] h-[25px]" src="./src/assets/win.png"/>}
 								{(status == "lose") && <img className="w-[25px] h-[25px]" src="./src/assets/lose.png"/>}
 								{(status == "draw") && <img className="w-[25px] h-[25px]" src="./src/assets/draw.png"/>}
