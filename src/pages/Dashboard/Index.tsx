@@ -1,8 +1,6 @@
-import { useEffect } from "react";
 import Incoming from "./Incoming";
 import PingPong from "./PingPong";
 import Tournements from "./Tournements";
-import { useGlobalContext } from "../../contexts/store";
 
 const Index = () => {
 

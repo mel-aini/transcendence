@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import NavBar from "../../components/NavBar";
 import useOAuth from "../../hooks/useOAuth";
 import { useEffect } from "react";
 import NewButton from "../../components/NewButton";

@@ -1,14 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { useGlobalContext } from "../../contexts/store";
 import States from "./States";
 import History from "./History";
 import Friends from "./Friends";
 import ProfileHeader from "./ProfileHeader";
 
 const Index = () => {
-	const navigate = useNavigate();
-	const {dispatch} = useGlobalContext();
-
 	return (
 		<div className="flex flex-col justify-center items-center">
 			<ProfileHeader />
