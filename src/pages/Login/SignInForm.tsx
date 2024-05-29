@@ -67,7 +67,7 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 			refer: "/game/101123542145"
 		}
 		
-		dispatch({type: 'LOADING'});
+		dispatch({type: 'LOADING', state: true});
 		try {
 				if (username == '' || password == '')
 				{
@@ -92,7 +92,7 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 		catch (error: any) {
 			console.log('error', error);
 		}
-		dispatch({type: 'LOADING'});
+		dispatch({type: 'LOADING', state: false});
 
 	}
     return (

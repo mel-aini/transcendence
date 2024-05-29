@@ -1,4 +1,4 @@
-import pen_icon from "../../../public/pen_icon.svg"
+import pen_icon from "/pen_icon.svg"
 
 const EditProfile = () => {
 	return (

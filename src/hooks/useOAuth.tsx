@@ -16,7 +16,7 @@ const useOAuth = (): [() => Promise<void>, boolean] => {
 
 		if (!code && !state) return;
 		
-		dispatch({type: 'LOADING'});
+		dispatch({type: 'LOADING', state: true});
 		try {
 			const data = {
 				type : "oauth",
@@ -48,7 +48,7 @@ const useOAuth = (): [() => Promise<void>, boolean] => {
 		} catch (error) {
 			console.log(error);
 		}
-		dispatch({type: 'LOADING'});
+		dispatch({type: 'LOADING', state: false});
 	}
 
 	return [ handleOAuth, toggle ]

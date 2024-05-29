@@ -69,7 +69,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 			}
 			setFormError(errorMsg)
 		}
-		dispatch({type: 'LOADING'});
+		dispatch({type: 'LOADING', state: false});
 	}
 	
 	const onChangeHandler = (e: any) => {
@@ -87,7 +87,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 		if (email.value == '') return;
 
 		setSubmit(true);
-		dispatch({type: 'LOADING'});
+		dispatch({type: 'LOADING', state: true});
 	}
 
 	return (

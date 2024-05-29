@@ -65,7 +65,7 @@ const UsernameForm = ({dispatchLevel}: Props) => {
 			}
 			setFormError(errorMsg)
 		}
-		dispatch({type: 'LOADING'});
+		dispatch({type: 'LOADING', state: false});
 	}
 
 	return (

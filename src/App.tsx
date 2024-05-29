@@ -25,7 +25,11 @@ function App() {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path='/users'>
+                  <Route path=':id' element={<Profile />} />
+                </Route>
               </Route>
+              <Route path='*' element={<>Not Found</>} />
             </Routes>
       </GlobalContextProvider>
   )

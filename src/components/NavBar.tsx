@@ -1,7 +1,8 @@
 import { HTMLAttributes, useState } from "react";
 import NavBarElem from "./NavBarElem";
 import { IoIosArrowBack } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../contexts/store";
 
 interface ArrowType extends HTMLAttributes<HTMLDivElement> {
 	left: number
@@ -27,7 +28,8 @@ type XPos = 0 | 400;
 const NavBar = () => {
 	const [xPos, setXPos] = useState<XPos>(0);
 	const [event, setEvent] = useState<any>('auto');
-
+	const {state, dispatch} = useGlobalContext();
+	const navigate = useNavigate();
 	const clickHandler = async () => {
 
 		if (xPos == 400) {
@@ -38,6 +40,11 @@ const NavBar = () => {
 			setXPos(400);
 		}
 		setEvent('auto');
+	}
+
+	const goToProfile = () => {
+		dispatch({type: 'LOADING', state: true})
+		navigate('/profile')
 	}
 
 	return (
@@ -53,9 +60,7 @@ const NavBar = () => {
 				<NavBarElem type="Settings" className="cursor-pointer" />
 			</div>
 			<div className="w-[42px] h-[42px] bg-bg z-10">
-				<Link to='/profile'>
-					<div className="w-[42px] h-[42px] rounded-full bg-gray1 z-10"></div>
-				</Link>
+				<div onClick={goToProfile} className="w-[42px] h-[42px] rounded-full bg-gray1 z-10"></div>
 			</div>
 		</div>
 	)

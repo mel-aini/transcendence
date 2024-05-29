@@ -24,7 +24,17 @@ export const friends = [
 		name: "ebennamr"
 	},
 ]
-export const data = []
+
+interface Props {
+	username: string,
+	playerName: string,
+	result: {
+		you :number , player: number
+	}
+}[]
+
+export const data: Props | Object[] = []
+
 for (let i = 0; i < 10;i++)
 {
 	const x = Math.trunc(Math.random() * 10 )
