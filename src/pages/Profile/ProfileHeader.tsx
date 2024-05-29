@@ -1,6 +1,5 @@
 import FriendActions from "./FriendActions";
 import LevelBar from "./LevelBar";
-import profile_pic from "../../../public/Ellipse.svg"
 import { useEffect, useState } from "react";
 import { MdHeight } from "react-icons/md";
 
