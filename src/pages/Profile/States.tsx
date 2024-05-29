@@ -25,7 +25,7 @@ const Nisba = ({percentage}: {percentage: number}) => {
 	const [nisba, setNisba] = useState(0)
 
 	useEffect(() => {
-		console.log(nisba, percentage)
+		
 		if (nisba < percentage) {
 			setTimeout(() => {
 				setNisba(nisba + 1.00)

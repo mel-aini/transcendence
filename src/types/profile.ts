@@ -7,9 +7,12 @@ export interface MatchesData {
 	loses: number,
 }
 
+export type Relation = 'none' | 'friend' | 'send_inv' | 'rec_inv' 
+
 export interface UserData {
 	username: string,
 	matches: MatchesData
+	relation?: Relation
 	online: boolean,
 	profile_image: Url,
 	bg_image: Url,

@@ -1,13 +1,13 @@
 import { UserData } from "../../types/profile";
-import EditProfile from "./EditProfile";
-import FriendActions from "./FriendActions";
 import LevelBar from "./LevelBar";
+import UserActions from "./UserActions";
 
 interface DataProps {
+	user: string,
 	data: UserData | null
 }
 
-const ProfileHeader = ({data}: DataProps) => {
+const ProfileHeader = ({user, data}: DataProps) => {
 	// console.log(data);
 	return (
 		<>
@@ -30,7 +30,7 @@ const ProfileHeader = ({data}: DataProps) => {
 								{data.online && <span className="w-[8px] h-[8px] rounded-full bg-[#1ED947]"></span>}
 							</div>
 						</div>
-						<EditProfile />
+						<UserActions isProfile={user == 'profile'} relation={data?.relation} />
 					</div>
 					<div className="absolute left-[90%] top-full translate-y-[-37px] -translate-x-1/2 bg-[#14FF67] w-[39px] h-[74px] xl:w-[67.5px] xl:h-[128px]
 					xl:translate-y-[-64px] duration-100"></div>
