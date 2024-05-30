@@ -22,8 +22,10 @@ const Arrow = (props: ArrowType) => {
 	)
 }
 
+type XPos = 0 | 400;
+
 const NavBar = () => {
-	const [xPos, setXPos] = useState<number>(400);
+	const [xPos, setXPos] = useState<XPos>(0);
 	const [event, setEvent] = useState<any>('auto');
 
 	const clickHandler = async () => {

@@ -1,6 +1,6 @@
-import play_icon from "/public/play_icon.svg"
-import send_icon from "/public/send_icon.svg"
-import more_icon from "/public/more_icon.svg"
+import play_icon from "/play_icon.svg"
+import send_icon from "/send_icon.svg"
+import more_icon from "/more_icon.svg"
 
 const FriendActions = () => {
 	return (

@@ -1,4 +1,4 @@
-// import add_icon from "/public/add_icon.svg"
+// import add_icon from "/add_icon.svg"
 
 const AddFriend = () => {
 	return (
