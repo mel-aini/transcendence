@@ -21,11 +21,8 @@ const Friends = () => {
 			{/* <Title width={105} height={30} title="Friends"/> */}
 			<div ref={parentRef} className="rounded-xl flex justify-center gap-5 items-center border-primary border h-[95px]">
 				{friends.map((friend, key) => {
-					if ((width <= 400 && n >= 3) || (width <= 500 && n >= 5) || n >= 6)
-						return (<></>)
-					n++;
 					return (
-						<img key={key} className="w-[38px] h-[38px] rounded-full" src={`./src/assets/${friend.name}.jpeg`}/>
+						<img key={key} className="w-[38px] h-[38px] rounded-full" src={`/${friend.name}.jpeg`}/>
 					)
 				})}
 				<span className="cursor-pointer">see all</span>

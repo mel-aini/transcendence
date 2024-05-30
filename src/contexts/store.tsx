@@ -26,7 +26,10 @@ const reducer = (state: GlobalStateProps, action: any) => {
 			jwt.remove()
 			return { ...state, isLogin: false }
 		case 'LOADING':
-			return { ...state, isLoading: !state.isLoading }
+			if (action.state == true) {
+				return { ...state, isLoading: true }
+			}
+			return { ...state, isLoading: false }
 		default:
 			return state;
 	}

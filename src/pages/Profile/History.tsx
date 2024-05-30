@@ -20,10 +20,10 @@ const History = () => {
 	return (
 		<div className="w-full flex flex-col sm:min-w-[560px]">
 			{/* <Title width={105} height={30} title="History"/> */}
-			<div ref={parentRef} className="rounded-xl w-full flex flex-col justify-around items-center border border-primary">
-				<h1 className="text-2xl m-8">last 10 matches</h1>
+			<div ref={parentRef} className="rounded-xl w-full flex flex-col justify-around pt-16 pb-6 items-center border border-primary">
+				<h1 className="text-2xl">last 10 matches</h1>
 				<HistoryChart width={width * 90 / 100} height={200}/>
-				<div className="flex flex-col m-8 gap-3">
+				<div className="w-full px-6 flex flex-col gap-3">
 					{data.map((match, key) => {
 						let status;
 						let color;
@@ -40,14 +40,14 @@ const History = () => {
 							color = "#FFFFFF";
 						}
 						return (
-							<div key={key} className="flex justify-around items-center border-primary border rounded-md h-[56px]" style={{width:`${width * 90 / 100}px`}}>
-								{(status == "win") && <img className="w-[25px] h-[25px]" src="./src/assets/win.png"/>}
-								{(status == "lose") && <img className="w-[25px] h-[25px]" src="./src/assets/lose.png"/>}
-								{(status == "draw") && <img className="w-[25px] h-[25px]" src="./src/assets/draw.png"/>}
-								<span>{(width < 500 && match.username.length) > 4 ? (match.username.substring(0, 4) + '...') : match.username}</span>
-								<span style={{color:`${color}`}}>{match.result.you + ' - ' + match.result.player}</span>
-								<span>{(width < 500 && match.playerName.length) > 4 ? (match.playerName.substring(0, 4) + '...') : match.playerName}</span>
-								<img className="w-[25px] h-[25px] border-white rounded-full border" src="./src/assets/ebennamr.jpeg"/>
+							<div key={key} className="flex justify-between items-center border-primary border rounded-md h-[56px] w-full px-3">
+								{(status == "win") && <img className="w-[30px] h-[30px] mr-1" src="/win.png"/>}
+								{(status == "lose") && <img className="w-[30px] h-[30px] mr-1" src="/lose.png"/>}
+								{(status == "draw") && <img className="w-[30px] h-[30px] mr-1" src="/draw.png"/>}
+								<span className="shrink overflow-hidden text-ellipsis">{match.username}</span>
+								<span className="shrink-0 px-2" style={{color:`${color}`}}>{match.result.you + ' - ' + match.result.player}</span>
+								<span className="shrink overflow-hidden text-ellipsis">{match.playerName}</span>
+								<img className="shrink-0 w-[30px] h-[30px] rounded-full ml-1" src="/ebennamr.jpeg"/>
 							</div>
 						);
 					})}

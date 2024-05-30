@@ -84,7 +84,7 @@ const RemainForm = ({email}: Props) => {
 		catch (error: any) {
 			setFormError(error)
 		}
-		dispatch({type: 'LOADING'});
+		dispatch({type: 'LOADING', state: false});
 	}
 	const inputs = [
 		{
@@ -129,7 +129,7 @@ const RemainForm = ({email}: Props) => {
 		if (username == '' || email == '' || password == '' || retypePassword == '') return;
 
 		setSubmit(true);
-		dispatch({type: 'LOADING'});
+		dispatch({type: 'LOADING', state: true});
 	}
 
 	return (
