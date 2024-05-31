@@ -4,6 +4,15 @@ import Title from "./Title";
 import { data } from "./__test__/match";
 import { motion } from "framer-motion";
 
+interface Match {
+	username: string,
+	playerName: string,
+	result: {
+		you :number ,
+		player: number
+	}
+}
+
 const History = () => {
 	const parentRef = useRef();
 	const [width, setWidth] = useState<number | null>(null);
@@ -33,7 +42,7 @@ const History = () => {
 					initial="hidden"
 					animate="visible"
 					variants={variant}>
-					{data.map((match, key) => {
+					{data.map((match: Match, key: number) => {
 						let status;
 						let color;
 						if (match.result.you > match.result.player) {
