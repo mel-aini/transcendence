@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import HistoryChart from "./HistoryChart";
 import Title from "./Title";
 import { data } from "./__test__/match";
+import { motion } from "framer-motion";
 
 const History = () => {
 	const parentRef = useRef();
@@ -16,14 +17,22 @@ const History = () => {
 		// 	window.removeEventListener('resize')
 		// }
 	}, [])
-
+	const variant = {
+		hidden: { opacity: 0, width: "20%",},
+		visible: { opacity: 1 , width: "100%",
+			transition: { duration: 1},
+		}
+	}
 	return (
 		<div className="w-full flex flex-col sm:min-w-[560px]">
 			{/* <Title width={105} height={30} title="History"/> */}
 			<div ref={parentRef} className="rounded-xl w-full flex flex-col justify-around pt-16 pb-6 items-center border border-primary">
 				<h1 className="text-2xl">last 10 matches</h1>
 				<HistoryChart width={width * 90 / 100} height={200}/>
-				<div className="w-full px-6 flex flex-col gap-3">
+				<motion.div className="w-full px-6 flex flex-col gap-3"
+					initial="hidden"
+					animate="visible"
+					variants={variant}>
 					{data.map((match, key) => {
 						let status;
 						let color;
@@ -51,7 +60,7 @@ const History = () => {
 							</div>
 						);
 					})}
-				</div>
+				</motion.div>
 			</div>
 		</div>
 	)
