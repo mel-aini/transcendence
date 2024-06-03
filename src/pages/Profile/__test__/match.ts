@@ -8,21 +8,21 @@ export const friends = [
 	{
 		name: "ychahbi"
 	},
-	{
-		name: "ochouikh"
-	},
-	{
-		name: "ebennamr"
-	},
-	{
-		name: "ebennamr"
-	},
-	{
-		name: "ebennamr"
-	},
-	{
-		name: "ebennamr"
-	},
+	// {
+	// 	name: "ochouikh"
+	// },
+	// {
+	// 	name: "ebennamr"
+	// },
+	// {
+	// 	name: "ebennamr"
+	// },
+	// {
+	// 	name: "ebennamr"
+	// },
+	// {
+	// 	name: "ebennamr"
+	// },
 ]
 
 interface Props {

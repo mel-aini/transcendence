@@ -38,7 +38,7 @@ const HistoryChart = ({width, height}: {width: number, height: number}) => {
 				const variant = {
 					hidden: { pathLength: 0, opacity: 0 },
 					visible: { pathLength: 1, opacity: 1 ,
-						transition: { duration: 0.3, delay: key * 0.3},
+						transition: { duration: 0.2, delay: key * 0.2},
 						ease: "easeInOut"
 					}
 				}
@@ -62,7 +62,7 @@ const HistoryChart = ({width, height}: {width: number, height: number}) => {
 				const variantCircle = {
 					hidden: { pathLength: 0, opacity: 0 },
 					visible: { pathLength: 1, opacity: 1 ,
-						transition: { duration: 0.4, delay: key * 0.3},
+						transition: { duration: 0.2, delay: key * 0.2},
 					}
 				}
 
