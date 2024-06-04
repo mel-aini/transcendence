@@ -13,13 +13,16 @@ const ConversationBar = ({className, isFocus, data, ...props}: Props) => {
 
 	return (
 		<div 
-			className={"relative w-full flex justify-between h-[101px] items-center duration-300 cursor-pointer " + isFocusCss + (className ? ` ${className}` : '')} 
+			className={"relative w-full flex justify-between h-[70px] items-center duration-300 cursor-pointer " + isFocusCss + (className ? ` ${className}` : '')} 
 			{...props}>
 			<div className="flex gap-4 shrink overflow-hidden">
 				<User className="shrink-0" width={50} url="https://cdn.intra.42.fr/users/310f20caa8f2fff044bda72e14f997ea/ochouikh.jpg" />
 				<div className="flex flex-col shrink overflow-hidden">
 					<span className="shrink overflow-hidden whitespace-nowrap text-ellipsis">{data.username}</span>
-					<span className="shrink overflow-hidden whitespace-nowrap text-ellipsis">{data.lastMessage.value}</span>
+					<span 
+						className={"shrink overflow-hidden whitespace-nowrap text-ellipsis text-[12px]" + (data.lastMessage.state == 'unread' ? ' font-medium' : '')}>
+						{data.lastMessage.value}
+					</span>
 				</div>
 			</div>
 			<div className="flex flex-col items-center gap-2 text-sm font-extralight">
