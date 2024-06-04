@@ -21,7 +21,7 @@ const Message = ({type = "arrive", children, date, className, ...props}: Message
 				style={{
 					borderRadius: type == "arrive" ? "0 20px 20px 20px" : "20px 0 20px 20px",
 				}} 
-				className={`${type == 'arrive' ? 'bg-primary' : 'bg-secondary'} py-[7px] px-5 leading-7 font-normal`}
+				className={`${type == 'arrive' ? ' bg-gray2' : 'bg-secondary'} py-[7px] px-5 leading-7 font-normal`}
 				>
 				{children}
 			</div>

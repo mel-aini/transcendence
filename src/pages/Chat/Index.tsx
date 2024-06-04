@@ -1,5 +1,12 @@
+import Conversations from "./Conversations";
+import Message from "./Message";
+
 const Index = () => {
-	return "";
+	return (
+		<div>
+			<Conversations />
+		</div>
+	);
 }
 
 export default Index;
