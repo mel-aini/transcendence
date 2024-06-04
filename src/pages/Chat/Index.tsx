@@ -1,11 +1,26 @@
+import ChatContextProvider, { useChatContext } from "../../contexts/chatStore";
 import Conversations from "./Conversations";
-import Message from "./Message";
+import Conversation from "./Conversations/Conversation";
+import { AnimatePresence } from 'framer-motion'
 
-const Index = () => {
+function RenderedCom() {
+	const {state} = useChatContext();
+
 	return (
-		<div>
+		<div className="relative w-full h-[100vh]">
 			<Conversations />
+			<AnimatePresence>
+				{state.isFocus && <Conversation />}
+			</AnimatePresence>
 		</div>
+	)
+}
+
+function Index() {
+	return (
+		<ChatContextProvider>
+			<RenderedCom />
+		</ChatContextProvider>
 	);
 }
 

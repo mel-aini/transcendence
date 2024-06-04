@@ -1,5 +1,6 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import ConversationBar from "./ConversationBar";
+import { useChatContext } from "../../../contexts/chatStore";
 
 type State = 'read' | 'unread' | 'sent'
 
@@ -94,17 +95,19 @@ interface Props {
 }
 
 function ConversationsList({className}: Props) {
-	const [focusedElem, setFocusedElem] = useState(0);
+	const [focusedElem, setFocusedElem] = useState<number | null>(null);
+	const {dispatch} = useChatContext();
 
 	const handler = (e: MouseEvent<HTMLDivElement>, index: number) => {
 		setFocusedElem(index);
+		dispatch({type: 'FOCUS', state: true})
 	}
 
 	return ( 
 		<div className={"mt-8" + (className ? ` ${className}` : '')}>
 			{
 				convs.length != 0 && convs.map((conv, index) => {
-					return <ConversationBar onClick={(e) => handler(e, index)} key={index} data={conv} className="px-5" isFocus={focusedElem == index} />
+					return <ConversationBar onClick={(e) => handler(e, index)} key={index} data={conv} className="px-5" isFocus={focusedElem != null && focusedElem == index} />
 				})
 			}
 			{
