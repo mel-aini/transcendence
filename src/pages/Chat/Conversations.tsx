@@ -9,7 +9,7 @@ function Conversations() {
 			initial={{opacity: 1}}
 			exit={{opacity: 1}}
 			transition={{duration: 0.5}}
-			className="w-full pt-5 h-full relative flex flex-col z-0">
+			className="w-full pt-5 h-full relative flex flex-col z-0 sm:max-w-[500px]">
 			<div className="scroll-to-hide flex flex-col overflow-auto grow">
 				<div className="px-5 flex flex-col shrink-0">
 					<h1 className="mb-5">Conversations</h1>
