@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Relation } from "../../types/profile";
-import EditProfile from "./EditProfile";
-import FriendActions from "./FriendActions";
-import AddFriend from "./AddFriend";
+import EditProfile from "./userActions/EditProfile";
+import FriendActions from "./userActions/FriendActions";
+import AddFriend from "./userActions/AddFriend";
 
 enum Actions {
 	EditProfile,

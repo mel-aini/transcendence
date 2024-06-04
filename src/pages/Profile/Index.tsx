@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../contexts/store";
 import { UserData } from "../../types/profile";
 import { useNavigate, useParams } from "react-router-dom";
-import AllFriends from "./AllFriends";
 
 const Index = () => {
 	const { id } = useParams();
@@ -52,7 +51,6 @@ const Index = () => {
 					<History />
 				</div>
 			</div>
-			<AllFriends />
 		</div>
 	);
 }
