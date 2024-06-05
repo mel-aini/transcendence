@@ -43,7 +43,7 @@ const Index = () => {
 		<div className="flex flex-col justify-center items-center">
 			<ProfileHeader user={user} data={data} />
 			<div className="w-full 2xl:px-0 ">
-				<div className="flex flex-col xl:flex-row pt-20 xl:mt-[75px] gap-5">
+				<div className="flex flex-col xl:flex-row pt-20 xl:mt-[75px] gap-5 pb-7">
 					<div className="sm:min-w-[560px] flex flex-col-reverse xl:flex-col gap-5">
 						<States data={data} />
 						<Friends />

@@ -17,7 +17,7 @@ const Friends = () => {
 							<img key={key} className="w-[38px] h-[38px] rounded-full" src={`/${friend.name}.jpeg`}/>
 						)
 					})}
-					<span className="cursor-pointer" onClick={() => setSeeAll(true)}>see all</span>
+					<span className="cursor-pointer select-none" onClick={() => setSeeAll(true)}>see all</span>
 					<AllFriends />
 				</div>
 			</div>
