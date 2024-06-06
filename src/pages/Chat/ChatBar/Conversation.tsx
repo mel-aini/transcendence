@@ -9,11 +9,11 @@ function Conversation() {
 
 	const sendMessage = (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		console.log(socket)
+
 		socket.emit('message', {
-			user_id: sessionStorage.getItem('user_id'),
+			user_id: 27,
 			conversation_id: 2,
-			content: message
+			content: message.current
 		});
 
 		((e.target as HTMLElement).firstChild as InputHTMLAttributes<HTMLInputElement>).value = message.current = '';

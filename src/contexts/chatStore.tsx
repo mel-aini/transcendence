@@ -17,7 +17,6 @@ const reducer = (state: ChatStateProps, action: any) => {
 	switch (action.type)
 	{
 		case 'FOCUS':
-			console.log('hello', action.state)
 			if (action.state == true)
 				return { isFocus: true}
 			return { isFocus: false}
