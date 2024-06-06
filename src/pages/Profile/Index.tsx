@@ -2,37 +2,31 @@ import States from "./States";
 import History from "./History";
 import Friends from "./Friends";
 import ProfileHeader from "./ProfileHeader";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../contexts/store";
-import { UserData } from "../../types/profile";
+import { FriendsData, MatchesData, ProfileRes, UserData } from "../../types/profile";
 import { useNavigate, useParams } from "react-router-dom";
+import fetchProfile from "./fetchProfile";
 
 const Index = () => {
+	const { dispatch } = useGlobalContext();
+	const navigate = useNavigate();
 	const { id } = useParams();
 	const user = id ? 'users/' + id : 'profile'
-
-	const { dispatch } = useGlobalContext();
 	const [data, setData] = useState<UserData | null>(null);
-	const navigate = useNavigate()
-	// const [errorMsg, setError] = useState<string | null>(null);
 
 	const collectData = async () => {
-		dispatch({type: 'LOADING', state: true})
-		try {
-			const res = await axios.get('http://localhost:3000/' + user);
-			// throw new Error('internal server error')
-			setData(res.data);
-		} catch (error: any) {
-			// if (error)
-			if (error.response.status == 404) {
-				// to replace with Not Found
-				navigate('/');
-			} else {
-
-			}
+		dispatch({type: 'LOADING', state: true});
+		const ProfileRes: ProfileRes = await fetchProfile(user);
+		if (ProfileRes.status == 200)
+			setData(ProfileRes.data);
+		else if (ProfileRes.status == 404)
+			navigate('/');
+		else if (ProfileRes.status == 401) {
+			dispatch({type: 'LOGOUT'});
+			navigate('/login');
 		}
-		dispatch({type: 'LOADING', state: false})
+		dispatch({type: 'LOADING', state: false});
 	}
 
 	useEffect(() => {
@@ -48,7 +42,11 @@ const Index = () => {
 						<States data={data} />
 						<Friends />
 					</div>
-					<History />
+					{data ?
+						<History id={id} username={data.username} />
+						:
+						<div>Loading...</div>
+					}
 				</div>
 			</div>
 		</div>

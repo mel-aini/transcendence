@@ -1,12 +1,29 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { friends } from "./__test__/match";
 import AllFriends from "./AllFriends";
 
 export const context = createContext<any>({});
 
 const Friends = () => {
-	// const [width, setWidth] = useState<number | null>(null);
 	const [seeAll, setSeeAll] = useState<boolean>(false);
+
+	const collectData = async () => {
+		dispatch({type: 'LOADING', state: true});
+		const ProfileRes: ProfileRes = await fetchProfile(user);
+		if (ProfileRes.status == 200)
+			setData(ProfileRes.data);
+		else if (ProfileRes.status == 404)
+			navigate('/');
+		else if (ProfileRes.status == 401) {
+			dispatch({type: 'LOGOUT'});
+			navigate('/login');
+		}
+		dispatch({type: 'LOADING', state: false});
+	}
+
+	useEffect(() => {
+		collectData();
+	}, []);
 
 	return (
 		<context.Provider value={{seeAll, setSeeAll}}>

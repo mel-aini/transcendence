@@ -20,6 +20,14 @@ class Jwt {
 			localStorage.removeItem('refresh');
 		}
 	}
+
+	getAccessToken() {
+		return (localStorage.getItem('access'));
+	}
+	
+	getRefreshToken() {
+		return (localStorage.getItem('refresh'));
+	}
 }
 
 const jwt = new Jwt();

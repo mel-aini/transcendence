@@ -1,5 +1,5 @@
 import { secondaryColor, thirdColor } from "../../utils/colors";
-import { UserData } from "../../types/profile";
+import { FriendsData, MatchesData, UserData } from "../../types/profile";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 

@@ -1,4 +1,4 @@
-import { UserData } from "../../types/profile";
+import { FriendsData, MatchesData, UserData } from "../../types/profile";
 import LevelBar from "./LevelBar";
 import UserActions from "./UserActions";
 
