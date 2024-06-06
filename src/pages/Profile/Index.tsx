@@ -34,7 +34,7 @@ const Index = () => {
 	} ,[])
 
 	return (
-		<div className="flex flex-col justify-center items-center">
+		<div className="flex flex-col justify-center items-center relative z-0">
 			<ProfileHeader user={user} data={data} />
 			<div className="w-full 2xl:px-0 ">
 				<div className="flex flex-col xl:flex-row pt-20 xl:mt-[75px] gap-5 pb-7">

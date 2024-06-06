@@ -26,6 +26,7 @@ const reducer = (state: GlobalStateProps, action: any) => {
 			return { ...state, isLogin: true }
 		case 'LOGOUT':
 			jwt.remove()
+			socket.disconnect()
 			return { ...state, isLogin: false }
 		case 'LOADING':
 			if (action.state == true) {

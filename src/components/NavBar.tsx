@@ -1,11 +1,39 @@
 import { HTMLAttributes, useState } from "react";
 import NavBarElem from "./NavBarElem";
 import { IoIosArrowBack } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
+import User from "./User";
 
 interface ArrowType extends HTMLAttributes<HTMLDivElement> {
 	left: number
+}
+
+function ProfileActions({setProfileActions}: {setProfileActions: any}) {
+	const {dispatch} = useGlobalContext();
+	const navigate = useNavigate();
+
+	const goToProfile = () => {
+		setProfileActions(false)
+		dispatch({type: 'LOADING', state: true})
+		navigate('/profile')
+	}
+
+	const logout = () => {
+		dispatch({type: 'LOADING', state: true})
+		dispatch({type: 'LOGOUT'});
+		navigate('/')
+	}
+
+	return (
+		<div className="flex flex-col gap-2 absolute right-0 -translate-y-3 top-full p-3 border border-primary rounded-md bg-bg select-none">
+			<div onClick={goToProfile} className="cursor-pointer">go to profile</div>
+			<hr className=" opacity-50" />
+			<div className="cursor-pointer">settings</div>
+			<hr className=" opacity-50" />
+			<div onClick={logout} className="cursor-pointer">logout</div>
+		</div>
+	)
 }
 
 const Arrow = (props: ArrowType) => {
@@ -25,11 +53,12 @@ const Arrow = (props: ArrowType) => {
 
 type XPos = 0 | 400;
 
-const NavBar = () => {
+const NavBar = ({className}: {className?: string}) => {
+	// profile actions
+	const [profileActions, setProfileActions] = useState(false);
+	// profile actions
 	const [xPos, setXPos] = useState<XPos>(0);
 	const [event, setEvent] = useState<any>('auto');
-	const {state, dispatch} = useGlobalContext();
-	const navigate = useNavigate();
 	const clickHandler = async () => {
 
 		if (xPos == 400) {
@@ -42,26 +71,24 @@ const NavBar = () => {
 		setEvent('auto');
 	}
 
-	const goToProfile = () => {
-		dispatch({type: 'LOADING', state: true})
-		navigate('/profile')
-	}
-
 	return (
-		<div className="w-full h-[100px] flex justify-end items-center overflow-hidden">
-			<div
-				className="relative flex justify-end duration-300"
-				style={{transform: `translateX(${xPos}px)`, pointerEvents: event}}
-			> 
-				<Arrow onClick={clickHandler} left={xPos} />
-				<NavBarElem type="Home" />
-				<NavBarElem type="Chat" />
-				<NavBarElem type="Notifications" />
-				<NavBarElem type="Settings" className="cursor-pointer" />
+		<div className={"relative w-full h-[100px] flex items-center" + (className ? ` ${className}` : '')}>
+			<div className="w-full flex justify-end items-center overflow-hidden">
+				<div
+					className="relative flex justify-end duration-300"
+					style={{transform: `translateX(${xPos}px)`, pointerEvents: event}}
+				> 
+					<Arrow onClick={clickHandler} left={xPos} />
+					<NavBarElem type="Home" />
+					<NavBarElem type="Chat" />
+					<NavBarElem type="Notifications" />
+					<NavBarElem type="Settings" className="cursor-pointer" />
+				</div>
+				<div className="w-[42px] h-[42px] bg-bg cursor-pointer flex justify-center items-center">
+					<User onClick={() => setProfileActions(prev => !prev)} width={35} border className="border-white cursor-pointer z-10" url="https://images.unsplash.com/photo-1669937401447-7cfc6e9906e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fGdhbWluZyUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D" />
+				</div>
 			</div>
-			<div className="w-[42px] h-[42px] bg-bg z-10">
-				<div onClick={goToProfile} className="w-[42px] h-[42px] rounded-full bg-gray1 z-10"></div>
-			</div>
+			{profileActions && <ProfileActions setProfileActions={setProfileActions} />}
 		</div>
 	)
 }
