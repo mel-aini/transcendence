@@ -1,16 +1,7 @@
-import { delay, motion } from "framer-motion";
-import { data } from "./__test__/match";
+import {  motion } from "framer-motion";
+import { MatchesData, UserData } from "../../types/profile";
 
-interface Match {
-	username: string,
-	playerName: string,
-	result: {
-		you :number ,
-		player: number
-	}
-}
-
-const HistoryChart = ({width, height}: {width: number, height: number}) => {
+const HistoryChart = ({width, height, data}: {width: number, height: number, data: MatchesData[] | null}) => {
 	let currentX = 0;
 	let currentY = height * 50 / 100;
 	let currentX2 = 0;
@@ -29,10 +20,10 @@ const HistoryChart = ({width, height}: {width: number, height: number}) => {
 				className="fill-white stroke-primary stroke-1"
 				// variants={variantCircle}
 			/>
-			{data.map((match: Match, key: number) => {
+			{data && data.map((match: MatchesData, key: number) => {
 				const saveX = currentX;
 				const saveY = currentY;
-				const n = match.result.you - match.result.player;
+				const n = match.goals - match.opponent.goals;
 				currentX += width * 10 / 100;
 				currentY = (height / 2) - (n * 10);
 				const variant = {
@@ -55,8 +46,8 @@ const HistoryChart = ({width, height}: {width: number, height: number}) => {
 					/>
 				);
 			})}
-			{data.map((match: Match, key: number) => {
-				const n = match.result.you - match.result.player;
+			{data && data.map((match: MatchesData, key: number) => {
+				const n = match.goals - match.opponent.goals;
 				currentX2 += width * 10 / 100;
 				currentY2 = (height / 2) - (n * 10);
 				const variantCircle = {

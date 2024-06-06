@@ -3,28 +3,47 @@ import HistoryChart from "./HistoryChart";
 import Title from "./Title";
 import { data } from "./__test__/match";
 import { motion } from "framer-motion";
+import { MatchesData, ProfileRes, UserData } from "../../types/profile";
+import fetchProfile from "./fetchProfile";
+import { useGlobalContext } from "../../contexts/store";
+import { useNavigate } from "react-router-dom";
 
-interface Match {
-	username: string,
-	playerName: string,
-	result: {
-		you :number ,
-		player: number
-	}
-}
-
-const History = () => {
+const History = ({id, username}: {id: string | undefined, username: string}) => {
+	const { dispatch } = useGlobalContext();
+	const navigate = useNavigate();
 	const parentRef = useRef();
-	const [width, setWidth] = useState<number | null>(null);
+	const [width, setWidth] = useState<number>(0);
+	const [data, setData] = useState<MatchesData[] | null>(null);
+	const uri = id ? 'matches/' + id : 'matches';
+
+	const collectMatchesData = async () => {
+		const ProfileRes: ProfileRes = await fetchProfile(uri);
+		if (ProfileRes.status == 200)
+		{	
+			setData(ProfileRes.data.data);
+		}
+		else if (ProfileRes.status == 404)
+			navigate('/');
+		else if (ProfileRes.status == 401) {
+			dispatch({type: 'LOGOUT'});
+			navigate('/login');
+		}
+	}
 
 	useEffect(() => {
-		setWidth(parentRef.current.offsetWidth);
-		window.addEventListener('resize', () => {
-			setWidth(parentRef.current.offsetWidth);
-		})
-		// return () => {
-		// 	window.removeEventListener('resize')
-		// }
+		collectMatchesData();
+		if (!parentRef.current) return;
+		
+		setWidth((parentRef.current as HTMLElement).offsetWidth);
+		const handler = () => {
+			if (!parentRef.current) return;
+			setWidth((parentRef.current as HTMLElement).offsetWidth);
+		}
+
+		window.addEventListener('resize', handler)
+		return () => {
+			window.removeEventListener('resize', handler)
+		}
 	}, [])
 	const variant = {
 		hidden: { opacity: 0, width: "20%",},
@@ -37,19 +56,24 @@ const History = () => {
 			{/* <Title width={105} height={30} title="History"/> */}
 			<div ref={parentRef} className="rounded-xl w-full flex flex-col justify-around pt-16 pb-6 items-center border border-primary">
 				<h1 className="text-2xl">last 10 matches</h1>
-				<HistoryChart width={width * 90 / 100} height={200}/>
+				{
+					data ?
+					<HistoryChart width={(width) * 90 / 100} height={200} data={data}/>
+					:
+					<div>Loading...</div>
+				}
 				<motion.div className="w-full px-6 flex flex-col gap-3"
 					initial="hidden"
 					animate="visible"
 					variants={variant}>
-					{data.map((match: Match, key: number) => {
+					{data ? data.map((match: MatchesData, key: number) => {
 						let status;
 						let color;
-						if (match.result.you > match.result.player) {
+						if (match.goals > match.opponent.goals) {
 							status = "win";
 							color = "#1ED947";
 						}
-						else if (match.result.you < match.result.player) {
+						else if (match.goals < match.opponent.goals) {
 							status = "lose";
 							color = "#DD1B1B";
 						}
@@ -62,13 +86,16 @@ const History = () => {
 								{(status == "win") && <img className="w-[30px] h-[30px] mr-1" src="/win.png"/>}
 								{(status == "lose") && <img className="w-[30px] h-[30px] mr-1" src="/lose.png"/>}
 								{(status == "draw") && <img className="w-[30px] h-[30px] mr-1" src="/draw.png"/>}
-								<span className="shrink overflow-hidden text-ellipsis">{match.username}</span>
-								<span className="shrink-0 px-2" style={{color:`${color}`}}>{match.result.you + ' - ' + match.result.player}</span>
-								<span className="shrink overflow-hidden text-ellipsis">{match.playerName}</span>
-								<img className="shrink-0 w-[30px] h-[30px] rounded-full ml-1" src="/ebennamr.jpeg"/>
+								<span className="shrink overflow-hidden text-ellipsis">{username}</span>
+								<span className="shrink-0 px-2" style={{color:`${color}`}}>{match.goals + ' - ' + match.opponent.goals}</span>
+								<span className="shrink overflow-hidden text-ellipsis">{match.opponent.username}</span>
+								<img className="shrink-0 w-[30px] h-[30px] rounded-full ml-1" src={match.opponent.image}/>
 							</div>
 						);
-					})}
+					})
+					:
+					<div>Loading...</div>
+				}
 				</motion.div>
 			</div>
 		</div>
