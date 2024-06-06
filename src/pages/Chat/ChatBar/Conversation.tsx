@@ -2,12 +2,20 @@ import Message from "../Message";
 import {motion} from 'framer-motion'
 import ConversationHeader from "./ConversationHeader";
 import { FormEvent, InputHTMLAttributes, MouseEvent, useRef } from "react";
+import { socket } from "../../../utils/socket";
 
 function Conversation() {
 	const message = useRef<string>('');
 
 	const sendMessage = (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
+		console.log(socket)
+		socket.emit('message', {
+			user_id: sessionStorage.getItem('user_id'),
+			conversation_id: 2,
+			content: message
+		});
+
 		((e.target as HTMLElement).firstChild as InputHTMLAttributes<HTMLInputElement>).value = message.current = '';
 	}
 

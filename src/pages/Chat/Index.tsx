@@ -9,6 +9,7 @@ function RenderedCom() {
 	const {state, dispatch} = useChatContext();
 
 	useEffect(() => {
+
 		dispatch({type: 'FOCUS', state: window.innerWidth >= 1024})
 
 		window.addEventListener('resize' ,() => {
