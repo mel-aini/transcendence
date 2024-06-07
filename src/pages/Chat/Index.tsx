@@ -12,11 +12,26 @@ function RenderedCom() {
 	useEffect(() => {
 		// for testing
 		socket.connect()
-		const onConvs = (messages: any) => {
-			console.log(messages);
+
+		const onConnect = () => {
+			console.log('connected');
 		}
-		socket.on('conversation', onConvs)
-		// for testing
+
+		const chatHandler = (data: any) => {
+			console.log(data);
+			console.log(state.messages);
+			switch (data.type) {
+				case 'messages':
+					dispatch({type: 'MESSAGE', message: data.message})
+					break;
+				default:
+					break;
+			}
+		}
+	
+		socket.on('connect', onConnect);
+		socket.on('chat', chatHandler);
+		
 		dispatch({type: 'FOCUS', state: window.innerWidth >= 1024})
 
 		const resizeHandler = () => {
@@ -26,7 +41,7 @@ function RenderedCom() {
 		window.addEventListener('resize', resizeHandler)
 		return () => {
 			window.removeEventListener('resize', resizeHandler);
-			socket.off('conversations', onConvs)
+			socket.off('chat', chatHandler)
 		}
 	}, [])
 

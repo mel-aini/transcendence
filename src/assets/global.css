@@ -76,3 +76,18 @@ body {
 .level-bar {
 	clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 0 100%, 0 0);
 }
+
+.animate-msg {
+	animation: identifier 0.3s;
+}
+
+@keyframes identifier {
+	0% {
+		transform: translateY(10px);
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}

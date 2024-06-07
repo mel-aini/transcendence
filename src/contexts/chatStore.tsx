@@ -1,11 +1,13 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 
 export interface ChatStateProps {
-	isFocus: boolean
+	isFocus: boolean,
+	messages: any[]
 }
 
 const initialState: ChatStateProps = {
-	isFocus: false
+	isFocus: false,
+	messages: []
 };
 
 export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispatch<any>}>({
@@ -18,8 +20,20 @@ const reducer = (state: ChatStateProps, action: any) => {
 	{
 		case 'FOCUS':
 			if (action.state == true)
-				return { isFocus: true}
-			return { isFocus: false}
+				return {
+			 		...state, 
+					isFocus: true
+				}
+			return { 
+				...state, 
+				isFocus: false
+			}
+		case 'MESSAGE':
+			console.log('new message', action.message)
+			return { 
+				...state, 
+				messages: [...state.messages, action.message] 
+			}
 		default:
 			return state;
 	}
