@@ -4,7 +4,7 @@ import NavBar from './NavBar';
 const Layout = () => {
 	return (
 		<div className='w-11/12 max-w-[1500px] mx-auto'>
-			<NavBar />
+			<NavBar className='relative z-50' />
 			<Outlet />
 		</div>
 	)

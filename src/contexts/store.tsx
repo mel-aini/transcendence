@@ -1,5 +1,6 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 import jwt from "../utils/jwt";
+import { socket } from "../utils/socket";
 
 export interface GlobalStateProps {
 	isLogin: boolean
@@ -21,9 +22,11 @@ const reducer = (state: GlobalStateProps, action: any) => {
 	{
 		case 'LOGIN':
 			jwt.save(action.jwt)
+			socket.connect()
 			return { ...state, isLogin: true }
 		case 'LOGOUT':
 			jwt.remove()
+			socket.disconnect()
 			return { ...state, isLogin: false }
 		case 'LOADING':
 			if (action.state == true) {

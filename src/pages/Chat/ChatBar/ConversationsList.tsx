@@ -86,6 +86,14 @@ let convs: Data[] = [
 			state: 'sent'
 		}
 	},
+	{
+		username: 'hisoka',
+		lastMessage: {
+			value: 'tbarkllah 3lik',
+			date: '22:23',
+			state: 'sent'
+		}
+	},
 ]
 
 // convs = []
@@ -94,20 +102,18 @@ interface Props {
 	className?: string
 }
 
-function ConversationsList({className}: Props) {
-	const [focusedElem, setFocusedElem] = useState<number | null>(null);
+function ConversationsList({className, ...props}: Props) {
 	const {dispatch} = useChatContext();
 
-	const handler = (e: MouseEvent<HTMLDivElement>, index: number) => {
-		setFocusedElem(index);
+	const handler = () => {
 		dispatch({type: 'FOCUS', state: true})
 	}
 
 	return ( 
-		<div className={"mt-8" + (className ? ` ${className}` : '')}>
+		<div className="flex flex-col gap-[20px]" {...props}>
 			{
 				convs.length != 0 && convs.map((conv, index) => {
-					return <ConversationBar onClick={(e) => handler(e, index)} key={index} data={conv} className="px-5" isFocus={focusedElem != null && focusedElem == index} />
+					return <ConversationBar onClick={handler} key={index} data={conv} />
 				})
 			}
 			{

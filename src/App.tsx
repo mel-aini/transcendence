@@ -10,26 +10,30 @@ import { default as Dashboard } from "./pages/Dashboard/Index";
 import Loading from "./components/Loading";
 import GlobalContextProvider from "./contexts/store";
 import Layout from "./components/Layout";
+import MainLayout from "./MainLayout";
 
 function App() {
   return (
       <GlobalContextProvider>
             <Loading />
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/chat" element={<Chat />} />
-              <Route element={<Layout />}>
-                <Route path="/game" element={<Game />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path='/users'>
-                  <Route path=':id' element={<Profile />} />
+              <Route path="/" element={<MainLayout />}>
+                <Route index element={<Home />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/chat" element={<Chat />} />
+                <Route element={<Layout />}>
+                  <Route path="/game" element={<Game />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path='/users'>
+                    <Route path=':id' element={<Profile />} />
+                    <Route path='*' element={<>Not Found</>} />
+                  </Route>
                 </Route>
+                <Route path='*' element={<>Not Found</>} />
               </Route>
-              <Route path='*' element={<>Not Found</>} />
             </Routes>
       </GlobalContextProvider>
   )
