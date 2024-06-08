@@ -2,12 +2,16 @@ import { Dispatch, ReactNode, createContext, useContext, useReducer } from "reac
 
 export interface ChatStateProps {
 	isFocus: boolean,
-	messages: any[]
+	messages: any[],
+	onlineFriends: any[],
+	conversations: any[]
 }
 
 const initialState: ChatStateProps = {
 	isFocus: false,
-	messages: []
+	messages: [],
+	onlineFriends: [],
+	conversations: []
 };
 
 export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispatch<any>}>({
@@ -29,10 +33,25 @@ const reducer = (state: ChatStateProps, action: any) => {
 				isFocus: false
 			}
 		case 'MESSAGE':
-			console.log('new message', action.message)
 			return { 
 				...state, 
 				messages: [...state.messages, action.message] 
+			}
+		case 'MESSAGES':
+			return { 
+				...state, 
+				messages: action.messages
+			}
+		case 'ONLINE':
+			return { 
+				...state, 
+				onlineFriends: [...state.onlineFriends, ...action.onlineFriends]
+			}
+		case 'CONVERSATIONS':
+
+			return { 
+				...state, 
+				conversations: [...state.conversations, ...action.conversations]
 			}
 		default:
 			return state;
