@@ -1,7 +1,6 @@
 import axios from "axios";
 import { BACKEND_END_POINT } from "../../utils/global";
 import jwt from "../../utils/jwt";
-import { ProfileRes } from "../../types/profile";
 
 const fetchProfile = async (uri: string) => {
 	let	profileRes: any = {data: null, status: 200};

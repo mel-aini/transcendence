@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import HistoryChart from "./HistoryChart";
-import Title from "./Title";
-import { data } from "./__test__/match";
 import { motion } from "framer-motion";
-import { MatchesData, ProfileRes, UserData } from "../../types/profile";
+import { MatchesData, ProfileRes } from "../../types/profile";
 import fetchProfile from "./fetchProfile";
 import { useGlobalContext } from "../../contexts/store";
 import { useNavigate } from "react-router-dom";

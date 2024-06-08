@@ -40,7 +40,7 @@ const Index = () => {
 				<div className="flex flex-col xl:flex-row pt-20 xl:mt-[75px] gap-5 pb-7">
 					<div className="sm:min-w-[560px] flex flex-col-reverse xl:flex-col gap-5">
 						<States data={data} />
-						<Friends />
+						<Friends id={id} />
 					</div>
 					{data ?
 						<History id={id} username={data.username} />

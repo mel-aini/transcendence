@@ -1,22 +1,67 @@
 import { useContext, useEffect, useRef, useState } from "react"
-import axios from "axios"
-import { UserData } from "../../types/profile"
+import { FriendsData, ProfileRes } from "../../types/profile"
 import FriendBar from "./FriendBar"
 import { context } from "./Friends"
 import { AnimatePresence, motion } from "framer-motion"
+import { useGlobalContext } from "../../contexts/store"
+import { useNavigate } from "react-router-dom"
+import fetchProfile from "./fetchProfile"
+import RelationBar from "./RelationBar"
 
-const AllFriends = () => {
-
-	const [friends, setFriends] = useState<UserData | null>(null);
+const AllFriends = ({id}: {id: string | undefined}) => {
 	const [relation, setRelation] = useState<string>("friend");
 	const seeMore = useContext(context);
 	const refFriend = useRef();
 	const refPending = useRef();
 	const refBlocked = useRef();
+	const uri = id ? "friends/" + id + "/" : "friends/";
+
+	const { dispatch } = useGlobalContext();
+	const navigate = useNavigate();
+	const [data, setData] = useState<FriendsData[] | null>(null);
+	const searchData = useRef<string>('');
+
+	const stopScroll = useRef(false);
+	const countScroll = useRef(10);
+
+	const collectData = async (uri: string, isscroll?: boolean) => {
+		const ProfileRes: ProfileRes = await fetchProfile(uri);
+		console.log(ProfileRes.data);
+		
+		if (ProfileRes.status == 200)
+		{
+			if (isscroll)
+			{
+				if (ProfileRes.data < 10)
+					stopScroll.current = true;
+				if (data)
+					setData(data.concat(ProfileRes.data));
+				else
+					setData(ProfileRes.data);
+			}
+			else
+			{
+				console.log("honaaa");
+				
+				setData(ProfileRes.data);
+			}
+		}
+		else if (ProfileRes.status == 404)
+			navigate('/');
+		else if (ProfileRes.status == 401) {
+			dispatch({type: 'LOGOUT'});
+			navigate('/login');
+		}
+	}
 
 	const reset = (element : any) => {
 		element.children[0].classList.value = "duration-500 font-normal";
 		element.children[1].classList.value = "duration-500 border-b border-primary w-full absolute top-full -translate-x-full";
+	}
+
+	const apply = (element : any) => {
+		element.children[0].classList.value = "duration-500 text-primary font-medium";
+		element.children[1].classList.value = "duration-500 border-b border-primary w-full";
 	}
 	
 	const resetAll = () => {
@@ -24,69 +69,55 @@ const AllFriends = () => {
 		reset(refPending.current);
 		reset(refBlocked.current);
 	}
-	
-	const HandleFriend = () => {
+
+	const HandleClick = (ref: any, newRelation: string, uri: string) => {
+		if (relation == newRelation)
+			return ;
+		setData(null);
+		resetAll();
+		apply(ref.current);
 		
-		resetAll();
-		refFriend.current.children[0].classList.value = "duration-500 text-primary font-medium";
-		refFriend.current.children[1].classList.value = "duration-500 border-b border-primary w-full";
-		// console.log(refFriend.current.children);
+		stopScroll.current = false;
+		countScroll.current = 10;
 		
-
-		setRelation("friend");
-		// try {
-		// 	const res = await axios.get('http://localhost:3000/users');
-		// 	setFriends(res.data);
-		// 	console.log(res.data);
-		// } catch (error: any) {
-			
-		// }
-	}
-	
-	const HandlePending = () => {
-
-		resetAll();
-		refPending.current.children[0].classList.value = "duration-500 text-primary font-medium";
-		refPending.current.children[1].classList.value = "duration-500 border-b border-primary w-full";
-
-		setRelation("rec_inv");
-		// try {
-		// 	const res = await axios.get('http://localhost:3000/users');
-		// 	setFriends(res.data);
-		// 	console.log(res.data);
-		// } catch (error: any) {
-			
-		// }
-	}
-	
-	const HandleBlocked = () => {
-
-		resetAll();
-		refBlocked.current.children[0].classList.value = "duration-500 text-primary font-medium";
-		refBlocked.current.children[1].classList.value = "duration-500 border-b border-primary w-full";
-
-		setRelation("blocked");
-		// try {
-		// 	const res = await axios.get('http://localhost:3000/users');
-		// 	setFriends(res.data);
-		// 	console.log(res.data);
-		// } catch (error: any) {
-			
-		// }
+		setRelation(newRelation);
+		collectData(uri);
 	}
 
-	const getFriends = async () => {
-		try {
-			const res = await axios.get('http://localhost:3000/users');
-			setFriends(res.data);
-			console.log(res.data);
-		} catch (error: any) {
-			
+	useEffect(() => {
+		collectData(uri);
+	}, []);
+
+	const scrollHandler  = (e: any) => {
+		const last = e.target.lastChild;
+		if (!stopScroll.current && last.getBoundingClientRect().top < 795)
+		{
+			let name;
+			if (relation == "friend")
+				name = uri;
+			else if (relation == "rec_inv")
+				name = "pending";
+			else if (relation == "blocked")
+				name = "blocked";
+			collectData(name + "?filter=" + searchData.current + "&start=" + countScroll.current.toString() + "&end=" + (countScroll.current + 10).toString(), true);
+			countScroll.current += 10;
 		}
 	}
-	useEffect(() => {
-		getFriends();
-	}, []);
+
+	const HandleChange = (e: any) => {
+		// setData(null);
+		stopScroll.current = false;
+		countScroll.current = 10;
+		searchData.current = e.currentTarget.value;
+		let name;
+		if (relation == "friend")
+			name = uri;
+		else if (relation == "rec_inv")
+			name = "pending";
+		else if (relation == "blocked")
+			name = "blocked";
+		collectData(name + "?filter=" + searchData.current);
+	}
 
 	return (
 		<>
@@ -113,30 +144,26 @@ const AllFriends = () => {
 							close
 						</span>
 						<div className="flex justify-between max-w-[268px] w-full gap-2">
-							<div ref={refFriend} onClick={HandleFriend} className='relative h-[36px] w-[59px] flex flex-col justify-between items-center overflow-hidden select-none'>
-								<span className="duration-500 text-primary font-medium">Friends</span>
-								<div className="duration-500 border-b border-primary w-full" />
-							</div>
-							<div ref={refPending} onClick={HandlePending} className="relative h-[36px] w-[67px] flex flex-col justify-between items-center overflow-hidden select-none">
-								<span className="duration-500 font-normal">Pending</span>
-								<div className="duration-500 border-b border-primary w-full absolute top-full -translate-x-full" />
-							</div>
-							<div ref={refBlocked} onClick={HandleBlocked} className="relative h-[36px] w-[63px] flex flex-col justify-between items-center overflow-hidden select-none">
-								<span className="duration-500 font-normal">Blocked</span>
-								<div className="duration-500 border-b border-primary w-full absolute top-full -translate-x-full" />
-							</div>
-						</div>
-						<input type="text" placeholder="search" className="bg-transparent border-b-[0.5px] w-full px-3 pb-[9px] font-thin" />
-						<div className="min-h-[590px] overflow-auto">
+							<RelationBar ref={refFriend} onClick={() => HandleClick(refFriend, "friend", uri)} width={59} name={"Friends"} active={true} />
 							{
-								friends && friends.map((friend: UserData, key: number) => {
-									return (
-										<div key={key}>
-											<FriendBar friend={friend} relation={relation}/>
-										</div>
-									)
-								})
+								!(id) &&
+								<>
+									<RelationBar ref={refPending} onClick={() => HandleClick(refPending, "rec_inv", "pending")} width={67} name={"Pending"} active={false} />
+									<RelationBar ref={refBlocked} onClick={() => HandleClick(refBlocked, "blocked", "blocked")} width={63} name={"Blocked"} active={false} />
+								</>
 							}
+						</div>
+						<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="bg-transparent border-b-[0.5px] w-full px-3 pb-[9px] font-thin" />
+						<div onScroll={scrollHandler} className="min-h-[590px] overflow-auto">
+						{
+							data && data.map((friend: FriendsData, index: number) => {
+									return (
+										<div key={index}>
+										<FriendBar friend={friend} relation={relation}/>
+									</div>
+								)
+							})
+						}
 						</div>
 					</motion.div>
 				</motion.div>
