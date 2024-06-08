@@ -1,4 +1,4 @@
-import { FriendsData, MatchesData, UserData } from "../../types/profile";
+import { UserData } from "../../types/profile";
 import LevelBar from "./LevelBar";
 import UserActions from "./UserActions";
 
@@ -8,7 +8,6 @@ interface DataProps {
 }
 
 const ProfileHeader = ({user, data}: DataProps) => {
-	// console.log(data);
 	return (
 		<>
 			{!data && <div>Loading...</div>}
@@ -25,10 +24,13 @@ const ProfileHeader = ({user, data}: DataProps) => {
 						</div>
 						<div className="mb-5">
 							<span>{data.username}</span>
-							<div className="flex justify-center items-center gap-1">
-								<span className="font-thin text-[12px]">online</span>
-								{data.online && <span className="w-[8px] h-[8px] rounded-full bg-[#1ED947]"></span>}
-							</div>
+							{
+								(user != 'profile') &&
+								<div className="flex justify-center items-center gap-1">
+									<span className="font-thin text-[12px]">online</span>
+									{data.online && <span className="w-[8px] h-[8px] rounded-full bg-[#1ED947]"></span>}
+								</div>
+							}
 						</div>
 						<UserActions isProfile={user == 'profile'} relation={data?.relation} />
 					</div>

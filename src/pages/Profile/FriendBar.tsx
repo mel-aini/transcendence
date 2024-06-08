@@ -3,7 +3,7 @@ import send_icon from "/send_icon.svg"
 import more_icon from "/more_icon_white.svg"
 import accept from "/accept.svg"
 import deny from "/deny.svg"
-import { UserData } from "../../types/profile"
+import { FriendsData } from "../../types/profile"
 
 const Action = ({relation}: {relation: string}) => {
 	return (<>
@@ -36,15 +36,14 @@ const Action = ({relation}: {relation: string}) => {
 	)
 }
 
-const FriendBar = ({friend, relation}: {friend: UserData, relation: string}) => {
+const FriendBar = ({friend, relation}: {friend: FriendsData, relation: string}) => {
 	return (
 		<>
 		{
-			(friend.relation === relation) &&
 			<div className="flex flex-col justify-between items-center w-full">
 				<div className="flex justify-between items-center w-full gap-3 h-[70px]">
 					<div className="flex justify-between items-center gap-4">
-							<img src={friend.profile_image} alt={friend.profile_image} width={50} height={50} className="rounded-full overflow-hidden shrink-0"/>
+							<img src={friend.profile_image} alt={"icon"} width={50} height={50} className="rounded-full overflow-hidden shrink-0"/>
 							<span className="shrink overflow-hidden text-ellipsis">{friend.username}</span>
 					</div>
 					<Action relation={relation} />
