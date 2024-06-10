@@ -53,6 +53,12 @@ function Title({level}: {level: Levels}) {
 				variants={TitleVariants}
 				transition={{duration: 0.3}}
 				className="text-2xl font-medium mb-10">opponent <span className="text-primary">found</span>, confirm to start</motion.h1>}
+			{level == Levels.OpponentIsReady && <motion.h1
+				initial="hidden"
+				animate="visible"
+				variants={TitleVariants}
+				transition={{duration: 0.3}}
+				className="text-2xl font-medium mb-10">your opponent is <span className="text-primary">ready</span>, confirm to start</motion.h1>}
 			{level == Levels.WaitingForOpponent && <motion.h1 
 				initial="hidden"
 				animate="visible"
@@ -79,7 +85,7 @@ function MatchMaking() {
 		<div className="grow flex justify-center items-center">
 			<div className="flex flex-col items-center justify-start h-[420px]">
 				<Title level={state.level} />
-				<div className="mb-10 flex justify-center items-center gap-5">
+				<div className="mb-10 flex justify-center items-center gap-5 select-none">
 					<PlayerBar username="user1" level="2" avatar={avatar_link} />
 					<span>vs</span>
 					{state.level == Levels.FindingOpponent && <PlayerBar unknown/>}
@@ -98,7 +104,7 @@ function MatchMaking() {
 					onClick={() => dispatch({type: 'CHLEVEL', level: Levels.ChoiseGameType})}>
 					cancel
 				</span>
-				{state.level == Levels.OpponentFound && 
+				{(state.level == Levels.OpponentFound || state.level == Levels.OpponentIsReady) && 
 					<NewButton 
 						onClick={() => dispatch({type: 'CHLEVEL', level: Levels.WaitingForOpponent})} 
 						className="w-full max-w-[250px] max-h-[42px] h-full">

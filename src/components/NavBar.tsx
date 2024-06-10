@@ -53,7 +53,7 @@ const NavBar = ({className}: {className?: string}) => {
 	// profile actions
 	const [profileActions, setProfileActions] = useState(false);
 	// profile actions
-	const [xPos, setXPos] = useState<XPos>(0);
+	const [xPos, setXPos] = useState<XPos>(400);
 	const [event, setEvent] = useState<any>('auto');
 	const clickHandler = async () => {
 
@@ -75,7 +75,7 @@ const NavBar = ({className}: {className?: string}) => {
 					style={{transform: `translateX(${xPos}px)`, pointerEvents: event}}
 				> 
 					<Arrow onClick={clickHandler} left={xPos} />
-					<NavBarElem type="Home" />
+					<NavBarElem type="Dashboard" />
 					<NavBarElem type="Chat" />
 					<NavBarElem type="Notifications" />
 					<NavBarElem type="Settings" className="cursor-pointer" />
