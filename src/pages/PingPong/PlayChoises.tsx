@@ -25,7 +25,7 @@ function PlayChoises() {
 	const {dispatch} = usePingPongContext();
 
 	return ( 
-		<div className="grid gap-5 grid-cols-1 lg:grid-cols-6 my-20">
+		<div className="grid gap-5 grid-cols-1 lg:grid-cols-6 my-5">
 			<PlayChoise
 					onClick={(e) => dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})}
 					title="Matchmaking" 
