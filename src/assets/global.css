@@ -91,3 +91,15 @@ body {
 		opacity: 1;
 	}
 }
+
+.messages-container::-webkit-scrollbar {
+	width: 2px;
+}
+  
+.messages-container::-webkit-scrollbar-track {
+background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+background: var(--white-color);
+}

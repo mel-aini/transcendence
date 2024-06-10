@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import ChatContextProvider, { useChatContext } from "../../contexts/chatStore";
+import { useChatContext } from "../../contexts/chatStore";
 import ChatBar from "./ChatBar";
 import Conversation from "./ChatBar/Conversation";
 import { AnimatePresence } from 'framer-motion'
 import NavBar from "./ChatBar/NavBar";
 import { socket } from "../../utils/socket";
 
-function RenderedCom() {
+function Index() {
 	const {state, dispatch} = useChatContext();
 
 	useEffect(() => {
@@ -15,14 +15,27 @@ function RenderedCom() {
 
 		const onConnect = () => {
 			console.log('connected');
+
+			socket.emit('chat', { type: 'messages' })
+
+			socket.emit('chat', { type: 'online' })
+
+			socket.emit('chat', { type: 'conversations' })
 		}
 
 		const chatHandler = (data: any) => {
-			console.log(data);
-			console.log(state.messages);
 			switch (data.type) {
-				case 'messages':
+				case 'message':
 					dispatch({type: 'MESSAGE', message: data.message})
+					break;
+				case 'messages':
+					dispatch({type: 'MESSAGES', messages: data.messages})
+					break;
+				case 'online':
+					dispatch({type: 'ONLINE', onlineFriends: data.onlineFriends})
+					break;
+				case 'conversations':
+					dispatch({type: 'CONVERSATIONS', conversations: data.conversations})
 					break;
 				default:
 					break;
@@ -39,10 +52,12 @@ function RenderedCom() {
 		}
 
 		window.addEventListener('resize', resizeHandler)
+
 		return () => {
 			window.removeEventListener('resize', resizeHandler);
 			socket.off('chat', chatHandler)
 		}
+
 	}, [])
 
 	return (
@@ -54,14 +69,6 @@ function RenderedCom() {
 			</AnimatePresence>
 		</div>
 	)
-}
-
-function Index() {
-	return (
-		<ChatContextProvider>
-			<RenderedCom />
-		</ChatContextProvider>
-	);
 }
 
 export default Index;

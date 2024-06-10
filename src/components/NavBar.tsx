@@ -4,6 +4,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
 import User from "./User";
+import useLog from "../hooks/useLog";
 
 interface ArrowType extends HTMLAttributes<HTMLDivElement> {
 	left: number
@@ -12,17 +13,12 @@ interface ArrowType extends HTMLAttributes<HTMLDivElement> {
 function ProfileActions({setProfileActions}: {setProfileActions: any}) {
 	const {dispatch} = useGlobalContext();
 	const navigate = useNavigate();
+	const action = useLog();
 
 	const goToProfile = () => {
 		setProfileActions(false)
 		dispatch({type: 'LOADING', state: true})
 		navigate('/profile')
-	}
-
-	const logout = () => {
-		dispatch({type: 'LOADING', state: true})
-		dispatch({type: 'LOGOUT'});
-		navigate('/')
 	}
 
 	return (
@@ -31,7 +27,7 @@ function ProfileActions({setProfileActions}: {setProfileActions: any}) {
 			<hr className=" opacity-50" />
 			<div className="cursor-pointer">settings</div>
 			<hr className=" opacity-50" />
-			<div onClick={logout} className="cursor-pointer">logout</div>
+			<div onClick={() => action('LOGOUT')} className="cursor-pointer">logout</div>
 		</div>
 	)
 }

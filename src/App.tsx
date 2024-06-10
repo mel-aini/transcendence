@@ -11,10 +11,12 @@ import Loading from "./components/Loading";
 import GlobalContextProvider from "./contexts/store";
 import Layout from "./components/Layout";
 import MainLayout from "./MainLayout";
+import ChatContextProvider from "./contexts/chatStore";
 
 function App() {
   return (
       <GlobalContextProvider>
+        <ChatContextProvider>
             <Loading />
             <Routes>
               <Route path="/" element={<MainLayout />}>
@@ -35,6 +37,7 @@ function App() {
                 <Route path='*' element={<>Not Found</>} />
               </Route>
             </Routes>
+        </ChatContextProvider>
       </GlobalContextProvider>
   )
 }
