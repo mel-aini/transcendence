@@ -77,7 +77,7 @@ function MatchMaking() {
 		if (state.level == Levels.FindingOpponent) {
 			setTimeout(() => {
 				dispatch({type: 'CHLEVEL', level: Levels.OpponentFound})
-			}, 1000)
+			}, 5000)
 		}
 	}, [])
 
