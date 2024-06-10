@@ -3,7 +3,7 @@ import { default as SignUp } from "./pages/Sign-up/Index";
 import { default as Login } from "./pages/Login/Index"; 
 import { default as Home } from "./pages/Home/Index";
 import { default as Chat } from "./pages/Chat/Index";
-import { default as Game } from "./pages/Game/Index";
+import { default as Game } from "./pages/PingPong/Index";
 import { default as Settings } from "./pages/Settings/Index";
 import { default as Profile } from "./pages/Profile/Index";
 import { default as Dashboard } from "./pages/Dashboard/Index";
@@ -13,10 +13,15 @@ import Layout from "./components/Layout";
 import MainLayout from "./MainLayout";
 import ChatContextProvider from "./contexts/chatStore";
 
+import { default as PingPong } from './pages/PingPong/Index'
+import { default as Play } from './pages/PingPong/Play/Index'
+import PingPongContextProvider from "./contexts/pingPongStore";
+
 function App() {
   return (
       <GlobalContextProvider>
         <ChatContextProvider>
+          <PingPongContextProvider>
             <Loading />
             <Routes>
               <Route path="/" element={<MainLayout />}>
@@ -33,10 +38,16 @@ function App() {
                     <Route path=':id' element={<Profile />} />
                     <Route path='*' element={<>Not Found</>} />
                   </Route>
+                  <Route path='/ping-pong'>
+                    <Route index element={<PingPong />} />
+                    <Route path='play' element={<Play />} />
+                    <Route path='*' element={<>Not Found</>} />
+                  </Route>
                 </Route>
                 <Route path='*' element={<>Not Found</>} />
               </Route>
             </Routes>
+          </PingPongContextProvider>
         </ChatContextProvider>
       </GlobalContextProvider>
   )

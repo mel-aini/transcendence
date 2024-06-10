@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         primary: '#14FFEC',
-        secondary: '#555363',
+        secondary: '#141619',
         third: '#14FF67',
         dark: '#2F2E39',
         bg: '#0C0D0F',
@@ -18,7 +18,8 @@ export default {
         gray3: '#0C0D0F',
         gray4: '#222222',
         black: '#000000',
-        invalid: '#14FF67'
+        invalid: '#14FF67',
+        border: 'rgba(255, 255, 255, 0.1)'
       },
       keyframes: {
         test: {
