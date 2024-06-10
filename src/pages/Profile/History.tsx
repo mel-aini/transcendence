@@ -43,15 +43,19 @@ const History = ({id, username}: {id: string | undefined, username: string}) => 
 			window.removeEventListener('resize', handler)
 		}
 	}, [])
+
 	const variant = {
 		hidden: { opacity: 0, width: "20%",},
 		visible: { opacity: 1 , width: "100%",
 			transition: { duration: 1},
 		}
 	}
+
+	const userClick = (path:string) => {
+		navigate(path);
+	}
 	return (
 		<div className="w-full flex flex-col sm:min-w-[560px]">
-			{/* <Title width={105} height={30} title="History"/> */}
 			<div ref={parentRef} className="rounded-xl w-full flex flex-col justify-around pt-16 pb-6 items-center border border-primary">
 				<h1 className="text-2xl">last 10 matches</h1>
 				{
@@ -80,14 +84,18 @@ const History = ({id, username}: {id: string | undefined, username: string}) => 
 							color = "#FFFFFF";
 						}
 						return (
-							<div key={key} className="flex justify-between items-center border-primary border rounded-md h-[56px] w-full px-3">
-								{(status == "win") && <img className="w-[30px] h-[30px] mr-1" src="/win.png"/>}
-								{(status == "lose") && <img className="w-[30px] h-[30px] mr-1" src="/lose.png"/>}
-								{(status == "draw") && <img className="w-[30px] h-[30px] mr-1" src="/draw.png"/>}
-								<span className="shrink overflow-hidden text-ellipsis">{username}</span>
-								<span className="shrink-0 px-2" style={{color:`${color}`}}>{match.goals + ' - ' + match.opponent.goals}</span>
-								<span className="shrink overflow-hidden text-ellipsis">{match.opponent.username}</span>
-								<img className="shrink-0 w-[30px] h-[30px] rounded-full ml-1" src={match.opponent.image}/>
+							<div key={key} className="flex justify-between items-center border-primary border rounded-md h-[56px] w-full px-3 select-none">
+								<div className="flex justify-between items-center w-1/3">
+									{(status == "win") && <img className="w-[30px] h-[30px] mr-1" src="/win.png"/>}
+									{(status == "lose") && <img className="w-[30px] h-[30px] mr-1" src="/lose.png"/>}
+									{(status == "draw") && <img className="w-[30px] h-[30px] mr-1" src="/draw.png"/>}
+									<span className="shrink overflow-hidden text-ellipsis">{username}</span>
+								</div>
+								<span className="shrink-0 px-5" style={{color:`${color}`}}>{match.goals + ' - ' + match.opponent.goals}</span>
+								<div onClick={() =>userClick(match.opponent.profile)} className="flex justify-between items-center w-1/3 cursor-pointer">
+									<span className="shrink overflow-hidden text-ellipsis">{match.opponent.username}</span>
+									<img className="shrink-0 w-[30px] h-[30px] rounded-full ml-1" src={match.opponent.image}/>
+								</div>
 							</div>
 						);
 					})

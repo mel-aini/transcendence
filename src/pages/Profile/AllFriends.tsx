@@ -11,6 +11,8 @@ import RelationBar from "./RelationBar"
 const AllFriends = ({id}: {id: string | undefined}) => {
 	const [relation, setRelation] = useState<string>("friend");
 	const seeMore = useContext(context);
+	const [onTop, setOnTop] = useState<boolean>(false);
+	const refScroll = useRef();
 	const refFriend = useRef();
 	const refPending = useRef();
 	const refBlocked = useRef();
@@ -86,12 +88,30 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 
 	useEffect(() => {
 		collectData(uri);
+		(window.innerHeight < 841) ? setOnTop(true) : setOnTop(false);
+		// if (!parentRef.current) return;
+
+		const handler = () => {
+			// if (!parentRef.current) return;
+			(window.innerHeight < 841) ? setOnTop(true) : setOnTop(false);
+		}
+
+		window.addEventListener('resize', handler)
+		return () => {
+			window.removeEventListener('resize', handler)
+		}
 	}, []);
 
 	const scrollHandler  = (e: any) => {
-		const last = e.target.lastChild;
-		if (!stopScroll.current && last.getBoundingClientRect().top < 795)
+		const start: any = refScroll.current;
+		const end = e.target.lastChild;
+		if (!end)
+			return ;
+		const lastPart: number = end.getBoundingClientRect().top - start.getBoundingClientRect().top;
+		if (!stopScroll.current && lastPart <= 520)
 		{
+			console.log("heree");
+			
 			let name;
 			if (relation == "friend")
 				name = uri;
@@ -105,7 +125,6 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 	}
 
 	const HandleChange = (e: any) => {
-		// setData(null);
 		stopScroll.current = false;
 		countScroll.current = 10;
 		searchData.current = e.currentTarget.value;
@@ -122,52 +141,47 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 	return (
 		<>
 		<AnimatePresence>
-		{
-			seeMore.seeAll &&
+			<motion.div
+				initial={{opacity: 0}}
+				animate={{opacity: 1}}
+				transition={{duration: 0.3}}
+				exit={{ opacity: 0}}
+				className="absolute">
+				<div className="fixed top-0 start-0 bg-black opacity-70 w-full min-h-[100vh]" onClick={() => seeMore.setSeeAll(false)}/>
 				<motion.div
-					initial={{opacity: 0}}
-					animate={{opacity: 1}}
+					initial={{y: onTop ? '0px' : 'calc(-50% - 10px)', x: '-50%'}}
+					animate={{y: onTop ? '0px' : '-50%'}}
 					transition={{duration: 0.3}}
-					exit={{ opacity: 0}}
-					className="absolute">
-					<div className="fixed top-0 start-0 bg-black opacity-70 w-full min-h-[100vh]" onClick={() => seeMore.setSeeAll(false)}/>
-					<motion.div 
-						initial={{y: 'calc(-50% - 10px)', x: '-50%'}}
-						animate={{y: '-50%'}}
-						transition={{duration: 0.3}}
-						exit={{y: 'calc(-50% - 10px)', x: '-50%'}}
-						className="z-10 flex flex-col justify-between gap-6 pt-[30px] pb-[58px] sm:px-16 px-8 fixed left-[50%] -translate-x-1/2 border border-primary rounded-[10px] max-w-[652px] max-h-[840px] overflow-hidden w-[90%] bg-gray3 top-1/2 -translate-y-1/2">
-						<span className="self-end text-sm text-secondary cursor-pointer select-none"
-						onMouseEnter={(e) => {e.currentTarget.classList.replace("text-secondary", "text-white");}}
-						onMouseLeave={(e) => {e.currentTarget.classList.replace("text-white", "text-secondary");}}
-						onClick={() => seeMore.setSeeAll(false)}>
-							close
-						</span>
-						<div className="flex justify-between max-w-[268px] w-full gap-2">
-							<RelationBar ref={refFriend} onClick={() => HandleClick(refFriend, "friend", uri)} width={59} name={"Friends"} active={true} />
-							{
-								!(id) &&
-								<>
-									<RelationBar ref={refPending} onClick={() => HandleClick(refPending, "rec_inv", "pending")} width={67} name={"Pending"} active={false} />
-									<RelationBar ref={refBlocked} onClick={() => HandleClick(refBlocked, "blocked", "blocked")} width={63} name={"Blocked"} active={false} />
-								</>
-							}
-						</div>
-						<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="bg-transparent border-b-[0.5px] w-full px-3 pb-[9px] font-thin" />
-						<div onScroll={scrollHandler} className="min-h-[590px] overflow-auto">
+					exit={{y: onTop ? '0px' : 'calc(-50% - 10px)', x: '-50%'}}
+					className={`z-10 flex flex-col justify-between gap-6 pt-[30px] pb-[58px] sm:px-16 px-8 fixed left-[50%] -translate-x-1/2 border border-primary rounded-[10px] max-w-[652px] max-h-[840px] overflow-hidden w-[90%] bg-gray3 ` + (!onTop ? "top-1/2 -translate-y-1/2" : "top-0")}>
+					<span className="self-end text-sm text-secondary cursor-pointer select-none"
+					onMouseEnter={(e) => {e.currentTarget.classList.replace("text-secondary", "text-white");}}
+					onMouseLeave={(e) => {e.currentTarget.classList.replace("text-white", "text-secondary");}}
+					onClick={() => seeMore.setSeeAll(false)}>
+						close
+					</span>
+					<div className="flex justify-between max-w-[268px] w-full gap-2">
+						<RelationBar ref={refFriend} onClick={() => HandleClick(refFriend, "friend", uri)} width={59} name={"Friends"} active={true} />
 						{
-							data && data.map((friend: FriendsData, index: number) => {
-									return (
-										<div key={index}>
-										<FriendBar friend={friend} relation={relation}/>
-									</div>
-								)
-							})
+							!(id) &&
+							<>
+								<RelationBar ref={refPending} onClick={() => HandleClick(refPending, "rec_inv", "pending")} width={67} name={"Pending"} active={false} />
+								<RelationBar ref={refBlocked} onClick={() => HandleClick(refBlocked, "blocked", "blocked")} width={63} name={"Blocked"} active={false} />
+							</>
 						}
-						</div>
-					</motion.div>
+					</div>
+					<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="bg-transparent border-b-[0.5px] w-full px-3 pb-[9px] font-thin" />
+					<div ref={refScroll} onScroll={scrollHandler} className="min-h-[590px] overflow-auto">
+					{
+						data && data.map((friend: FriendsData, index: number) => {
+							return (
+								<FriendBar key={index} friend={friend} relation={relation}/>
+							)
+						})
+					}
+					</div>
 				</motion.div>
-		}
+			</motion.div>
 		</AnimatePresence>
 		</>
 	)

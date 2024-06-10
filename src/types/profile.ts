@@ -9,7 +9,7 @@ export interface MatchesData {
 	loses: number,
 }
 
-export type Relation = 'none' | 'friend' | 'send_inv' | 'rec_inv' 
+export type Relation = 'none' | 'friend' | 'send_req' | 'rec_req' | 'blocker' 
 
 export interface UserData {
 	username: string,
