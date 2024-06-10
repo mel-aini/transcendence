@@ -27,8 +27,13 @@ const ProfileHeader = ({user, data}: DataProps) => {
 							{
 								(user != 'profile') &&
 								<div className="flex justify-center items-center gap-1">
-									<span className="font-thin text-[12px]">online</span>
-									{data.online && <span className="w-[8px] h-[8px] rounded-full bg-[#1ED947]"></span>}
+									{
+										data.online &&
+										<>
+											<span className="font-thin text-[12px]">online</span>
+											<span className="w-[8px] h-[8px] rounded-full bg-[#1ED947]"></span>
+										</>
+									}
 								</div>
 							}
 						</div>

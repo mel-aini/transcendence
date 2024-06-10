@@ -4,6 +4,7 @@ import more_icon from "/more_icon_white.svg"
 import accept from "/accept.svg"
 import deny from "/deny.svg"
 import { FriendsData } from "../../types/profile"
+import { useNavigate } from "react-router-dom"
 
 const Action = ({relation}: {relation: string}) => {
 	return (<>
@@ -37,12 +38,18 @@ const Action = ({relation}: {relation: string}) => {
 }
 
 const FriendBar = ({friend, relation}: {friend: FriendsData, relation: string}) => {
+	const navigate = useNavigate();
+
+	const userClick = (path:string) => {
+		navigate(path);
+	}
+
 	return (
 		<>
 		{
 			<div className="flex flex-col justify-between items-center w-full">
 				<div className="flex justify-between items-center w-full gap-3 h-[70px]">
-					<div className="flex justify-between items-center gap-4">
+					<div onClick={() => userClick(friend.profile)} className="flex items-center gap-4 cursor-pointer w-1/3">
 							<img src={friend.profile_image} alt={"icon"} width={50} height={50} className="rounded-full overflow-hidden shrink-0"/>
 							<span className="shrink overflow-hidden text-ellipsis">{friend.username}</span>
 					</div>

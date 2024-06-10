@@ -4,7 +4,7 @@ import Friends from "./Friends";
 import ProfileHeader from "./ProfileHeader";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../contexts/store";
-import { FriendsData, MatchesData, ProfileRes, UserData } from "../../types/profile";
+import { ProfileRes, UserData } from "../../types/profile";
 import { useNavigate, useParams } from "react-router-dom";
 import fetchProfile from "./fetchProfile";
 

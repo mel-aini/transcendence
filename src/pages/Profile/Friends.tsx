@@ -26,6 +26,10 @@ const Friends = ({id}: {id: string | undefined}) => {
 		}
 	}
 
+	const userClick = (path:string) => {
+		navigate(path);
+	}
+
 	useEffect(() => {
 		collectData();
 	}, []);
@@ -33,16 +37,14 @@ const Friends = ({id}: {id: string | undefined}) => {
 	return (
 		<context.Provider value={{seeAll, setSeeAll}}>
 			<div className="w-full">
-				<div className="rounded-xl flex justify-center gap-5 items-center border-primary border h-[95px] select-none">
+				<div className="relative rounded-xl flex justify-center gap-5 items-center border-primary border h-[95px] select-none">
 					{data && data.map((friend: FriendsData, key: number) => {
-						console.log(friend.profile_image);
-						
 						return (
-							<img key={key} className="w-[38px] h-[38px] rounded-full" src={friend.profile_image}/>
+							<img onClick={() => userClick(friend.profile)} key={key} className="w-[38px] h-[38px] cursor-pointer rounded-full" src={friend.profile_image}/>
 						)
 					})}
 					<span className="cursor-pointer" onClick={() => setSeeAll(true)}>see all</span>
-					<AllFriends id={id} />
+					{ seeAll && <AllFriends id={id} /> }
 				</div>
 			</div>
 		</context.Provider>

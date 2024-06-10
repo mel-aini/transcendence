@@ -16,7 +16,7 @@ enum Actions {
 const UserActions = ({isProfile, relation}: {isProfile: boolean, relation: Relation | undefined}) => {
 
 	const [action, setAction] = useState<Actions | null>(null);
-
+	
 	useEffect(() => {
 		if (isProfile) {
 			setAction(Actions.EditProfile);
@@ -30,11 +30,14 @@ const UserActions = ({isProfile, relation}: {isProfile: boolean, relation: Relat
 		else if (relation == 'friend') {
 			setAction(Actions.Friend)
 		}
-		else if (relation == 'send_inv') {
+		else if (relation == 'send_req') {
 			setAction(Actions.SendingInvitation)
 		}
-		else if (relation == 'rec_inv') {
+		else if (relation == 'rec_req') {
 			setAction(Actions.PendingInvitation)
+		}
+		else if (relation == 'blocker') {
+			setAction(Actions.Blocked)
 		}
 
 	}, [])
