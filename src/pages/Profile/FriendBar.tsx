@@ -49,7 +49,7 @@ const FriendBar = ({friend, relation}: {friend: FriendsData, relation: string}) 
 		{
 			<div className="flex flex-col justify-between items-center w-full">
 				<div className="flex justify-between items-center w-full gap-3 h-[70px]">
-					<div onClick={() => userClick(friend.profile)} className="flex items-center gap-4 cursor-pointer w-1/3">
+					<div onClick={() => userClick(friend.profile)} className="flex items-center gap-4 cursor-pointer shrink overflow-hidden whitespace-nowrap">
 							<img src={friend.profile_image} alt={"icon"} width={50} height={50} className="rounded-full overflow-hidden shrink-0"/>
 							<span className="shrink overflow-hidden text-ellipsis">{friend.username}</span>
 					</div>
