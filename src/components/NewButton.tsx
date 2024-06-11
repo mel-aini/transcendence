@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode, useState } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 import Polygon from "./Polygon";
 
 type Variants = 'primary' | 'secondary'
@@ -7,29 +7,19 @@ interface NewButtonProps extends HTMLAttributes<HTMLDivElement> {
 	children: ReactNode,
 	className?: string,
 	type?: 'submit'
-	onClick?: any,
+	disabled?: boolean
 	variant?: Variants
 }
 
-const NewButton = ({children, className, onClick, type, variant = 'primary', ...props}: NewButtonProps) => {
-	const [clicked, setClicked] = useState(false);
+const NewButton = ({children, className, type, disabled, variant = 'primary', ...props}: NewButtonProps) => {
 	const primaryStyle = 'bg-primary'
 	const secondaryStyle = 'bg-secondary font-[500]' 
-
 	const appliedStyle = variant == 'primary' ? primaryStyle : secondaryStyle
 
 	return (
-		<button type={type || 'button'} className={"relative select-none" + (className ? ' ' + className : '')}>
+		<button type={type || 'button'} className={"relative select-none" + (className ? ' ' + className : '') + (disabled ? 'pointer-events-none opacity-50' : '')}>
 			<Polygon 
 				className={"bg-primary duration-200 " + appliedStyle}
-				style={{transform: clicked ? 'translate(5px, 8px)' : 'translate(0, 0)'}}
-				onClick={(e) => {
-					if (!clicked) {
-						setClicked(true);
-						setTimeout(() => setClicked(false), 200)
-					}
-					if (onClick) onClick(e);
-				}}
 				{...props}
 			>
 				{children}

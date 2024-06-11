@@ -6,7 +6,7 @@
 
 :root {
 	--primary-color: #14FFEC;
-	--secondary-color: #555363;
+	--secondary-color: #141619;
 	--third-color: #14FF67;
 	--dark-color: #2F2E39;
 	--bg-color: #0C0D0F;
@@ -16,6 +16,7 @@
 	--gray-shade3: #0C0D0F;
 	--black-color: #000000;
 	--invalid-color: #FA7070;
+	--border-color: rgba(255, 255, 255, 0.5);
 
 	/* button border */
 	--strock-width: 3px;
@@ -102,4 +103,8 @@ background: var(--bg-color);
 
 ::-webkit-scrollbar-thumb {
 background: var(--white-color);
+}
+
+.bg-gradient {
+	background: linear-gradient(to top, var(--bg-color), #0c0d0f00);
 }

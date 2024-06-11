@@ -1,7 +1,7 @@
 import { RiDashboardLine } from "react-icons/ri";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { FiBell } from "react-icons/fi";
-import { TbSettings } from "react-icons/tb";
+import { IoSettingsOutline } from "react-icons/io5";
 
 interface Props {
 	className?: string
@@ -22,7 +22,7 @@ function NavBar({className}: Props) {
 				<IoChatbubbleOutline className="lg:hidden text-[25px]" />
 				<FiBell className="lg:hidden text-[25px]" />
 			</>
-			<TbSettings className="text-[25px]" />
+			<IoSettingsOutline className="text-[25px]" />
 		</div>
 	);
 }

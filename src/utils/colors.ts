@@ -1,5 +1,5 @@
 export const primaryColor: string =  '#14FFEC'
-export const secondaryColor: string =  '#555363'
+export const secondaryColor: string =  '#141619'
 export const thirdColor: string =  '#14FF67'
 export const darkColor: string =  '#2F2E39'
 export const bgColor: string =  '#0C0D0F'
