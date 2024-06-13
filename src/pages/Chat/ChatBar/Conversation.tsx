@@ -2,7 +2,7 @@ import Message from "../Message";
 import {motion} from 'framer-motion'
 import ConversationHeader from "./ConversationHeader";
 import { FormEvent, InputHTMLAttributes, MouseEvent, useEffect, useRef } from "react";
-import { socket } from "../../../utils/socket";
+// import { socket } from "../../../utils/socket";
 import { useChatContext } from "../../../contexts/chatStore";
 
 const ME = 'mel-aini'; 
@@ -20,14 +20,14 @@ function Conversation() {
 	const sendMessage = (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 
-		socket.emit('chat', {
-			type: 'send_message',
-			user_id: (1).toString(),
-			conversation_id: (2).toString(),
-			content: message.current,
-			date: Date.now(),
-			sender: 'mel-aini'
-		});
+		// socket.emit('chat', {
+		// 	type: 'send_message',
+		// 	user_id: (1).toString(),
+		// 	conversation_id: (2).toString(),
+		// 	content: message.current,
+		// 	date: Date.now(),
+		// 	sender: 'mel-aini'
+		// });
 
 		((e.target as HTMLElement).firstChild as InputHTMLAttributes<HTMLInputElement>).value = message.current = '';
 	}

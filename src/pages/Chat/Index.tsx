@@ -4,24 +4,11 @@ import ChatBar from "./ChatBar";
 import Conversation from "./ChatBar/Conversation";
 import { AnimatePresence } from 'framer-motion'
 import NavBar from "./ChatBar/NavBar";
-import { socket } from "../../utils/socket";
 
 function Index() {
 	const {state, dispatch} = useChatContext();
 
 	useEffect(() => {
-		// for testing
-		socket.connect()
-
-		const onConnect = () => {
-			console.log('connected');
-
-			socket.emit('chat', { type: 'messages' })
-
-			socket.emit('chat', { type: 'online' })
-
-			socket.emit('chat', { type: 'conversations' })
-		}
 
 		const chatHandler = (data: any) => {
 			switch (data.type) {
@@ -42,8 +29,8 @@ function Index() {
 			}
 		}
 	
-		socket.on('connect', onConnect);
-		socket.on('chat', chatHandler);
+		// socket.on('connect', onConnect);
+		// socket.on('chat', chatHandler);
 		
 		dispatch({type: 'FOCUS', state: window.innerWidth >= 1024})
 
@@ -55,7 +42,7 @@ function Index() {
 
 		return () => {
 			window.removeEventListener('resize', resizeHandler);
-			socket.off('chat', chatHandler)
+			// socket.off('chat', chatHandler)
 		}
 
 	}, [])
