@@ -1,5 +1,11 @@
-import { io } from 'socket.io-client';
+let socket: WebSocket | null = null;
 
-export const socket = io('ws://localhost:3000', {
-	autoConnect: false
-});
+export function initWebSocket() {
+	const url = 'ws://localhost:8000/ws/chat/?token=' + localStorage.getItem('access');
+	socket = new WebSocket(url);
+	return socket;
+}
+
+export function getWebSocket() {
+	return socket
+}

@@ -1,7 +1,7 @@
 import { UIEvent } from "react";
 import User from "../../../components/User";
 import { useChatContext } from "../../../contexts/chatStore";
-import { socket } from "../../../utils/socket";
+import ws from "../../../utils/socket";
 
 function OnlineFriends() {
 	const {state, dispatch} = useChatContext()
@@ -11,9 +11,9 @@ function OnlineFriends() {
 			if (elem) {
 				const reachedLimit: boolean = elem.scrollWidth - elem.scrollLeft == elem.clientWidth
 				if (reachedLimit) {
-					socket.emit('chat', {
-						type: 'online'
-					})
+					// socket.emit('chat', {
+					// 	type: 'online'
+					// })
 				}
 			}
 	}

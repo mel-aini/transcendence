@@ -1,15 +1,17 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 import jwt from "../utils/jwt";
-import { socket } from "../utils/socket";
+import { initWebSocket } from "../utils/socket";
 
 export interface GlobalStateProps {
 	isLogin: boolean
 	isLoading: boolean
+	ws: WebSocket | undefined
 }
 
 const initialState: GlobalStateProps = {
 	isLogin: false,
-	isLoading: false
+	isLoading: false,
+	ws: undefined
 };
 
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
@@ -22,11 +24,10 @@ const reducer = (state: GlobalStateProps, action: any) => {
 	{
 		case 'LOGIN':
 			jwt.save(action.jwt)
-			socket.connect()
-			return { ...state, isLogin: true }
+			return { ...state, isLogin: true, ws: initWebSocket()}
 		case 'LOGOUT':
 			jwt.remove()
-			socket.disconnect()
+			// socket.disconnect()
 			return { ...state, isLogin: false }
 		case 'LOADING':
 			if (action.state == true) {
