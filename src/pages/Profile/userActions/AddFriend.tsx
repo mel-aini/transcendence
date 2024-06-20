@@ -1,10 +1,10 @@
-// import add_icon from "/add_icon.svg"
+import add_icon from "/add_icon.svg"
 
 const AddFriend = () => {
 	return (
-		<div className="w-[144px] h-[22px] flex justify-center items-center gap-1">
-			<span className="text-primary">add friend</span>
-			<img src="" alt="" width={28.04} height={22}/>
+		<div className="w-[142px] h-[40px] flex justify-center items-center bg-secondary rounded-md gap-2">
+			<span>add friend</span>
+			<img src={add_icon} alt="" width={20} height={20}/>
 		</div>
 	)
 }

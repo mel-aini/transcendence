@@ -1,5 +1,5 @@
 import {  motion } from "framer-motion";
-import { MatchesData, UserData } from "../../types/profile";
+import { MatchesData } from "../../types/profile";
 
 const HistoryChart = ({width, height, data}: {width: number, height: number, data: MatchesData[] | null}) => {
 	let currentX = 0;
@@ -9,14 +9,14 @@ const HistoryChart = ({width, height, data}: {width: number, height: number, dat
 
 
 	return (
-		<motion.svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className=" px-0 sm:px-10 md:px-16 lg:px-24 my-24 md:my-32 lg:my-36"
+		<motion.svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="px-4 sm:px-10 md:px-12 lg:px-16 my-24 md:my-28"
 			initial="hidden"
 			animate="visible">
 
 			<motion.circle
 				cx={currentX}
 				cy={currentY}
-				r={2}
+				r={3}
 				className="fill-white stroke-primary stroke-1"
 				// variants={variantCircle}
 			/>
@@ -62,7 +62,7 @@ const HistoryChart = ({width, height, data}: {width: number, height: number, dat
 						key={key}
 						cx={currentX2}
 						cy={currentY2}
-						r={2}
+						r={3}
 						className="fill-white stroke-primary stroke-1"
 						variants={variantCircle}
 					/>
