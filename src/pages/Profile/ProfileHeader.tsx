@@ -11,10 +11,11 @@ const ProfileHeader = ({user, data}: DataProps) => {
 	return (
 		<>
 			{!data && <div>Loading...</div>}
-			{data && <>
+			{
+			data && <>
 				<div className="relative mb-[200px] xl:mb-[50px] flex flex-col w-full">
 					<div
-						style={{backgroundImage: `url(${data.bg_image})`}}  
+						style={{backgroundImage: `url(${data.bg_image})`}}
 						className="w-full h-[209px] rounded-md bg-cover bg-center">
 					</div>
 					<div className="absolute left-1/2 xl:left-[15%] top-full translate-y-[-60px] -translate-x-1/2 flex flex-col justify-center items-center">
@@ -22,8 +23,8 @@ const ProfileHeader = ({user, data}: DataProps) => {
 							style={{backgroundImage: `url(${data.profile_image})`}} 
 							className="rounded-full border-2 border-primary w-[120px] h-[120px] mb-3 bg-cover">
 						</div>
-						<div className="mb-5">
-							<span>{data.username}</span>
+						<div className="flex flex-col mb-5">
+							<span className="text-center">{data.username}</span>
 							{
 								(user != 'profile') &&
 								<div className="flex justify-center items-center gap-1">
@@ -37,13 +38,14 @@ const ProfileHeader = ({user, data}: DataProps) => {
 								</div>
 							}
 						</div>
-						<UserActions isProfile={user == 'profile'} relation={data?.relation} />
+						<UserActions isProfile={user == 'profile'} data={data} />
 					</div>
 					<div className="absolute left-[90%] top-full translate-y-[-37px] -translate-x-1/2 bg-[#14FF67] w-[39px] h-[74px] xl:w-[67.5px] xl:h-[128px]
 					xl:translate-y-[-64px] duration-100"></div>
 				</div>
 				<LevelBar data={data.level} />
-			</>}
+			</>
+			}
 		</>
 	)
 }
