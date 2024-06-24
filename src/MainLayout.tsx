@@ -7,20 +7,19 @@ function MainLayout() {
 	const socket = state.ws;
 	useEffect(() => {
 		if (socket) {
-			console.log('socket changed')
 			socket.onopen = () => {
 				console.log('connected')
 			}
 			socket.onmessage = (event) => {
-				console.log(event)
+				const res = JSON.parse(event.data);
+				console.log(res.online)
+				console.log(res.conversations)
 			}
 		}
 	}, [state.ws])
 
 	return (
-		<>
-			<Outlet />
-		</>
+		<Outlet />
 	)
 }
 
