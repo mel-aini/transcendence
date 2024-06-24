@@ -85,7 +85,7 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 				} else {
 					dispatch({type: 'LOGIN', jwt: res.jwt});
 					setInvalidLogin(false);
-					navigate('/profile');
+					navigate('/dashboard');
 				}
 
 		}
