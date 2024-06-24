@@ -1,6 +1,6 @@
 import { Dispatch, useEffect, useState } from "react";
 import Input from "../../components/Input";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useInputChecker from "../../hooks/useInputChecker";
 import { primaryColor, invalidColor, whiteColor } from "../../utils/colors";
 import { BACKEND_END_POINT } from "../../utils/global";
@@ -143,14 +143,11 @@ const RemainForm = ({email}: Props) => {
 								<Input
 									key={index}
 									onChange={field.onChangeHandler}
-									onBlur={() => field.onBlurHandler(index)} 
+									onBlur={() => field.onBlurHandler(index == 1 || 2 ? index + 1 : index)} 
 									className="w-full" 
 									type={field.type}
 									placeholder={field.placeholder}
-									style={{
-										borderColor: formState[index].isError ? invalidColor : primaryColor,
-										color: formState[index].isError ? invalidColor : whiteColor
-									}}
+									style={formState[index == 1 || 2 ? index + 1 : index].isError ? { borderColor: invalidColor, color: invalidColor } : {}}
 									/>
 								)
 					}) }

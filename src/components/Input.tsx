@@ -7,13 +7,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	height?: number | string
 	style?: CSSProperties
 	className?: string
-	placeholder: string,
 	type: HTMLInputTypeAttribute,
 	onBlur?: TOnBlur,
 	onFocus?: TOnBlur
 }
 
-const Input = ({height = 48, style, className, type, onBlur, onFocus, placeholder, ...props  } : InputProps ) => {
+const Input = ({height = 48, style, className, type, onBlur, onFocus, ...props  } : InputProps ) => {
 	const [isFocus, setIsFocus] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const inputRef: LegacyRef<HTMLInputElement> = useRef<HTMLInputElement>(null)
@@ -23,7 +22,7 @@ const Input = ({height = 48, style, className, type, onBlur, onFocus, placeholde
 			<input
 				ref={inputRef}
 				type={type != 'password' ? type : showPassword ? 'text' : 'password'}
-				className={"bg-transparent border border-primary font-normal px-2 rounded-[5px] focus:outline-none" + " " + className}
+				className={"bg-secondary border border-transparent focus:border-primary font-normal px-3 rounded-[5px] focus:outline-none duration-300" + " " + className}
 				style={{height, ...style}}
 				{...props}
 				onFocus={() => { 
@@ -35,11 +34,11 @@ const Input = ({height = 48, style, className, type, onBlur, onFocus, placeholde
 					if (onBlur) onBlur();
 				}}
 			/>
-			<span className={isFocus ? "px-2 absolute text-[12px] top-[-9px] left-[15px] text-primary bg-bg duration-200" : "pointer-events-none px-3 absolute top-[11px] left-0 text-gray1 opacity-50 duration-200" } >{placeholder}</span>
+			{/* <span className={isFocus ? "px-2 absolute text-[12px] top-[-9px] left-[15px] text-primary bg-bg duration-200" : "pointer-events-none px-3 absolute top-[11px] left-0 text-gray1 opacity-50 duration-200" } >{placeholder}</span> */}
 			{
 				type == 'password' && inputRef.current && inputRef.current.value != '' &&
 				<span 
-					className="absolute h-3/4 aspect-square bg-bg right-2 top-1/2 -translate-y-1/2 cursor-pointer flex justify-center items-center select-none"
+					className="absolute h-3/4 aspect-square bg-secondary right-2 top-1/2 -translate-y-1/2 cursor-pointer flex justify-center items-center select-none"
 					onClick={() => setShowPassword(prev => !prev)}
 					>
 						<CgEye className="text-lg" />

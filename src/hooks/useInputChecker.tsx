@@ -122,8 +122,10 @@ const useInputChecker = (url: string): ReturnType => {
 				dispatch({ type: ACTIONS.SET_DEFAULT, payload: { type: type } });
 		} else {
 			if (validate(type, value)) {
+				console.log('valid input');
 				dispatch({ type: ACTIONS.SET_DEFAULT, payload: { type: type } });
 			} else {
+				console.log('invalid input', type);
 				dispatch({ type: ACTIONS.SET_ERROR, payload: { type: type, error: 'invalid ' + type } });
 			}
 		}

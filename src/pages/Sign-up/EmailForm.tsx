@@ -100,10 +100,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 						className="w-full"
 						type='email'
 						placeholder='Email'
-						style={{
-							borderColor: formState[1].isError ? invalidColor : primaryColor,
-							color: formState[1].isError ? invalidColor : whiteColor
-						}}
+						style={ formState[1].isError ? { borderColor:  invalidColor, color: invalidColor} : {}}
 					/>
 					{formError != '' && <p className="text-[12px] self-end text-invalid">{formError}</p>}
 				</div>
