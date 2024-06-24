@@ -1,27 +1,30 @@
-import { secondaryColor, thirdColor } from "../../utils/colors";
-import { FriendsData, MatchesData, UserData } from "../../types/profile";
+import { darkColor, primaryColor, secondaryColor, thirdColor } from "../../utils/colors";
+import { UserData } from "../../types/profile";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
+import Container from "../../components/Container";
 
-const WinsAndLoses = ({total, wins, type}: {total: number, wins: number, type: 'mobile' | 'desktop'}) => {
-	const mobileClass = 'self-start sm:hidden';
-	const desktopClass = 'hidden sm:block';
+const WinsAndLoses = ({total, wins}: {total: number, wins: number}) => {
 
 	return (
-		<div className={type == 'mobile' ? mobileClass : desktopClass}>
+		<div className='flex items-center gap-5'>
 			<div className="flex gap-3 text-xl items-center">
-				<span className="w-[20px] h-[20px] bg-third"></span>
+				<span className="w-[20px] h-[20px] bg-primary"></span>
 				<h3>{wins} wins</h3>
 			</div>
-			<div className="flex gap-3 text-xl items-center mt-3">
-				<span className="w-[20px] h-[20px] bg-secondary"></span>
+			<div className="flex gap-3 text-xl items-center">
+				<span className="w-[20px] h-[20px] bg-dark"></span>
 				<h3>{total - wins} losses</h3>
 			</div>
 		</div>
 	)
 }
+interface NisbaProps extends ComponentProps<'span'> {
+	percentage: number,
+	className: string
+}
 
-const Nisba = ({percentage}: {percentage: number}) => {
+const Nisba = ({percentage, className, ...props}: NisbaProps) => {
 	const [nisba, setNisba] = useState(0)
 
 	useEffect(() => {
@@ -39,7 +42,7 @@ const Nisba = ({percentage}: {percentage: number}) => {
 	}, [nisba])
 
 	return (
-		<span className="text-third text-xl">{nisba + '%'}</span>
+		<span {...props} className={"text-primary text-3xl " + className}>{nisba + '%'}</span>
 	)
 }
 
@@ -56,38 +59,40 @@ const States = ({data}: Props) => {
 	const percentage = (data.matches.total != 0 ? parseFloat(((data.matches.wins / data.matches.total) * 100).toString()).toFixed(2) : 0) + '%';
 
 	return (
-		<div className="w-full">
-			{data && <div className="rounded-xl w-full p-10 sm:px-16 border border-primary flex flex-col sm:flex-row gap-10 items-center">
-				<div className="flex sm:flex-col justify-between w-full self-stretch">
-					<h3 className="text-xl font-medium">{data.matches.total} matches</h3>
-					<WinsAndLoses total={data.matches.total} wins={data.matches.wins} type="desktop" />
-					<Nisba percentage={parseFloat(percentage)}/>
+		<div className="row-span-3 row-start-2 xl:row-span-1 xl:row-start-1 xl:col-start-1 xl:col-end-4">
+			{data && <Container className="h-full" childClassName="flex flex-col justify-between p-10 gap-20">
+				<div className="">
+					<h1 className="self-start text-2xl font-semibold mb-3">States</h1>
+					<div className="flex justify-between w-full">
+						<h3 className="text-xl">games: {data.matches.total}</h3>
+						<WinsAndLoses total={data.matches.total} wins={data.matches.wins} />
+					</div>
 				</div>
 				<motion.div
 					initial={{background: `conic-gradient(from -90deg, 
-						${thirdColor} 0%, 
-						${thirdColor} ${'0%'}, 
-						${secondaryColor} ${'0%'}, ${secondaryColor} 100%)`}}
-					animate={{background: `conic-gradient(from -90deg, 
-						${thirdColor} 0%, 
-						${thirdColor} ${percentage}, 
-						${secondaryColor} ${percentage}, ${secondaryColor} 100%)`}}
-					transition={{
-						duration: 2,
-						ease: 'easeOut'
-					}}
-					className="relative w-[250px] h-[250px] rounded-full sm:shrink-0"
-					style={{
-						background: `conic-gradient(from -90deg, 
-							${thirdColor} 0%, 
-							${thirdColor} ${percentage}, 
-							${secondaryColor} ${percentage}, ${secondaryColor} 100%)`
-					}}
-				>
+						${primaryColor} 0%, 
+						${primaryColor} ${'0%'}, 
+						${darkColor} ${'0%'}, ${darkColor} 100%)`}}
+						animate={{background: `conic-gradient(from -90deg, 
+							${primaryColor} 0%, 
+							${primaryColor} ${percentage}, 
+							${darkColor} ${percentage}, ${darkColor} 100%)`}}
+							transition={{
+								duration: 2,
+								ease: 'easeOut'
+							}}
+							className="relative w-[300px] h-[300px] self-center rounded-full sm:shrink-0"
+							style={{
+								background: `conic-gradient(from -90deg, 
+									${primaryColor} 0%, 
+									${primaryColor} ${percentage}, 
+									${darkColor} ${percentage}, ${darkColor} 100%)`
+								}}
+								>
 					<div className="absolute inset-[60px] rounded-full bg-bg"></div>
+					<Nisba className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" percentage={parseFloat(percentage)}/>
 				</motion.div>
-				<WinsAndLoses total={data.matches.total} wins={data.matches.wins} type="mobile" />
-			</div>}
+			</Container>}
 		</div>
 	)
 }

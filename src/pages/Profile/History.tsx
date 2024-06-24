@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import HistoryChart from "./HistoryChart";
-import { motion } from "framer-motion";
+import { delay, motion } from "framer-motion";
 import { MatchesData, ProfileRes } from "../../types/profile";
 import fetchProfile from "./fetchProfile";
 import { useGlobalContext } from "../../contexts/store";
 import { useNavigate } from "react-router-dom";
+import Container from "../../components/Container";
+import win from "/win.svg"
+import loss from "/deny.svg"
 
 const History = ({id, username}: {id: string | undefined, username: string}) => {
 	const { dispatch } = useGlobalContext();
@@ -44,66 +47,89 @@ const History = ({id, username}: {id: string | undefined, username: string}) => 
 		}
 	}, [])
 
-	const variant = {
-		hidden: { opacity: 0, width: "20%",},
-		visible: { opacity: 1 , width: "100%",
-			transition: { duration: 1},
-		}
-	}
+	// const variant = {
+	// 	hidden: { opacity: 0, },
+	// 	visible: { opacity: 1,
+	// 		transition: { duration: 1},
+	// 	}
+	// }
 
 	const userClick = (path:string) => {
 		navigate(path);
 	}
 	return (
-		<div className="w-full flex flex-col sm:min-w-[560px]">
-			<div ref={parentRef} className="rounded-xl w-full flex flex-col justify-around pt-16 pb-6 items-center border border-primary">
-				<h1 className="text-2xl">last 10 matches</h1>
-				{
-					data ?
-					<HistoryChart width={(width) * 90 / 100} height={200} data={data}/>
-					:
-					<div>Loading...</div>
-				}
-				<motion.div className="w-full px-6 flex flex-col gap-3"
-					initial="hidden"
-					animate="visible"
-					variants={variant}>
-					{data ? data.map((match: MatchesData, key: number) => {
-						let status;
-						let color;
-						if (match.goals > match.opponent.goals) {
-							status = "win";
-							color = "#1ED947";
-						}
-						else if (match.goals < match.opponent.goals) {
-							status = "lose";
-							color = "#DD1B1B";
-						}
-						else {
-							status = "draw";
-							color = "#FFFFFF";
-						}
-						return (
-							<div key={key} className="flex justify-between items-center border-primary border rounded-md h-[56px] w-full px-3 select-none">
-								<div className="flex justify-between items-center w-1/3">
-									{(status == "win") && <img className="w-[30px] h-[30px] mr-1" src="/win.png"/>}
-									{(status == "lose") && <img className="w-[30px] h-[30px] mr-1" src="/lose.png"/>}
-									{(status == "draw") && <img className="w-[30px] h-[30px] mr-1" src="/draw.png"/>}
-									<span className="shrink overflow-hidden text-ellipsis">{username}</span>
-								</div>
-								<span className="shrink-0 px-5" style={{color:`${color}`}}>{match.goals + ' - ' + match.opponent.goals}</span>
-								<div onClick={() =>userClick(match.opponent.profile)} className="flex justify-between items-center w-1/3 cursor-pointer">
-									<span className="shrink overflow-hidden text-ellipsis">{match.opponent.username}</span>
-									<img className="shrink-0 w-[30px] h-[30px] rounded-full ml-1" src={match.opponent.image}/>
-								</div>
-							</div>
-						);
-					})
-					:
-					<div>Loading...</div>
-				}
-				</motion.div>
-			</div>
+		<div ref={parentRef} className="row-start-5 xl:row-start-1 xl:row-span-2 xl:col-start-4 xl:col-end-8">
+			<Container className="h-full" childClassName="flex flex-col justify-around pt-12 sm:pt-8 pb-9 items-center">
+					<h1 className="text-2xl font-semibold">last 10 matches</h1>
+					{
+						data ?
+						<HistoryChart width={(width) * 80 / 100} height={200} data={data}/>
+						:
+						<div>Loading...</div>
+					}
+					<motion.div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col justify-between items-center gap-3 overflow-auto"
+						initial="hidden"
+						animate="visible"
+						// variants={variant}
+						>
+						{data ? data.map((match: MatchesData, key: number) => {
+							const variant = {
+								hidden: { opacity: 0, },
+								visible: { opacity: 1,
+									transition: { duration: 0.5, delay: 0.5 * key},
+								}
+							}
+							let status;
+							if (match.goals > match.opponent.goals) {
+								status = "win";
+							}
+							else if (match.goals < match.opponent.goals) {
+								status = "lose";
+							}
+							else {
+								status = "draw";
+							}
+							return (
+								<motion.div key={key} className="flex justify-between items-center min-h-[40px] w-full select-none"
+								variants={variant}
+								>
+									<div className="grid grid-cols-3 place-items-center h-full w-1/5">
+										{/* <div > */}
+											{(status == "win") && <img className="w-[24px] h-[24px]" src={win}/>}
+											{(status == "lose") && <img className="w-[25px] h-[25px]" src={loss}/>}
+											{(status == "draw") && <img className="w-[24px] h-[24px] mr-1" src="/draw.png"/>}
+										{/* </div> */}
+										{/* <div className={`flex justify-between ` + (status == "lose" ? "flex-row-reverse" : "")}> */}
+										{
+											status == "lose"
+											?
+											<>
+												<span className="">{match.opponent.goals}</span>
+												<span className="text-primary">{match.goals}</span>
+											</>
+											:
+											<>
+												<span className="text-primary">{match.goals}</span>
+												<span className="">{match.opponent.goals}</span>
+											</>
+										}
+										{/* </div> */}
+									</div>
+									<div className="flex justify-between items-center px-4 rounded-md border border-border w-4/5 h-full">
+										<div onClick={() =>userClick(match.opponent.profile)} className="flex justify-between items-center cursor-pointer gap-3">
+											<img className="shrink-0 w-[24px] h-[24px] rounded-full border-primary border" src={match.opponent.image}/>
+											<span className="shrink overflow-hidden text-ellipsis">{match.opponent.username}</span>
+										</div>
+										<span className="shrink overflow-hidden text-ellipsis">lvl 2</span> {/* match.opponent.level */}
+									</div>
+								</motion.div>
+							);
+						})
+						:
+						<div>Loading...</div>
+					}
+					</motion.div>
+			</Container>
 		</div>
 	)
 }

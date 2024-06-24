@@ -1,10 +1,10 @@
-import pen_icon from "/pen_icon.svg"
+import edit_icon from "/edit_icon.svg"
 
 const EditProfile = () => {
 	return (
-		<div className="w-[144px] h-[22px] flex justify-center items-center gap-1">
-			<span className="text-primary">edit profile</span>
-			<img src={pen_icon} alt="" width={28.04} height={22}/>
+		<div className="w-[142px] h-[40px] bg-secondary rounded-md flex justify-center items-center gap-1 cursor-pointer select-none">
+			<span>edit profile</span>
+			<img src={edit_icon} alt="" width={22} height={22}/>
 		</div>
 	)
 }

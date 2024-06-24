@@ -11,7 +11,6 @@ import RelationBar from "./RelationBar"
 const AllFriends = ({id}: {id: string | undefined}) => {
 	const [relation, setRelation] = useState<string>("friend");
 	const seeMore = useContext(context);
-	const [onTop, setOnTop] = useState<boolean>(false);
 	const refScroll = useRef();
 	const refFriend = useRef();
 	const refPending = useRef();
@@ -88,18 +87,6 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 
 	useEffect(() => {
 		collectData(uri);
-		(window.innerHeight < 841) ? setOnTop(true) : setOnTop(false);
-		// if (!parentRef.current) return;
-
-		const handler = () => {
-			// if (!parentRef.current) return;
-			(window.innerHeight < 841) ? setOnTop(true) : setOnTop(false);
-		}
-
-		window.addEventListener('resize', handler)
-		return () => {
-			window.removeEventListener('resize', handler)
-		}
 	}, []);
 
 	const scrollHandler  = (e: any) => {
@@ -149,14 +136,14 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 				className="absolute">
 				<div className="fixed top-0 start-0 bg-black opacity-70 w-full min-h-[100vh]" onClick={() => seeMore.setSeeAll(false)}/>
 				<motion.div
-					initial={{y: onTop ? '0px' : 'calc(-50% - 10px)', x: '-50%'}}
-					animate={{y: onTop ? '0px' : '-50%'}}
+					initial={{y: 'calc(-50% - 10px)', x: '-50%'}}
+					animate={{y: '-50%'}}
 					transition={{duration: 0.3}}
-					exit={{y: onTop ? '0px' : 'calc(-50% - 10px)', x: '-50%'}}
-					className={`z-10 flex flex-col justify-between gap-6 pt-[30px] pb-[58px] sm:px-16 px-8 fixed left-[50%] -translate-x-1/2 border border-primary rounded-[10px] max-w-[652px] max-h-[840px] overflow-hidden w-[90%] bg-gray3 ` + (!onTop ? "top-1/2 -translate-y-1/2" : "top-0")}>
-					<span className="self-end text-sm text-secondary cursor-pointer select-none"
-					onMouseEnter={(e) => {e.currentTarget.classList.replace("text-secondary", "text-white");}}
-					onMouseLeave={(e) => {e.currentTarget.classList.replace("text-white", "text-secondary");}}
+					exit={{y: 'calc(-50% - 10px)', x: '-50%'}}
+					className={`z-50 flex flex-col justify-between gap-6 pt-[30px] pb-[58px] sm:px-16 px-8 fixed left-[50%] -translate-x-1/2 border border-border rounded-[10px] max-w-[652px] max-h-[840px] min-h-[330px] h-[90%] overflow-hidden w-[90%] bg-secondary top-1/2 -translate-y-1/2`}>
+					<span className="self-end text-sm opacity-50 cursor-pointer select-none"
+					onMouseEnter={(e) => {e.currentTarget.classList.replace("opacity-50", "opacity-100");}}
+					onMouseLeave={(e) => {e.currentTarget.classList.replace("opacity-100", "opacity-50");}}
 					onClick={() => seeMore.setSeeAll(false)}>
 						close
 					</span>
@@ -170,7 +157,7 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 							</>
 						}
 					</div>
-					<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="bg-transparent border-b-[0.5px] w-full px-3 pb-[9px] font-thin" />
+					<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="outline-none focus:w-full duration-200 ease-in-out w-[35%] bg-transparent border-b-[0.5px] px-3 py-[9px] font-thin" />
 					<div ref={refScroll} onScroll={scrollHandler} className="min-h-[590px] overflow-auto">
 					{
 						data && data.map((friend: FriendsData, index: number) => {

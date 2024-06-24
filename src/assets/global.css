@@ -59,6 +59,21 @@ body {
 	clip-path: polygon(21px 0%, 100% 0%, calc(100% - 21px) 100%, 0% 100%);
 }
 
+.first-table-half {
+	clip-path: polygon(0% 0%, 100% 0%, 45.59% 100%, 0% 100%);
+	/* clip-path: polygon(0% 0%, 68.69% 0%, 31.32% 100%, 0% 100%); */
+}
+
+.second-table-half {
+	/* transform: scale(-1, -1);
+	clip-path: polygon(0% 0%, 68.69% 0%, 31.32% 100%, 0% 100%); */
+	clip-path: polygon(45.59% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.line-half {
+	clip-path: polygon(100% 0%, 0% 100%);
+}
+
 .polygon-border {
 	clip-path: polygon(
 	calc(100% - 30px) 0%, 

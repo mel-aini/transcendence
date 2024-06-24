@@ -9,7 +9,7 @@ export interface MatchesData {
 	loses: number,
 }
 
-export type Relation = 'none' | 'friend' | 'send_req' | 'rec_req' | 'blocker' 
+export type Relation = 'none' | 'friend' | 'send_req' | 'rec_req' | 'blocker'
 
 export interface UserData {
 	username: string,
@@ -49,4 +49,10 @@ export interface FriendsData {
 export interface ProfileRes {
 	data: any,
 	status: number
+}
+
+export interface ProfileRequest {
+	type: "add" | "accept" | "cancel" | "block" | "unblock" | "unfriend",
+	other_user: string,
+	status?: boolean
 }
