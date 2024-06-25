@@ -77,10 +77,10 @@ const UsernameForm = ({dispatchLevel}: Props) => {
 					className="w-full"
 					type='username'
 					placeholder='Username'
-					style={{
-						borderColor: formState[0].isError ? invalidColor : primaryColor,
-						color: formState[0].isError ? invalidColor : whiteColor
-					}}
+					style={formState[0].isError ? {
+						borderColor:  invalidColor,
+						color: invalidColor
+					} : {}}
 				/>
 					{formError != '' && <p className="text-[12px] self-end text-invalid">{formError}</p>}
 				<NewButton onSubmit={submitHandler} className="w-full">complete Sign up</NewButton>

@@ -1,7 +1,6 @@
 import { UIEvent } from "react";
 import User from "../../../components/User";
 import { useChatContext } from "../../../contexts/chatStore";
-import ws from "../../../utils/socket";
 
 function OnlineFriends() {
 	const {state, dispatch} = useChatContext()
@@ -26,7 +25,7 @@ function OnlineFriends() {
 			{
 				state.onlineFriends.length > 0 &&
 				state.onlineFriends.map((friend, index) => {
-					return <User key={index} online className="h-[40px] min-w-[40px] cursor-pointer" width={40} url={friend.avatar_link} />
+					return <User key={index} online className="h-[40px] border min-w-[40px] cursor-pointer" width={40} url={friend.avatar_link} />
 				})
 			}
 		</div>

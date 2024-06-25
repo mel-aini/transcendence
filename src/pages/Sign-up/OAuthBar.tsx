@@ -27,24 +27,9 @@ const OAuthBar = ({type}: {type: 'sign up' | 'sign in'}) => {
 	}
 
 	return (
-		<div className="w-full">
-			<NewButton 
-				onClick={() => generateLink('42')}
-				className="w-full" 
-				variant="secondary"
-			>
-				<p>{type} with</p>
-				<OAuth type="42"/>
-			</NewButton>
-			<NewButton 
-				onClick={() => generateLink('42')}
-				className="w-full mt-6" 
-				variant="secondary"
-			>
-				<p>{type} with</p>
-				<OAuth type="google"/>
-			</NewButton>
-			{/* <OAuth onClick={() => generateLink('google')} type="google"/> */}
+		<div className="w-full flex justify-between gap-2">
+			<OAuth onClick={() => generateLink('42')} type="42"/>
+			<OAuth onClick={() => generateLink('42')} type="google"/>
 		</div>
 	)
 }

@@ -7,6 +7,8 @@ import ChatContextProvider from "./contexts/chatStore";
 import PingPongContextProvider from "./contexts/pingPongStore";
 import { Suspense, lazy } from "react";
 import LoadingPage from "./components/LoadingPage";
+import withAuth from  './guards/withAuth'
+import withoutAuth from  './guards/withoutAuth'
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
@@ -28,11 +30,11 @@ function App() {
               <Routes>
                 <Route path="/" element={<MainLayout />}>
                   <Route index element={<Home />} />
-                  <Route path="/signup" element={<SignUp />} />
                   <Route path="loading" element={<LoadingPage />}/>
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/chat" element={<Chat />} />
-                  <Route element={<Layout />}>
+                  <Route path="/signup" element={withoutAuth(SignUp)} />
+                  <Route path="/login" element={withoutAuth(Login)} />
+                  <Route path="/chat" element={withAuth(Chat)} />
+                  <Route element={withAuth(Layout)}>
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/dashboard" element={<Dashboard />} />

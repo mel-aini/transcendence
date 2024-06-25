@@ -18,7 +18,7 @@ export default {
         gray3: '#0C0D0F',
         gray4: '#222222',
         black: '#000000',
-        invalid: '#14FF67',
+        invalid: '#ED4337',
         border: 'rgba(255, 255, 255, 0.1)',
         border2: 'rgba(255, 255, 255, 0.2)',
       },

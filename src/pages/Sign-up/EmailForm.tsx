@@ -55,18 +55,19 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 			await callToApi('api/register/', data);
 		}
 		catch (error: any) {
+			console.log(error)
 			let errorMsg: string = '';
 			if (typeof error == 'string') {
 				errorMsg = error;
 			}
-			else {
-				if (!error.error.message['email']) {
-					console.log('valid email');
-					dispatchLevel(1)
-				} else {
-					errorMsg = error.error.message['email']
-				}
-			}
+			// else {
+			// 	if (!error.error.message['email']) {
+			// 		console.log('valid email');
+			// 		dispatchLevel(1)
+			// 	} else {
+			// 		errorMsg = error.error.message['email']
+			// 	}
+			// }
 			setFormError(errorMsg)
 		}
 		dispatch({type: 'LOADING', state: false});
@@ -100,10 +101,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 						className="w-full"
 						type='email'
 						placeholder='Email'
-						style={{
-							borderColor: formState[1].isError ? invalidColor : primaryColor,
-							color: formState[1].isError ? invalidColor : whiteColor
-						}}
+						style={ formState[1].isError ? { borderColor:  invalidColor, color: invalidColor} : {}}
 					/>
 					{formError != '' && <p className="text-[12px] self-end text-invalid">{formError}</p>}
 				</div>

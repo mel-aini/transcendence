@@ -5,13 +5,11 @@ import { initWebSocket } from "../utils/socket";
 export interface GlobalStateProps {
 	isLogin: boolean
 	isLoading: boolean
-	ws: WebSocket | undefined
 }
 
 const initialState: GlobalStateProps = {
 	isLogin: false,
 	isLoading: false,
-	ws: undefined
 };
 
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
