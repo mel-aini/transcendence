@@ -156,7 +156,7 @@ interface Props {
 
 function ConversationsList({className, ...props}: Props) {
 	const {state, dispatch} = useChatContext();
-
+	
 	const handler = () => {
 		dispatch({type: 'FOCUS', state: true})
 	}

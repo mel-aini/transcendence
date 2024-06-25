@@ -8,6 +8,7 @@ import PingPongContextProvider from "./contexts/pingPongStore";
 import { Suspense, lazy } from "react";
 import LoadingPage from "./components/LoadingPage";
 import withAuth from  './guards/withAuth'
+import withoutAuth from  './guards/withoutAuth'
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
@@ -29,21 +30,21 @@ function App() {
               <Routes>
                 <Route path="/" element={<MainLayout />}>
                   <Route index element={<Home />} />
-                  <Route path="/signup" element={<SignUp />} />
                   <Route path="loading" element={<LoadingPage />}/>
-                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={withoutAuth(SignUp)} />
+                  <Route path="/login" element={withoutAuth(Login)} />
                   <Route path="/chat" element={withAuth(Chat)} />
                   <Route element={withAuth(Layout)}>
-                    <Route path="/settings" element={withAuth(Settings)} />
-                    <Route path="/profile" element={withAuth(Profile)} />
-                    <Route path="/dashboard" element={withAuth(Dashboard)} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
                     <Route path='/users'>
-                      <Route path=':id' element={withAuth(Profile)} />
+                      <Route path=':id' element={<Profile />} />
                       <Route path='*' element={<>Not Found</>} />
                     </Route>
                     <Route path='/ping-pong'>
-                      <Route index element={withAuth(PingPong)} />
-                      <Route path='play' element={withAuth(Play)} />
+                      <Route index element={<PingPong />} />
+                      <Route path='play' element={<Play />} />
                       <Route path='*' element={<>Not Found</>} />
                     </Route>
                   </Route>

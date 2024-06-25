@@ -1,31 +1,27 @@
 import { ComponentType } from "react";
 import { Navigate } from "react-router-dom";
 import jwt from "../utils/jwt";
-import WithSocket from "./withSocket";
 
-function withAuth(Component: ComponentType) {
+function withoutAuth(Component: ComponentType) {
 
 	function UpdatedComponent() {
 
 		const accessToken = jwt.getAccessToken();
-
-		if (!accessToken) {
-			return <Navigate to="/login" />
-		}
-
+		
+		if (accessToken) {
+			return (
+				<Navigate to="/dashboard" />
+			)
+		} 
 		return (
-			<WithSocket>
-				<Component />
-			</WithSocket>
+			<Component />
 		);
 	}
 
-	return (
-		<UpdatedComponent />
-	);
+	return <UpdatedComponent />;
 }
 
-export default withAuth;
+export default withoutAuth;
 
 // user login
 // username: mel-test

@@ -4,14 +4,17 @@ export interface ChatStateProps {
 	isFocus: boolean,
 	messages: any[],
 	onlineFriends: any[],
-	conversations: any[]
+	conversations: any[],
+	ws: WebSocket | null
+
 }
 
 const initialState: ChatStateProps = {
 	isFocus: false,
 	messages: [],
 	onlineFriends: [],
-	conversations: []
+	conversations: [],
+	ws: null
 };
 
 export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispatch<any>}>({
@@ -22,6 +25,11 @@ export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispa
 const reducer = (state: ChatStateProps, action: any) => {
 	switch (action.type)
 	{
+		case 'SOCKET':
+			return { 
+				...state, 
+				ws: action.socket
+			}
 		case 'FOCUS':
 			if (action.state == true)
 				return {
@@ -45,13 +53,12 @@ const reducer = (state: ChatStateProps, action: any) => {
 		case 'ONLINE':
 			return { 
 				...state, 
-				onlineFriends: [...state.onlineFriends, ...action.onlineFriends]
+				onlineFriends: action.onlineFriends
 			}
 		case 'CONVERSATIONS':
-
 			return { 
 				...state, 
-				conversations: [...state.conversations, ...action.conversations]
+				conversations: action.conversations
 			}
 		default:
 			return state;
