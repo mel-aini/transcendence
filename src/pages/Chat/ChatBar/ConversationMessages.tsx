@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useChatContext } from "../../../contexts/chatStore";
 import Message from "./Message";
-import useWebSocket from "react-use-websocket";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 import { WS_URL } from "../../../guards/withSocket";
 
 const ME = 'mel-aini'; 
@@ -23,11 +23,17 @@ function ConversationMessages() {
 	}, [state.messages])
 
 	useEffect(() => {
-		sendJsonMessage({
-			type: 'messages',
-			conversation_id: state.conversation_id,
-		})
+		if (readyState == ReadyState.OPEN && state.conversation_id) {
+			sendJsonMessage({
+				type: 'messages',
+				conversation_id: state.conversation_id,
+			})
+		}
 	}, [state.conversation_id])
+
+	useEffect(() => {
+		console.log(lastJsonMessage);
+	}, [lastJsonMessage])
 
 	return ( 
 		<div ref={container} className="messages-container grow bg-bg overflow-auto p-5 flex flex-col gap-8">

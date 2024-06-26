@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import NewButton from "../../components/NewButton";
+import Container from "../../components/Container";
 
 interface Props {
 	className?: string
@@ -14,7 +15,7 @@ const PingPong = ({ className }: Props) => {
 					<NewButton className="hidden sm:block h-full w-full max-w-[340px]">Start a game</NewButton>
 				</Link>
 			</div>
-			<div className="w-full h-[400px] border border-primary rounded-xl"></div>
+			<Container className="h-[400px]"></Container>
 			<NewButton className="sm:hidden h-full w-full mt-8">Start a game</NewButton>
 		</div>
 	)
