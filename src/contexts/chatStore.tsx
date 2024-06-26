@@ -5,6 +5,7 @@ export interface ChatStateProps {
 	messages: any[],
 	onlineFriends: any[],
 	conversations: any[],
+	conversation_id: string | number | null;
 	ws: WebSocket | null
 
 }
@@ -14,6 +15,7 @@ const initialState: ChatStateProps = {
 	messages: [],
 	onlineFriends: [],
 	conversations: [],
+	conversation_id: null,
 	ws: null
 };
 
@@ -44,6 +46,11 @@ const reducer = (state: ChatStateProps, action: any) => {
 			return { 
 				...state, 
 				messages: [...state.messages, action.message] 
+			}
+		case 'CONVERSATION':
+			return { 
+				...state, 
+				conversation_id: action.conversation_id
 			}
 		case 'MESSAGES':
 			return { 
