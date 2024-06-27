@@ -3,12 +3,13 @@ import Loading from "./components/Loading";
 import GlobalContextProvider from "./contexts/store";
 import Layout from "./components/Layout";
 import MainLayout from "./MainLayout";
-import ChatContextProvider from "./contexts/chatStore";
-import PingPongContextProvider from "./contexts/pingPongStore";
+import ChatContextProvider from "./contexts/chatProvider";
+import PingPongContextProvider from "./contexts/pingPongProvider";
 import { Suspense, lazy } from "react";
 import LoadingPage from "./components/LoadingPage";
 import withAuth from  './guards/withAuth'
 import withoutAuth from  './guards/withoutAuth'
+import AuthContextProvider from "./contexts/authProvider";
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
@@ -25,39 +26,41 @@ const MatchMaking = lazy(() => import('./pages/PingPong/MatchMaking/Index'));
 function App() {
   return (
       <GlobalContextProvider>
-        <ChatContextProvider>
-          <PingPongContextProvider>
-            <Suspense fallback={<LoadingPage />}>
-              <Loading />
-              <Routes>
-                <Route path="/" element={<MainLayout />}>
-                  <Route index element={<Home />} />
-                  <Route path="loading" element={<LoadingPage />}/>
-                  <Route path="/signup" element={withoutAuth(SignUp)} />
-                  <Route path="/login" element={withoutAuth(Login)} />
-                  <Route path="/chat" element={withAuth(Chat)} />
-                  <Route element={withAuth(Layout)}>
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path='/users'>
-                      <Route path=':id' element={<Profile />} />
-                      <Route path='*' element={<>Not Found</>} />
+        <AuthContextProvider>
+          <ChatContextProvider>
+            <PingPongContextProvider>
+              <Suspense fallback={<LoadingPage />}>
+                <Loading />
+                <Routes>
+                  <Route path="/" element={<MainLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="loading" element={<LoadingPage />}/>
+                    <Route path="/signup" element={withoutAuth(SignUp)} />
+                    <Route path="/login" element={withoutAuth(Login)} />
+                    <Route path="/chat" element={withAuth(Chat)} />
+                    <Route element={withAuth(Layout)}>
+                      <Route path="/settings" element={<Settings />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path='/users'>
+                        <Route path=':id' element={<Profile />} />
+                        <Route path='*' element={<>Not Found</>} />
+                      </Route>
+                      <Route path='/ping-pong'>
+                        <Route index element={<PingPong />} />
+                        <Route path='play' element={<Play />} />
+                        <Route path='match-making' element={<MatchMaking />} />
+                        <Route path='vs-friend' element={<VsFriend />} />
+                        <Route path='*' element={<>Not Found</>} />
+                      </Route>
                     </Route>
-                    <Route path='/ping-pong'>
-                      <Route index element={<PingPong />} />
-                      <Route path='play' element={<Play />} />
-                      <Route path='match-making' element={<MatchMaking />} />
-                      <Route path='vs-friend' element={<VsFriend />} />
-                      <Route path='*' element={<>Not Found</>} />
-                    </Route>
+                    <Route path='*' element={<>Not Found</>} />
                   </Route>
-                  <Route path='*' element={<>Not Found</>} />
-                </Route>
-              </Routes>
-            </Suspense>
-          </PingPongContextProvider>
-        </ChatContextProvider>
+                </Routes>
+              </Suspense>
+            </PingPongContextProvider>
+          </ChatContextProvider>
+        </AuthContextProvider>
       </GlobalContextProvider>
   )
 }

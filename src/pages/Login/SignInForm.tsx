@@ -7,6 +7,7 @@ import { useGlobalContext } from "../../contexts/store";
 import callToApi from "../../utils/callToApi";
 import OAuthBar from "../Sign-up/OAuthBar";
 import NewButton from "../../components/NewButton";
+import { useAuthContext } from "../../contexts/authProvider";
 
 interface IResponse {
 	type: string,
@@ -28,6 +29,7 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 	const [invalidLogin, setInvalidLogin] = useState<boolean>(false);
 	const [emptyInput, setEmptyInput] = useState<boolean>(false);
 	const { dispatch } = useGlobalContext();
+	const { dispatch: authDispatch } = useAuthContext();
 	const navigate = useNavigate();
 
 	const usernameHandler = (userValue: string) => {
@@ -84,10 +86,10 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 					setIsTwoFA(true);
 				} else {
 					dispatch({type: 'LOGIN', jwt: res.jwt});
+					authDispatch({type: 'TOKEN', token: res.jwt.access});
 					setInvalidLogin(false);
 					navigate('/dashboard');
 				}
-
 		}
 		catch (error: any) {
 			console.log('error', error);

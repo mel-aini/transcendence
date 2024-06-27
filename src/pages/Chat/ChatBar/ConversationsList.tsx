@@ -1,5 +1,5 @@
 import ConversationBar from "./ConversationBar";
-import { useChatContext } from "../../../contexts/chatStore";
+import { useChatContext } from "../../../contexts/chatProvider";
 import { useEffect } from "react";
 
 interface Props {

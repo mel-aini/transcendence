@@ -1,16 +1,8 @@
-import { useEffect } from "react";
 import Incoming from "./Incoming";
 import PingPong from "./PingPong";
 import Tournements from "./Tournements";
-import { useGlobalContext } from "../../contexts/store";
 
 const Index = () => {
-	const { state } = useGlobalContext();
-
-	useEffect(() => {
-		console.log('state: ', state);
-	}, [state])
-	
 	return (
 		<div className="w-full relative z-0">
 			<div className="flex flex-col gap-10 lg:flex-row lg:items-end w-full">

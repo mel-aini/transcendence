@@ -1,16 +1,18 @@
 import { useEffect, useRef } from "react";
-import { useChatContext } from "../../../contexts/chatStore";
+import { useChatContext } from "../../../contexts/chatProvider";
 import Message from "./Message";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { WS_URL } from "../../../guards/withSocket";
+import { CHAT_WS_ENDPOINT } from "../../../utils/global";
+import { useGlobalContext } from "../../../contexts/store";
 
-const ME = 'mel-aini'; 
+const ME = 'user2'; 
 
 function ConversationMessages() {
-	const { state } = useChatContext();
+	const { state: gstate } = useGlobalContext();
+	const { state, dispatch } = useChatContext();
 	const container = useRef<HTMLDivElement>(null);
 	const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-		WS_URL,
+		CHAT_WS_ENDPOINT + gstate.access,
 		{
 		  share: false,
 		  shouldReconnect: () => true,
@@ -32,7 +34,10 @@ function ConversationMessages() {
 	}, [state.conversation_id])
 
 	useEffect(() => {
-		console.log(lastJsonMessage);
+		if (lastJsonMessage && lastJsonMessage.messages) {
+			console.log(lastJsonMessage.messages)
+			dispatch({type: 'MESSAGES', messages: lastJsonMessage.messages})
+		}
 	}, [lastJsonMessage])
 
 	return ( 

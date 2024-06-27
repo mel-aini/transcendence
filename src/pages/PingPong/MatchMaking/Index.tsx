@@ -1,5 +1,5 @@
 import User from "../../../components/User";
-import { Levels, PingPongStateProps, usePingPongContext } from "../../../contexts/pingPongStore";
+import { Levels, PingPongStateProps, usePingPongContext } from "../../../contexts/pingPongProvider";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useChatContext } from "../../contexts/chatStore";
+import { useChatContext } from "../../contexts/chatProvider";
 import ChatBar from "./ChatBar";
 import Conversation from "./ChatBar/Conversation";
 import { AnimatePresence } from 'framer-motion'
@@ -28,9 +28,6 @@ function Index() {
 					break;
 			}
 		}
-	
-		// socket.on('connect', onConnect);
-		// socket.on('chat', chatHandler);
 		
 		dispatch({type: 'FOCUS', state: window.innerWidth >= 1024})
 
@@ -42,7 +39,6 @@ function Index() {
 
 		return () => {
 			window.removeEventListener('resize', resizeHandler);
-			// socket.off('chat', chatHandler)
 		}
 
 	}, [])

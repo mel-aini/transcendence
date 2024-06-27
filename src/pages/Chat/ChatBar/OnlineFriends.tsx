@@ -1,6 +1,6 @@
 import { UIEvent } from "react";
 import User from "../../../components/User";
-import { useChatContext } from "../../../contexts/chatStore";
+import { useChatContext } from "../../../contexts/chatProvider";
 
 function OnlineFriends() {
 	const {state, dispatch} = useChatContext()

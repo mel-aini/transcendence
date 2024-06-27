@@ -2,7 +2,15 @@ import {motion} from 'framer-motion'
 import ConversationHeader from "./ConversationHeader";
 import { FormEvent, InputHTMLAttributes, MouseEvent, useRef } from "react";
 import ConversationMessages from './ConversationMessages';
-import { useChatContext } from '../../../contexts/chatStore';
+import { useChatContext } from '../../../contexts/chatProvider';
+
+interface Imessage {
+	content : string
+	date :  string
+	id? :  number
+	receiver :  string
+	sender : string
+}
 
 const getDate = () => {
 	const date = new Date();
@@ -23,9 +31,11 @@ function Conversation() {
 	const sendMessage = (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 
-		const newMessage = {
+		const newMessage: Imessage = {
 			content: message.current,
-			date: getDate()
+			date: getDate(),
+			receiver: 'salam',
+			sender: 'sss'
 		}
 		dispatch({type: 'MESSAGE', message: newMessage});
 

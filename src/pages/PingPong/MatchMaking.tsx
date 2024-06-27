@@ -1,5 +1,5 @@
 import User from "../../components/User";
-import { Levels, usePingPongContext } from "../../contexts/pingPongStore";
+import { Levels, usePingPongContext } from "../../contexts/pingPongProvider";
 import NewButton from "../../components/NewButton";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
