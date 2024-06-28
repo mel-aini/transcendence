@@ -1,3 +1,4 @@
+import { useProfileContext } from "../../contexts/profileStore";
 import { UserData } from "../../types/profile";
 import LevelBar from "./LevelBar";
 import UserActions from "./UserActions";
@@ -38,7 +39,7 @@ const ProfileHeader = ({user, data}: DataProps) => {
 								</div>
 							}
 						</div>
-						<UserActions isProfile={user == 'profile'} data={data} />
+						<UserActions isProfile={user == 'profile'} />
 					</div>
 					<div className="absolute left-[90%] top-full translate-y-[-37px] -translate-x-1/2 bg-[#14FF67] w-[39px] h-[74px] xl:w-[67.5px] xl:h-[128px]
 					xl:translate-y-[-64px] duration-100"></div>

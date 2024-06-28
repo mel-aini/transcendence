@@ -7,6 +7,8 @@ import { profileSocket } from "../../utils/profileSocket";
 import SendingInvitation from "./userActions/SendingInvitation";
 import PendingInvitation from "./userActions/PendingInvitation";
 import Blocked from "./userActions/Blocked";
+import useWebSocket from "react-use-websocket";
+import { useProfileContext } from "../../contexts/profileStore";
 
 enum Actions {
 	EditProfile,
@@ -18,6 +20,13 @@ enum Actions {
 }
 
 const UserActions = ({isProfile, data}: {isProfile: boolean, data: UserData}) => {
+	const WS_URL = "ws://127.0.0.1:8080";
+	const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(WS_URL,
+		{
+			share: false,
+			shouldReconnect: () => true,
+		},
+	);
 	const [action, setAction] = useState<Actions | null>(null);
 	let request: ProfileRequest;
 	

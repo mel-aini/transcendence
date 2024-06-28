@@ -9,6 +9,7 @@ import { Suspense, lazy } from "react";
 import LoadingPage from "./components/LoadingPage";
 import withAuth from  './guards/withAuth'
 import withoutAuth from  './guards/withoutAuth'
+import ProfileContextProvider from "./contexts/profileStore";
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
