@@ -1,7 +1,7 @@
+import { useState } from "react"
 import add_icon from "/add_icon.svg"
 
 const AddFriend = (clickHandler: any) => {
-
 	return (
 		<div onClick={clickHandler} className="w-[142px] h-[40px] flex justify-center items-center bg-secondary rounded-md gap-2">
 			<span>add friend</span>

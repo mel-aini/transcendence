@@ -8,9 +8,11 @@ import { ProfileRes, UserData } from "../../types/profile";
 import { useNavigate, useParams } from "react-router-dom";
 import fetchProfile from "./fetchProfile";
 import { closeProfileWebSocket, initProfileWebSocket, profileSocket } from "../../utils/profileSocket";
+import ProfileContextProvider, { useProfileContext } from "../../contexts/profileStore";
 
 const Index = () => {
 	const { dispatch } = useGlobalContext();
+	const { state, dispatchProfile } = useProfileContext();
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const user = id ? 'users/' + id : 'profile';
@@ -20,7 +22,7 @@ const Index = () => {
 		dispatch({type: 'LOADING', state: true});
 		const ProfileRes: ProfileRes = await fetchProfile(user);
 		if (ProfileRes.status == 200)
-			setData(ProfileRes.data);
+				setData(ProfileRes.data);
 		else if (ProfileRes.status == 404)
 			navigate('/');
 		else if (ProfileRes.status == 401) {
@@ -44,6 +46,7 @@ const Index = () => {
 
 	useEffect(() => {
 		collectData();
+		dispatchProfile({type: "USER_DATA", userData: data});
 		// initProfileWebSocket();
 		// return (() => closeProfileWebSocket());
 	} ,[])

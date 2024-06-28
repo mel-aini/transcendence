@@ -30,11 +30,9 @@ function App() {
           <ChatContextProvider>
             <PingPongContextProvider>
               <Suspense fallback={<LoadingPage />}>
-                <Loading />
                 <Routes>
                   <Route path="/" element={<MainLayout />}>
                     <Route index element={<Home />} />
-                    <Route path="loading" element={<LoadingPage />}/>
                     <Route path="/signup" element={withoutAuth(SignUp)} />
                     <Route path="/login" element={withoutAuth(Login)} />
                     <Route path="/chat" element={withAuth(Chat)} />
