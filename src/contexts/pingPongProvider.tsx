@@ -1,7 +1,6 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 
 export enum Levels {
-	ChoiseGameType,
 	FindingOpponent,
 	OpponentFound,
 	OpponentIsReady,
@@ -13,7 +12,7 @@ export interface PingPongStateProps {
 }
 
 const initialState: PingPongStateProps = {
-	level: Levels.ChoiseGameType
+	level: Levels.FindingOpponent
 };
 
 export const PingPongContext = createContext<{state: PingPongStateProps, dispatch: Dispatch<any>}>({

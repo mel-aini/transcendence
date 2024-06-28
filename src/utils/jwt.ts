@@ -17,6 +17,7 @@ class Jwt {
 		localStorage.setItem('access', access);
 		localStorage.setItem('refresh', refresh);
 		const payload = jwt.decode();
+		// console.log(payload)
 		const user_id = payload?.user_id;
 		if (user_id) {
 			sessionStorage.setItem('user_id', user_id.toString());

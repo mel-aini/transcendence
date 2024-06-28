@@ -1,5 +1,5 @@
 import User from "../../../components/User";
-import { useChatContext } from "../../../contexts/chatStore";
+import { useChatContext } from "../../../contexts/chatProvider";
 import { IoIosArrowBack } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 

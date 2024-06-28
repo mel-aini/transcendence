@@ -1,34 +1,41 @@
-
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { useChatContext } from "../contexts/chatStore";
+import { useChatContext } from "../contexts/chatProvider";
 import { Fragment, useEffect } from "react";
+import { useGlobalContext } from "../contexts/store";
+import { CHAT_WS_ENDPOINT } from "../utils/global";
 
-const WS_URL = 'ws://localhost:8000/ws/chat/?token=' + localStorage.getItem('access');
+// const WS_URL = 'ws://localhost:8000/ws/chat/?token=' + localStorage.getItem('access');
 
 function WithSocket({children}: {children: any}) {
+	const { state } = useGlobalContext();
 	const { dispatch } = useChatContext();
 	
 	const { lastJsonMessage, readyState } = useWebSocket(
-		WS_URL,
+		CHAT_WS_ENDPOINT + state.access,
 		{
 		  share: false,
 		  shouldReconnect: () => true,
 		},
 	  )
 
-	// Run when the connection state (readyState) changes
 	useEffect(() => {
-		console.log("Connection state changed")
-		console.log(readyState);
+		if (readyState == ReadyState.OPEN) {
+			console.log('connection opened')
+		}
+		if (readyState == ReadyState.CLOSED) {
+			console.log('connection closed')
+		}
 	}, [readyState])
 	
-	// Run when a new WebSocket message is received (lastJsonMessage)
 	useEffect(() => {
 		if (lastJsonMessage) {
-			console.log(`Got a new message:`);
-			console.log(lastJsonMessage.conversations)
-			dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})
-			// dispatch({type: 'CONVERSATIONS', conversations: lastJsonMessage.conversations})
+			// console.log(lastJsonMessage)
+			if (lastJsonMessage.online) {
+				dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})
+			}
+			if (lastJsonMessage.conversations) {
+				dispatch({type: 'CONVERSATIONS', conversations: lastJsonMessage.conversations})
+			}
 		}
 	}, [lastJsonMessage])
 

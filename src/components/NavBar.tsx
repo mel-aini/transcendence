@@ -1,10 +1,11 @@
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes, useEffect, useState } from "react";
 import NavBarElem from "./NavBarElem";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
 import User from "./User";
 import useLog from "../hooks/useLog";
+import api from "../api/axios";
 
 interface ArrowType extends HTMLAttributes<HTMLDivElement> {
 	left: number
@@ -66,6 +67,13 @@ const NavBar = ({className}: {className?: string}) => {
 		}
 		setEvent('auto');
 	}
+
+	useEffect(() => {
+		(async function() {
+			const res = await api.get('api/generate-googlelink/');
+			console.log(res)
+		})()
+	}, [])
 
 	return (
 		<div className={"relative w-full h-[100px] flex items-center" + (className ? ` ${className}` : '')}>
