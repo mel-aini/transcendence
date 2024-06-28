@@ -30,6 +30,10 @@ const UserActions = ({isProfile, data}: {isProfile: boolean, data: UserData}) =>
 	const [action, setAction] = useState<Actions | null>(null);
 	let request: ProfileRequest;
 
+	const clickHandler = () {
+		
+	}
+
 	useEffect(() => {
 		if (isProfile) {
 			setAction(Actions.EditProfile);
