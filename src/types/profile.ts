@@ -52,7 +52,7 @@ export interface ProfileRes {
 }
 
 export interface ProfileRequest {
-	type: "add" | "accept" | "cancel" | "block" | "unblock" | "unfriend",
-	other_user: string,
-	status?: boolean
+	type: "add" | "accept" | "deny" | "block" | "unblock" | "unfriend" | "cancel" | "online",
+	identifier: string,
+	data: {}
 }

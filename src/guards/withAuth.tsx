@@ -26,7 +26,3 @@ function withAuth(Component: ComponentType) {
 }
 
 export default withAuth;
-
-// user login
-// username: mel-test
-// password: MEL-test123

@@ -10,6 +10,8 @@ import LoadingPage from "./components/LoadingPage";
 import withAuth from  './guards/withAuth'
 import withoutAuth from  './guards/withoutAuth'
 import AuthContextProvider from "./contexts/authProvider";
+import GlobalWebSocketContextProvider, { GlobalWebSocketContext } from "./contexts/globalWebSokcketStore";
+import withProfile from "./guards/withProfile";
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
@@ -29,6 +31,7 @@ function App() {
         <AuthContextProvider>
           <ChatContextProvider>
             <PingPongContextProvider>
+              <GlobalWebSocketContextProvider>
               <Suspense fallback={<LoadingPage />}>
                 <Routes>
                   <Route path="/" element={<MainLayout />}>
@@ -38,10 +41,10 @@ function App() {
                     <Route path="/chat" element={withAuth(Chat)} />
                     <Route element={withAuth(Layout)}>
                       <Route path="/settings" element={<Settings />} />
-                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/profile" element={withProfile(Profile)} />
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path='/users'>
-                        <Route path=':id' element={<Profile />} />
+                        <Route path=':id' element={withProfile(Profile)} />
                         <Route path='*' element={<>Not Found</>} />
                       </Route>
                       <Route path='/ping-pong'>
@@ -56,6 +59,7 @@ function App() {
                   </Route>
                 </Routes>
               </Suspense>
+              </GlobalWebSocketContextProvider>
             </PingPongContextProvider>
           </ChatContextProvider>
         </AuthContextProvider>

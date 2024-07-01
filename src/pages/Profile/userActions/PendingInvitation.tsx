@@ -1,21 +1,27 @@
+import { useContext } from "react";
 import { ProfileRequest } from "../../../types/profile"
-import { profileSocket } from "../../../utils/profileSocket";
+import { profileContext } from "../Index";
+import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
+import { useProfileContext } from "../../../contexts/profileStore";
 
-const PendingInvitation = (username: string) => {
+const PendingInvitation = () => {
+	const { sendJsonMessage } = useGlobalWebSocketContext();
+	// const userData = useContext(profileContext);
+	const { state, dispatchProfile } = useProfileContext();
 
-	const clickHandler = (status: boolean) => {
+	const clickHandler = (type: "accept" | "deny") => {
 		const request: ProfileRequest = {
-			type: "accept",
-			other_user: username,
-			status: status
+			type: type,
+			identifier: state.userData.username,
+			data: {}
 		};
-		profileSocket?.send(JSON.stringify(request));
+		sendJsonMessage(request);
 	}
 
 	return (
 		<div>
-			<h1 onClick={() => clickHandler(true)}>accept</h1>
-			<h1 onClick={() => clickHandler(false)}>reject</h1>
+			<h1 onClick={() => clickHandler("accept")}>accept</h1>
+			<h1 onClick={() => clickHandler("deny")}>reject</h1>
 		</div>
 	)
 }

@@ -2,17 +2,27 @@ import play_icon from "/play_icon.svg"
 import send_icon from "/send_icon.svg"
 import more_icon from "/more_icon.svg"
 import { Menu, MenuButton, MenuItem, MenuItems, MenuSeparator, Transition } from '@headlessui/react'
-import { ProfileRequest } from "../../../types/profile"
+import { ProfileRequest, UserData } from "../../../types/profile"
 import { profileSocket } from "../../../utils/profileSocket"
+import { profileContext } from "../Index"
+import useWebSocket from "react-use-websocket"
+import { useContext, useEffect, useState } from "react"
+import { WS_URL } from "../../../contexts/store"
+import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore"
+import { useProfileContext } from "../../../contexts/profileStore"
 
-const FriendActions = (username: string) => {
+const FriendActions = () => {
+	const { sendJsonMessage } = useGlobalWebSocketContext();
+	// const userData = useContext(profileContext);
+	const { state } = useProfileContext();
 
 	const clickHandler = (type: "unfriend" | "block") => {
 		const request: ProfileRequest = {
 			type: type,
-			other_user: username
+			identifier: state.userData.username,
+			data: {}
 		};
-		profileSocket?.send(JSON.stringify(request));
+		sendJsonMessage(request);
 	}
 
 	return (

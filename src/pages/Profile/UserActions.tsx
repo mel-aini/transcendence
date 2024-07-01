@@ -1,89 +1,73 @@
 import { useEffect, useState } from "react"
-import { ProfileRequest, UserData } from "../../types/profile";
 import EditProfile from "./userActions/EditProfile";
 import FriendActions from "./userActions/FriendActions";
 import AddFriend from "./userActions/AddFriend";
-import { profileSocket } from "../../utils/profileSocket";
 import SendingInvitation from "./userActions/SendingInvitation";
 import PendingInvitation from "./userActions/PendingInvitation";
 import Blocked from "./userActions/Blocked";
-import useWebSocket from "react-use-websocket";
-import { useProfileContext } from "../../contexts/profileStore";
+import { Actions, useProfileContext } from "../../contexts/profileStore";
 
-enum Actions {
-	EditProfile,
-	AddFriend,
-	Friend,
-	SendingInvitation,
-	PendingInvitation,
-	Blocked
-}
+const UserActions = ({isProfile}: {isProfile: boolean}) => {
+	// const userData = useContext(profileContext);
+	// const { lastJsonMessage } = useGlobalWebSocketContext();
+	// const [action, setAction] = useState<Actions | null>(null);
+	const { state, dispatchProfile } = useProfileContext();
 
-const UserActions = ({isProfile, data}: {isProfile: boolean, data: UserData}) => {
-	const WS_URL = "ws://127.0.0.1:8080";
-	const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(WS_URL,
-		{
-			share: false,
-			shouldReconnect: () => true,
-		},
-	);
-	const [action, setAction] = useState<Actions | null>(null);
-	let request: ProfileRequest;
+	// const setValue = (relation: string) => {
+	// 	if (relation == "add")
+	// 		return "send_req";
+	// 	if (relation == "accept")
+	// 		return "friend";
+	// 	if (relation == "deny" || relation == "unblock" || relation == "unfriend" || relation == "cancel")
+	// 		return "none";
+	// 	if (relation == "block")
+	// 		return "blocker";
+	// }
 
-	const clickHandler = () {
-		
+	const setActions = (relation: string | undefined) => {
+		if (!relation)
+			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.AddFriend})
+		else if (relation == 'none')
+			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.AddFriend})
+		else if (relation == 'friend')
+			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.Friend})
+		else if (relation == 'send_req')
+			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.SendingInvitation})
+		else if (relation == 'rec_req')
+			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.PendingInvitation})
+		else if (relation == 'blocker')
+			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.Blocked})
 	}
 
+	// useEffect(() => {
+	// 	if (lastJsonMessage && lastJsonMessage.type === "user-action" && lastJsonMessage.code === 200 && lastJsonMessage.identifier === state.userData.username)
+	// 	{
+	// 		const value = setValue(lastJsonMessage.data.value);
+			
+	// 		dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: value}});
+	// 		setActions(value);
+	// 	}
+	// 	console.log("2", lastJsonMessage);
+	// }, [lastJsonMessage])
+
+	
 	useEffect(() => {
 		if (isProfile) {
-			setAction(Actions.EditProfile);
+			dispatchProfile({ type: "FRIEND_ACTION", friendAction: Actions.EditProfile });
 		}
-		else if (!data.relation) {
-			setAction(Actions.AddFriend)
-			request  = {
-				type: "add",
-				other_user: data.username
-			};
-		}
-		else if (data.relation == 'none') {
-			setAction(Actions.AddFriend)
-			request  = {
-				type: "add",
-				other_user: data.username
-			};
-		}
-		else if (data.relation == 'friend') {
-			setAction(Actions.Friend)
-		}
-		else if (data.relation == 'send_req') {
-			setAction(Actions.SendingInvitation)
-			request  = {
-				type: "cancel",
-				other_user: data.username
-			};
-		}
-		else if (data.relation == 'rec_req') {
-			setAction(Actions.PendingInvitation)
-		}
-		else if (data.relation == 'blocker') {
-			setAction(Actions.Blocked)
-			request  = {
-				type: "unblock",
-				other_user: data.username
-			};
-		}
-
+		else
+			setActions(state.userData?.relation);
 	}, [])
 
 	return (
 		<>
-			{action == null && <h1>loading...</h1>}
-			{action == Actions.EditProfile && <EditProfile />}
-			{action == Actions.Friend && <FriendActions username={data.username}/>}
-			{action == Actions.AddFriend && <AddFriend clickHandler={() => profileSocket?.send(JSON.stringify(request))}/>}
-			{action == Actions.SendingInvitation && <SendingInvitation clickHandler={() => profileSocket?.send(JSON.stringify(request))}/>}
-			{action == Actions.PendingInvitation && <PendingInvitation username={data.username}/>}
-			{action == Actions.Blocked && <Blocked clickHandler={() => profileSocket?.send(JSON.stringify(request))}/>}
+			{state.friendAction == null && <h1>loading...</h1>}
+			{state.friendAction == Actions.EditProfile && <EditProfile />}
+			{state.friendAction == Actions.Friend && <FriendActions />}
+			{state.friendAction == Actions.AddFriend && <AddFriend />}
+			{state.friendAction == Actions.SendingInvitation && <SendingInvitation />}
+			{state.friendAction == Actions.PendingInvitation && <PendingInvitation />}
+			{state.friendAction == Actions.Blocked && <Blocked />}
 		</>
 	)
 }
