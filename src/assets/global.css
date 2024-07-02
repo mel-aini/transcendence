@@ -135,12 +135,12 @@ background: var(--white-color);
 
 @keyframes loader {
 	0% {
-		width: 12px;
+		width: 8px;
 	}
 	50% {
-		width: 28px;
+		width: 16px;
 	}
 	100% {
-		width: 12px;
+		width: 8px;
 	}
 }

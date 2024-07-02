@@ -1,72 +1,56 @@
-import play_icon from "/play_icon_primary.svg"
-import send_icon from "/send_icon_primary.svg"
-import more_icon from "/more_icon.svg"
-import accept from "/accept.svg"
-import deny from "/deny.svg"
-import { FriendsData, ProfileRequest } from "../../types/profile"
+import { FriendsData } from "../../types/profile"
 import { useNavigate } from "react-router-dom"
-import { Menu, MenuButton, MenuItem, MenuItems, MenuSeparator, Transition } from "@headlessui/react"
-import { profileSocket } from "../../utils/profileSocket"
+import { useEffect, useState } from "react"
+import FriendActions from "./userActions/FriendActions"
+import AddFriend from "./userActions/AddFriend"
+import PendingInvitation from "./userActions/PendingInvitation"
+import Blocked from "./userActions/Blocked"
+import SendingInvitation from "./userActions/SendingInvitation"
+import WaitingAction from "./userActions/WaitingAction"
 
 const Action = ({username, relation}: {username: string, relation: string}) => {
+	const [action, setAction] = useState<string>(relation);
 
-	const clickHandler = (type: "accept" | "unblock" |  "unfriend" | "block", status?: boolean) => {
-		const request: ProfileRequest = {
-			type: type,
-			other_user: username,
-		};
-		if (status != undefined)
-			request.status = status;
-		profileSocket?.send(JSON.stringify(request));
-	}
-	return (<>
+	// const clickHandler = (type: "accept" | "deny" | "unblock" |  "unfriend" | "block") => {
+
+	// 		dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
+	// 		const request: ProfileRequest = {
+	// 			type: type,
+	// 			identifier: username,
+	// 			data: {}
+	// 		};
+	// 		sendJsonMessage(request);
+	// 	}
+		// 'none' | 'friend' | 'send_req' | 'rec_req' | 'blocker'
+
+	useEffect(() => {
+		
+	}, []);
+	return (
+		<>
 		{
-			(relation === "friend") && 
-			<div className="flex justify-end gap-[27px] shrink-0">
-				<Menu as="div" className="relative">
-					<MenuButton className="outline-none">
-						<div className="flex gap-[0.5px]">
-							<img src={more_icon} alt="" width={5.36} height={5.36}/>
-							<img src={more_icon} alt="" width={5.36} height={5.36}/>
-							<img src={more_icon} alt="" width={5.36} height={5.36}/>
-						</div>
-					</MenuButton>
-					<Transition
-						enter="transition ease-out duration-100"
-						enterFrom="transform opacity-0 scale-95"
-						enterTo="transform opacity-100 scale-100"
-						leave="transition ease-in duration-75"
-						leaveFrom="transform opacity-100 scale-100"
-						leaveTo="transform opacity-0 scale-95"
-					>
-						<MenuItems className="absolute duration-100 bg-bg top-1/2 -translate-y-1/2 -right-3 sm:right-7 flex flex-col border border-border rounded-md outline-none">
-							<MenuItem><span onClick={() => clickHandler("unfriend")} className="text-primary my-[2px] px-3 cursor-pointer select-none">unfriend</span></MenuItem>
-							<MenuSeparator className="mx-1 h-px bg-border"/>
-							<MenuItem><span onClick={() => clickHandler("block")} className="text-primary my-[2px] px-3 cursor-pointer select-none">block</span></MenuItem>
-						</MenuItems>
-					</Transition>
-				</Menu>
-				{/* <div className="flex gap-[0.5px]">
-					<img src={more_icon} alt="" width={5.36} height={5.36}/>
-					<img src={more_icon} alt="" width={5.36} height={5.36}/>
-					<img src={more_icon} alt="" width={5.36} height={5.36}/>
-				</div> */}
-				<img src={play_icon} alt="" width={20} height={20}/>
-				<img src={send_icon} alt="" width={20} height={20}/>
-			</div>
+			action == null && 
+			<WaitingAction />
 		}
 		{
-			(relation === "rec_inv") && 
-			<div className="flex justify-end gap-[30px] shrink-0">
-				<img onClick={() => clickHandler("accept", false)} src={deny} alt="" width={20}/>
-				<img onClick={() => clickHandler("accept", true)} src={accept} alt="" width={20}/>
-			</div>
+			(action === "friend") && 
+			<FriendActions username={username}/>
 		}
 		{
-			(relation === "blocked") && 
-			<div onClick={() => clickHandler("unblock")} className="flex justify-center shrink-0 w-[101px] h-[26px] rounded-[15px] border opacity-35">
-				unblock
-			</div>
+			(action === "rec_inv") && //rec_req
+			<PendingInvitation username={username}/>
+		}
+		{
+			(action === "blocked") && //blocker
+			<Blocked username={username} />
+		}
+		{
+			(action === "add") && //none
+			<AddFriend username={username} />
+		}
+		{
+			(action === "send_req") &&
+			<SendingInvitation username={username} />
 		}
 		</>
 	)

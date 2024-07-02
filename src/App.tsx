@@ -31,7 +31,7 @@ function App() {
         <AuthContextProvider>
           <ChatContextProvider>
             <PingPongContextProvider>
-              <GlobalWebSocketContextProvider>
+              {/* <GlobalWebSocketContextProvider> */}
               <Suspense fallback={<LoadingPage />}>
                 <Routes>
                   <Route path="/" element={<MainLayout />}>
@@ -59,7 +59,7 @@ function App() {
                   </Route>
                 </Routes>
               </Suspense>
-              </GlobalWebSocketContextProvider>
+              {/* </GlobalWebSocketContextProvider> */}
             </PingPongContextProvider>
           </ChatContextProvider>
         </AuthContextProvider>

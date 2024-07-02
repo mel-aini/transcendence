@@ -3,25 +3,33 @@ import { ProfileRequest } from "../../../types/profile"
 import { profileContext } from "../Index";
 import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
 import { useProfileContext } from "../../../contexts/profileStore";
+import deny from "/deny.svg"
+import accept from "/accept.svg"
 
-const PendingInvitation = () => {
+const PendingInvitation = ({username}: {username: string}) => {
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	// const userData = useContext(profileContext);
 	const { state, dispatchProfile } = useProfileContext();
 
 	const clickHandler = (type: "accept" | "deny") => {
+		dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
 		const request: ProfileRequest = {
 			type: type,
-			identifier: state.userData.username,
+			identifier: username,
 			data: {}
 		};
 		sendJsonMessage(request);
 	}
 
 	return (
-		<div>
-			<h1 onClick={() => clickHandler("accept")}>accept</h1>
-			<h1 onClick={() => clickHandler("deny")}>reject</h1>
+		<div className="shrink-0 w-[140px] h-[40px] flex justify-between items-center">
+			<div onClick={() => clickHandler("deny")} className="h-full w-[40px] bg-secondary rounded-md select-none flex justify-center items-center">
+				<img src={deny} alt="" width={20} height={20}/>
+			</div>
+			<div onClick={() => clickHandler("accept")} className="h-full w-[90px] bg-secondary rounded-md cursor-pointer select-none flex justify-center items-center gap-1">
+				<span>accept</span>
+				<img src={accept} alt="" width={20} height={20}/>
+			</div>
 		</div>
 	)
 }

@@ -5,24 +5,27 @@ import { useContext } from "react";
 import { ProfileRequest } from "../../../types/profile";
 import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
 import { useProfileContext } from "../../../contexts/profileStore";
+import unblock from "/unblock.svg"
 
-const Blocked = () => {
+const Blocked = ({username}: {username: string}) => {
 
 	const {sendJsonMessage} = useGlobalWebSocketContext();
 	// const userData = useContext(profileContext);
-	const { state } = useProfileContext();
+	const { state, dispatchProfile } = useProfileContext();
 
 	const clickHandler = () => {
+		dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
 		const request: ProfileRequest = {
 			type: "unblock",
-			identifier: state.userData.username,
+			identifier: username,
 			data: {}
 		};
 		sendJsonMessage(request);
 	}
 	return (
-		<div onClick={clickHandler} className="flex justify-center shrink-0 w-[101px] h-[26px] rounded-[15px] border opacity-35 select-none cursor-pointer">
-			unblock
+		<div onClick={clickHandler} className="bg-secondary flex items-center justify-center shrink-0 w-[110px] h-[40px] rounded-md select-none cursor-pointer gap-2">
+			<span>unblock</span>
+			<img src={unblock} alt="" width={20} height={20}/>
 		</div>
 	)
 }

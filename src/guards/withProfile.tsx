@@ -1,12 +1,16 @@
-import { ComponentType } from "react";
-import ProfileContextProvider from "../contexts/profileStore";
+import { ComponentType, useEffect } from "react";
+import ProfileContextProvider, { useProfileContext } from "../contexts/profileStore";
+import GlobalWebSocketContextProvider, { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
 
 function withProfile(Component: ComponentType) {
+
 
 	function UpdatedComponent() {
 		return (
 			<ProfileContextProvider>
-				<Component />
+				<GlobalWebSocketContextProvider>
+					<Component />
+				</GlobalWebSocketContextProvider>
 			</ProfileContextProvider>
 		);
 	}

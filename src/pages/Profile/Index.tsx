@@ -43,7 +43,9 @@ const Index = () => {
 				<div className="xl:h-[800px] grid grid-cols-1 pt-20 xl:grid-cols-7 xl:mt-[75px] gap-5 pb-7">
 						<States data={state.userData} />
 						<Friends id={id} />
-					{state.userData ?
+					{
+						state.userData
+						?
 						<History id={id} username={state.userData.username} />
 						:
 						<div>Loading...</div>

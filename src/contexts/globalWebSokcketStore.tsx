@@ -1,16 +1,39 @@
-import { ReactNode, createContext, useContext, useEffect } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
-import { Actions, useProfileContext } from "./profileStore";
+import { useProfileContext } from "./profileStore";
 
-export const GlobalWebSocketContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
+export interface GlobalData {
+	friendActionChanged: boolean
+}
+
+const initialState: GlobalData = {
+	friendActionChanged: false
+};
+
+export const GlobalWebSocketContext = createContext<{GlobalState: GlobalData, dispatchGlobal: Dispatch<any>, lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
 	lastJsonMessage: '',
 	sendJsonMessage: () => {
-	}
+	},
+	dispatchGlobal: () => {},
+	GlobalState: initialState
 });
 
+const reducer = (state: GlobalData, action: any) => {
+	console.log("hnaaa");
+	switch (action.type)
+	{
+		case 'friendActionChanged':
+			return { 
+				...state, 
+				friendActionChanged: action.friendActionChanged
+			}
+		default:
+			return state;
+	}
+}
+
 const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
-	// const lastMessage = useState('')
 	const { state, dispatchProfile } = useProfileContext();
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_URL,
 		{
@@ -18,20 +41,8 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			shouldReconnect: () => true,
 		},
 	);
-	const setActions = (relation: string | undefined) => {
-		if (!relation)
-			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.AddFriend})
-		else if (relation == 'none')
-			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.AddFriend})
-		else if (relation == 'friend')
-			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.Friend})
-		else if (relation == 'send_req')
-			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.SendingInvitation})
-		else if (relation == 'rec_req')
-			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.PendingInvitation})
-		else if (relation == 'blocker')
-			dispatchProfile({type: "FRIEND_ACTION", friendAction: Actions.Blocked})
-	}
+	const [GlobalState, dispatchGlobal] = useReducer(reducer, initialState);
+
 	const setValue = (relation: string) => {
 		if (relation == "add")
 			return "send_req";
@@ -43,20 +54,27 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			return "blocker";
 	}
 
-	useEffect(() => {
-		if (state.userData &&  lastJsonMessage && lastJsonMessage.type === "user-action" && lastJsonMessage.code === 200 && lastJsonMessage.identifier === state.userData.username)
-		{
-			const value = setValue(lastJsonMessage.data.value);
+	const isEmptyObject = (obj: any) => {
+		if (obj === null)
+			return (true);
+		return JSON.stringify(obj) === '{}';
+	  };
 
-			dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: value}});
-			setActions(value);
+	useEffect(() => {
+		if (!isEmptyObject(state.userData) && !isEmptyObject(lastJsonMessage) && lastJsonMessage.type === "user-action" && lastJsonMessage.identifier === state.userData.username)
+		{
+			if (lastJsonMessage.code === 200) {
+				const value = setValue(lastJsonMessage.data.value);
+				dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: value}});
+			}
+			else
+				dispatchProfile({type: "USER_DATA", userData: {...state.userData}});
 		}
-		console.log(lastJsonMessage);
 	}, [lastJsonMessage])
 	
 	// useEffect
 	return (
-		<GlobalWebSocketContext.Provider value={{lastJsonMessage, sendJsonMessage}}>
+		<GlobalWebSocketContext.Provider value={{lastJsonMessage, sendJsonMessage, GlobalState, dispatchGlobal}}>
 			{children}
 		</GlobalWebSocketContext.Provider>
 	)

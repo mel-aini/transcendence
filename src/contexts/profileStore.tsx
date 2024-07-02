@@ -13,7 +13,7 @@ export enum Actions {
 export interface ProfileData {
 	userData: UserData | null,
 	friendAction: Actions | null,
-	// friendsData: FriendsData[] | null,
+	friendsData: FriendsData[] | null,
 	// matchesData: MatchesData[] | null,
 	// user: string,
 	// seeAll: boolean
@@ -22,7 +22,7 @@ export interface ProfileData {
 const initialState: ProfileData = {
 	userData: null,
 	friendAction: null,
-	// friendsData: null,
+	friendsData: null,
 	// matchesData: null,
 	// user: "profile",
 	// seeAll: false
@@ -46,26 +46,16 @@ const reducer = (state: ProfileData, action: any) => {
 				...state, 
 				friendAction: action.friendAction
 			}
-		// case 'FRIENDS_DATA':
-		// 	return { 
-		// 		...state, 
-		// 		friendsData: action.friendsData
-		// 	}
-		// case 'MATCHES_DATA':
-		// 	return { 
-		// 		...state, 
-		// 		matchesData: action.matchesData
-		// 	}
-		// case 'USER':
-		// 	return { 
-		// 		...state, 
-		// 		user: action.user
-		// 	}
-		// case 'SEE_ALL':
-		// 	return { 
-		// 		...state, 
-		// 		seeAll: action.seeAll
-		// 	}
+		case 'FRIEND_DATA':
+			return { 
+				...state, 
+				friendAction: action.friendAction
+			}
+		case 'FRIEND_DATA_RELATION':
+			return { 
+				...state, 
+				friendAction: action.friendAction
+			}
 		default:
 			return state;
 	}
