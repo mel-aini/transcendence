@@ -1,18 +1,18 @@
 import { ComponentType } from "react";
 import { Navigate } from "react-router-dom";
 import jwt from "../utils/jwt";
+import { useAuthContext } from "../contexts/authProvider";
 
 function withoutAuth(Component: ComponentType) {
 
 	function UpdatedComponent() {
 
-		const accessToken = jwt.getAccessToken();
-		
-		if (accessToken) {
-			return (
-				<Navigate to="/dashboard" />
-			)
-		} 
+		// const { state } = useAuthContext();
+	
+		// if (jwt.isValid(state.accessToken)) {
+		// 	return <Navigate to="/dashboard" />
+		// }
+
 		return (
 			<Component />
 		);

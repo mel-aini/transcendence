@@ -1,22 +1,25 @@
 import { ComponentType } from "react";
-import { Navigate } from "react-router-dom";
+import { useAuthContext } from "../contexts/authProvider";
 import jwt from "../utils/jwt";
-import WithSocket from "./withSocket";
+import UpdateToken from "./UpdateToken";
 
 function withAuth(Component: ComponentType) {
 
 	function UpdatedComponent() {
+		const { state }  = useAuthContext();
+		if (!jwt.isValid(state.accessToken)) {
 
-		const accessToken = jwt.getAccessToken();
-
-		if (!accessToken) {
-			return <Navigate to="/login" />
+			return (
+				<UpdateToken>
+					<Component />
+				</UpdateToken>
+			)
 		}
 
 		return (
-			<WithSocket>
+			// <WithSocket>
 				<Component />
-			</WithSocket>
+			// </WithSocket>
 		);
 	}
 

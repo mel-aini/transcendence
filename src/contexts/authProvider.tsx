@@ -1,5 +1,6 @@
 import { Dispatch, ReactNode, createContext, useContext, useLayoutEffect, useReducer } from "react";
 import api from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 export interface GlobalStateProps {
 	accessToken: string | null
@@ -24,9 +25,12 @@ const reducer = (state: GlobalStateProps, action: any) => {
 	}
 }
 
+const NO_RETRY_HEADER = 'x-no-retry'
+
 const AuthContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
-	
+	const navigate = useNavigate();
+
 	useLayoutEffect(() => {
 		// intercept requests
 		const id = api.interceptors.request.use((reqConfig) => {
@@ -44,18 +48,17 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 		const id = api.interceptors.response.use(resConfig => resConfig, async (error) => {
 			const originRequest = error.config;
 
-			try {
-				if (error.response.status == 401 || error.response.status == 403) {
-					// access token should refresh
-					const res = await api.get('/refresh');
-					dispatch({type: 'TOKEN', token: res.data.refresh})
-					originRequest.headers.Authorization = `Bearer ${res.data.refresh}`;
-					originRequest._retry = true;
+			
+				if (error.response.status == 401) {
+					if (!error.config.headers[NO_RETRY_HEADER]) {
+						dispatch({type: 'TOKEN', token: null});
+						navigate('/login')
+						return Promise.reject(error)
+					}
+					error.config.headers[NO_RETRY_HEADER] = 'true';
+					const res = await api.post('/api/token/refresh/');
 					return api(originRequest);
 				}
-			} catch (error) {
-				dispatch({type: 'TOKEN', token: null})
-			}
 		})
 
 		return () => {

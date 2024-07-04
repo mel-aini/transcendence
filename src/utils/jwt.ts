@@ -1,53 +1,29 @@
-import { JwtPayload, jwtDecode } from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
+import api from '../api/axios';
 
-interface JWT {
-	access: string,
-	refresh: string
-}
-
-interface NewJwtPayload extends JwtPayload {
-	user_id: number | string
-}
 
 class Jwt {
 
 	constructor() {}
 
-	save({access, refresh}: JWT) {
-		localStorage.setItem('access', access);
-		localStorage.setItem('refresh', refresh);
-		const payload = jwt.decode();
-		// console.log(payload)
-		const user_id = payload?.user_id;
-		if (user_id) {
-			sessionStorage.setItem('user_id', user_id.toString());
+	isValid(token: string | null) {
+		if (!token) return false;
+		const payload = jwtDecode(token);
+		const currentTime = Date.now() / 1000;
+
+		if (!payload.exp || currentTime > payload.exp) {
+			return false;
 		}
+		return true;
 	}
 
-	remove() {
-		if (localStorage.getItem('access')) {
-			localStorage.removeItem('access');
+	async refresh() {
+		try {
+			const res = await api.post('api/token/refresh/');
+			return res.data.access_token
+		} catch (error) {
+			return null;
 		}
-		if (localStorage.getItem('refresh')) {
-			localStorage.removeItem('refresh');
-		}
-		if (sessionStorage.getItem('user_id')) {
-			sessionStorage.removeItem('user_id');
-		}
-	}
-
-	getAccessToken() {
-		return (localStorage.getItem('access'));
-	}
-	
-	getRefreshToken() {
-		return (localStorage.getItem('refresh'));
-	}
-
-	decode() : NewJwtPayload | null {
-		const token: string | null = this.getAccessToken();
-		if (!token) return null
-		return jwtDecode(token)
 	}
 }
 

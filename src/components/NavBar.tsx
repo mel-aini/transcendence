@@ -71,7 +71,6 @@ const NavBar = ({className}: {className?: string}) => {
 	useEffect(() => {
 		(async function() {
 			const res = await api.get('api/generate-googlelink/');
-			console.log(res)
 		})()
 	}, [])
 

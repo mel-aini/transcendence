@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
+import { useAuthContext } from "../contexts/authProvider";
 
 const useLog = () => {
-	const {dispatch} = useGlobalContext();
+	const {dispatch} = useAuthContext()
 	const navigate = useNavigate();
 
 	const action = (type: 'LOGIN' | 'LOGOUT') => {
@@ -13,7 +14,7 @@ const useLog = () => {
 			case 'LOGOUT':
 				// code
 				dispatch({type: 'LOADING', state: true})
-				dispatch({type: 'LOGOUT'});
+				dispatch({type: 'TOKEN', token: null})
 				navigate('/')
 				break;
 		}

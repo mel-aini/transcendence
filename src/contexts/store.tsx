@@ -22,13 +22,6 @@ export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: D
 const reducer = (state: GlobalStateProps, action: any) => {
 	switch (action.type)
 	{
-		case 'LOGIN':
-			jwt.save(action.jwt)
-			return { ...state, isLogin: true, access: action.jwt.access}
-		case 'LOGOUT':
-			jwt.remove()
-			// socket.disconnect()
-			return { ...state, isLogin: false, access: null }
 		case 'LOADING':
 			if (action.state == true) {
 				return { ...state, isLoading: true }
