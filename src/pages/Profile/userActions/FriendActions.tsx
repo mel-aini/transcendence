@@ -5,7 +5,7 @@ import block from "/block.svg"
 import unfriend from "/unfriend.svg"
 import deny from "/deny.svg"
 import { Menu, MenuButton, MenuItem, MenuItems, MenuSeparator, Transition } from '@headlessui/react'
-import { ProfileRequest, UserData } from "../../../types/profile"
+import { FriendsData, ProfileRequest, Relation, UserData } from "../../../types/profile"
 import { profileSocket } from "../../../utils/profileSocket"
 import { profileContext } from "../Index"
 import useWebSocket from "react-use-websocket"
@@ -13,15 +13,23 @@ import { useContext, useEffect, useState } from "react"
 import { WS_URL } from "../../../contexts/store"
 import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore"
 import { useProfileContext } from "../../../contexts/profileStore"
+import { modifyObjectByName } from "../UserActions"
 
-const FriendActions = ({username}: {username: string}) => {
+const FriendActions = ({username, origin}: {username: string, origin: string}) => {
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	// const userData = useContext(profileContext);
 	const { state, dispatchProfile } = useProfileContext();
 	const [seeMore, setSeeMore] = useState<boolean>(false);
 
 	const clickHandler = (type: "unfriend" | "block") => {
-		dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
+		if (origin === "profile") {
+			const updatedArray = modifyObjectByName([...state.friendsData], username);
+			if (updatedArray) {
+				dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
+			}
+		}
+		else if (origin === "user")
+			dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
 		const request: ProfileRequest = {
 			type: type,
 			identifier: username,

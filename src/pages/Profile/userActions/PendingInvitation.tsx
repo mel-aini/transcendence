@@ -5,14 +5,22 @@ import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketSto
 import { useProfileContext } from "../../../contexts/profileStore";
 import deny from "/deny.svg"
 import accept from "/accept.svg"
+import { modifyObjectByName } from "../UserActions";
 
-const PendingInvitation = ({username}: {username: string}) => {
+const PendingInvitation = ({username, origin}: {username: string, origin: string}) => {
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	// const userData = useContext(profileContext);
 	const { state, dispatchProfile } = useProfileContext();
 
 	const clickHandler = (type: "accept" | "deny") => {
-		dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
+		if (origin === "profile") {
+			const updatedArray = modifyObjectByName([...state.friendsData], username);
+			if (updatedArray) {
+				dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
+			}
+		}
+		else if (origin === "user")
+			dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
 		const request: ProfileRequest = {
 			type: type,
 			identifier: username,

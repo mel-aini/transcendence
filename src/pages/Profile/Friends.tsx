@@ -5,20 +5,21 @@ import { useGlobalContext } from "../../contexts/store";
 import { useNavigate } from "react-router-dom";
 import fetchProfile from "./fetchProfile";
 import Container from "../../components/Container";
+import { useProfileContext } from "../../contexts/profileStore";
 
 export const context = createContext<any>({});
 
 const Friends = ({id}: {id: string | undefined}) => {
+	const { state, dispatchProfile } = useProfileContext();
 	const { dispatch } = useGlobalContext();
 	const navigate = useNavigate();
 	const [seeAll, setSeeAll] = useState<boolean>(false);
-	const [data, setData] = useState<FriendsData[] | null>(null);
 	const uri = id ? "friends/" + id + "/" : "friends/";
 
 	const collectData = async () => {
 		const ProfileRes: ProfileRes = await fetchProfile(uri + "?start=0&end=15");
 		if (ProfileRes.status == 200)
-			setData(ProfileRes.data);
+			dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes.data});
 		else if (ProfileRes.status == 404)
 			navigate('/');
 		else if (ProfileRes.status == 401) {
@@ -45,7 +46,7 @@ const Friends = ({id}: {id: string | undefined}) => {
 						{ seeAll && <AllFriends id={id} /> }
 					</div>
 					<div className="flex justify-start items-center gap-3 w-full overflow-hidden">
-						{data && data.map((friend: FriendsData, key: number) => {
+						{state.friendsData && state.friendsData.map((friend: FriendsData, key: number) => {
 							return (
 								<img onClick={() => userClick(friend.profile)} key={key} className="min-w-[40px] h-[40px] cursor-pointer rounded-full" src={friend.profile_image}/>
 							)

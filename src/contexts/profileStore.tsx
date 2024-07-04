@@ -12,20 +12,18 @@ export enum Actions {
 
 export interface ProfileData {
 	userData: UserData | null,
-	friendAction: Actions | null,
 	friendsData: FriendsData[] | null,
+	settings: boolean
 	// matchesData: MatchesData[] | null,
 	// user: string,
-	// seeAll: boolean
 }
 
 const initialState: ProfileData = {
 	userData: null,
-	friendAction: null,
 	friendsData: null,
+	settings: false
 	// matchesData: null,
 	// user: "profile",
-	// seeAll: false
 };
 
 export const ProfileContext = createContext<{state: ProfileData, dispatchProfile: Dispatch<any>}>({
@@ -41,20 +39,15 @@ const reducer = (state: ProfileData, action: any) => {
 				...state, 
 				userData: action.userData
 			}
-		case 'FRIEND_ACTION':
-			return { 
-				...state, 
-				friendAction: action.friendAction
-			}
 		case 'FRIEND_DATA':
 			return { 
 				...state, 
-				friendAction: action.friendAction
+				friendsData: action.friendsData
 			}
-		case 'FRIEND_DATA_RELATION':
+		case 'SETTINGS':
 			return { 
 				...state, 
-				friendAction: action.friendAction
+				settings: action.settings
 			}
 		default:
 			return state;

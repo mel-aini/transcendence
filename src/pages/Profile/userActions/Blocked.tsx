@@ -6,15 +6,23 @@ import { ProfileRequest } from "../../../types/profile";
 import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
 import { useProfileContext } from "../../../contexts/profileStore";
 import unblock from "/unblock.svg"
+import { modifyObjectByName } from "../UserActions";
 
-const Blocked = ({username}: {username: string}) => {
+const Blocked = ({username, origin}: {username: string, origin: string}) => {
 
 	const {sendJsonMessage} = useGlobalWebSocketContext();
 	// const userData = useContext(profileContext);
 	const { state, dispatchProfile } = useProfileContext();
 
 	const clickHandler = () => {
-		dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
+		if (origin === "profile") {
+			const updatedArray = modifyObjectByName([...state.friendsData], username);
+			if (updatedArray) {
+				dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
+			}
+		}
+		else if (origin === "user")
+			dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
 		const request: ProfileRequest = {
 			type: "unblock",
 			identifier: username,
