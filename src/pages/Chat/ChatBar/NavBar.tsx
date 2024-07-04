@@ -16,27 +16,27 @@ function NavBar({className}: Props) {
 					<div className="w-[25px] h-[25px] border rounded-full"></div>
 				</Link>
 				<Link to='/dashboard'>
-					<RiDashboardLine className="text-[25px]" />
+					<RiDashboardLine className="text-[25px] hover:fill-primary duration-300" />
 				</Link>
 				<Link to='/chat'>
-					<IoChatbubbleOutline className="text-[25px]" />
+					<IoChatbubbleOutline className="text-[25px] hover:stroke-primary duration-300" />
 				</Link>
-				<FiBell className="text-[25px]" />
+				<FiBell className="text-[25px] hover:stroke-primary duration-300 cursor-pointer" />
 			</div>
 			<>
 				<Link to='/profile'>
 					<div className="lg:hidden w-[25px] h-[25px] border rounded-full"></div>
 				</Link>
 				<Link to='/dashboard'>
-					<RiDashboardLine className="lg:hidden text-[25px]" />
+					<RiDashboardLine className="lg:hidden text-[25px] hover:fill-primary duration-300" />
 				</Link>
 				<Link to='/chat'>
-					<IoChatbubbleOutline className="lg:hidden text-[25px]" />
+					<IoChatbubbleOutline className="lg:hidden text-[25px] hover:stroke-primary duration-300" />
 				</Link>
-				<FiBell className="lg:hidden text-[25px]" />
+				<FiBell className="lg:hidden text-[25px] hover:stroke-primary duration-300 cursor-pointer" />
 			</>
 			<Link to='/settings'>
-				<IoSettingsOutline className="text-[25px]" />
+				<IoSettingsOutline className="text-[25px] hover:stroke-primary duration-300" />
 			</Link>
 		</div>
 	);

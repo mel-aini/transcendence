@@ -9,7 +9,7 @@ const Tournements = ({ className }: Props) => {
 	return (
 		<div className={className}>
 			<div className="flex justify-between items-center py-8 gap-3">
-				<h1 className="text-4xl md:text-6xl font-semibold">Tournements</h1>
+				<h1 className="text-4xl md:text-5xl font-semibold">Tournements</h1>
 				<NewButton className="hidden sm:block h-full w-full max-w-[340px]">Create New Tournement</NewButton>
 			</div>
 			<Container className="h-[200px] w-full" childClassName="flex justify-center items-center p-5">

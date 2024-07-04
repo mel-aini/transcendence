@@ -1,4 +1,8 @@
-import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
+import { useAuthContext } from "./authProvider";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import { CHAT_WS_ENDPOINT } from "../utils/global";
+import { SendJsonMessage, WebSocketHook } from "react-use-websocket/dist/lib/types";
 
 export interface ChatStateProps {
 	isFocus: boolean,
@@ -6,8 +10,6 @@ export interface ChatStateProps {
 	onlineFriends: any[],
 	conversations: any[],
 	conversation_id: string | number | null;
-	ws: WebSocket | null
-
 }
 
 const initialState: ChatStateProps = {
@@ -15,13 +17,15 @@ const initialState: ChatStateProps = {
 	messages: [],
 	onlineFriends: [],
 	conversations: [],
-	conversation_id: null,
-	ws: null
+	conversation_id: null
 };
 
-export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispatch<any>}>({
+export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispatch<any>, lastJsonMessage: any, sendJsonMessage: SendJsonMessage, readyState: ReadyState}>({
 	state: initialState,
-	dispatch: () => {}
+	dispatch: () => {},
+	lastJsonMessage: '',
+	sendJsonMessage: () => {},
+	readyState: ReadyState.CLOSED
 });
 
 const reducer = (state: ChatStateProps, action: any) => {
@@ -73,10 +77,15 @@ const reducer = (state: ChatStateProps, action: any) => {
 }
 
 const ChatContextProvider = ({children} : {children: ReactNode}) => {
-	const [state, dispatch] = useReducer(reducer, initialState);
-	
+	const [ state, dispatch ] = useReducer(reducer, initialState);
+	const { state: authState } = useAuthContext();
+
+	const {readyState, lastJsonMessage, sendJsonMessage} = useWebSocket(
+		CHAT_WS_ENDPOINT + authState.accessToken
+	  )
+
 	return (
-		<ChatContext.Provider value={{state, dispatch}}>
+		<ChatContext.Provider value={{state, dispatch, lastJsonMessage, sendJsonMessage, readyState}}>
 			{children}
 		</ChatContext.Provider>
 	)

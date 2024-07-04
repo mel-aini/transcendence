@@ -29,7 +29,6 @@ function App() {
   return (
       <GlobalContextProvider>
         <AuthContextProvider>
-          <ChatContextProvider>
             <PingPongContextProvider>
               {/* <GlobalWebSocketContextProvider> */}
               <Suspense fallback={<LoadingPage />}>
@@ -61,7 +60,6 @@ function App() {
               </Suspense>
               {/* </GlobalWebSocketContextProvider> */}
             </PingPongContextProvider>
-          </ChatContextProvider>
         </AuthContextProvider>
       </GlobalContextProvider>
   )

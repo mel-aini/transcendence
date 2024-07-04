@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useGlobalContext } from "../contexts/store";
 import { useAuthContext } from "../contexts/authProvider";
 
 const useLog = () => {
@@ -15,6 +14,7 @@ const useLog = () => {
 				// code
 				dispatch({type: 'LOADING', state: true})
 				dispatch({type: 'TOKEN', token: null})
+				document.cookie = 'csrftoken' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 				navigate('/')
 				break;
 		}

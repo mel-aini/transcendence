@@ -10,7 +10,7 @@ const PingPong = ({ className }: Props) => {
 	return (
 		<div className={className}>
 			<div className="flex justify-between items-center py-8">
-				<h1 className="text-4xl md:text-6xl font-semibold grow shrink-0">Ping Pong</h1>
+				<h1 className="text-4xl md:text-5xl font-semibold grow shrink-0">Ping Pong</h1>
 				<Link to="/ping-pong">
 					<NewButton className="hidden sm:block h-full w-full max-w-[340px]">Start a game</NewButton>
 				</Link>

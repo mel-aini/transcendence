@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, Suspense, useEffect, useLayoutEffect } from "react";
+import { ReactNode, Suspense, useEffect } from "react";
 import { useAuthContext } from "../contexts/authProvider";
 import jwt from "../utils/jwt";
 import Loading from "../components/Loading";
@@ -9,6 +9,7 @@ const token = await jwt.refresh();
 interface Props {
 	children: ReactNode
 }
+
 function UpdateToken({children}: Props) {
 	const { dispatch } = useAuthContext();
 
