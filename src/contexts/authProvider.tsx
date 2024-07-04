@@ -52,13 +52,11 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 				if (error.response.status == 401) {
 					if (!error.config.headers[NO_RETRY_HEADER]) {
 						dispatch({type: 'TOKEN', token: null});
-						console.log('errrorrrrr');
 						navigate('/login')
 						return Promise.reject(error)
 					}
 					error.config.headers[NO_RETRY_HEADER] = 'true';
-					const res = await api.post('/api/token/refresh');
-					console.log(res);
+					const res = await api.post('/api/token/refresh/');
 					return api(originRequest);
 				}
 		})

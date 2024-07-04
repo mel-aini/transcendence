@@ -11,7 +11,8 @@ const callToApi = async (endPoint: string, data?: Object) => {
 	const response: Response = await fetch(BACKEND_END_POINT + endPoint, {
 		method: method,
 		headers: headers,
-		body: data ? JSON.stringify(data) : null
+		body: data ? JSON.stringify(data) : null,
+		credentials: 'include'
 	})
 
 	const body = await response.json();
