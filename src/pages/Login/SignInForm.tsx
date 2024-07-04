@@ -85,8 +85,8 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 					localStorage.setItem('tfa', res.TFA.token);
 					setIsTwoFA(true);
 				} else {
-					dispatch({type: 'LOGIN', jwt: res.jwt});
-					authDispatch({type: 'TOKEN', token: res.jwt.access});
+					// dispatch({type: 'LOGIN', jwt: res.access_token});
+					authDispatch({type: 'TOKEN', token: res.access_token});
 					setInvalidLogin(false);
 					navigate('/dashboard');
 				}
