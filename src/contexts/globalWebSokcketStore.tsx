@@ -2,6 +2,7 @@ import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, 
 import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useProfileContext } from "./profileStore";
+import { FriendsData, Relation } from "../types/profile";
 
 export interface GlobalData {
 	friendActionChanged: boolean
@@ -58,21 +59,43 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 		if (obj === null)
 			return (true);
 		return JSON.stringify(obj) === '{}';
-	  };
+	};
+
+	const modifyObjectByName = (array : FriendsData[] | null, username: string, newValue: Relation) => {
+		console.log(array);
+		const obj: FriendsData | undefined = array ? array.find(obj => obj.username === username) : undefined;
+		if (obj) {
+			obj.relation = newValue;
+			return array;
+		}
+	};
 
 	useEffect(() => {
-		if (!isEmptyObject(state.userData) && !isEmptyObject(lastJsonMessage) && lastJsonMessage.type === "user-action" && lastJsonMessage.identifier === state.userData.username)
+		console.log(lastJsonMessage);
+		
+		if (!isEmptyObject(lastJsonMessage) && lastJsonMessage.code === 200)
 		{
-			if (lastJsonMessage.code === 200) {
+			if (lastJsonMessage.type === "user-action") {
 				const value = setValue(lastJsonMessage.data.value);
-				dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: value}});
+				if (!isEmptyObject(state.userData) && lastJsonMessage.identifier === state.userData.username) {
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: value}});
+				}
+				else {
+					const updatedArray = modifyObjectByName([...state.friendsData], lastJsonMessage.identifier, value);
+					if (updatedArray) {
+						dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
+					}
+				}
 			}
-			else
+		}
+		else if (!isEmptyObject(lastJsonMessage)) {
+			if (lastJsonMessage.identifier === state.userData.username)
 				dispatchProfile({type: "USER_DATA", userData: {...state.userData}});
+			else
+				dispatchProfile({type: "FRIEND_DATA", friendsData: {...state.friendsData}});
 		}
 	}, [lastJsonMessage])
-	
-	// useEffect
+
 	return (
 		<GlobalWebSocketContext.Provider value={{lastJsonMessage, sendJsonMessage, GlobalState, dispatchGlobal}}>
 			{children}

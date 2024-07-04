@@ -4,14 +4,22 @@ import { profileContext } from "../Index";
 import { ProfileRequest } from "../../../types/profile";
 import { useProfileContext } from "../../../contexts/profileStore";
 import deny from "/deny.svg"
+import { modifyObjectByName } from "../UserActions";
 
-const SendingInvitation = ({username}: {username: string}) => {
+const SendingInvitation = ({username, origin}: {username: string, origin: string}) => {
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	// const userData = useContext(profileContext);
 	const { state, dispatchProfile } = useProfileContext();
 
 	function clickHandler() {
-		dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
+		if (origin === "profile") {
+			const updatedArray = modifyObjectByName([...state.friendsData], username);
+			if (updatedArray) {
+				dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
+			}
+		}
+		else if (origin === "user")
+			dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
 		const request: ProfileRequest = {
 			type: "cancel",
 			identifier: username,

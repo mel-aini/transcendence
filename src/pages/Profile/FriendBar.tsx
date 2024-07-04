@@ -1,4 +1,4 @@
-import { FriendsData } from "../../types/profile"
+import { FriendsData, Relation } from "../../types/profile"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import FriendActions from "./userActions/FriendActions"
@@ -7,61 +7,49 @@ import PendingInvitation from "./userActions/PendingInvitation"
 import Blocked from "./userActions/Blocked"
 import SendingInvitation from "./userActions/SendingInvitation"
 import WaitingAction from "./userActions/WaitingAction"
+import { Actions, useProfileContext } from "../../contexts/profileStore"
 
-const Action = ({username, relation}: {username: string, relation: string}) => {
-	const [action, setAction] = useState<string>(relation);
-
-	// const clickHandler = (type: "accept" | "deny" | "unblock" |  "unfriend" | "block") => {
-
-	// 		dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
-	// 		const request: ProfileRequest = {
-	// 			type: type,
-	// 			identifier: username,
-	// 			data: {}
-	// 		};
-	// 		sendJsonMessage(request);
-	// 	}
-		// 'none' | 'friend' | 'send_req' | 'rec_req' | 'blocker'
-
-	useEffect(() => {
-		
-	}, []);
+const Action = ({username, action}: {username: string, action: Actions | null}) => {
 	return (
 		<>
-		{
-			action == null && 
-			<WaitingAction />
-		}
-		{
-			(action === "friend") && 
-			<FriendActions username={username}/>
-		}
-		{
-			(action === "rec_inv") && //rec_req
-			<PendingInvitation username={username}/>
-		}
-		{
-			(action === "blocked") && //blocker
-			<Blocked username={username} />
-		}
-		{
-			(action === "add") && //none
-			<AddFriend username={username} />
-		}
-		{
-			(action === "send_req") &&
-			<SendingInvitation username={username} />
-		}
+			{ action == null && <WaitingAction /> }
+			{ (action === Actions.Friend) && <FriendActions username={username} origin="profile"/> }
+			{ (action === Actions.PendingInvitation) && <PendingInvitation username={username} origin="profile"/> }
+			{ (action === Actions.Blocked) && <Blocked username={username} origin="profile"/> }
+			{ (action === Actions.AddFriend) && <AddFriend username={username} origin="profile"/> }
+			{ (action === Actions.SendingInvitation) && <SendingInvitation username={username} origin="profile"/> }
 		</>
 	)
 }
 
-const FriendBar = ({friend, relation}: {friend: FriendsData, relation: string}) => {
+const FriendBar = ({friend, relation}: {friend: FriendsData, relation: Relation | undefined}) => {
 	const navigate = useNavigate();
+	const [action, setAction] = useState<Actions | null>(null);
 
 	const userClick = (path:string) => {
 		navigate(path);
 	}
+
+	const setActions = (relation: string | undefined) => {
+		if (!relation)
+			setAction(null);
+		else if (relation == 'none')
+			setAction(Actions.AddFriend);
+		else if (relation == 'friend')
+			setAction(Actions.Friend);
+		else if (relation == 'send_req')
+			setAction(Actions.SendingInvitation);
+		else if (relation == 'rec_req')
+			setAction(Actions.PendingInvitation);
+		else if (relation == 'blocker')
+			setAction(Actions.Blocked);
+	}
+
+	useEffect(() => {
+		console.log("relation", relation);
+		
+		setActions(relation);
+	}, [relation])
 
 	return (
 		<div className="flex justify-between items-center w-full gap-3 h-[70px] rounded-md border border-border bg-gray3 px-5">
@@ -69,7 +57,7 @@ const FriendBar = ({friend, relation}: {friend: FriendsData, relation: string}) 
 					<img src={friend.profile_image} alt={"icon"} width={38} height={38} className="rounded-full overflow-hidden shrink-0"/>
 					<span className="shrink overflow-hidden text-ellipsis">{friend.username}</span>
 			</div>
-			<Action username={friend.username} relation={relation} />
+			<Action username={friend.username} action={action} />
 		</div>
 	)
 }

@@ -43,7 +43,8 @@ export interface FriendsData {
 	username: string,
 	profile_image: Url,
 	online?: boolean,
-	profile: Path
+	profile: Path,
+	relation?: Relation
 }
 
 export interface ProfileRes {

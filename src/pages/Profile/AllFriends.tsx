@@ -7,8 +7,10 @@ import { useGlobalContext } from "../../contexts/store"
 import { useNavigate } from "react-router-dom"
 import fetchProfile from "./fetchProfile"
 import RelationBar from "./RelationBar"
+import { useProfileContext } from "../../contexts/profileStore"
 
 const AllFriends = ({id}: {id: string | undefined}) => {
+	const { state, dispatchProfile } = useProfileContext();
 	const [relation, setRelation] = useState<string>("friend");
 	const seeMore = useContext(context);
 	const refScroll = useRef();
@@ -19,7 +21,6 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 
 	const { dispatch } = useGlobalContext();
 	const navigate = useNavigate();
-	const [data, setData] = useState<FriendsData[] | null>(null);
 	const searchData = useRef<string>('');
 
 	const stopScroll = useRef(false);
@@ -35,16 +36,14 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 			{
 				if (ProfileRes.data < 10)
 					stopScroll.current = true;
-				if (data)
-					setData(data.concat(ProfileRes.data));
+				if (state.friendsData)
+					dispatchProfile({type: "FRIEND_DATA", friendsData: state.friendsData.concat(ProfileRes.data)});
 				else
-					setData(ProfileRes.data);
+					dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes.data});
 			}
 			else
 			{
-				console.log("honaaa");
-				
-				setData(ProfileRes.data);
+				dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes.data});
 			}
 		}
 		else if (ProfileRes.status == 404)
@@ -74,7 +73,7 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 	const HandleClick = (ref: any, newRelation: string, uri: string) => {
 		if (relation == newRelation)
 			return ;
-		setData(null);
+		dispatchProfile({type: "FRIEND_DATA", friendsData: null});
 		resetAll();
 		apply(ref.current);
 		
@@ -102,9 +101,9 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 			let name;
 			if (relation == "friend")
 				name = uri;
-			else if (relation == "rec_inv")
+			else if (relation == "rec_req")
 				name = "pending";
-			else if (relation == "blocked")
+			else if (relation == "blocker")
 				name = "blocked";
 			collectData(name + "?filter=" + searchData.current + "&start=" + countScroll.current.toString() + "&end=" + (countScroll.current + 10).toString(), true);
 			countScroll.current += 10;
@@ -118,9 +117,9 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 		let name;
 		if (relation == "friend")
 			name = uri;
-		else if (relation == "rec_inv")
+		else if (relation == "rec_req")
 			name = "pending";
-		else if (relation == "blocked")
+		else if (relation == "blocker")
 			name = "blocked";
 		collectData(name + "?filter=" + searchData.current);
 	}
@@ -152,17 +151,17 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 						{
 							!(id) &&
 							<>
-								<RelationBar ref={refPending} onClick={() => HandleClick(refPending, "rec_inv", "pending")} width={67} name={"Pending"} active={false} />
-								<RelationBar ref={refBlocked} onClick={() => HandleClick(refBlocked, "blocked", "blocked")} width={63} name={"Blocked"} active={false} />
+								<RelationBar ref={refPending} onClick={() => HandleClick(refPending, "rec_req", "pending")} width={67} name={"Pending"} active={false} />
+								<RelationBar ref={refBlocked} onClick={() => HandleClick(refBlocked, "blocker", "blocked")} width={63} name={"Blocked"} active={false} />
 							</>
 						}
 					</div>
 					<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="outline-none focus:w-full duration-200 ease-in-out w-[35%] bg-transparent border-b-[0.5px] px-3 py-[9px] font-thin" />
 					<div ref={refScroll} onScroll={scrollHandler} className="min-h-[590px] overflow-auto">
 					{
-						data && data.map((friend: FriendsData, index: number) => {
+						state.friendsData && state.friendsData.map((friend: FriendsData, index: number) => {
 							return (
-								<FriendBar key={index} friend={friend} relation={relation}/>
+								<FriendBar key={index} friend={friend} relation={friend.relation}/>
 							)
 						})
 					}
