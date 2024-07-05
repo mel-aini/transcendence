@@ -9,7 +9,7 @@ import Container from "../../components/Container";
 import win from "/win.svg"
 import loss from "/deny.svg"
 
-const History = ({id, username}: {id: string | undefined, username: string}) => {
+const History = ({id}: {id: string | undefined}) => {
 	const { dispatch } = useGlobalContext();
 	const navigate = useNavigate();
 	const parentRef = useRef();

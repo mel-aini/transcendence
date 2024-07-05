@@ -1,7 +1,6 @@
-import { useContext, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { FriendsData, ProfileRes } from "../../types/profile"
 import FriendBar from "./FriendBar"
-import { context } from "./Friends"
 import { AnimatePresence, motion } from "framer-motion"
 import { useGlobalContext } from "../../contexts/store"
 import { useNavigate } from "react-router-dom"
@@ -12,7 +11,6 @@ import { useProfileContext } from "../../contexts/profileStore"
 const AllFriends = ({id}: {id: string | undefined}) => {
 	const { state, dispatchProfile } = useProfileContext();
 	const [relation, setRelation] = useState<string>("friend");
-	const seeMore = useContext(context);
 	const refScroll = useRef();
 	const refFriend = useRef();
 	const refPending = useRef();
@@ -133,7 +131,7 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 				transition={{duration: 0.3}}
 				exit={{ opacity: 0}}
 				className="absolute">
-				<div className="fixed top-0 start-0 bg-black opacity-70 w-full min-h-[100vh]" onClick={() => seeMore.setSeeAll(false)}/>
+				<div className="fixed top-0 start-0 bg-black opacity-70 w-full min-h-[100vh]" onClick={() => dispatchProfile({type: "SEE_ALL_FRIENDS", seeAllFriends: false})}/>
 				<motion.div
 					initial={{y: 'calc(-50% - 10px)', x: '-50%'}}
 					animate={{y: '-50%'}}
@@ -143,7 +141,7 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 					<span className="self-end text-sm opacity-50 cursor-pointer select-none"
 					onMouseEnter={(e) => {e.currentTarget.classList.replace("opacity-50", "opacity-100");}}
 					onMouseLeave={(e) => {e.currentTarget.classList.replace("opacity-100", "opacity-50");}}
-					onClick={() => seeMore.setSeeAll(false)}>
+					onClick={() => dispatchProfile({type: "SEE_ALL_FRIENDS", seeAllFriends: false})}>
 						close
 					</span>
 					<div className="flex justify-between max-w-[268px] w-full gap-2">

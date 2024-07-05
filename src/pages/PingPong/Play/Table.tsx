@@ -3,7 +3,7 @@ import Box from "./Box";
 
 const Table = () => {
 	return (
-		<div className="relative w-full h-[585px]">
+		<div className="relative w-full h-[585px] md:rotate-0 rotate-90">
 			<div className="absolute first-table-half w-[68.69%] h-full border border-border bg-secondary rounded-l-[10px]">
 				<div className="ml-[10px] absolute w-[20px] h-[104px] bg-white bottom-[70%]"/>
 				<div className="absolute left-[30px] w-full h-full">
