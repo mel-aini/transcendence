@@ -7,48 +7,41 @@ import { useNavigate } from "react-router-dom"
 import fetchProfile from "./fetchProfile"
 import RelationBar from "./RelationBar"
 import { useProfileContext } from "../../contexts/profileStore"
+import api from "../../api/axios"
 
-const AllFriends = ({id}: {id: string | undefined}) => {
+const uri = window.location.pathname.substring(1);
+const index = uri.indexOf('/');
+const id = (index === -1) ? undefined : uri.substring(index);
+const newUri = id ? "friends" + id + "/" : "friends/";
+const friendsResponse: FriendsData[] = await api.get('api/' + newUri).then((e) => e.data);
+
+const AllFriends = () => {
 	const { state, dispatchProfile } = useProfileContext();
 	const [relation, setRelation] = useState<string>("friend");
 	const refScroll = useRef();
 	const refFriend = useRef();
 	const refPending = useRef();
 	const refBlocked = useRef();
-	const uri = id ? "friends/" + id + "/" : "friends/";
-
-	const { dispatch } = useGlobalContext();
-	const navigate = useNavigate();
 	const searchData = useRef<string>('');
 
 	const stopScroll = useRef(false);
 	const countScroll = useRef(10);
 
 	const collectData = async (uri: string, isscroll?: boolean) => {
-		const ProfileRes: ProfileRes = await fetchProfile(uri);
-		console.log(ProfileRes.data);
-		
-		if (ProfileRes.status == 200)
+		const ProfileRes: FriendsData[] = await api.get('api/' + uri).then((e) => e.data);
+		console.log(ProfileRes);
+		if (isscroll)
 		{
-			if (isscroll)
-			{
-				if (ProfileRes.data < 10)
-					stopScroll.current = true;
-				if (state.friendsData)
-					dispatchProfile({type: "FRIEND_DATA", friendsData: state.friendsData.concat(ProfileRes.data)});
-				else
-					dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes.data});
-			}
+			if (ProfileRes.length < 10)
+				stopScroll.current = true;
+			if (state.friendsData)
+				dispatchProfile({type: "FRIEND_DATA", friendsData: state.friendsData.concat(ProfileRes)});
 			else
-			{
-				dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes.data});
-			}
+				dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes});
 		}
-		else if (ProfileRes.status == 404)
-			navigate('/');
-		else if (ProfileRes.status == 401) {
-			dispatch({type: 'LOGOUT'});
-			navigate('/login');
+		else
+		{
+			dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes});
 		}
 	}
 
@@ -83,7 +76,8 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 	}
 
 	useEffect(() => {
-		collectData(uri);
+		dispatchProfile({type: "FRIEND_DATA", friendsData: friendsResponse});
+		// collectData(uri);
 	}, []);
 
 	const scrollHandler  = (e: any) => {
@@ -98,7 +92,7 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 			
 			let name;
 			if (relation == "friend")
-				name = uri;
+				name = newUri;
 			else if (relation == "rec_req")
 				name = "pending";
 			else if (relation == "blocker")
@@ -114,7 +108,7 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 		searchData.current = e.currentTarget.value;
 		let name;
 		if (relation == "friend")
-			name = uri;
+			name = newUri;
 		else if (relation == "rec_req")
 			name = "pending";
 		else if (relation == "blocker")
@@ -145,7 +139,7 @@ const AllFriends = ({id}: {id: string | undefined}) => {
 						close
 					</span>
 					<div className="flex justify-between max-w-[268px] w-full gap-2">
-						<RelationBar ref={refFriend} onClick={() => HandleClick(refFriend, "friend", uri)} width={59} name={"Friends"} active={true} />
+						<RelationBar ref={refFriend} onClick={() => HandleClick(refFriend, "friend", newUri)} width={59} name={"Friends"} active={true} />
 						{
 							!(id) &&
 							<>

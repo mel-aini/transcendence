@@ -10,9 +10,10 @@ import { profileContext } from "./Index";
 // 	data: UserData | null
 // }
 
-const ProfileHeader = ({user}: {user: string}) => {
+const ProfileHeader = () => {
 	// const userData = useContext(profileContext);
 	const { state } = useProfileContext();
+	const user = window.location.pathname.substring(1);
 
 	return (
 		<>

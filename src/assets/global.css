@@ -60,11 +60,23 @@ body {
 }
 
 .first-table-half {
-	clip-path: polygon(0% 0%, 100% 0%, 45.59% 100%, 0% 100%);
+	clip-path: polygon(0% 0%, 0% 100%, 100% 45.59%, 100% 0%);
+}
+
+@media (min-width: 768px) {
+	.first-table-half {
+		clip-path: polygon(0% 0%, 100% 0%, 45.59% 100%, 0% 100%);
+	}
 }
 
 .second-table-half {
-	clip-path: polygon(0% 0%, 100% 0%, 45.59% 100%, 0% 100%);
+	clip-path: polygon(0% 0%, 0% 100%, 100% 45.59%, 100% 0%);
+}
+
+@media (min-width: 768px) {
+	.second-table-half {
+		clip-path: polygon(0% 0%, 100% 0%, 45.59% 100%, 0% 100%);
+	}
 }
 
 .polygon-border {

@@ -8,31 +8,40 @@ import { useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import win from "/win.svg"
 import loss from "/deny.svg"
+import api from "../../api/axios";
+import { useProfileContext } from "../../contexts/profileStore";
 
-const History = ({id}: {id: string | undefined}) => {
-	const { dispatch } = useGlobalContext();
+const uri = window.location.pathname.substring(1);
+const index = uri.indexOf('/');
+const id = (index === -1) ? undefined : uri.substring(index);
+const newUri = (id) ? "matches" + id : "matches/";
+const matchesResponse : MatchesData[] = await api.get('api/' + newUri).then((e) => e.data.data);
+
+const History = () => {
+	const { state, dispatchProfile } = useProfileContext();
 	const navigate = useNavigate();
 	const parentRef = useRef();
 	const [width, setWidth] = useState<number>(0);
-	const [data, setData] = useState<MatchesData[] | null>(null);
-	const uri = id ? 'matches/' + id : 'matches';
+	// const [data, setData] = useState<MatchesData[] | null>(null);
 
-	const collectMatchesData = async () => {
-		const ProfileRes: ProfileRes = await fetchProfile(uri);
-		if (ProfileRes.status == 200)
-		{	
-			setData(ProfileRes.data.data);
-		}
-		else if (ProfileRes.status == 404)
-			navigate('/');
-		else if (ProfileRes.status == 401) {
-			dispatch({type: 'LOGOUT'});
-			navigate('/login');
-		}
-	}
+	// const collectMatchesData = async () => {
+	// 	const ProfileRes: ProfileRes = await fetchProfile(uri);
+	// 	if (ProfileRes.status == 200)
+	// 	{	
+	// 		setData(ProfileRes.data.data);
+	// 	}
+	// 	else if (ProfileRes.status == 404)
+	// 		navigate('/');
+	// 	else if (ProfileRes.status == 401) {
+	// 		dispatch({type: 'LOGOUT'});
+	// 		navigate('/login');
+	// 	}
+	// }
 
 	useEffect(() => {
-		collectMatchesData();
+		// collectMatchesData();
+		dispatchProfile({type: "MATCHES_DATA", matchesData: matchesResponse});
+
 		if (!parentRef.current) return;
 		
 		setWidth((parentRef.current as HTMLElement).offsetWidth);
@@ -62,17 +71,17 @@ const History = ({id}: {id: string | undefined}) => {
 			<Container className="h-full" childClassName="flex flex-col justify-around pt-12 sm:pt-8 pb-9 items-center">
 					<h1 className="text-2xl font-semibold">last 10 matches</h1>
 					{
-						data ?
-						<HistoryChart width={(width) * 80 / 100} height={200} data={data}/>
+						state.matchesData ?
+						<HistoryChart width={(width) * 80 / 100} height={200} data={state.matchesData}/>
 						:
 						<div>Loading...</div>
 					}
 					<motion.div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col justify-between items-center gap-3 overflow-auto"
 						initial="hidden"
 						animate="visible"
-						// variants={variant}
 						>
-						{data ? data.map((match: MatchesData, key: number) => {
+					{
+						state.matchesData ? state.matchesData.map((match: MatchesData, key: number) => {
 							const variant = {
 								hidden: { opacity: 0, },
 								visible: { opacity: 1,
