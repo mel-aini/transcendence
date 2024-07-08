@@ -1,7 +1,8 @@
 import axios, { AxiosInstance } from "axios";
+import { BACKEND_END_POINT } from "../utils/global";
 
 const api: AxiosInstance = axios.create({
-	baseURL: 'http://localhost:8000',
+	baseURL: BACKEND_END_POINT,
 	withCredentials: true,
 })
 
