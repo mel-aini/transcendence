@@ -2,18 +2,23 @@ import { useProfileContext } from "../../contexts/profileStore";
 import { UserData } from "../../types/profile";
 import LevelBar from "./LevelBar";
 import UserActions from "./UserActions";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { profileContext } from "./Index";
-
-// interface DataProps {
-// 	user: string,
-// 	data: UserData | null
-// }
+import api from "../../api/axios";
 
 const ProfileHeader = () => {
-	// const userData = useContext(profileContext);
-	const { state } = useProfileContext();
+	const { state, dispatchProfile } = useProfileContext();
 	const user = window.location.pathname.substring(1);
+	const formRef = useRef();
+
+	const changehandler = async (e: any) => {
+		const newImage = e.currentTarget.files[0];
+		if (!newImage) return ;
+		const formData = new FormData(formRef.current);
+		const res = await api.post("api/upload-avatar/", formData);
+		if (res.status === 200)
+			dispatchProfile({type: "USER_DATA", userData: {...state.userData, profile_image: res.data.url}});
+	}
 
 	return (
 		<>
@@ -26,9 +31,11 @@ const ProfileHeader = () => {
 						className="w-full h-[209px] rounded-md bg-cover bg-center">
 					</div>
 					<div className="absolute left-1/2 xl:left-[15%] top-full translate-y-[-60px] -translate-x-1/2 flex flex-col justify-center items-center">
-						<div
-							style={{backgroundImage: `url(${state.userData.profile_image})`}} 
-							className="rounded-full border-2 border-primary w-[120px] h-[120px] mb-3 bg-cover">
+						<div style={{backgroundImage: `url(${state.userData?.profile_image})`}} className="relative rounded-full border-2 border-primary w-[120px] h-[120px] mb-3 bg-cover overflow-hidden">
+							<form ref={formRef}>
+								<label htmlFor="avatar_link" className="absolute duration-500 hover:opacity-100 opacity-0 -translate-y-full top-full -translate-x-1/2 left-1/2 w-full cursor-pointer text-center text-xs bg-secondary flex flex-col py-1"><span>upload</span><span>image</span></label>
+								<input onChange={(e) => changehandler(e)} type="file" name="avatar_link" accept="image/*" id="avatar_link" className="hidden" />
+							</form>
 						</div>
 						<div className="flex flex-col mb-5">
 							<span className="text-center">{state.userData.username}</span>

@@ -129,7 +129,7 @@ const History = () => {
 											<img className="shrink-0 w-[24px] h-[24px] rounded-full border-primary border" src={match.opponent.image}/>
 											<span className="shrink overflow-hidden text-ellipsis">{match.opponent.username}</span>
 										</div>
-										<span className="shrink overflow-hidden text-ellipsis">lvl 2</span> {/* match.opponent.level */}
+										<span className="shrink-0">lvl 2</span> {/* match.opponent.level */}
 									</div>
 								</motion.div>
 							);

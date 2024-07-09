@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Help from "./Help";
 import Ready from "./Ready";
 import { useEffect } from "react";
-import { useGameContext } from "../../../contexts/gameStore";
+import { useGameContext } from "../../../../contexts/gameStore";
 
 function Box() {
 	const {state, dispatch} = useGameContext();
@@ -15,9 +15,8 @@ function Box() {
 	}, [state.counter]);
 
 	return (
-		<>
-		{
-			(state.counter > 0) &&
+			(state.counter > 0)
+			?
 			<AnimatePresence>
 			<motion.div
 				initial={{opacity: 0}}
@@ -38,8 +37,8 @@ function Box() {
 				className="self-start h-[2px] w-full bg-primary"></motion.div>
 			</motion.div>
 			</AnimatePresence>
-			}
-		</>
+			:
+			<></>
 	);
 }
 

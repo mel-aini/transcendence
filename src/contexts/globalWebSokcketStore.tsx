@@ -71,7 +71,7 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	useEffect(() => {
-		// console.log(lastJsonMessage);
+		console.log(lastJsonMessage);
 		
 		if (!isEmptyObject(lastJsonMessage) && lastJsonMessage.code === 200)
 		{

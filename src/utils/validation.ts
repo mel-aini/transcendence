@@ -10,7 +10,9 @@ const patterns: Pattern = {
 	password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
 }
 
-const validate = (type: 'username' | 'email' | 'password', input: string) : boolean => {
+const validate = (type: 'username' | 'email' | 'password', input: string | undefined) : boolean => {
+	if (!input)
+		return (false);
 	return patterns[type].test(input);
 }
 

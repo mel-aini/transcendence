@@ -1,6 +1,6 @@
 import GameContextProvider from "../../../contexts/gameStore";
-import Header from "./Header";
-import Table from "./Table";
+import Game from "./Game/Game";
+import Result from "./Result/Result";
 
 function Index() {
 
@@ -8,8 +8,8 @@ function Index() {
 		<GameContextProvider>
 			<div className="min-h-[90vh] flex justify-center items-center">
 				<div className="flex flex-col h-full max-w-[1105px] w-4/5 justify-between items-center gap-[26px]">
-					<Header />
-					<Table />
+					{/* <Game /> */}
+					<Result xp={11}/>
 				</div>
 			</div>
 		</GameContextProvider>

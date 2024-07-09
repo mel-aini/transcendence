@@ -1,4 +1,4 @@
-import { useGameContext } from "../../../contexts/gameStore";
+import { useGameContext } from "../../../../contexts/gameStore";
 import Box from "./Box";
 
 const Table = () => {
@@ -12,7 +12,7 @@ const Table = () => {
 			</div>
 			<div className="absolute second-table-half md:w-[68.69%] md:h-full w-full h-[68.69%] border border-border bg-secondary rounded-t-[10px] md:rounded-r-[0px] md:rounded-l-[10px] rotate-180 md:left-full md:-translate-x-full md:top-0 md:-translate-y-0 top-full -translate-y-full">
 				<div className="mt-[10px] md:mt-0 md:ml-[10px] absolute h-[20px] w-[104px] md:w-[20px] md:h-[104px] bg-white left-[70%] -translate-x-1/2 md:-translate-x-0 md:left-0 md:translate-y-1/2 md:bottom-[70%]"/>
-				<div className="absolute left-[30px] md:top-0 top-[30px] w-full h-full">
+				<div className="absolute md:left-[30px] md:top-0 top-[30px] w-full h-full">
 					<div className="absolute w-[31px] h-[32px] bottom-[70%] left-[20%] rounded-full bg-white" />
 				</div>
 			</div>

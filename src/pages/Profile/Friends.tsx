@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import AllFriends from "./AllFriends";
 import { FriendsData, ProfileRes } from "../../types/profile";
 import { useGlobalContext } from "../../contexts/store";
@@ -17,25 +17,14 @@ const friendsResponse: FriendsData[] = await api.get('api/' + newUri + "?start=0
 const Friends = () => {
 	const { state, dispatchProfile } = useProfileContext();
 	const navigate = useNavigate();
-
-	// const collectData = async () => {
-	// 	const ProfileRes: ProfileRes = await fetchProfile(uri + "?start=0&end=15");
-	// 	if (ProfileRes.status == 200)
-	// 		dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes.data});
-	// 	else if (ProfileRes.status == 404)
-	// 		navigate('/');
-	// 	else if (ProfileRes.status == 401) {
-	// 		dispatch({type: 'LOGOUT'});
-	// 		navigate('/login');
-	// 	}
-	// }
+	const [friends, setFriends] = useState< FriendsData[] | null >(null);
 	
 	const userClick = (path:string) => {
 		navigate(path);
 	}
 
 	useEffect(() => {
-		dispatchProfile({type: "FRIEND_DATA", friendsData: friendsResponse});
+		setFriends(friendsResponse);
 	}, []);
 
 	return (
@@ -48,7 +37,7 @@ const Friends = () => {
 					{ state.seeAllFriends && <AllFriends /> }
 				</div>
 				<div className="flex justify-start items-center gap-3 w-full overflow-hidden">
-					{state.friendsData && state.friendsData.map((friend: FriendsData, key: number) => {
+					{friends && friends.map((friend: FriendsData, key: number) => {
 						return (
 							<img onClick={() => userClick(friend.profile)} key={key} className="min-w-[40px] h-[40px] cursor-pointer rounded-full" src={friend.profile_image}/>
 						)

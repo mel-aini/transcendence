@@ -8,7 +8,7 @@ import { ProfileRes, UserData } from "../../types/profile";
 import { useNavigate, useParams } from "react-router-dom";
 import fetchProfile from "./fetchProfile";
 import { useProfileContext } from "../../contexts/profileStore";
-import Settings from "./Settings";
+import Settings from "./Settings/Settings";
 import api from "../../api/axios";
 
 const uri = window.location.pathname;
@@ -19,7 +19,6 @@ const Index = () => {
 
 	useEffect(() => {
 		dispatchProfile({type: "USER_DATA", userData: profileResponse});
-		console.log("here");
 	} ,[])
 
 	return (

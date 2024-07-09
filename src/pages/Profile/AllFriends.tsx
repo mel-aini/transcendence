@@ -77,7 +77,6 @@ const AllFriends = () => {
 
 	useEffect(() => {
 		dispatchProfile({type: "FRIEND_DATA", friendsData: friendsResponse});
-		// collectData(uri);
 	}, []);
 
 	const scrollHandler  = (e: any) => {
