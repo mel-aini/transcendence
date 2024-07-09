@@ -33,7 +33,9 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 
 	useLayoutEffect(() => {
 		// intercept requests
+
 		const id = api.interceptors.request.use((reqConfig) => {
+
 			reqConfig.headers.Authorization = `Bearer ${state.accessToken}`;
 			return reqConfig;
 		})
@@ -47,17 +49,19 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 		// intercept responses
 		const id = api.interceptors.response.use(resConfig => resConfig, async (error) => {
 			const originRequest = error.config;
-
-			
 				if (error.response.status == 401) {
-					if (!error.config.headers[NO_RETRY_HEADER]) {
+					try {
+						const res = await api.post('/api/token/refresh/');
+						console.log('res is');
+						console.log(res.data);
+						originRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
+						dispatch({type: 'TOKEN', token: res.data.access_token})
+						return api(originRequest);
+					} catch (error) {
 						dispatch({type: 'TOKEN', token: null});
 						navigate('/login')
 						return Promise.reject(error)
 					}
-					error.config.headers[NO_RETRY_HEADER] = 'true';
-					const res = await api.post('/api/token/refresh/');
-					return api(originRequest);
 				}
 		})
 

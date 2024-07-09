@@ -3,7 +3,6 @@ import Loading from "./components/Loading";
 import GlobalContextProvider from "./contexts/store";
 import Layout from "./components/Layout";
 import MainLayout from "./MainLayout";
-import ChatContextProvider from "./contexts/chatProvider";
 import PingPongContextProvider from "./contexts/pingPongProvider";
 import { Suspense, lazy } from "react";
 import LoadingPage from "./components/LoadingPage";
@@ -12,6 +11,15 @@ import withoutAuth from  './guards/withoutAuth'
 import AuthContextProvider from "./contexts/authProvider";
 import GlobalWebSocketContextProvider, { GlobalWebSocketContext } from "./contexts/globalWebSokcketStore";
 import withProfile from "./guards/withProfile";
+
+// function Loadable(modulePath: string): JSX.Element {
+//   const Component = lazy(() => import(modulePath));
+//   return (
+//     <Suspense fallback={<LoadingPage />}>
+//       <Component />
+//     </Suspense>
+//   )
+// }
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
