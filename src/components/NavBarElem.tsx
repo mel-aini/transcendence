@@ -56,7 +56,7 @@ const NavBarElem = ( {className, type, ...props }: NavBarElemProps) => {
 	return (
 			<Polygon 
 				onClick={clickHandler} 
-				className={'group bg-black gap-4 duration-300 select-none'}
+				className={'group bg-secondary gap-4 duration-300 select-none'}
 				style={{transform: `translateX(${txMultiplicator * index}px)`}}
 				{...props}
 				>

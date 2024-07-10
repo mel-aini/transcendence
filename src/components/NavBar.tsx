@@ -6,6 +6,9 @@ import { useGlobalContext } from "../contexts/store";
 import User from "./User";
 import useLog from "../hooks/useLog";
 import api from "../api/axios";
+import { useQuery } from "@tanstack/react-query";
+
+const PROFILE_URL = "https://images.unsplash.com/photo-1669937401447-7cfc6e9906e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fGdhbWluZyUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
 
 interface ArrowType extends HTMLAttributes<HTMLDivElement> {
 	left: number
@@ -22,13 +25,13 @@ function ProfileActions({setProfileActions}: {setProfileActions: any}) {
 		navigate('/profile')
 	}
 
+	const elemCLass = 'cursor-pointer bg-secondary hover:bg-slate-800 duration-300 p-3'
+
 	return (
-		<div className="flex flex-col gap-2 absolute right-0 -translate-y-3 top-full p-3 border border-primary rounded-md bg-bg select-none">
-			<div onClick={goToProfile} className="cursor-pointer">go to profile</div>
-			<hr className=" opacity-50" />
-			<div className="cursor-pointer">settings</div>
-			<hr className=" opacity-50" />
-			<div onClick={() => action('LOGOUT')} className="cursor-pointer">logout</div>
+		<div className="flex flex-col absolute right-0 -translate-y-3 top-full rounded-md select-none overflow-hidden">
+			<div onClick={goToProfile} className={elemCLass}>go to profile</div>
+			<div className={elemCLass}>settings</div>
+			<div onClick={() => action('LOGOUT')} className={elemCLass}>logout</div>
 		</div>
 	)
 }
@@ -50,12 +53,19 @@ const Arrow = (props: ArrowType) => {
 
 type XPos = 0 | 400;
 
+async function fetchData() {
+	const res = await api.get('api/profile/');
+	return res;
+}
+
 const NavBar = ({className}: {className?: string}) => {
+	const {data, isLoading, isError} = useQuery({queryKey: ['profile'], queryFn: fetchData})
 	// profile actions
 	const [profileActions, setProfileActions] = useState(false);
 	// profile actions
-	const [xPos, setXPos] = useState<XPos>(400);
+	const [xPos, setXPos] = useState<XPos>(0);
 	const [event, setEvent] = useState<any>('auto');
+
 	const clickHandler = async () => {
 
 		if (xPos == 400) {
@@ -68,12 +78,11 @@ const NavBar = ({className}: {className?: string}) => {
 		setEvent('auto');
 	}
 
-	useEffect(() => {
-		(async function() {
-			const res = await api.get('api/generate-googlelink/');
-			console.log(res);
-		})()
-	}, [])
+	if (isLoading) {
+		return (
+			<h1>loading...</h1>
+		)
+	}
 
 	return (
 		<div className={"relative w-full h-[100px] flex items-center" + (className ? ` ${className}` : '')}>
@@ -89,7 +98,12 @@ const NavBar = ({className}: {className?: string}) => {
 					<NavBarElem type="Settings" className="cursor-pointer" />
 				</div>
 				<div className="w-[42px] h-[42px] bg-bg cursor-pointer flex justify-center items-center z-10">
-					<User onClick={() => setProfileActions(prev => !prev)} width={35} border className="border-white cursor-pointer z-10" url="https://images.unsplash.com/photo-1669937401447-7cfc6e9906e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fGdhbWluZyUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D" />
+					<User 
+						onClick={() => setProfileActions(prev => !prev)} 
+						width={35} 
+						border 
+						className="border-white cursor-pointer z-10" 
+						url={data?.data.profile_image} />
 				</div>
 			</div>
 			{profileActions && <ProfileActions setProfileActions={setProfileActions} />}
