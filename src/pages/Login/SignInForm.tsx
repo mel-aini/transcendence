@@ -1,12 +1,13 @@
 import Input from "../../components/Input";
-import { useNavigate } from "react-router-dom";
+import Button from "../../components/Button";
+import { Link, useNavigate } from "react-router-dom";
 import { Dispatch, SetStateAction, useState } from "react";
 import { invalidColor } from "../../utils/colors";
 import { useGlobalContext } from "../../contexts/store";
+import callToApi from "../../utils/callToApi";
+import OAuthBar from "../Sign-up/OAuthBar";
 import NewButton from "../../components/NewButton";
 import { useAuthContext } from "../../contexts/authProvider";
-import axios from "axios";
-import { BACKEND_END_POINT } from "../../utils/global";
 
 interface IResponse {
 	type: string,
@@ -69,7 +70,6 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 		}
 		
 		dispatch({type: 'LOADING', state: true});
-	
 		try {
 				if (username == '' || password == '')
 				{
@@ -78,15 +78,15 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 				}
 				setEmptyInput(false);
 				
-				const res = await axios.post(BACKEND_END_POINT + 'api/login/', data);
-			
+				const res = await callToApi('api/login/', data);
 				if ('TFA' in res) {
 					console.log('2fa is enabled', res);
-					console.log(res.data.TFA.token);
-					localStorage.setItem('tfa', res.data.TFA.token);
+					console.log(res.TFA.token);
+					localStorage.setItem('tfa', res.TFA.token);
 					setIsTwoFA(true);
 				} else {
-					authDispatch({type: 'TOKEN', token: res.data.access_token});
+					// dispatch({type: 'LOGIN', jwt: res.access_token});
+					authDispatch({type: 'TOKEN', token: res.access_token});
 					setInvalidLogin(false);
 					navigate('/dashboard');
 				}

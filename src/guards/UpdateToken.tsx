@@ -3,7 +3,6 @@ import { useAuthContext } from "../contexts/authProvider";
 import jwt from "../utils/jwt";
 import Loading from "../components/Loading";
 import { Navigate } from "react-router-dom";
-import api from "../api/axios";
 
 const token = await jwt.refresh();
 
@@ -13,11 +12,9 @@ interface Props {
 
 function UpdateToken({children}: Props) {
 	const { dispatch } = useAuthContext();
-	// console.log()
+
 	useEffect(() => {
-		console.log('token will get updated')
-		console.log(token)
-		dispatch({type: 'TOKEN', token: token});
+		dispatch({type: 'TOKEN', token: token})
 	}, [])
 
 	return ( 
