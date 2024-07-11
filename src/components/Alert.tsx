@@ -1,33 +1,38 @@
 import { ReactNode, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useGlobalContext } from "../contexts/store";
 
 type Milliseconds = number;
 
-const Alert = ({children, condition, time}: {children : ReactNode, condition: boolean | null, time: Milliseconds}) => {
-	const [visible, setVisible] = useState(false);
-	
-	useEffect(() => {
-		if (condition) {
-			setTimeout(() => {
-				setVisible(false);
-			}, time)
-		}
-	}, [condition])
+interface Props {
+	time?: Milliseconds
+}
+
+const Alert = ({ time }: Props) => {
+	const {state, dispatch} = useGlobalContext()
+
+	// useEffect(() => {
+	// 	if (condition) {
+	// 		setTimeout(() => {
+	// 			setVisible(false);
+	// 		}, time)
+	// 	}
+	// }, [condition])
 
 	return (
 		<AnimatePresence>
 			{
-				condition && visible &&
+				state.alert && 
 				<motion.div 
-					initial={{y: -5}}
-					animate={{y: 0}}
+					initial={{y: -5, x: '-50%'}}
+					animate={{y: 0, x: '-50%'}}
 					exit={{y: -5}}
 					transition={{
 						ease: 'easeOut',
-						duration: 0.6,
+						duration: 0.3,
 					}}
-					className="fixed top-10 left-1/2 -translate-x-1/2 bg-primary text-white text-sm py-2 px-4">
-					{children}
+					className="fixed z-50 top-18 left-1/2 bg-secondary border border-border text-primary py-3 px-16 rounded-md">
+					{state.alertMessage}
 				</motion.div>
 			}
 		</AnimatePresence>

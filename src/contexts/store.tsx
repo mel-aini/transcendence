@@ -1,17 +1,15 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
-import jwt from "../utils/jwt";
-import useWebSocket from "react-use-websocket";
 
 export interface GlobalStateProps {
-	isLogin: boolean
 	isLoading: boolean
-	access: string | null
+	alert: boolean
+	alertMessage: string
 }
 
 const initialState: GlobalStateProps = {
-	isLogin: false,
 	isLoading: false,
-	access: null
+	alert: false,
+	alertMessage: ''
 };
 
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
@@ -27,6 +25,12 @@ const reducer = (state: GlobalStateProps, action: any) => {
 				return { ...state, isLoading: true }
 			}
 			return { ...state, isLoading: false }
+		case 'ALERT':
+			return { 
+				...state, 
+				alert: true, 
+				alertMessage: action.content 
+			}
 		default:
 			return state;
 	}
