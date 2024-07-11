@@ -19,6 +19,8 @@ const Index = () => {
 
 	useEffect(() => {
 		dispatchProfile({type: "USER_DATA", userData: profileResponse});
+		console.log(profileResponse);
+		
 	} ,[])
 
 	return (

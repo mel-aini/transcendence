@@ -70,6 +70,18 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 		}
 	};
 
+//					{
+//						"type":  "update"
+//						"code": 200 | 400 | 403
+//						"message" : "user not Found" 
+//						"identifier": "username"
+//						"data":
+//						{
+//						
+//							"value": "teta"
+//						}
+//					}
+
 	useEffect(() => {
 		console.log(lastJsonMessage);
 		
@@ -86,6 +98,17 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 						dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
 					}
 				}
+			}
+			else if (lastJsonMessage.type === "update")
+			{
+				if (lastJsonMessage.identifier === "username")
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: lastJsonMessage.data.value}});
+				else if (lastJsonMessage.identifier === "email")
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, email: lastJsonMessage.data.value}});
+				else if (lastJsonMessage.identifier === "tfa-status")
+				{}
+				else if (lastJsonMessage.identifier === "tfa-change")
+				{}
 			}
 		}
 		else if (!isEmptyObject(lastJsonMessage)) {

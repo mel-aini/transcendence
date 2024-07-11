@@ -7,7 +7,6 @@ export interface MatchesData {
 	total: number,
 	wins: number,
 	loses: number,
-	email: string,
 }
 
 export type Relation = 'none' | 'friend' | 'send_req' | 'rec_req' | 'blocker'
@@ -17,6 +16,7 @@ export interface UserData {
 	relation?: Relation
 	profile_image: Url,
 	bg_image: Url,
+	email: string,
 	total_friends: number,
 	online: boolean,
 	matches: MatchesData,
