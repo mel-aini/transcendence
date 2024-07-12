@@ -1,6 +1,9 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import Incoming from "./Incoming";
 import PingPong from "./PingPong";
 import Tournements from "./Tournements";
+import { useGlobalContext } from "../../contexts/store";
+import { useEffect } from "react";
 
 const Index = () => {
 	return (

@@ -1,9 +1,13 @@
 import { Outlet } from "react-router-dom";
+import Alert from "./components/Alert";
 
 function MainLayout() {
 	
 	return (
-		<Outlet />
+		<>
+			<Alert />
+			<Outlet />
+		</>
 	)
 }
 

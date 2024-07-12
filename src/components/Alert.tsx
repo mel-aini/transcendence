@@ -1,33 +1,40 @@
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useGlobalContext } from "../contexts/store";
+import { useLocation, useNavigate } from "react-router-dom";
 
-type Milliseconds = number;
+const Alert = () => {
+	const { state, dispatch } = useGlobalContext()
+	const [isVisbile, setIsVisible] = useState(true)
+	const navigate = useNavigate()
+	const location = useLocation();
 
-const Alert = ({children, condition, time}: {children : ReactNode, condition: boolean | null, time: Milliseconds}) => {
-	const [visible, setVisible] = useState(false);
-	
 	useEffect(() => {
-		if (condition) {
+		if (state.alert) {
 			setTimeout(() => {
-				setVisible(false);
-			}, time)
+				setIsVisible(false);
+				dispatch({type: 'ALERT', display: false})
+				navigate(location.pathname, {state: null})
+			}, 1300)
 		}
-	}, [condition])
+	}, [state.alert])
 
 	return (
 		<AnimatePresence>
 			{
-				condition && visible &&
+				state.alert && isVisbile &&
 				<motion.div 
-					initial={{y: -5}}
-					animate={{y: 0}}
-					exit={{y: -5}}
+					initial={{y: -10, opacity: 0}}
+					animate={{y: 0, opacity: 1}}
+					exit={{y: 10, opacity: 0}}
 					transition={{
-						ease: 'easeOut',
-						duration: 0.6,
+						ease: 'easeInOut',
+						duration: 0.3,
 					}}
-					className="fixed top-10 left-1/2 -translate-x-1/2 bg-primary text-white text-sm py-2 px-4">
-					{children}
+					className="hhhhhh relative z-50">
+						<div className="fixed w-11/12 top-24 left-1/2 bg-secondary border border-border text-primary text-center py-3 px-3 sm:px-8 md:px-16 rounded-md sm:w-auto -translate-x-1/2">
+							{state.alertMessage}
+						</div>
 				</motion.div>
 			}
 		</AnimatePresence>
