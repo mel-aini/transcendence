@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useProfileContext } from "../../../contexts/profileStore";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { primaryColor, whiteColor } from "../../../utils/colors";
 import EditBar from "./EditBar";
 import TFA from "./TFA";
@@ -46,7 +46,7 @@ function Settings() {
 							(section === "Profile") &&
 							<div className="flex flex-col gap-[17px]">
 								<span>username</span>
-								<EditBar type="username" />
+								<EditBar type="username"/>
 								<span>email</span>
 								<EditBar type="email" />
 							</div>

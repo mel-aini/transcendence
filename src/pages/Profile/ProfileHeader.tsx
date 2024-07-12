@@ -5,10 +5,13 @@ import UserActions from "./UserActions";
 import { useContext, useEffect, useRef, useState } from "react";
 import { profileContext } from "./Index";
 import api from "../../api/axios";
+import { useParams } from "react-router-dom";
+import Settings from "./Settings/Settings";
 
 const ProfileHeader = () => {
 	const { state, dispatchProfile } = useProfileContext();
-	const user = window.location.pathname.substring(1);
+	// const user = window.location.pathname.substring(1);
+	const { id } = useParams();
 	const formRef = useRef();
 
 	const changehandler = async (e: any) => {
@@ -24,7 +27,8 @@ const ProfileHeader = () => {
 		<>
 			{!state.userData && <div>Loading...</div>}
 			{
-			state.userData && <>
+			state.userData &&
+			<>
 				<div className="relative mb-[200px] xl:mb-[50px] flex flex-col w-full">
 					<div
 						style={{backgroundImage: `url(${state.userData.bg_image})`}}
@@ -32,15 +36,18 @@ const ProfileHeader = () => {
 					</div>
 					<div className="absolute left-1/2 xl:left-[15%] top-full translate-y-[-60px] -translate-x-1/2 flex flex-col justify-center items-center">
 						<div style={{backgroundImage: `url(${state.userData?.profile_image})`}} className="relative rounded-full border-2 border-primary w-[120px] h-[120px] mb-3 bg-cover overflow-hidden">
-							<form ref={formRef}>
-								<label htmlFor="avatar_link" className="absolute duration-500 hover:opacity-100 opacity-0 -translate-y-full top-full -translate-x-1/2 left-1/2 w-full cursor-pointer text-center text-xs bg-secondary flex flex-col py-1"><span>upload</span><span>image</span></label>
-								<input onChange={(e) => changehandler(e)} type="file" name="avatar_link" accept="image/*" id="avatar_link" className="hidden" />
-							</form>
+							{
+								(!id) &&
+								<form ref={formRef}>
+									<label htmlFor="avatar_link" className="absolute duration-500 hover:opacity-100 opacity-0 -translate-y-full top-full -translate-x-1/2 left-1/2 w-full cursor-pointer text-center text-xs bg-secondary flex flex-col py-1"><span>upload</span><span>image</span></label>
+									<input onChange={(e) => changehandler(e)} type="file" name="avatar_link" accept="image/*" id="avatar_link" className="hidden" />
+								</form>
+							}
 						</div>
 						<div className="flex flex-col mb-5">
 							<span className="text-center">{state.userData.username}</span>
 							{
-								(user != 'profile') &&
+								(id) &&
 								<div className="flex justify-center items-center gap-1">
 									{
 										state.userData.online &&
@@ -52,7 +59,7 @@ const ProfileHeader = () => {
 								</div>
 							}
 						</div>
-						<UserActions isProfile={user == 'profile'} />
+						<UserActions isProfile={id === undefined} />
 					</div>
 					<div className="absolute left-[90%] top-full translate-y-[-37px] -translate-x-1/2 bg-[#14FF67] w-[39px] h-[74px] xl:w-[67.5px] xl:h-[128px]
 					xl:translate-y-[-64px] duration-100"></div>

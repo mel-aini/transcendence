@@ -4,43 +4,38 @@ import { delay, motion } from "framer-motion";
 import { MatchesData, ProfileRes } from "../../types/profile";
 import fetchProfile from "./fetchProfile";
 import { useGlobalContext } from "../../contexts/store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Container from "../../components/Container";
 import win from "/win.svg"
 import loss from "/deny.svg"
 import api from "../../api/axios";
 import { useProfileContext } from "../../contexts/profileStore";
+import { useQuery } from "@tanstack/react-query";
 
-const uri = window.location.pathname.substring(1);
-const index = uri.indexOf('/');
-const id = (index === -1) ? undefined : uri.substring(index);
-const newUri = (id) ? "matches" + id : "matches/";
-const matchesResponse : MatchesData[] = await api.get('api/' + newUri).then((e) => e.data.data);
+// const uri = window.location.pathname.substring(1);
+// const index = uri.indexOf('/');
+// const id = (index === -1) ? undefined : uri.substring(index);
+// const newUri = (id) ? "matches" + id : "matches/";
+// const matchesResponse : MatchesData[] = await api.get('api/' + newUri).then((e) => e.data.data);
+
+async function fetchData(id: string | undefined) {
+	const uri: string = id ? "matches/" + id : "matches";
+	const res = await api.get('api/' + uri);
+	return res;
+}
 
 const History = () => {
+	const { id } = useParams();
+	const {data, isLoading, isError} = useQuery({queryKey: ['matches', id], queryFn: () => fetchData(id)});
 	const { state, dispatchProfile } = useProfileContext();
 	const navigate = useNavigate();
 	const parentRef = useRef();
 	const [width, setWidth] = useState<number>(0);
-	// const [data, setData] = useState<MatchesData[] | null>(null);
-
-	// const collectMatchesData = async () => {
-	// 	const ProfileRes: ProfileRes = await fetchProfile(uri);
-	// 	if (ProfileRes.status == 200)
-	// 	{	
-	// 		setData(ProfileRes.data.data);
-	// 	}
-	// 	else if (ProfileRes.status == 404)
-	// 		navigate('/');
-	// 	else if (ProfileRes.status == 401) {
-	// 		dispatch({type: 'LOGOUT'});
-	// 		navigate('/login');
-	// 	}
-	// }
 
 	useEffect(() => {
 		// collectMatchesData();
-		dispatchProfile({type: "MATCHES_DATA", matchesData: matchesResponse});
+		dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
+		
 
 		if (!parentRef.current) return;
 		
@@ -54,14 +49,19 @@ const History = () => {
 		return () => {
 			window.removeEventListener('resize', handler)
 		}
-	}, [])
+	}, [data])
 
-	// const variant = {
-	// 	hidden: { opacity: 0, },
-	// 	visible: { opacity: 1,
-	// 		transition: { duration: 1},
-	// 	}
-	// }
+	if (isLoading) {
+		return (
+			<h1>loading...</h1>
+		)
+	}
+
+	if (isError) {
+		return (
+			<h1>Error</h1>
+		)
+	}
 
 	const userClick = (path:string) => {
 		navigate(path);

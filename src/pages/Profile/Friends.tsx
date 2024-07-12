@@ -2,19 +2,28 @@ import { Suspense, useEffect, useState } from "react";
 import AllFriends from "./AllFriends";
 import { FriendsData, ProfileRes } from "../../types/profile";
 import { useGlobalContext } from "../../contexts/store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import fetchProfile from "./fetchProfile";
 import Container from "../../components/Container";
 import { useProfileContext } from "../../contexts/profileStore";
 import api from "../../api/axios";
+import { useQuery } from "@tanstack/react-query";
 
-const uri = window.location.pathname.substring(1);
-const index = uri.indexOf('/');
-const id = (index === -1) ? undefined : uri.substring(index);
-const newUri = id ? "friends" + id + "/" : "friends/";
-const friendsResponse: FriendsData[] = await api.get('api/' + newUri + "?start=0&end=23").then((e) => e.data);
+// const uri = window.location.pathname.substring(1);
+// const index = uri.indexOf('/');
+// const id = (index === -1) ? undefined : uri.substring(index);
+// const newUri = id ? "friends" + id + "/" : "friends/";
+// const friendsResponse: FriendsData[] = await api.get('api/' + newUri + "?start=0&end=23").then((e) => e.data);
+
+async function fetchData(id: string | undefined) {
+	const uri: string = id ? "friends/" + id + "/" : "friends";
+	const res = await api.get('api/' + uri + "?start=0&end=23");
+	return res;
+}
 
 const Friends = () => {
+	const { id } = useParams();
+	const {data, isLoading, isError} = useQuery({queryKey: ['friends', id], queryFn: () => fetchData(id)});
 	const { state, dispatchProfile } = useProfileContext();
 	const navigate = useNavigate();
 	const [friends, setFriends] = useState< FriendsData[] | null >(null);
@@ -24,8 +33,20 @@ const Friends = () => {
 	}
 
 	useEffect(() => {
-		setFriends(friendsResponse);
-	}, []);
+		setFriends(data?.data);
+	}, [data]);
+
+	if (isLoading) {
+		return (
+			<h1>loading...</h1>
+		)
+	}
+
+	if (isError) {
+		return (
+			<h1>Error</h1>
+		)
+	}
 
 	return (
 		<Suspense fallback={<h1>loading...</h1>}>

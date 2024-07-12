@@ -8,8 +8,8 @@ function Index() {
 		<GameContextProvider>
 			<div className="min-h-[90vh] flex justify-center items-center">
 				<div className="flex flex-col h-full max-w-[1105px] w-4/5 justify-between items-center gap-[26px]">
-					{/* <Game /> */}
-					<Result xp={11}/>
+					<Game />
+					{/* <Result xp={0}/> */}
 				</div>
 			</div>
 		</GameContextProvider>

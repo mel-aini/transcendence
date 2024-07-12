@@ -70,18 +70,6 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 		}
 	};
 
-//					{
-//						"type":  "update"
-//						"code": 200 | 400 | 403
-//						"message" : "user not Found" 
-//						"identifier": "username"
-//						"data":
-//						{
-//						
-//							"value": "teta"
-//						}
-//					}
-
 	useEffect(() => {
 		console.log(lastJsonMessage);
 		
@@ -106,13 +94,17 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 				else if (lastJsonMessage.identifier === "email")
 					dispatchProfile({type: "USER_DATA", userData: {...state.userData, email: lastJsonMessage.data.value}});
 				else if (lastJsonMessage.identifier === "tfa-status")
-				{}
+				{
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.value}}});
+				}
 				else if (lastJsonMessage.identifier === "tfa-change")
-				{}
+				{
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
+				}
 			}
 		}
 		else if (!isEmptyObject(lastJsonMessage)) {
-			if (lastJsonMessage.identifier === state.userData.username)
+			if (lastJsonMessage.identifier === state.userData?.username)
 				dispatchProfile({type: "USER_DATA", userData: {...state.userData}});
 			else
 				dispatchProfile({type: "FRIEND_DATA", friendsData: {...state.friendsData}});

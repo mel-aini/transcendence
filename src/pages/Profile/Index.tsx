@@ -10,21 +10,37 @@ import fetchProfile from "./fetchProfile";
 import { useProfileContext } from "../../contexts/profileStore";
 import Settings from "./Settings/Settings";
 import api from "../../api/axios";
+import { useQuery } from "@tanstack/react-query";
 
-const uri = window.location.pathname;
-const profileResponse : UserData = await api.get('api' + uri).then((e) => e.data);
+async function fetchData(id: string | undefined) {
+	const uri: string = id ? "users/" + id : "profile";
+	const res = await api.get('api/' + uri);
+	return res;
+}
 
 const Index = () => {
+	const { id } = useParams();
+	const {data, isLoading, isError} = useQuery({queryKey: ['profile', id], queryFn: () => fetchData(id)});
 	const { state, dispatchProfile } = useProfileContext();
-
+	
 	useEffect(() => {
-		dispatchProfile({type: "USER_DATA", userData: profileResponse});
-		console.log(profileResponse);
-		
-	} ,[])
+		dispatchProfile({type: "USER_DATA", userData: data?.data});
+	} ,[data])
+	
+
+	if (isLoading) {
+		return (
+			<h1>loading...</h1>
+		)
+	}
+
+	if (isError) {
+		return (
+			<h1>Error</h1>
+		)
+	}
 
 	return (
-		<Suspense fallback={<h1>Loading...</h1>}>
 			<div className="flex flex-col justify-center items-center relative">
 				{ state.settings && <Settings /> }
 				<ProfileHeader />
@@ -42,7 +58,6 @@ const Index = () => {
 					</div>
 				</div>
 			</div>
-		</Suspense>
 	);
 }
 

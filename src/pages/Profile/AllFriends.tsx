@@ -3,19 +3,22 @@ import { FriendsData, ProfileRes } from "../../types/profile"
 import FriendBar from "./FriendBar"
 import { AnimatePresence, motion } from "framer-motion"
 import { useGlobalContext } from "../../contexts/store"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import fetchProfile from "./fetchProfile"
 import RelationBar from "./RelationBar"
 import { useProfileContext } from "../../contexts/profileStore"
 import api from "../../api/axios"
+import { useQuery } from "@tanstack/react-query"
 
-const uri = window.location.pathname.substring(1);
-const index = uri.indexOf('/');
-const id = (index === -1) ? undefined : uri.substring(index);
-const newUri = id ? "friends" + id + "/" : "friends/";
-const friendsResponse: FriendsData[] = await api.get('api/' + newUri).then((e) => e.data);
+async function fetchData(uri: string ) {
+	const res = await api.get('api/' + uri);
+	return res;
+}
 
 const AllFriends = () => {
+	const { id } = useParams();
+	const newUri: string = id ? "friends/" + id : "friends";
+	const {data, isLoading, isError} = useQuery({queryKey: ['allFriends', id], queryFn: () => fetchData(newUri)});
 	const { state, dispatchProfile } = useProfileContext();
 	const [relation, setRelation] = useState<string>("friend");
 	const refScroll = useRef();
@@ -76,8 +79,20 @@ const AllFriends = () => {
 	}
 
 	useEffect(() => {
-		dispatchProfile({type: "FRIEND_DATA", friendsData: friendsResponse});
-	}, []);
+		dispatchProfile({type: "FRIEND_DATA", friendsData: data?.data});
+	}, [data]);
+
+	if (isLoading) {
+		return (
+			<h1>loading...</h1>
+		)
+	}
+
+	if (isError) {
+		return (
+			<h1>Error</h1>
+		)
+	}
 
 	const scrollHandler  = (e: any) => {
 		const start: any = refScroll.current;

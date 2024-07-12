@@ -9,6 +9,21 @@ export interface MatchesData {
 	loses: number,
 }
 
+export interface UpdateReq {
+	type: "update" 
+	identifier: "username" | "email" | "tfa-status" | "tfa-change" | "",
+	data: 
+	{
+		value?: string | boolean
+	}
+}
+
+export interface TFA {
+	type: "email",
+	content: string,
+	status: boolean
+}
+
 export type Relation = 'none' | 'friend' | 'send_req' | 'rec_req' | 'blocker'
 
 export interface UserData {
@@ -19,6 +34,7 @@ export interface UserData {
 	email: string,
 	total_friends: number,
 	online: boolean,
+	tfa: TFA,
 	matches: MatchesData,
 	level: {
 		name: string,
