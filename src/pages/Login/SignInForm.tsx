@@ -1,6 +1,6 @@
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Dispatch, SetStateAction, useState } from "react";
 import { invalidColor } from "../../utils/colors";
 import { useGlobalContext } from "../../contexts/store";
@@ -31,6 +31,7 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const usernameHandler = (userValue: string) => {
 		setEmptyInput(false);
@@ -85,10 +86,13 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 					localStorage.setItem('tfa', res.TFA.token);
 					setIsTwoFA(true);
 				} else {
-					// dispatch({type: 'LOGIN', jwt: res.access_token});
 					authDispatch({type: 'TOKEN', token: res.access_token});
 					setInvalidLogin(false);
-					navigate('/dashboard');
+					navigate(location.state?.refer || '/dashboard', { 
+						replace: true, 
+						state: {
+							message: 'You have logged in successfully'
+						} });
 				}
 		}
 		catch (error: any) {

@@ -17,6 +17,11 @@ export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: D
 	dispatch: () => {}
 });
 
+// export const GLOBAL_CONTEXT_OPTIONS = {
+// 	ALERT: 'ALERT',
+// 	LOADING: 'LOADING'
+// }
+
 const reducer = (state: GlobalStateProps, action: any) => {
 	switch (action.type)
 	{
@@ -26,6 +31,13 @@ const reducer = (state: GlobalStateProps, action: any) => {
 			}
 			return { ...state, isLoading: false }
 		case 'ALERT':
+			if (action.display == false) {
+				return { 
+					...state, 
+					alert: false, 
+					alertMessage: ''
+				}
+			}
 			return { 
 				...state, 
 				alert: true, 
