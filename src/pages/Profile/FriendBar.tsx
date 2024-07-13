@@ -8,11 +8,13 @@ import Blocked from "./userActions/Blocked"
 import SendingInvitation from "./userActions/SendingInvitation"
 import WaitingAction from "./userActions/WaitingAction"
 import { Actions, useProfileContext } from "../../contexts/profileStore"
+import GoToProfile from "./userActions/GoToProfile"
 
 const Action = ({username, action}: {username: string, action: Actions | null}) => {
 	return (
 		<>
 			{ action == null && <WaitingAction /> }
+			{ (action === Actions.GoToProfile) && <GoToProfile /> }
 			{ (action === Actions.Friend) && <FriendActions username={username} origin="profile"/> }
 			{ (action === Actions.PendingInvitation) && <PendingInvitation username={username} origin="profile"/> }
 			{ (action === Actions.Blocked) && <Blocked username={username} origin="profile"/> }
@@ -33,6 +35,8 @@ const FriendBar = ({friend, relation}: {friend: FriendsData, relation: Relation 
 	const setActions = (relation: string | undefined) => {
 		if (!relation)
 			setAction(null);
+		else if (relation == 'you')
+			setAction(Actions.GoToProfile);
 		else if (relation == 'none')
 			setAction(Actions.AddFriend);
 		else if (relation == 'friend')

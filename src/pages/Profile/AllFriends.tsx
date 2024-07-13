@@ -163,7 +163,7 @@ const AllFriends = () => {
 						}
 					</div>
 					<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="outline-none focus:w-full duration-200 ease-in-out w-[35%] bg-transparent border-b-[0.5px] px-3 py-[9px] font-thin" />
-					<div ref={refScroll} onScroll={scrollHandler} className="min-h-[590px] overflow-auto">
+					<div ref={refScroll} onScroll={scrollHandler} className="min-h-[590px] overflow-auto overscroll-none">
 					{
 						state.friendsData && state.friendsData.map((friend: FriendsData, index: number) => {
 							return (

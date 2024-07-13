@@ -1,12 +1,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import edit_icon from "/edit_icon.svg"
 import accept from "/accept.svg"
-import { useProfileContext } from "../../../contexts/profileStore";
-import { validate } from "../../../utils/validation";
+import { useProfileContext } from "../../contexts/profileStore";
+import { validate } from "../../utils/validation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ring } from 'ldrs'
-import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
-import { UpdateReq } from "../../../types/profile";
+import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
+import { UpdateReq } from "../../types/profile";
 
 ring.register()
 

@@ -24,7 +24,7 @@ export interface TFA {
 	status: boolean
 }
 
-export type Relation = 'none' | 'friend' | 'send_req' | 'rec_req' | 'blocker'
+export type Relation = 'you' | 'none' | 'friend' | 'send_req' | 'rec_req' | 'blocker'
 
 export interface UserData {
 	username: string,

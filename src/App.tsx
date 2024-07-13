@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+      import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
 import GlobalContextProvider from "./contexts/store";
 import Layout from "./components/Layout";

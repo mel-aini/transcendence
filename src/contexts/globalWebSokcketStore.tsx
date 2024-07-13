@@ -3,6 +3,7 @@ import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useProfileContext } from "./profileStore";
 import { FriendsData, Relation } from "../types/profile";
+import { useGlobalContext } from "./store";
 
 export interface GlobalData {
 	friendActionChanged: boolean
@@ -35,6 +36,7 @@ const reducer = (state: GlobalData, action: any) => {
 }
 
 const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
+	const { dispatch } = useGlobalContext();
 	const { state, dispatchProfile } = useProfileContext();
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_URL,
 		{
@@ -90,9 +92,13 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			else if (lastJsonMessage.type === "update")
 			{
 				if (lastJsonMessage.identifier === "username")
+				{
 					dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: lastJsonMessage.data.value}});
+				}
 				else if (lastJsonMessage.identifier === "email")
+				{
 					dispatchProfile({type: "USER_DATA", userData: {...state.userData, email: lastJsonMessage.data.value}});
+				}
 				else if (lastJsonMessage.identifier === "tfa-status")
 				{
 					dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.value}}});
@@ -101,13 +107,35 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 				{
 					dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
 				}
+				console.log(lastJsonMessage.message);
+				
+				dispatch({type: 'ALERT', content: lastJsonMessage.message})
 			}
 		}
-		else if (!isEmptyObject(lastJsonMessage)) {
-			if (lastJsonMessage.identifier === state.userData?.username)
-				dispatchProfile({type: "USER_DATA", userData: {...state.userData}});
-			else
-				dispatchProfile({type: "FRIEND_DATA", friendsData: {...state.friendsData}});
+		else if (!isEmptyObject(lastJsonMessage)) { // lastJsonMessage.code === 404
+			if (lastJsonMessage.type === "user-action")
+			{
+				if (lastJsonMessage.identifier === state.userData?.username)
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData}});
+				else
+					dispatchProfile({type: "FRIEND_DATA", friendsData: {...state.friendsData}});
+			}
+			else if (lastJsonMessage.type === "update")
+			{
+				if (lastJsonMessage.identifier === "tfa-status" || lastJsonMessage.identifier === "tfa-change")
+				{
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa}}});
+				}
+				else if (lastJsonMessage.identifier === "username")
+				{
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: state.userData?.username}});
+				}
+				else if (lastJsonMessage.identifier === "email")
+				{
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: state.userData?.email}});
+				}
+				dispatch({type: 'ALERT', content: lastJsonMessage.message})
+			}
 		}
 	}, [lastJsonMessage])
 

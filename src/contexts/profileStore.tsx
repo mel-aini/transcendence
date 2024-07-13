@@ -2,6 +2,7 @@ import { Dispatch, ReactNode, createContext, useContext, useReducer } from "reac
 import { FriendsData, MatchesData, UserData } from "../types/profile";
 
 export enum Actions {
+	GoToProfile,
 	EditProfile,
 	AddFriend,
 	Friend,

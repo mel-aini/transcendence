@@ -6,7 +6,8 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { profileContext } from "./Index";
 import api from "../../api/axios";
 import { useParams } from "react-router-dom";
-import Settings from "./Settings/Settings";
+import Settings from "../Settings/Index";
+import edit_icon from "/edit_icon.svg"
 
 const ProfileHeader = () => {
 	const { state, dispatchProfile } = useProfileContext();
@@ -38,8 +39,8 @@ const ProfileHeader = () => {
 						<div style={{backgroundImage: `url(${state.userData?.profile_image})`}} className="relative rounded-full border-2 border-primary w-[120px] h-[120px] mb-3 bg-cover overflow-hidden">
 							{
 								(!id) &&
-								<form ref={formRef}>
-									<label htmlFor="avatar_link" className="absolute duration-500 hover:opacity-100 opacity-0 -translate-y-full top-full -translate-x-1/2 left-1/2 w-full cursor-pointer text-center text-xs bg-secondary flex flex-col py-1"><span>upload</span><span>image</span></label>
+								<form ref={formRef} className="duration-300 hover:opacity-100 opacity-0 w-full h-full bg-[#000000CC]">
+									<label htmlFor="avatar_link" className="absolute -translate-y-1/2 top-1/2 -translate-x-1/2 left-1/2 cursor-pointer"><img src={edit_icon} alt="" width={32} height={32} /></label>
 									<input onChange={(e) => changehandler(e)} type="file" name="avatar_link" accept="image/*" id="avatar_link" className="hidden" />
 								</form>
 							}
@@ -47,7 +48,7 @@ const ProfileHeader = () => {
 						<div className="flex flex-col mb-5">
 							<span className="text-center">{state.userData.username}</span>
 							{
-								(id) &&
+								(id && state.userData.relation !== 'you') &&
 								<div className="flex justify-center items-center gap-1">
 									{
 										state.userData.online &&

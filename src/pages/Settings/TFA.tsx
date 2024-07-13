@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useProfileContext } from "../../../contexts/profileStore";
+import { useProfileContext } from "../../contexts/profileStore";
 import EditBar from "./EditBar";
-import { UpdateReq } from "../../../types/profile";
-import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
+import { UpdateReq } from "../../types/profile";
+import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
 
 function TFA() {
 	const {state} = useProfileContext();
