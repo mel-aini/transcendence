@@ -25,19 +25,29 @@ const getDate = () => {
 }
 
 function Conversation() {
-	const { state, dispatch } = useChatContext();
+	const { state, dispatch, sendJsonMessage } = useChatContext();
 	const message = useRef<string>('');
 
 	const sendMessage = (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 
-		const newMessage: Imessage = {
-			content: message.current,
-			date: getDate(),
-			receiver: 'salam',
-			sender: 'sss'
+		// const newMessage: Imessage = {
+		// 	content: message.current,
+		// 	date: getDate(),
+		// 	receiver: 'salam',
+		// 	sender: 'user1'
+		// }
+		console.log('trying to send message...');
+		const hmessage = {
+			id: state.conversation_id,
+			type: 'send_message',
+			message: message.current,
+			sender: 'user1',
+			receiver: 'user2',
 		}
-		dispatch({type: 'MESSAGE', message: newMessage});
+	
+		sendJsonMessage(hmessage);
+		// dispatch({type: 'MESSAGE', message: newMessage});
 
 		((e.target as HTMLElement).firstChild as InputHTMLAttributes<HTMLInputElement>).value = message.current = '';
 	}

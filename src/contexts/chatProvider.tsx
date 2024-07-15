@@ -4,9 +4,17 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import { CHAT_WS_ENDPOINT } from "../utils/global";
 import { SendJsonMessage, WebSocketHook } from "react-use-websocket/dist/lib/types";
 
+interface Message {
+	content:  string
+	date: string
+	id: number
+	receiver: string
+	sender: string
+}
+
 export interface ChatStateProps {
 	isFocus: boolean,
-	messages: any[],
+	messages: Message[],
 	onlineFriends: any[],
 	conversations: any[],
 	conversation_id: string | number | null;
@@ -94,13 +102,16 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	}, [readyState])
 	
 	useEffect(() => {
-		console.log('new message', lastJsonMessage)
+		// console.log('new message', lastJsonMessage)
 		if (lastJsonMessage) {
 			if (lastJsonMessage.online) {
 				dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})
 			}
 			if (lastJsonMessage.conversations) {
 				dispatch({type: 'CONVERSATIONS', conversations: lastJsonMessage.conversations})
+			}
+			if (lastJsonMessage.messages) {
+				dispatch({type: 'MESSAGES', messages: lastJsonMessage.messages})
 			}
 		}
 	}, [lastJsonMessage])

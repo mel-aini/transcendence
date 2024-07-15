@@ -3,7 +3,7 @@ import { useChatContext } from "../../../contexts/chatProvider";
 import Message from "./Message";
 import { ReadyState } from "react-use-websocket";
 
-const ME = 'user2'; 
+const ME = 'user1'; 
 
 function ConversationMessages() {
 	const { state, dispatch } = useChatContext();

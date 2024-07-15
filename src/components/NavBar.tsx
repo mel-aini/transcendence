@@ -1,4 +1,4 @@
-import { HTMLAttributes, useEffect, useState } from "react";
+import { HTMLAttributes, useState } from "react";
 import NavBarElem from "./NavBarElem";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,7 @@ import User from "./User";
 import useLog from "../hooks/useLog";
 import api from "../api/axios";
 import { useQuery } from "@tanstack/react-query";
-
-const PROFILE_URL = "https://images.unsplash.com/photo-1669937401447-7cfc6e9906e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fGdhbWluZyUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
+// import Notifications from "./Notifications";
 
 interface ArrowType extends HTMLAttributes<HTMLDivElement> {
 	left: number
@@ -65,6 +64,7 @@ const NavBar = ({className}: {className?: string}) => {
 	// profile actions
 	const [xPos, setXPos] = useState<XPos>(0);
 	const [event, setEvent] = useState<any>('auto');
+	const [notification, setNotification] = useState(true);
 
 	const clickHandler = async () => {
 
@@ -86,7 +86,7 @@ const NavBar = ({className}: {className?: string}) => {
 
 	return (
 		<div className={"relative w-full h-[100px] flex items-center" + (className ? ` ${className}` : '')}>
-			<div className="w-full flex justify-end items-center overflow-hidden">
+			<div className="w-full flex justify-end items-center overflow-x-hidden">
 				<div
 					className="relative flex justify-end duration-300"
 					style={{transform: `translateX(${xPos}px)`, pointerEvents: event}}
@@ -94,9 +94,10 @@ const NavBar = ({className}: {className?: string}) => {
 					<Arrow onClick={clickHandler} left={xPos} />
 					<NavBarElem type="Dashboard" />
 					<NavBarElem type="Chat" />
-					<NavBarElem type="Notifications" />
+					<NavBarElem onClick={() => setNotification(prev => !prev)} type="Notifications" />
 					<NavBarElem type="Settings" className="cursor-pointer" />
 				</div>
+				{/* {notification && <Notifications className="w-[530px] absolute h-[400px] top-24 right-0" />} */}
 				<div className="w-[42px] h-[42px] bg-bg cursor-pointer flex justify-center items-center z-10">
 					<User 
 						onClick={() => setProfileActions(prev => !prev)} 
