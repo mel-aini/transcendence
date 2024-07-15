@@ -20,9 +20,9 @@ function Nested({ Component }: { Component: ComponentType }) {
 
 	return (
 		<ChatContextProvider>
-			<ChatLogic>
+			{/* <ChatLogic> */}
 				<Component />
-			</ChatLogic>
+			{/* </ChatLogic> */}
 		</ChatContextProvider>
 	)
 }

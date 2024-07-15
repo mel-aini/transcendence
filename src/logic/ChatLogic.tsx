@@ -17,7 +17,6 @@ function ChatLogic({children}: {children: ReactNode}) {
 	useEffect(() => {
 		console.log('new message', lastJsonMessage)
 		if (lastJsonMessage) {
-			// console.log(lastJsonMessage)
 			if (lastJsonMessage.online) {
 				dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})
 			}
@@ -28,8 +27,8 @@ function ChatLogic({children}: {children: ReactNode}) {
 	}, [lastJsonMessage])
 
 	useEffect(() => {
-		console.log('making new call to the web socket')
-		if (readyState == ReadyState.OPEN && state.conversation_id) {
+		console.log('trying to make new call to the web socket...', state.conversation_id)
+		if (state.conversation_id) {
 			sendJsonMessage({
 				type: 'messages',
 				conversation_id: state.conversation_id,

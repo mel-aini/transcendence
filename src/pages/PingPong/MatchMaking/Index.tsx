@@ -1,9 +1,9 @@
 import User from "../../../components/User";
 import { Levels, PingPongStateProps, usePingPongContext } from "../../../contexts/pingPongProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { CiCircleCheck } from "react-icons/ci";
+import { primaryColor, secondaryColor } from "../../../utils/colors";
 
 interface PlayerBarProps {
 	username?: string,
@@ -14,26 +14,22 @@ interface PlayerBarProps {
 }
 
 function PlayerBar({username, avatar, level, unknown, state}: PlayerBarProps) {
-	const styleClass = !unknown ? ' sm:w-[300px]' : ' sm:w-[300px] animate-pulse flex justify-center';
+	const styleClass = !unknown ? ' ' : ' animate-pulse flex justify-center';
 	let readyClass = state > Levels.FindingOpponent ? 'opacity-100' : 'opacity-0';
 	readyClass += state == Levels.WaitingForOpponent ? ' fill-primary' : '';
 	return (
-		<div>
-			<div className={"flex justify-end items-center gap-2 text-sm mb-2" + ` ${readyClass}`}>
-				<span className="opacity-50">ready</span>
-				<CiCircleCheck />
-			</div>
-			<div className={"flex justify-between items-center bg-secondary border border-border rounded-md px-3 sm:px-8 h-[80px] select-none" + styleClass}>
+		<div className="grow">
+			<div className={"flex justify-center sm:justify-between items-center bg-secondary border border-border rounded-md px-3 sm:px-8 h-[80px] select-none" + styleClass}>
 				{
 					unknown && <span className="w-full text-center">?</span>
 				}
 				{username && avatar && level &&
 				<>
-					<div className="flex items-center gap-3">
+					<div className="flex items-center gap-3 overflow-hidden">
 						<User border className="border-primary" url={avatar} />
-						<div>{username}</div>
+						<div className="truncate">{username}</div>
 					</div>
-					<span>Lvl {level}</span>
+					<span className="hidden sm:block">Lvl {level}</span>
 				</>
 				}
 			</div>
@@ -96,9 +92,10 @@ function MatchMaking() {
 		dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
 		navigate('/ping-pong')
 	}
+
 	return ( 
-		<div className="min-h-[90vh] flex justify-center items-center">
-			<div className="flex flex-col bg-secondary border border-border rounded-md p-10 gap-14">
+		<div className="min-h-[calc(100vh-100px)] flex justify-center items-center">
+			<div className="w-full max-w-[700px] flex flex-col bg-secondary border border-border rounded-md p-10 gap-14">
 				<div>
 					<h1 className="text-xl mb-5 font-medium">Matchmaking</h1>
 					<Title level={state.level} />
@@ -112,25 +109,71 @@ function MatchMaking() {
 							initial={{x: 10, opacity: 0}}
 							animate={{x: 0, opacity: 1}}
 							transition={{duration: 0.3}}
+							className="grow"
 							>
 							<PlayerBar state={state.level} username="user2" level="3" avatar={avatar_link} />
 						</motion.div>
 					}
 				</div>
-				<div className="w-full flex justify-between">
+				<div className="w-full flex justify-between items-center">
 					<span onClick={cancelAction} className="cursor-pointer hover:underline duration-300 select-none">cancel</span>
-					<span
-						className={"text-primary duration-300 select-none" + (state.level == Levels.OpponentFound ? ' hover:underline cursor-pointer' : ' cursor-default opacity-50' )}
-						onClick={() => {
-							if (state.level != Levels.OpponentFound) return;
-							dispatch({type: 'CHLEVEL', level: Levels.WaitingForOpponent});
-						}}>
-							confirm
-					</span>
+					{state.level >= Levels.OpponentFound && <Loader />}
 				</div>
 			</div>
 		</div> 
 	);
+}
+
+
+function Loader() {
+	const { dispatch } = usePingPongContext();
+	const [timer, setTimer] = useState(9);
+	const navigate = useNavigate();
+	const handler = () => {
+		setTimer(prev => {
+			if (prev == 0) {
+				dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+				navigate('/ping-pong/play');
+				return prev;
+			}
+			return prev - 1
+		})
+	}
+
+	useEffect(() => {
+		const id = setInterval(handler, 1000)
+		return () => {
+			clearInterval(id)
+		}
+	}, [])
+
+	return (
+		<motion.div
+			initial={{background: `conic-gradient(from 0deg, 
+				${primaryColor} 0%, 
+				${primaryColor} ${'0%'}, 
+				${secondaryColor} ${'0%'}, ${secondaryColor} 100%)`}}
+			animate={{background: `conic-gradient(from 0deg, 
+				${primaryColor} 0%, 
+				${primaryColor} ${'100%'}, 
+				${secondaryColor} ${'100%'}, ${secondaryColor} 100%)`}}
+			transition={{
+				duration: 10,
+				ease: 'easeOut'
+			}}
+			className="relative size-[40px] self-center rounded-full sm:shrink-0 flex justify-center items-center"
+			style={{
+				background: `conic-gradient(from 0deg, 
+					${primaryColor} 0%, 
+					${primaryColor} ${'100%'}, 
+					${secondaryColor} ${'100%'}, ${secondaryColor} 100%)`
+				}}
+			>
+			<div className="size-[30px] text-sm bg-secondary rounded-full flex justify-center items-center">
+				{timer}
+			</div>
+		</motion.div>
+	)
 }
 
 export default MatchMaking;
