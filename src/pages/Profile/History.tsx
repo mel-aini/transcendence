@@ -12,12 +12,6 @@ import api from "../../api/axios";
 import { useProfileContext } from "../../contexts/profileStore";
 import { useQuery } from "@tanstack/react-query";
 
-// const uri = window.location.pathname.substring(1);
-// const index = uri.indexOf('/');
-// const id = (index === -1) ? undefined : uri.substring(index);
-// const newUri = (id) ? "matches" + id : "matches/";
-// const matchesResponse : MatchesData[] = await api.get('api/' + newUri).then((e) => e.data.data);
-
 async function fetchData(id: string | undefined) {
 	const uri: string = id ? "matches/" + id : "matches";
 	const res = await api.get('api/' + uri);
@@ -38,8 +32,8 @@ const History = () => {
 		
 
 		if (!parentRef.current) return;
-		
 		setWidth((parentRef.current as HTMLElement).offsetWidth);
+
 		const handler = () => {
 			if (!parentRef.current) return;
 			setWidth((parentRef.current as HTMLElement).offsetWidth);
@@ -66,6 +60,7 @@ const History = () => {
 	const userClick = (path:string) => {
 		navigate(path);
 	}
+	
 	return (
 		<div ref={parentRef} className="row-start-5 xl:row-start-1 xl:row-span-2 xl:col-start-4 xl:col-end-8">
 			<Container className="h-full" childClassName="flex flex-col justify-around pt-12 sm:pt-8 pb-9 items-center">
@@ -126,10 +121,10 @@ const History = () => {
 									</div>
 									<div className="flex justify-between items-center px-4 rounded-md border border-border w-4/5 h-full">
 										<div onClick={() =>userClick(match.opponent.profile)} className="flex justify-between items-center cursor-pointer gap-3">
-											<img className="shrink-0 w-[24px] h-[24px] rounded-full border-primary border" src={match.opponent.image}/>
+											<img className="shrink-0 w-[24px] h-[24px] rounded-full border-primary border" src={match.opponent.profile_image}/>
 											<span className="shrink overflow-hidden text-ellipsis">{match.opponent.username}</span>
 										</div>
-										<span className="shrink-0">lvl 2</span> {/* match.opponent.level */}
+										<span className="shrink-0">lvl {match.opponent.level.current}</span>
 									</div>
 								</motion.div>
 							);

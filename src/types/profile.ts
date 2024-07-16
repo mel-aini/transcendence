@@ -44,6 +44,13 @@ export interface UserData {
 	}
 }
 
+interface Level {
+	name: string,
+	image: Url,
+	current: number,
+	progress: number
+}
+
 export interface MatchesData {
 	match_id: string,
 	status: string,
@@ -51,8 +58,9 @@ export interface MatchesData {
 	opponent: {
 		username: string,
 		goals: number,
-		image: Url,
-		profile: Path
+		profile_image: Url,
+		profile: Path,
+		level: Level
 	}
 }
 
