@@ -11,7 +11,6 @@ const Header = () => {
 		dispatch({type: "COUNTER", counter: 1});
 	}
 
-	// <div className="w-full flex justify-between gap-1 items-center">
 	return (
 		<div className="w-full gap-1 items-center grid grid-cols-3 grid-rows-2 lg:grid-rows-1">
 			<div className="flex gap-1 col-start-1 col-end-2 w-full">
