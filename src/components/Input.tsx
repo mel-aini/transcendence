@@ -1,5 +1,6 @@
 import { CSSProperties, HTMLInputTypeAttribute, InputHTMLAttributes, LegacyRef, useRef, useState } from "react";
 import { CgEye } from "react-icons/cg";
+import { twMerge } from "tailwind-merge";
 
 type TOnBlur = (e?: any) => void
 
@@ -22,7 +23,7 @@ const Input = ({height = 48, style, className, type, onBlur, onFocus, ...props  
 			<input
 				ref={inputRef}
 				type={type != 'password' ? type : showPassword ? 'text' : 'password'}
-				className={"bg-secondary border border-transparent focus:border-primary font-normal px-3 rounded-[5px] focus:outline-none duration-300" + " " + className}
+				className={twMerge("bg-secondary border border-transparent focus:border-primary font-normal px-3 rounded-[5px] focus:outline-none duration-300",className)}
 				style={{height, ...style}}
 				{...props}
 				onFocus={() => { 

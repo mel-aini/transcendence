@@ -61,7 +61,7 @@ function Conversation() {
 				duration: 0.3,
 				ease: 'easeInOut'
 			}}
-			className="w-full h-full flex flex-col absolute top-0 left-0 lg:static z-10">
+			className="w-full h-full flex flex-col absolute top-0 left-0 lg:static z-10 bg-secondary">
 			{state.conversation_id && <>
 				<ConversationHeader />
 				<ConversationMessages />

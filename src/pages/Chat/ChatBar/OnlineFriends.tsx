@@ -20,7 +20,7 @@ function OnlineFriends() {
 		dispatch({type: 'CONVERSATION', conversation_id: friend.conversation_id})
 	}
 	return ( 
-		<div onScroll={scrollHandler} className="scroll-to-hide online-friends w-full h-[40px] bg-bg items-center gap-3 flex overflow-x-auto">
+		<div onScroll={scrollHandler} className="scroll-to-hide online-friends w-full h-[40px] items-center gap-3 flex overflow-x-auto">
 			{
 				state.onlineFriends.length == 0 && <p>no online friend</p>
 			}

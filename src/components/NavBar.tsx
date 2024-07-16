@@ -7,6 +7,10 @@ import User from "./User";
 import useLog from "../hooks/useLog";
 import api from "../api/axios";
 import { useQuery } from "@tanstack/react-query";
+import Modal from "./Modal";
+import Input from "./Input";
+import { FiSearch } from "react-icons/fi";
+import SearchUsers from "./SearchUsers";
 // import Notifications from "./Notifications";
 
 interface ArrowType extends HTMLAttributes<HTMLDivElement> {
@@ -65,6 +69,7 @@ const NavBar = ({className}: {className?: string}) => {
 	const [xPos, setXPos] = useState<XPos>(0);
 	const [event, setEvent] = useState<any>('auto');
 	const [notification, setNotification] = useState(true);
+	const {state, dispatch} = useGlobalContext();
 
 	const clickHandler = async () => {
 
@@ -85,30 +90,40 @@ const NavBar = ({className}: {className?: string}) => {
 	}
 
 	return (
-		<div className={"relative w-full h-[100px] flex items-center" + (className ? ` ${className}` : '')}>
-			<div className="w-full flex justify-end items-center overflow-x-hidden">
-				<div
-					className="relative flex justify-end duration-300"
-					style={{transform: `translateX(${xPos}px)`, pointerEvents: event}}
-				> 
-					<Arrow onClick={clickHandler} left={xPos} />
-					<NavBarElem type="Dashboard" />
-					<NavBarElem type="Chat" />
-					<NavBarElem onClick={() => setNotification(prev => !prev)} type="Notifications" />
-					<NavBarElem type="Settings" className="cursor-pointer" />
+		<>
+			<div className={"relative w-full h-[100px] flex items-center" + (className ? ` ${className}` : '')}>
+				<div className="w-full flex justify-end items-center overflow-x-hidden">
+					<div
+						className="relative flex justify-end duration-300"
+						style={{transform: `translateX(${xPos}px)`, pointerEvents: event}}
+						> 
+						<Arrow onClick={clickHandler} left={xPos} />
+						<NavBarElem type="Dashboard" />
+						<NavBarElem type="Chat" />
+						<NavBarElem onClick={() => setNotification(prev => !prev)} type="Notifications" />
+						<NavBarElem onClick={() => dispatch({type: 'SEARCH'})} type="Search" className="cursor-pointer" />
+					</div>
+					{/* {notification && <Notifications className="w-[530px] absolute h-[400px] top-24 right-0" />} */}
+					<div className="w-[42px] h-[42px] bg-bg cursor-pointer flex justify-center items-center z-10">
+						<User 
+							onClick={() => setProfileActions(prev => !prev)} 
+							width={35} 
+							border 
+							className="border-white cursor-pointer z-10" 
+							url={data?.data.profile_image} />
+					</div>
 				</div>
-				{/* {notification && <Notifications className="w-[530px] absolute h-[400px] top-24 right-0" />} */}
-				<div className="w-[42px] h-[42px] bg-bg cursor-pointer flex justify-center items-center z-10">
-					<User 
-						onClick={() => setProfileActions(prev => !prev)} 
-						width={35} 
-						border 
-						className="border-white cursor-pointer z-10" 
-						url={data?.data.profile_image} />
-				</div>
+				{profileActions && <ProfileActions setProfileActions={setProfileActions} />}
 			</div>
-			{profileActions && <ProfileActions setProfileActions={setProfileActions} />}
-		</div>
+			{/* Search Modal */}
+			<Modal
+				className='top-20 translate-y-0 w-11/12 max-w-[600px]'
+				isOpen={state.search} 
+				onClose={() => dispatch({type: 'SEARCH'})}>
+				<SearchUsers />
+			</Modal>
+			{/* Search Modal */}
+		</>
 	)
 }
 

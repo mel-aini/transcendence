@@ -4,12 +4,14 @@ export interface GlobalStateProps {
 	isLoading: boolean
 	alert: boolean
 	alertMessage: string
+	search: boolean
 }
 
 const initialState: GlobalStateProps = {
 	isLoading: false,
 	alert: false,
-	alertMessage: ''
+	alertMessage: '',
+	search: false
 };
 
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
@@ -42,6 +44,11 @@ const reducer = (state: GlobalStateProps, action: any) => {
 				...state, 
 				alert: true, 
 				alertMessage: action.content 
+			}
+		case 'SEARCH':
+			return { 
+				...state,
+				search: !state.search
 			}
 		default:
 			return state;

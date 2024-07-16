@@ -102,7 +102,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	}, [readyState])
 	
 	useEffect(() => {
-		// console.log('new message', lastJsonMessage)
+		console.log('new message', lastJsonMessage)
 		if (lastJsonMessage) {
 			if (lastJsonMessage.online) {
 				dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})

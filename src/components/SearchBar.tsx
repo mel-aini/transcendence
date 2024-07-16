@@ -11,7 +11,7 @@ function SearchBar({ className }: Props) {
 
 	return ( 
 		<form onSubmit={handler} className={"w-full border-b border-b-white h-[40px]" + (className ? ` ${className}` : '')}>
-			<input type="text" placeholder="search" className="w-full h-full px-2 bg-bg text-white focus:outline-none" />
+			<input type="text" placeholder="search" className="w-full h-full px-2 bg-secondary text-white focus:outline-none" />
 		</form>
 	);
 }

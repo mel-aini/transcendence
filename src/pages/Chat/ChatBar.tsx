@@ -19,9 +19,9 @@ function ChatBar() {
 			initial={{opacity: 1}}
 			exit={{opacity: 1}}
 			transition={{duration: 0.5}}
-			className="w-full px-5 pt-5 h-full relative flex flex-col z-0 lg:max-w-[400px] lg:border-r lg:border-r-dark">
+			className="w-full px-5 pt-5 h-full relative flex flex-col z-0 lg:max-w-[400px] bg-secondary lg:border-r lg:border-r-dark">
 			<div className="scroll-to-hide flex flex-col overflow-auto grow">
-				<div className="flex justify-between items-center pb-10 shrink-0 sticky top-0 left-0 bg-bg">
+				<div className="flex justify-between items-center pb-10 shrink-0 sticky top-0 left-0">
 					<h1 className="text-xl font-semibold text-primary">Chat</h1>
 					<div className="relative flex gap-3 items-center">
 						<IoAddCircle className="fill-primary text-3xl cursor-pointer" />
@@ -36,7 +36,7 @@ function ChatBar() {
 					<OnlineFriends />
 				</div>
 				<div className="lg:max-w-[420px] pt-10">
-					<div className="flex justify-between items-center mb-5 relative z-10 bg-bg">
+					<div className="flex justify-between items-center mb-5 relative z-10">
 						<h2>conversations</h2>
 						<FiSearch onClick={() => setToggleSearch(prev => !prev)} className="text-xl cursor-pointer hover:stroke-primary duration-300" />
 					</div>

@@ -4,12 +4,12 @@ import Polygon from './Polygon';
 import { RiDashboardLine } from "react-icons/ri";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { FiBell } from "react-icons/fi";
-import { IoSettingsOutline } from "react-icons/io5";
+import { FiSearch } from "react-icons/fi";
 
 
 interface NavBarElemProps extends HTMLAttributes<HTMLDivElement> {
 	className?: string,
-	type: 'Dashboard' | 'Chat' | 'Notifications' | 'Settings' | 'Empty',
+	type: 'Dashboard' | 'Chat' | 'Notifications' | 'Search' | 'Empty',
 }
 
 const NavBarElem = ( {className, type, ...props }: NavBarElemProps) => {
@@ -30,9 +30,8 @@ const NavBarElem = ( {className, type, ...props }: NavBarElemProps) => {
 			routeToNavigate = '/chat';
 			marginRight += 'mr-[-51px]';
 			break;
-		case 'Settings':
+		case 'Search':
 			index = 0;
-			routeToNavigate = '/settings';
 			marginRight += 'mr-[-77px]';
 			break;
 		case 'Notifications':
@@ -63,7 +62,7 @@ const NavBarElem = ( {className, type, ...props }: NavBarElemProps) => {
 				<div className='flex gap-3 w-full'>
 					{type == 'Dashboard' && <RiDashboardLine className='text-2xl group-hover:fill-primary' />}
 					{type == 'Chat' && <IoChatbubbleOutline className='text-2xl group-hover:stroke-primary' />}
-					{type == 'Settings' && <IoSettingsOutline className='text-2xl group-hover:stroke-primary' />}
+					{type == 'Search' && <FiSearch className='text-2xl group-hover:stroke-primary' />}
 					{type == 'Notifications' && <FiBell className='text-2xl group-hover:stroke-primary' />}
 					<h1 className={`pointer-events-none opacity-0 group-hover:opacity-100 duration-300 text-primary font-medium group-hover:mr-0` + marginRight}>{type}</h1>
 				</div>
