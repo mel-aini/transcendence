@@ -10,6 +10,7 @@ interface Message {
 	id: number
 	receiver: string
 	sender: string
+	state?: 'processing' | 'ok' | 'error'
 }
 
 export interface ChatStateProps {
@@ -18,6 +19,7 @@ export interface ChatStateProps {
 	onlineFriends: any[],
 	conversations: any[],
 	conversation_id: string | number | null;
+	lastMessage: Message | null
 }
 
 const initialState: ChatStateProps = {
@@ -25,7 +27,8 @@ const initialState: ChatStateProps = {
 	messages: [],
 	onlineFriends: [],
 	conversations: [],
-	conversation_id: null
+	conversation_id: null,
+	lastMessage: null
 };
 
 export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispatch<any>, lastJsonMessage: any, sendJsonMessage: SendJsonMessage, readyState: ReadyState}>({
@@ -55,10 +58,14 @@ const reducer = (state: ChatStateProps, action: any) => {
 				isFocus: false
 			}
 		case 'MESSAGE':
-			console.log(action.message)
 			return { 
-				...state, 
+				...state,
 				messages: [...state.messages, action.message] 
+			}
+		case 'LAST_MESSAGE':
+			return { 
+				...state,
+				lastMessage: action.message
 			}
 		case 'CONVERSATION':
 			return { 
@@ -127,10 +134,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			})
 		}
 	}, [state.conversation_id])
-
-	useEffect(() => {
-		console.log(state.messages)
-	}, [state.messages])
 
 	return (
 		<ChatContext.Provider value={{state, dispatch, lastJsonMessage, sendJsonMessage, readyState}}>

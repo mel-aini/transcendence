@@ -1,6 +1,6 @@
 import {motion} from 'framer-motion'
 import ConversationHeader from "./ConversationHeader";
-import { FormEvent, InputHTMLAttributes, MouseEvent, useRef } from "react";
+import { FormEvent, InputHTMLAttributes, MouseEvent, useRef, useState } from "react";
 import ConversationMessages from './ConversationMessages';
 import { useChatContext } from '../../../contexts/chatProvider';
 
@@ -26,11 +26,12 @@ const getDate = () => {
 
 function Conversation() {
 	const { state, dispatch, sendJsonMessage } = useChatContext();
-	const message = useRef<string>('');
-
-	const sendMessage = (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+	const [message, setMessage] = useState('');
+	const sendMessage = async (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-
+		const message_content = message;
+		setMessage('');
+		((e.target as HTMLElement).firstChild as InputHTMLAttributes<HTMLInputElement>).value = '';
 		// const newMessage: Imessage = {
 		// 	content: message.current,
 		// 	date: getDate(),
@@ -41,22 +42,37 @@ function Conversation() {
 		const ServerMessage = {
 			id: state.conversation_id,
 			type: 'send_message',
-			message: message.current,
+			message: message_content,
 			sender: 'user1',
 			receiver: 'user2',
 		}
 	
 		sendJsonMessage(ServerMessage);
 
-		dispatch({type: 'MESSAGE', message: {
-			content: message.current,
+		dispatch({type: 'LAST_MESSAGE', message: {
+			content: message_content,
 			date: "2024-06-27 12:58:51",
 			sender: 'user1',
 			receiver: 'user2',
-			id: null
+			id: null,
+			state: 'processing'
 		}});
 
-		((e.target as HTMLElement).firstChild as InputHTMLAttributes<HTMLInputElement>).value = message.current = '';
+		// simulate request processing
+		await new Promise(r => setTimeout(r, 1000));
+
+		// remove message after response come
+		dispatch({type: 'LAST_MESSAGE', message: null});
+	
+		// if error
+		dispatch({type: 'MESSAGE', message: {
+			content: message_content,
+			date: "2024-06-27 12:58:51",
+			sender: 'user1',
+			receiver: 'user2',
+			id: null,
+			state: 'error'
+		}});
 	}
 
 	return ( 
@@ -73,7 +89,12 @@ function Conversation() {
 				<ConversationHeader />
 				<ConversationMessages />
 				<form onSubmit={(e) => sendMessage(e)} className="w-full flex justify-between items-center pl-5 h-[50px] border-t border-t-dark bg-bg shrink-0">
-					<input className="h-full grow bg-bg focus:outline-none" placeholder="try/silent...🤫" onChange={(e) => message.current = e.target.value} type="text" name="" id="" />
+					<input
+						disabled={state.lastMessage?.state == 'processing'} 
+						className="h-full grow bg-bg focus:outline-none" 
+						placeholder={state.lastMessage == null ? "try/silent...🤫" : 'sending...'} 
+						onChange={(e) => setMessage(e.target.value)} 
+						type="text" name="" id="" />
 					<button className="shrink-0 px-5 border-l h-full border-l-dark text-primary" type="submit">send</button>
 				</form>
 			</>}

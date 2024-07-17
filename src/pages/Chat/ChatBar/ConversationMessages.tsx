@@ -1,46 +1,71 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChatContext } from "../../../contexts/chatProvider";
 import Message from "./Message";
-import { ReadyState } from "react-use-websocket";
+import { IoIosArrowDown } from "react-icons/io";
 
 const ME = 'user1'; 
 
 function ConversationMessages() {
-	const { state, dispatch, sendJsonMessage } = useChatContext();
-	const firstTime = useRef(true);
+	const { state, sendJsonMessage } = useChatContext();
 	const container = useRef<HTMLDivElement>(null);
+	const [isScrollTop, setIsScrollTop] = useState(false);
+
+	const scrollToBottom = () => {
+		if (!container.current) return;
+		container.current.scrollTo(0, container.current.scrollHeight)
+		setIsScrollTop(false)
+	}
 
 	useEffect(() => {
-		if (!firstTime.current || !container.current) return;
-		container.current.scrollTo(0, container.current.scrollHeight)
-		if (state.messages,length != 0) {
-			firstTime.current = false;
-		}
-	}, [state.messages])
+		scrollToBottom();
+	}, [state.messages, state.lastMessage])
 
 	const handleScroll = () => {
-		return () => {
-			if (!container.current) return;
-			if (container.current.scrollTop == 0) {
-				console.log('should fetch');
-				sendJsonMessage({
-					type: 'messages',
-					limit: 10,
-					conversation_id: state.conversation_id ,
-					message_id: state.messages[0].id
-				})
-			}
+		if (!container.current) return;
+		if (container.current.scrollTop == 0) {
+			console.log('should fetch');
+			sendJsonMessage({
+				type: 'messages',
+				limit: 10,
+				conversation_id: state.conversation_id,
+				// message_id: state.messages[0].id
+			})
 		}
 	}
+
 	return ( 
 		<div
-			onScroll={handleScroll()} 
+			onScroll={handleScroll}
+			onWheel={(e) => setIsScrollTop(e.deltaY < 0)}
 			ref={container} className="messages-container grow bg-secondary overflow-auto p-5 flex flex-col gap-8">
 			{
 				state.messages.map((message, index) => {
-					return <Message key={index} type={message.sender == ME ? 'sent' :"arrive"} date={message.date} className=" animate-msg">{message.content}</Message>
+					return <Message 
+						state={message.state} 
+						key={index} 
+						type={message.sender == ME ? 'sent' : 'arrive' } 
+						date={message.date}
+						>
+							{message.content}
+						</Message>
 				})
 			}
+			{
+				state.lastMessage &&
+					<Message 
+						state={state.lastMessage.state}
+						type={state.lastMessage.sender == ME ? 'sent' : 'arrive' } 
+						date={state.lastMessage.date}
+						className=" animate-msg"
+						>
+							{state.lastMessage.content}
+					</Message>
+			}
+			{isScrollTop && <div
+				onClick={scrollToBottom}
+				className="fixed bottom-16 right-3 size-10 rounded-full bg-bg flex justify-center items-center cursor-pointer">
+				<IoIosArrowDown className="text-xl" />
+			</div>}
 		</div>
 	);
 }
