@@ -55,6 +55,7 @@ const reducer = (state: ChatStateProps, action: any) => {
 				isFocus: false
 			}
 		case 'MESSAGE':
+			console.log(action.message)
 			return { 
 				...state, 
 				messages: [...state.messages, action.message] 
@@ -111,7 +112,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				dispatch({type: 'CONVERSATIONS', conversations: lastJsonMessage.conversations})
 			}
 			if (lastJsonMessage.messages) {
-				dispatch({type: 'MESSAGES', messages: lastJsonMessage.messages})
+				dispatch({type: 'MESSAGES', messages: [ ...lastJsonMessage.messages, ...state.messages ]})
 			}
 		}
 	}, [lastJsonMessage])
@@ -119,12 +120,17 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	useEffect(() => {
 		console.log('trying to make new call to the web socket...', state.conversation_id)
 		if (state.conversation_id) {
+			dispatch({type: 'MESSAGES', messages: []})
 			sendJsonMessage({
 				type: 'messages',
 				conversation_id: state.conversation_id,
 			})
 		}
 	}, [state.conversation_id])
+
+	useEffect(() => {
+		console.log(state.messages)
+	}, [state.messages])
 
 	return (
 		<ChatContext.Provider value={{state, dispatch, lastJsonMessage, sendJsonMessage, readyState}}>

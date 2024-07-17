@@ -38,7 +38,7 @@ function Conversation() {
 		// 	sender: 'user1'
 		// }
 		console.log('trying to send message...');
-		const hmessage = {
+		const ServerMessage = {
 			id: state.conversation_id,
 			type: 'send_message',
 			message: message.current,
@@ -46,8 +46,15 @@ function Conversation() {
 			receiver: 'user2',
 		}
 	
-		sendJsonMessage(hmessage);
-		// dispatch({type: 'MESSAGE', message: newMessage});
+		sendJsonMessage(ServerMessage);
+
+		dispatch({type: 'MESSAGE', message: {
+			content: message.current,
+			date: "2024-06-27 12:58:51",
+			sender: 'user1',
+			receiver: 'user2',
+			id: null
+		}});
 
 		((e.target as HTMLElement).firstChild as InputHTMLAttributes<HTMLInputElement>).value = message.current = '';
 	}
