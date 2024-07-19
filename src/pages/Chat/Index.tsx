@@ -19,7 +19,6 @@ function Index() {
 		e.preventDefault();
 		authDispatch({type: 'USERNAME', username: username})
 		setIsOpen(false);
-		// console.log(username);
 	}
 	//
 
@@ -52,7 +51,7 @@ function Index() {
 
 		window.addEventListener('resize', resizeHandler)
 		// todo: to remove
-		setIsOpen(true)
+			setIsOpen(true)
 		//
 		return () => {
 			window.removeEventListener('resize', resizeHandler);

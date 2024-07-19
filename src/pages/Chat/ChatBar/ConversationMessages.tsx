@@ -33,8 +33,6 @@ function ConversationMessages() {
 		}
 	}
 
-	console.log('username:', authState.username);
-
 	return ( 
 		<div
 			onScroll={handleScroll}

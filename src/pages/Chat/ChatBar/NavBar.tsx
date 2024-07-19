@@ -36,7 +36,6 @@ function NavBar({className}: Props) {
 		)
 	}
 
-
 	return ( 
 		<div className={className}>
 			<div className="hidden lg:flex flex-col gap-8 justify-between">
