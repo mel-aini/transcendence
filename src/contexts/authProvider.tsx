@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 export interface GlobalStateProps {
 	accessToken: string | null
+	username: string | undefined
 }
 
 const initialState: GlobalStateProps = {
-	accessToken: null
+	accessToken: null,
+	username: undefined
 };
 
 export const AuthContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
@@ -19,7 +21,9 @@ const reducer = (state: GlobalStateProps, action: any) => {
 	switch (action.type)
 	{
 		case 'TOKEN':
-			return { accessToken: action.token}
+			return { ...state, accessToken: action.token}
+		case 'USERNAME':
+			return { ...state, username: action.username}
 		default:
 			return state;
 	}

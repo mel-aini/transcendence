@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useChatContext } from "../../../contexts/chatProvider";
 import Message from "./Message";
 import { IoIosArrowDown } from "react-icons/io";
-
-const ME = 'user1'; 
+import { useAuthContext } from "../../../contexts/authProvider";
 
 function ConversationMessages() {
 	const { state, sendJsonMessage } = useChatContext();
+	const { state: authState } = useAuthContext();
 	const container = useRef<HTMLDivElement>(null);
 	const [isScrollTop, setIsScrollTop] = useState(false);
 
@@ -33,6 +33,8 @@ function ConversationMessages() {
 		}
 	}
 
+	console.log('username:', authState.username);
+
 	return ( 
 		<div
 			onScroll={handleScroll}
@@ -43,7 +45,7 @@ function ConversationMessages() {
 					return <Message 
 						state={message.state} 
 						key={index} 
-						type={message.sender == ME ? 'sent' : 'arrive' } 
+						type={message.sender == authState.username ? 'sent' : 'arrive' } 
 						date={message.date}
 						>
 							{message.content}
@@ -54,7 +56,7 @@ function ConversationMessages() {
 				state.lastMessage &&
 					<Message 
 						state={state.lastMessage.state}
-						type={state.lastMessage.sender == ME ? 'sent' : 'arrive' } 
+						type={state.lastMessage.sender == authState.username ? 'sent' : 'arrive' } 
 						date={state.lastMessage.date}
 						className=" animate-msg"
 						>

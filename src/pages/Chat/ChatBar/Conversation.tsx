@@ -3,6 +3,7 @@ import ConversationHeader from "./ConversationHeader";
 import { FormEvent, InputHTMLAttributes, MouseEvent, useRef, useState } from "react";
 import ConversationMessages from './ConversationMessages';
 import { useChatContext } from '../../../contexts/chatProvider';
+import { useAuthContext } from '../../../contexts/authProvider';
 
 interface Imessage {
 	content : string
@@ -27,6 +28,7 @@ const getDate = () => {
 function Conversation() {
 	const { state, dispatch, sendJsonMessage } = useChatContext();
 	const [message, setMessage] = useState('');
+	const { state: authState } = useAuthContext();
 	const sendMessage = async (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		const message_content = message;
@@ -43,8 +45,8 @@ function Conversation() {
 			id: state.conversation_id,
 			type: 'send_message',
 			message: message_content,
-			sender: 'user1',
-			receiver: 'user2',
+			sender: authState.username,
+			receiver: authState.username == 'user1' ? 'user2' : 'user1',
 		}
 	
 		sendJsonMessage(ServerMessage);
@@ -52,8 +54,8 @@ function Conversation() {
 		dispatch({type: 'LAST_MESSAGE', message: {
 			content: message_content,
 			date: "2024-06-27 12:58:51",
-			sender: 'user1',
-			receiver: 'user2',
+			sender: authState.username,
+			receiver: authState.username == 'user1' ? 'user2' : 'user1',
 			id: null,
 			state: 'processing'
 		}});
@@ -68,8 +70,8 @@ function Conversation() {
 		dispatch({type: 'MESSAGE', message: {
 			content: message_content,
 			date: "2024-06-27 12:58:51",
-			sender: 'user1',
-			receiver: 'user2',
+			sender: authState.username,
+			receiver: authState.username == 'user1' ? 'user2' : 'user1',
 			id: null,
 			state: 'error'
 		}});

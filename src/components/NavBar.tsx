@@ -1,4 +1,4 @@
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes, useEffect, useState } from "react";
 import NavBarElem from "./NavBarElem";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ import Modal from "./Modal";
 import Input from "./Input";
 import { FiSearch } from "react-icons/fi";
 import SearchUsers from "./SearchUsers";
+import { useAuthContext } from "../contexts/authProvider";
 // import Notifications from "./Notifications";
 
 interface ArrowType extends HTMLAttributes<HTMLDivElement> {
@@ -64,12 +65,13 @@ async function fetchData() {
 const NavBar = ({className}: {className?: string}) => {
 	const {data, isLoading, isError} = useQuery({queryKey: ['profile'], queryFn: fetchData})
 	// profile actions
-	const [profileActions, setProfileActions] = useState(false);
 	// profile actions
+	const { dispatch: authDispatch } = useAuthContext();
+	const {state, dispatch} = useGlobalContext();
+	const [profileActions, setProfileActions] = useState(false);
 	const [xPos, setXPos] = useState<XPos>(0);
 	const [event, setEvent] = useState<any>('auto');
 	const [notification, setNotification] = useState(true);
-	const {state, dispatch} = useGlobalContext();
 
 	const clickHandler = async () => {
 
@@ -83,9 +85,19 @@ const NavBar = ({className}: {className?: string}) => {
 		setEvent('auto');
 	}
 
+	useEffect(() => {
+		authDispatch({type: 'USERNAME', username: data?.data.username});
+	}, [])
+
 	if (isLoading) {
 		return (
 			<h1>loading...</h1>
+		)
+	}
+
+	if (isError) {
+		return (
+			<h1>Error!</h1>
 		)
 	}
 
