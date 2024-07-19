@@ -28,7 +28,7 @@ function ConversationMessages() {
 				type: 'messages',
 				limit: 10,
 				conversation_id: state.conversation_id,
-				// message_id: state.messages[0].id
+				message_id: state.messages[0].id
 			})
 		}
 	}
