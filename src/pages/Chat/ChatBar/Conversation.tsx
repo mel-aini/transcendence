@@ -4,6 +4,7 @@ import { FormEvent, InputHTMLAttributes, MouseEvent, useRef, useState } from "re
 import ConversationMessages from './ConversationMessages';
 import { useChatContext } from '../../../contexts/chatProvider';
 import { useAuthContext } from '../../../contexts/authProvider';
+import { ReadyState } from 'react-use-websocket';
 
 interface Imessage {
 	content : string
@@ -26,7 +27,7 @@ const getDate = () => {
 }
 
 function Conversation() {
-	const { state, dispatch, sendJsonMessage } = useChatContext();
+	const { state, dispatch, sendJsonMessage, readyState } = useChatContext();
 	const [message, setMessage] = useState('');
 	const { state: authState } = useAuthContext();
 	const sendMessage = async (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
@@ -48,8 +49,6 @@ function Conversation() {
 			sender: authState.username,
 			receiver: authState.username == 'user1' ? 'user2' : 'user1',
 		}
-	
-		sendJsonMessage(ServerMessage);
 
 		dispatch({type: 'LAST_MESSAGE', message: {
 			content: message_content,
@@ -59,22 +58,29 @@ function Conversation() {
 			id: null,
 			state: 'processing'
 		}});
+		
+		setTimeout(() => {
+			if (readyState == ReadyState.OPEN) {
+				sendJsonMessage(ServerMessage);
+			}
+			if (readyState != ReadyState.OPEN) {
+				dispatch({type: 'LAST_MESSAGE', message: null});
+			
+				// if error
+				dispatch({type: 'MESSAGE', message: {
+					content: message_content,
+					date: "2024-06-27 12:58:51",
+					sender: authState.username,
+					receiver: authState.username == 'user1' ? 'user2' : 'user1',
+					id: null,
+					state: 'error'
+				}});
+			}
+		}, 300)
+		// // simulate request processing
+		// await new Promise(r => setTimeout(r, 1000));
 
-		// simulate request processing
-		await new Promise(r => setTimeout(r, 1000));
-
-		// remove message after response come
-		dispatch({type: 'LAST_MESSAGE', message: null});
-	
-		// if error
-		dispatch({type: 'MESSAGE', message: {
-			content: message_content,
-			date: "2024-06-27 12:58:51",
-			sender: authState.username,
-			receiver: authState.username == 'user1' ? 'user2' : 'user1',
-			id: null,
-			state: 'error'
-		}});
+		// // remove message after response come
 	}
 
 	return ( 

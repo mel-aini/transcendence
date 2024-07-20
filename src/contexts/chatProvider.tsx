@@ -1,8 +1,10 @@
-import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
 import { useAuthContext } from "./authProvider";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { CHAT_WS_ENDPOINT } from "../utils/global";
 import { SendJsonMessage, WebSocketHook } from "react-use-websocket/dist/lib/types";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import Modal from "../components/Modal";
 
 interface Message {
 	content:  string
@@ -95,19 +97,52 @@ const reducer = (state: ChatStateProps, action: any) => {
 const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	const [ state, dispatch ] = useReducer(reducer, initialState);
 	const { state: authState } = useAuthContext();
+	const [isReconnect, setIsReconnect] = useState(false);
+	
+	function setErrorInLastMessage() {
+		if (state.lastMessage != null) {
+			// remove message after response come
+			const content = state.lastMessage.content;
+			dispatch({type: 'LAST_MESSAGE', message: null});
+			dispatch({type: 'MESSAGE', message: {
+				content: content,
+				date: "2024-06-27 12:58:51",
+				sender: authState.username,
+				receiver: authState.username == 'user1' ? 'user2' : 'user1',
+				id: null,
+				state: 'error'
+			}});
+		}
+	}
 
 	const {readyState, lastJsonMessage, sendJsonMessage} = useWebSocket(
-		CHAT_WS_ENDPOINT + authState.accessToken
+		CHAT_WS_ENDPOINT + authState.accessToken,
+		{
+			onOpen: () => {
+				console.log('connection opened')
+				setIsReconnect(false);
+			},
+			onClose: () => {
+				console.log('connection closed')
+				setErrorInLastMessage();
+				setIsReconnect(true);
+			},
+			onError: () => {
+				console.log('error occured in websocket')
+				setErrorInLastMessage()
+			},
+			retryOnError: false,
+			shouldReconnect: () => {
+				return true;
+			},
+			reconnectAttempts: 100,
+			reconnectInterval: 3000,
+			onReconnectStop: () => {
+				console.log('failed to reconnect');
+				setIsReconnect(false);
+			}
+		}
 	  )
-
-	  useEffect(() => {
-		if (readyState == ReadyState.OPEN) {
-			console.log('connection opened')
-		}
-		if (readyState == ReadyState.CLOSED) {
-			console.log('connection closed')
-		}
-	}, [readyState])
 	
 	useEffect(() => {
 		console.log('new message', lastJsonMessage)
@@ -120,6 +155,14 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			if (lastJsonMessage.messages) {
 				dispatch({type: 'MESSAGES', messages: [ ...lastJsonMessage.messages, ...state.messages ]})
+			}
+			if (lastJsonMessage.message && lastJsonMessage.receiver) {
+				const message = state.lastMessage;
+				dispatch({type: 'LAST_MESSAGE', message: null});
+				dispatch({type: 'MESSAGE', message: {
+					...message,
+					state: 'ok'
+				}});
 			}
 		}
 	}, [lastJsonMessage])
@@ -137,7 +180,15 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 	return (
 		<ChatContext.Provider value={{state, dispatch, lastJsonMessage, sendJsonMessage, readyState}}>
-			{children}
+			<>
+				<Modal isOpen={isReconnect} onClose={() => {}} >
+					<div className="flex gap-5 items-center bg-secondary px-10 p-5 rounded-md">
+						<h1>Reconnecting</h1>
+						<AiOutlineLoading3Quarters className='animate-spin' />
+					</div>
+				</Modal>
+				{children}
+			</>
 		</ChatContext.Provider>
 	)
 }

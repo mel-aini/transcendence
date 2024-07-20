@@ -9,6 +9,7 @@ function ConversationMessages() {
 	const { state: authState } = useAuthContext();
 	const container = useRef<HTMLDivElement>(null);
 	const [isScrollTop, setIsScrollTop] = useState(false);
+	const isFirstRender = useRef(true);
 
 	const scrollToBottom = () => {
 		if (!container.current) return;
@@ -17,8 +18,15 @@ function ConversationMessages() {
 	}
 
 	useEffect(() => {
+		if (isFirstRender.current) {
+			console.log('isFirstRender.current', isFirstRender.current)
+			scrollToBottom();
+		}
+	}, [state.messages])
+
+	useEffect(() => {
 		scrollToBottom();
-	}, [state.messages, state.lastMessage])
+	}, [state.lastMessage])
 
 	const handleScroll = () => {
 		if (!container.current) return;
@@ -33,11 +41,16 @@ function ConversationMessages() {
 		}
 	}
 
+	useEffect(() => {
+		isFirstRender.current = false;
+	}, [])
+
 	return ( 
 		<div
 			onScroll={handleScroll}
 			onWheel={(e) => setIsScrollTop(e.deltaY < 0)}
 			ref={container} className="messages-container grow bg-secondary overflow-auto p-5 flex flex-col gap-8">
+			<div className="text-center">loading...</div>
 			{
 				state.messages.map((message, index) => {
 					return <Message 
