@@ -30,6 +30,7 @@ function Observer() {
 			})
 		}
 	})
+	
 	useEffect(() => {
 		if (!container.current) return;
 
@@ -47,7 +48,7 @@ function Observer() {
 	useEffect(() => {
 		console.log('changed', (container.current as HTMLElement)?.parentElement?.scrollTop);
 		// container.current.parentElement.scrollTop = (container.current as HTMLElement)?.parentElement?.scrollTop - oldHeight.current
-		container.current.parentElement.scrollTop = (container.current as HTMLElement)?.parentElement?.scrollHeight - oldHeight.current
+		container.current.parentElement.scrollTop = (container.current as HTMLElement)?.parentElement?.scrollHeight - oldHeight.current + 50
 	}, [state.messages])
 
 	return ( 
