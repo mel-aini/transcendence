@@ -3,13 +3,13 @@ import { useChatContext } from "../../../contexts/chatProvider";
 import Message from "./Message";
 import { IoIosArrowDown } from "react-icons/io";
 import { useAuthContext } from "../../../contexts/authProvider";
+import Observer from "./Observer";
 
 function ConversationMessages() {
 	const { state, sendJsonMessage } = useChatContext();
 	const { state: authState } = useAuthContext();
 	const container = useRef<HTMLDivElement>(null);
 	const [isScrollTop, setIsScrollTop] = useState(false);
-	const isFirstRender = useRef(true);
 
 	const scrollToBottom = () => {
 		if (!container.current) return;
@@ -18,10 +18,11 @@ function ConversationMessages() {
 	}
 
 	useEffect(() => {
-		if (isFirstRender.current) {
-			console.log('isFirstRender.current', isFirstRender.current)
-			scrollToBottom();
-		}
+		// init the intersection observer
+	}, [])
+
+	useEffect(() => {
+		// scrollToBottom();
 	}, [state.messages])
 
 	useEffect(() => {
@@ -29,28 +30,24 @@ function ConversationMessages() {
 	}, [state.lastMessage])
 
 	const handleScroll = () => {
-		if (!container.current) return;
-		if (container.current.scrollTop == 0) {
-			console.log('should fetch');
-			sendJsonMessage({
-				type: 'messages',
-				limit: 10,
-				conversation_id: state.conversation_id,
-				message_id: state.messages[0].id
-			})
-		}
+		// if (!container.current) return;
+		// if (container.current.scrollTop == 0) {
+		// 	console.log('should fetch');
+		// 	sendJsonMessage({
+		// 		type: 'messages',
+		// 		limit: 10,
+		// 		conversation_id: state.conversation_id,
+		// 		message_id: state.messages[0].id
+		// 	})
+		// }
 	}
-
-	useEffect(() => {
-		isFirstRender.current = false;
-	}, [])
 
 	return ( 
 		<div
 			onScroll={handleScroll}
 			onWheel={(e) => setIsScrollTop(e.deltaY < 0)}
 			ref={container} className="messages-container grow bg-secondary overflow-auto p-5 flex flex-col gap-8">
-			<div className="text-center">loading...</div>
+			<Observer />
 			{
 				state.messages.map((message, index) => {
 					return <Message 

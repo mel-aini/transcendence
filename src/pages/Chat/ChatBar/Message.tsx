@@ -25,7 +25,7 @@ const Message = ({type = "arrive", children, date, className, state, ...props}: 
 				<span>{date}</span>
 			</div>
 			<div
-				className={`font-normal bg-bg rounded-xl p-5 ${type == 'arrive' ? ' text-white text-left rounded-tl-none' : 'text-primary text-right rounded-tr-none'}`}
+				className={`font-normal border border-border bg-bg rounded-xl p-5 ${type == 'arrive' ? ' text-white text-left rounded-tl-none' : 'text-primary text-right rounded-tr-none'}`}
 				>{children}</div>
 		</div>
 	)
