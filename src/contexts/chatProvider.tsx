@@ -6,6 +6,35 @@ import { SendJsonMessage, WebSocketHook } from "react-use-websocket/dist/lib/typ
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Modal from "../components/Modal";
 
+type Url = string;
+type Username = string;
+type State = 'read' | 'unread' | 'sent'
+
+interface Header {
+	username: Username
+	avatar: Url
+	isOnline: boolean
+}
+
+export interface Conversation {
+	friend: {
+		username: Username
+		avatar: Url
+		online: boolean
+	}
+	id: string | number
+	last_date: string
+	last_message: string
+	sender: Username
+	status: State
+}
+
+interface OnlineFriend {
+	avatar_link: Url
+	conversation_id: string | number
+	username: Username
+}
+
 interface Message {
 	content:  string
 	date: string
@@ -18,9 +47,10 @@ interface Message {
 export interface ChatStateProps {
 	isFocus: boolean,
 	messages: Message[],
-	onlineFriends: any[],
-	conversations: any[],
+	onlineFriends: OnlineFriend[],
+	conversations: Conversation[],
 	conversation_id: string | number | null;
+	conversation_header: Header
 	lastMessage: Message | null
 }
 
@@ -30,7 +60,12 @@ const initialState: ChatStateProps = {
 	onlineFriends: [],
 	conversations: [],
 	conversation_id: null,
-	lastMessage: null
+	conversation_header: {
+		username: '',
+		avatar: '',
+		isOnline: false
+	},
+	lastMessage: null,
 };
 
 export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispatch<any>, lastJsonMessage: any, sendJsonMessage: SendJsonMessage, readyState: ReadyState}>({
@@ -74,6 +109,11 @@ const reducer = (state: ChatStateProps, action: any) => {
 				...state, 
 				conversation_id: action.conversation_id
 			}
+		case 'CONVERSATION_HEADER':
+			return { 
+				...state, 
+				conversation_header: action.conversation_header
+			}
 		case 'MESSAGES':
 			return { 
 				...state, 
@@ -108,7 +148,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				content: content,
 				date: "2024-06-27 12:58:51",
 				sender: authState.username,
-				receiver: authState.username == 'user1' ? 'user2' : 'user1',
+				receiver: state.conversation_header.username,
 				id: null,
 				state: 'error'
 			}});
@@ -174,6 +214,11 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			sendJsonMessage({
 				type: 'messages',
 				conversation_id: state.conversation_id,
+			})
+			sendJsonMessage({
+				type: 'updated conversation',
+				conversation_id: state.conversation_id,
+				status: 'seen'
 			})
 		}
 	}, [state.conversation_id])

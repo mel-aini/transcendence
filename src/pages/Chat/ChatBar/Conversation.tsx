@@ -47,14 +47,14 @@ function Conversation() {
 			type: 'send_message',
 			message: message_content,
 			sender: authState.username,
-			receiver: authState.username == 'user1' ? 'user2' : 'user1',
+			receiver: state.conversation_header.username,
 		}
 
 		dispatch({type: 'LAST_MESSAGE', message: {
 			content: message_content,
 			date: "2024-06-27 12:58:51",
 			sender: authState.username,
-			receiver: authState.username == 'user1' ? 'user2' : 'user1',
+			receiver: state.conversation_header.username,
 			id: null,
 			state: 'processing'
 		}});
@@ -71,7 +71,7 @@ function Conversation() {
 					content: message_content,
 					date: "2024-06-27 12:58:51",
 					sender: authState.username,
-					receiver: authState.username == 'user1' ? 'user2' : 'user1',
+					receiver: state.conversation_header.username,
 					id: null,
 					state: 'error'
 				}});

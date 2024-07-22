@@ -10,7 +10,7 @@ function withoutAuth(Component: ComponentType) {
 		const { state }  = useAuthContext();
 		const { state: locState } = useLocation();
 
-		if (locState && locState.refer == '/login' || locState.refer == '/signup') {
+		if (locState && (locState.refer == '/login' || locState.refer == '/signup')) {
 			return <Component />
 		}
 
@@ -18,13 +18,13 @@ function withoutAuth(Component: ComponentType) {
 
 			return (
 				<UpdateToken>
-					<Navigate to={'/dashboard'} />
+					<Navigate to='/dashboard' />
 				</UpdateToken>
 			)
 		}
 
 		return (
-			<Navigate to={'/dashboard'} />
+			<Navigate to='/dashboard' />
 		);
 	}
 
