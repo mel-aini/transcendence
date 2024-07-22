@@ -2,7 +2,7 @@ import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, 
 import { useAuthContext } from "./authProvider";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { CHAT_WS_ENDPOINT } from "../utils/global";
-import { SendJsonMessage, WebSocketHook } from "react-use-websocket/dist/lib/types";
+import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Modal from "../components/Modal";
 
@@ -141,7 +141,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	
 	function setErrorInLastMessage() {
 		if (state.lastMessage != null) {
-			// remove message after response come
 			const content = state.lastMessage.content;
 			dispatch({type: 'LAST_MESSAGE', message: null});
 			dispatch({type: 'MESSAGE', message: {

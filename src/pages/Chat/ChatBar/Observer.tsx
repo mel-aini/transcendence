@@ -18,7 +18,7 @@ function Observer() {
 		if (element.isIntersecting) {
 			// console.log('should fetch');
 			// console.log(convId.current, firstMsgId.current)
-			const parent = (container.current as HTMLElement)?.parentElement;
+			const parent = (container.current as unknown as HTMLElement)?.parentElement;
 			if (!container.current || !parent) return;
 			oldHeight.current = parent.scrollHeight;
 			console.log('oldHeight.current', oldHeight.current);
@@ -46,9 +46,10 @@ function Observer() {
 	}, [])
 
 	useEffect(() => {
-		console.log('changed', (container.current as HTMLElement)?.parentElement?.scrollTop);
+		if (!container.current) return;
+		console.log('changed', (container.current as unknown as HTMLElement)?.parentElement?.scrollTop);
 		// container.current.parentElement.scrollTop = (container.current as HTMLElement)?.parentElement?.scrollTop - oldHeight.current
-		container.current.parentElement.scrollTop = (container.current as HTMLElement)?.parentElement?.scrollHeight - oldHeight.current + 50
+		container.current.parentElement.scrollTop = (container.current as unknown as HTMLElement)?.parentElement?.scrollHeight - oldHeight.current + 50
 	}, [state.messages])
 
 	return ( 
