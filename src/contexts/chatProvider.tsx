@@ -168,7 +168,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	}, [lastJsonMessage])
 
 	useEffect(() => {
-		console.log('trying to make new call to the web socket...', state.conversation_id)
+		// console.log('trying to make new call to the web socket...', state.conversation_id)
 		if (state.conversation_id) {
 			dispatch({type: 'MESSAGES', messages: []})
 			sendJsonMessage({

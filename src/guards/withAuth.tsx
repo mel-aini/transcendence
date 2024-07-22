@@ -3,11 +3,10 @@ import { useAuthContext } from "../contexts/authProvider";
 import jwt from "../utils/jwt";
 import UpdateToken from "./UpdateToken";
 import ChatContextProvider from "../contexts/chatProvider";
-import ChatLogic from "../logic/ChatLogic";
 import { useLocation } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
 
-function Nested({ Component }: { Component: ComponentType }) {
+export function Nested({ Component }: { Component: ComponentType }) {
 	const { state } = useLocation();
 	const { dispatch } = useGlobalContext();
 
@@ -20,9 +19,7 @@ function Nested({ Component }: { Component: ComponentType }) {
 
 	return (
 		<ChatContextProvider>
-			{/* <ChatLogic> */}
-				<Component />
-			{/* </ChatLogic> */}
+			<Component />
 		</ChatContextProvider>
 	)
 }

@@ -1,28 +1,36 @@
 import { ComponentType } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import jwt from "../utils/jwt";
 import { useAuthContext } from "../contexts/authProvider";
+import UpdateToken from "./UpdateToken";
 
 function withoutAuth(Component: ComponentType) {
 
 	function UpdatedComponent() {
+		const { state }  = useAuthContext();
+		const { state: locState } = useLocation();
 
-		// const { state } = useAuthContext();
-	
-		// if (jwt.isValid(state.accessToken)) {
-		// 	return <Navigate to="/dashboard" />
-		// }
+		if (locState && locState.refer == '/login' || locState.refer == '/signup') {
+			return <Component />
+		}
+
+		if (!jwt.isValid(state.accessToken)) {
+
+			return (
+				<UpdateToken>
+					<Navigate to={'/dashboard'} />
+				</UpdateToken>
+			)
+		}
 
 		return (
-			<Component />
+			<Navigate to={'/dashboard'} />
 		);
 	}
 
-	return <UpdatedComponent />;
+	return (
+		<UpdatedComponent />
+	);
 }
 
 export default withoutAuth;
-
-// user login
-// username: mel-test
-// password: MEL-test123
