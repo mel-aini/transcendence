@@ -44,12 +44,18 @@ interface Message {
 	state?: 'processing' | 'ok' | 'error'
 }
 
+interface ConversationState {
+	id: string | number | null,
+	state: null | 'loading' | 'ok'
+	limitReached?: boolean
+};
+
 export interface ChatStateProps {
 	isFocus: boolean,
 	messages: Message[],
 	onlineFriends: OnlineFriend[],
 	conversations: Conversation[],
-	conversation_id: string | number | null;
+	conversation: ConversationState
 	conversation_header: Header
 	lastMessage: Message | null
 }
@@ -59,7 +65,10 @@ const initialState: ChatStateProps = {
 	messages: [],
 	onlineFriends: [],
 	conversations: [],
-	conversation_id: null,
+	conversation: {
+		id: null,
+		state: null
+	},
 	conversation_header: {
 		username: '',
 		avatar: '',
@@ -107,7 +116,7 @@ const reducer = (state: ChatStateProps, action: any) => {
 		case 'CONVERSATION':
 			return { 
 				...state, 
-				conversation_id: action.conversation_id
+				conversation: action.conversation
 			}
 		case 'CONVERSATION_HEADER':
 			return { 
@@ -194,6 +203,11 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			if (lastJsonMessage.messages) {
 				dispatch({type: 'MESSAGES', messages: [ ...lastJsonMessage.messages, ...state.messages ]})
+				dispatch({type: 'CONVERSATION', conversation: {
+					id: state.conversation.id,
+					state: 'ok',
+					limitReached: lastJsonMessage.messages.length != 10
+				}})
 			}
 			if (lastJsonMessage.message && lastJsonMessage.receiver) {
 				const message = state.lastMessage;
@@ -208,14 +222,14 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 	useEffect(() => {
 		// console.log('trying to make new call to the web socket...', state.conversation_id)
-		if (state.conversation_id) {
+		if (state.conversation.state == 'loading') {
 			dispatch({type: 'MESSAGES', messages: []})
 			sendJsonMessage({
 				type: 'messages',
-				conversation_id: state.conversation_id,
+				conversation_id: state.conversation.id,
 			})
 		}
-	}, [state.conversation_id])
+	}, [state.conversation])
 
 	return (
 		<ChatContext.Provider value={{state, dispatch, lastJsonMessage, sendJsonMessage, readyState}}>

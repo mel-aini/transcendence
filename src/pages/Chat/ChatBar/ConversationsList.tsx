@@ -13,7 +13,10 @@ function ConversationsList({className, ...props}: Props) {
 
 	const handler = (conversation: Conversation) => {
 		dispatch({type: 'FOCUS', state: true})
-		dispatch({type: 'CONVERSATION', conversation_id: conversation.id});
+		dispatch({type: 'CONVERSATION', conversation: {
+			id: conversation.id,
+			state: 'loading'
+		}});
 		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: conversation.friend.username,
 			avatar: conversation.friend.avatar,
@@ -22,7 +25,10 @@ function ConversationsList({className, ...props}: Props) {
 	}
 
 	useEffect(() => {
-		dispatch({type: 'CONVERSATION', conversation_id: null})
+		dispatch({type: 'CONVERSATION', conversation: {
+			id: null,
+			state: null
+		}})
 	}, [])
 
 	return ( 

@@ -16,4 +16,9 @@ const validate = (type: 'username' | 'email' | 'password', input: string | undef
 	return patterns[type].test(input);
 }
 
-export { validate }
+const isEmpty = (input: string) => {
+	if (input == '') return true
+	return /^\s+$/.test(input)
+}
+
+export { validate, isEmpty }

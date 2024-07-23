@@ -9,7 +9,10 @@ function OnlineFriends() {
 
 	const clickHandler = (friend: Object & { username: string, avatar_link: string, conversation_id: string | number }) => {
 		dispatch({type: 'FOCUS', state: true})
-		dispatch({type: 'CONVERSATION', conversation_id: friend.conversation_id})
+		dispatch({type: 'CONVERSATION', conversation: {
+			id: friend.conversation_id,
+			state: 'loading'
+		}});
 		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: friend.username,
 			avatar: friend.avatar_link,
