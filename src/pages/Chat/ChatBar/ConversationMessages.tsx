@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { useChatContext } from "../../../contexts/chatProvider";
 import Message from "./Message";
 import { IoIosArrowDown } from "react-icons/io";
@@ -8,11 +8,9 @@ import Observer from "./Observer";
 function ConversationMessages() {
 	const { state } = useChatContext();
 	const { state: authState } = useAuthContext();
+	const lastDate = useRef<string | null>(null);
 
 	const scrollToBottom = (elem: Element) => {
-		console.log('dkhat bach nscrolli');
-		console.log('scrollit', elem.scrollHeight);
-		console.log('scrollHeight', elem.scrollHeight)
 		elem.scrollTo(0, elem.scrollHeight)
 	}
 
@@ -38,6 +36,7 @@ function ConversationMessages() {
 							key={index} 
 							type={message.sender == authState.username ? 'sent' : 'arrive' } 
 							date={message.date}
+							lastDate={lastDate}
 							>
 									{message.content}
 								</Message>
@@ -46,9 +45,10 @@ function ConversationMessages() {
 					{
 						state.lastMessage &&
 						<Message 
-						state={state.lastMessage.state}
+								state={state.lastMessage.state}
 								type={state.lastMessage.sender == authState.username ? 'sent' : 'arrive' } 
 								date={state.lastMessage.date}
+								lastDate={lastDate}
 								className="animate-msg"
 								>
 									{state.lastMessage.content}

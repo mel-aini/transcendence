@@ -1,7 +1,7 @@
 import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
 import { useAuthContext } from "./authProvider";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { CHAT_WS_ENDPOINT } from "../utils/global";
+import { CHAT_WS_ENDPOINT, dateMeta, getDate } from "../utils/global";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Modal from "../components/Modal";
@@ -143,6 +143,13 @@ const reducer = (state: ChatStateProps, action: any) => {
 	}
 }
 
+type updatedConv = {
+	last_date: string
+	last_message: string
+	sender: string
+	status: string
+}
+
 const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	const [ state, dispatch ] = useReducer(reducer, initialState);
 	const { state: authState } = useAuthContext();
@@ -161,6 +168,26 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				state: 'error'
 			}});
 		}
+	}
+
+	const updateConversations = (id: string | number, data: updatedConv) => {
+		let OldConv: Conversation | any = {};
+		const newArr = state.conversations.filter((conv: Conversation) => {
+			const condition = conv.id != id;
+			if (!condition) {
+				OldConv = conv;
+			}
+			return condition;
+		})
+
+		if (newArr.length != state.conversation.length) {
+			OldConv.last_date = data.last_date
+			OldConv.last_message = data.last_message
+			OldConv.sender = data.sender
+			OldConv.status = data.status
+		}
+		newArr.unshift(OldConv);
+		dispatch({type: 'CONVERSATIONS', conversations: [...newArr]})
 	}
 
 	const {readyState, lastJsonMessage, sendJsonMessage} = useWebSocket(
@@ -209,13 +236,47 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					limitReached: lastJsonMessage.messages.length != 10
 				}})
 			}
-			if (lastJsonMessage.message && lastJsonMessage.receiver) {
-				const message = state.lastMessage;
-				dispatch({type: 'LAST_MESSAGE', message: null});
-				dispatch({type: 'MESSAGE', message: {
-					...message,
-					state: 'ok'
-				}});
+			if (lastJsonMessage.type == 'message') {
+				if (lastJsonMessage.receiver == authState.username) {
+					// I'm the receiver
+					dispatch({type: 'MESSAGE', message: {
+						content: lastJsonMessage.message,
+						date: dateMeta.getDate(),
+						sender: state.conversation_header.username,
+						receiver: authState.username,
+						state: 'ok'
+					}});
+					updateConversations(state.conversation.id, {
+						last_date: dateMeta.getDate(),
+						last_message: lastJsonMessage.message,
+						sender: state.conversation_header.username,
+						status: 'True'
+					});
+				} else {
+					// I'm the sender
+					dispatch({type: 'LAST_MESSAGE', message: null});
+					dispatch({type: 'MESSAGE', message: {
+						content: lastJsonMessage.message,
+						date: dateMeta.getDate(),
+						sender: authState.username,
+						receiver: state.conversation_header.username,
+						state: 'ok'
+					}});
+					updateConversations(state.conversation.id, {
+						last_date: dateMeta.getDate(),
+						last_message: lastJsonMessage.message,
+						sender: authState.username || '',
+						status: 'False'
+					});
+				}
+			}
+			if (lastJsonMessage.type == 'conversation_update') {
+				updateConversations(lastJsonMessage.data.id, {
+					last_date: lastJsonMessage.data.last_date,
+					last_message: lastJsonMessage.data.last_message,
+					sender: lastJsonMessage.data.sender,
+					status: lastJsonMessage.data.status
+				});
 			}
 		}
 	}, [lastJsonMessage])

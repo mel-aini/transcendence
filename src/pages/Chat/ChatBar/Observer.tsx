@@ -21,7 +21,6 @@ function Observer() {
 			const parent = document.querySelector('.messages-container');
 			if (!container.current || !parent) return;
 			oldHeight.current = parent.scrollHeight;
-			console.log('it is intersecting');
 			oldScrollTop.current = parent.scrollTop;
 			sendJsonMessage({
 				type: 'messages',
@@ -41,7 +40,6 @@ function Observer() {
 		obs.observe(container.current)
 	
 		return () => {
-			console.log('unmounted')
 			if (!container.current) return;
 			obs.unobserve(container.current);
 		}
