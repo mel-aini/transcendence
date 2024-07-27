@@ -6,15 +6,36 @@ import { IoAddCircle } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 import OnlineFriends from "./ChatBar/OnlineFriends";
 import { FiSearch } from "react-icons/fi";
-import { useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import useLog from "../../hooks/useLog";
 import SearchFriends from "./ChatBar/SearchFriends";
+import { useChatContext } from "../../contexts/chatProvider";
+import { useAuthContext } from "../../contexts/authProvider";
+import { isEmpty } from "../../utils/validation";
+import Input from "../../components/Input";
 
 function ChatBar() {
 	const [toggleSearch, setToggleSearch] = useState(false);
 	const [toggleMore, setToggleMore] = useState(false);
 	const [searchFriends, setSearchFriends] = useState(false);
 	const action = useLog();
+	const { sendJsonMessage } = useChatContext();
+	const { state } = useAuthContext();
+	
+	const inputRef = useRef('');
+
+	const onSubmit = (e: FormEvent) => {
+		e.preventDefault();
+		if (isEmpty(inputRef.current)) return;
+		sendJsonMessage({
+			user_id: state.user_id,
+			type: 'search_conversation',
+			search: inputRef.current,
+			offset: 0,
+			limit: 10
+		})
+		inputRef.current = '';
+	}
 
 	return ( 
 		<motion.div
@@ -48,13 +69,18 @@ function ChatBar() {
 					<AnimatePresence>
 						{toggleSearch &&
 							<motion.div
-								initial={{marginTop: '-40px', opacity: 0}}
+								initial={{marginTop: '-48px', opacity: 0}}
 								animate={{marginTop: 0, opacity: 1}}
-								exit={{marginTop: '-40px', opacity: 0}}
+								exit={{marginTop: '-48px', opacity: 0}}
 								transition={{duration: 0.3}}
 								className="pb-5"
 								>
-								<SearchBar />
+								<form onSubmit={onSubmit} className="flex justify-between gap-2">
+									<Input onChange={(e) => inputRef.current = e.target.value} type="text" placeholder="search" className='w-full bg-transparent border border-border h-[48px] px-3 rounded-md outline-none' />
+									<button type="submit" className="shrink-0 size-[48px] flex justify-center items-center border border-border rounded-md">
+										<FiSearch />
+									</button>
+								</form>
 							</motion.div>
 						}
 					</AnimatePresence>
