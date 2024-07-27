@@ -5,7 +5,7 @@
 
 @font-face {
 	font-family: myFont;
-	src: url('./Untitled1.ttf');
+	src: url('./myFont.ttf');
 }
 .font-myFont {
 	font-family: myFont;
