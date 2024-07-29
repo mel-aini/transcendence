@@ -1,5 +1,6 @@
 import { HTMLAttributes } from "react";
 import User from "../../../components/User";
+import { Conversation } from "../../../contexts/chatProvider";
 
 function getDate(last_date: string) {
 	const parsedDate = last_date.split(' ');
@@ -7,24 +8,9 @@ function getDate(last_date: string) {
 	return parsedDate[0] == today ? parsedDate[1] : parsedDate[0]
 }
 
-type State = 'read' | 'unread' | 'sent'
-
-export interface ConversationBarData {
-	id: string,
-	last_message: string,
-	status: State,
-	last_date: string,
-	sender: string,
-	friend: {
-		username: string,
-		avatar: string,
-		online: boolean
-	}
-}
-
 interface Props extends HTMLAttributes<HTMLDivElement> {
 	className?: string
-	data: ConversationBarData
+	data: Conversation
 }
 
 const ConversationBar = ({className, data, ...props}: Props) => {

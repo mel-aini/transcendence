@@ -6,14 +6,17 @@ import { Navigate, useLocation } from "react-router-dom";
 
 const token = await jwt.refresh();
 
+type route = string
+
 interface Props {
 	children: ReactNode
+	inFail?: route
 }
 
-function UpdateToken({children}: Props) {
+function UpdateToken({children, inFail = '/login'}: Props) {
 	const { dispatch } = useAuthContext();
 	const location = useLocation();
-
+	
 	useEffect(() => {
 		dispatch({type: 'TOKEN', token: token})
 	}, [])
@@ -21,7 +24,7 @@ function UpdateToken({children}: Props) {
 	return ( 
 		<Suspense fallback={<Loading />}>
 			{token && children}
-			{!token && <Navigate to='/login' state={{ refer: location.pathname }} />}
+			{!token && <Navigate to={inFail} state={{ refer: location.pathname }} />}
 		</Suspense>
 	 );
 }

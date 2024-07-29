@@ -5,6 +5,7 @@ import ConversationMessages from './ConversationMessages';
 import { useChatContext } from '../../../contexts/chatProvider';
 import { useAuthContext } from '../../../contexts/authProvider';
 import { ReadyState } from 'react-use-websocket';
+import { isEmpty } from '../../../utils/validation';
 
 interface Imessage {
 	content : string
@@ -14,24 +15,15 @@ interface Imessage {
 	sender : string
 }
 
-const getDate = () => {
-	const date = new Date();
-
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, '0');
-	const day = String(date.getDate()).padStart(2, '0');
-	const hours = String(date.getHours()).padStart(2, '0');
-	const minutes = String(date.getMinutes()).padStart(2, '0');
-
-	return `${year}-${month}-${day} ${hours}:${minutes}`;
-}
-
 function Conversation() {
 	const { state, dispatch, sendJsonMessage, readyState } = useChatContext();
 	const [message, setMessage] = useState('');
 	const { state: authState } = useAuthContext();
 	const sendMessage = async (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
+		if (isEmpty(message)) {
+			return;
+		}
 		const message_content = message;
 		setMessage('');
 		((e.target as HTMLElement).firstChild as InputHTMLAttributes<HTMLInputElement>).value = '';
@@ -43,18 +35,18 @@ function Conversation() {
 		// }
 		console.log('trying to send message...');
 		const ServerMessage = {
-			id: state.conversation_id,
+			id: state.conversation.id,
 			type: 'send_message',
 			message: message_content,
 			sender: authState.username,
-			receiver: authState.username == 'user1' ? 'user2' : 'user1',
+			receiver: state.conversation_header.username,
 		}
 
 		dispatch({type: 'LAST_MESSAGE', message: {
 			content: message_content,
 			date: "2024-06-27 12:58:51",
 			sender: authState.username,
-			receiver: authState.username == 'user1' ? 'user2' : 'user1',
+			receiver: state.conversation_header.username,
 			id: null,
 			state: 'processing'
 		}});
@@ -71,16 +63,12 @@ function Conversation() {
 					content: message_content,
 					date: "2024-06-27 12:58:51",
 					sender: authState.username,
-					receiver: authState.username == 'user1' ? 'user2' : 'user1',
+					receiver: state.conversation_header.username,
 					id: null,
 					state: 'error'
 				}});
 			}
 		}, 300)
-		// // simulate request processing
-		// await new Promise(r => setTimeout(r, 1000));
-
-		// // remove message after response come
 	}
 
 	return ( 
@@ -93,9 +81,14 @@ function Conversation() {
 				ease: 'easeInOut'
 			}}
 			className="w-full h-full flex flex-col absolute top-0 left-0 lg:static z-10 bg-secondary">
-			{state.conversation_id && <>
+			{!state.conversation.state &&
+				<div className='h-full flex justify-center items-center'>Welcome to chat</div>
+			}
+			{state.conversation.state && <>
 				<ConversationHeader />
-				<ConversationMessages />
+				<div className="messages-container grow flex flex-col bg-secondary overflow-auto p-5">
+					<ConversationMessages />
+				</div>
 				<form onSubmit={(e) => sendMessage(e)} className="w-full flex justify-between items-center pl-5 h-[50px] border-t border-t-dark bg-bg shrink-0">
 					<input
 						disabled={state.lastMessage?.state == 'processing'} 
@@ -106,9 +99,6 @@ function Conversation() {
 					<button className="shrink-0 px-5 border-l h-full border-l-dark text-primary" type="submit">send</button>
 				</form>
 			</>}
-			{!state.conversation_id &&
-				<div className='h-full flex justify-center items-center'>Welcome to chat</div>
-			}
 		</motion.div>
 	);
 }

@@ -1,6 +1,7 @@
 import ConversationBar from "./ConversationBar";
-import { useChatContext } from "../../../contexts/chatProvider";
+import { Conversation, useChatContext } from "../../../contexts/chatProvider";
 import { useEffect } from "react";
+import useIsOnline from "../../../hooks/useIsOnline";
 
 interface Props {
 	className?: string
@@ -8,14 +9,26 @@ interface Props {
 
 function ConversationsList({className, ...props}: Props) {
 	const {state, dispatch} = useChatContext();
-	
-	const handler = (conversation: Object & {id: string}) => {
+	const isOnline = useIsOnline();
+
+	const handler = (conversation: Conversation) => {
 		dispatch({type: 'FOCUS', state: true})
-		dispatch({type: 'CONVERSATION', conversation_id: conversation.id})
+		dispatch({type: 'CONVERSATION', conversation: {
+			id: conversation.id,
+			state: 'loading'
+		}});
+		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
+			username: conversation.friend.username,
+			avatar: conversation.friend.avatar,
+			isOnline: isOnline(conversation.friend.username)
+		}})
 	}
 
 	useEffect(() => {
-		dispatch({type: 'CONVERSATION', conversation_id: null})
+		dispatch({type: 'CONVERSATION', conversation: {
+			id: null,
+			state: null
+		}})
 	}, [])
 
 	return ( 

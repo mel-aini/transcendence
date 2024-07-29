@@ -1,10 +1,39 @@
 import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
 import { useAuthContext } from "./authProvider";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { CHAT_WS_ENDPOINT } from "../utils/global";
-import { SendJsonMessage, WebSocketHook } from "react-use-websocket/dist/lib/types";
+import { CHAT_WS_ENDPOINT, dateMeta, getDate } from "../utils/global";
+import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Modal from "../components/Modal";
+
+type Url = string;
+type Username = string;
+type State = 'read' | 'unread' | 'sent'
+
+interface Header {
+	username: Username
+	avatar: Url
+	isOnline: boolean
+}
+
+export interface Conversation {
+	friend: {
+		username: Username
+		avatar: Url
+		online: boolean
+	}
+	id: string | number
+	last_date: string
+	last_message: string
+	sender: Username
+	status: State
+}
+
+interface OnlineFriend {
+	avatar_link: Url
+	conversation_id: string | number
+	username: Username
+}
 
 interface Message {
 	content:  string
@@ -15,12 +44,19 @@ interface Message {
 	state?: 'processing' | 'ok' | 'error'
 }
 
+interface ConversationState {
+	id: string | number | null,
+	state: null | 'loading' | 'ok'
+	limitReached?: boolean
+};
+
 export interface ChatStateProps {
 	isFocus: boolean,
 	messages: Message[],
-	onlineFriends: any[],
-	conversations: any[],
-	conversation_id: string | number | null;
+	onlineFriends: OnlineFriend[],
+	conversations: Conversation[],
+	conversation: ConversationState
+	conversation_header: Header
 	lastMessage: Message | null
 }
 
@@ -29,8 +65,16 @@ const initialState: ChatStateProps = {
 	messages: [],
 	onlineFriends: [],
 	conversations: [],
-	conversation_id: null,
-	lastMessage: null
+	conversation: {
+		id: null,
+		state: null
+	},
+	conversation_header: {
+		username: '',
+		avatar: '',
+		isOnline: false
+	},
+	lastMessage: null,
 };
 
 export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispatch<any>, lastJsonMessage: any, sendJsonMessage: SendJsonMessage, readyState: ReadyState}>({
@@ -72,7 +116,12 @@ const reducer = (state: ChatStateProps, action: any) => {
 		case 'CONVERSATION':
 			return { 
 				...state, 
-				conversation_id: action.conversation_id
+				conversation: action.conversation
+			}
+		case 'CONVERSATION_HEADER':
+			return { 
+				...state, 
+				conversation_header: action.conversation_header
 			}
 		case 'MESSAGES':
 			return { 
@@ -94,6 +143,13 @@ const reducer = (state: ChatStateProps, action: any) => {
 	}
 }
 
+type updatedConv = {
+	last_date: string
+	last_message: string
+	sender: string
+	status: string
+}
+
 const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	const [ state, dispatch ] = useReducer(reducer, initialState);
 	const { state: authState } = useAuthContext();
@@ -101,18 +157,37 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	
 	function setErrorInLastMessage() {
 		if (state.lastMessage != null) {
-			// remove message after response come
 			const content = state.lastMessage.content;
 			dispatch({type: 'LAST_MESSAGE', message: null});
 			dispatch({type: 'MESSAGE', message: {
 				content: content,
 				date: "2024-06-27 12:58:51",
 				sender: authState.username,
-				receiver: authState.username == 'user1' ? 'user2' : 'user1',
+				receiver: state.conversation_header.username,
 				id: null,
 				state: 'error'
 			}});
 		}
+	}
+
+	const updateConversations = (id: string | number, data: updatedConv) => {
+		let OldConv: Conversation | any = {};
+		const newArr = state.conversations.filter((conv: Conversation) => {
+			const condition = conv.id != id;
+			if (!condition) {
+				OldConv = conv;
+			}
+			return condition;
+		})
+
+		if (newArr.length != state.conversation.length) {
+			OldConv.last_date = data.last_date
+			OldConv.last_message = data.last_message
+			OldConv.sender = data.sender
+			OldConv.status = data.status
+		}
+		newArr.unshift(OldConv);
+		dispatch({type: 'CONVERSATIONS', conversations: [...newArr]})
 	}
 
 	const {readyState, lastJsonMessage, sendJsonMessage} = useWebSocket(
@@ -155,28 +230,67 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			if (lastJsonMessage.messages) {
 				dispatch({type: 'MESSAGES', messages: [ ...lastJsonMessage.messages, ...state.messages ]})
+				dispatch({type: 'CONVERSATION', conversation: {
+					id: state.conversation.id,
+					state: 'ok',
+					limitReached: lastJsonMessage.messages.length != 10
+				}})
 			}
-			if (lastJsonMessage.message && lastJsonMessage.receiver) {
-				const message = state.lastMessage;
-				dispatch({type: 'LAST_MESSAGE', message: null});
-				dispatch({type: 'MESSAGE', message: {
-					...message,
-					state: 'ok'
-				}});
+			if (lastJsonMessage.type == 'message') {
+				if (lastJsonMessage.receiver == authState.username) {
+					// I'm the receiver
+					dispatch({type: 'MESSAGE', message: {
+						content: lastJsonMessage.message,
+						date: dateMeta.getDate(),
+						sender: state.conversation_header.username,
+						receiver: authState.username,
+						state: 'ok'
+					}});
+					updateConversations(state.conversation.id, {
+						last_date: dateMeta.getDate(),
+						last_message: lastJsonMessage.message,
+						sender: state.conversation_header.username,
+						status: 'True'
+					});
+				} else {
+					// I'm the sender
+					dispatch({type: 'LAST_MESSAGE', message: null});
+					dispatch({type: 'MESSAGE', message: {
+						content: lastJsonMessage.message,
+						date: dateMeta.getDate(),
+						sender: authState.username,
+						receiver: state.conversation_header.username,
+						state: 'ok'
+					}});
+					updateConversations(state.conversation.id, {
+						last_date: dateMeta.getDate(),
+						last_message: lastJsonMessage.message,
+						sender: authState.username || '',
+						status: 'False'
+					});
+				}
+			}
+			if (lastJsonMessage.type == 'conversation_update') {
+				updateConversations(lastJsonMessage.data.id, {
+					last_date: lastJsonMessage.data.last_date,
+					last_message: lastJsonMessage.data.last_message,
+					sender: lastJsonMessage.data.sender,
+					status: lastJsonMessage.data.status
+				});
 			}
 		}
 	}, [lastJsonMessage])
 
 	useEffect(() => {
-		console.log('trying to make new call to the web socket...', state.conversation_id)
-		if (state.conversation_id) {
+		// console.log('trying to make new call to the web socket...', state.conversation_id)
+		if (state.conversation.state == 'loading') {
 			dispatch({type: 'MESSAGES', messages: []})
 			sendJsonMessage({
 				type: 'messages',
-				conversation_id: state.conversation_id,
+				conversation_id: state.conversation.id,
 			})
 		}
-	}, [state.conversation_id])
+	}, [state.conversation])
 
 	return (
 		<ChatContext.Provider value={{state, dispatch, lastJsonMessage, sendJsonMessage, readyState}}>

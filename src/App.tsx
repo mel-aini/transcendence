@@ -3,7 +3,6 @@ import Loading from "./components/Loading";
 import GlobalContextProvider from "./contexts/store";
 import Layout from "./components/Layout";
 import MainLayout from "./MainLayout";
-import ChatContextProvider from "./contexts/chatProvider";
 import PingPongContextProvider from "./contexts/pingPongProvider";
 import { Suspense, lazy } from "react";
 import LoadingPage from "./components/LoadingPage";
@@ -25,6 +24,7 @@ const PingPong = lazy(() => import('./pages/PingPong/Index'));
 const Play = lazy(() => import('./pages/PingPong/Play/Index'));
 const VsFriend = lazy(() => import('./pages/PingPong/VsFriend/Index'));
 const MatchMaking = lazy(() => import('./pages/PingPong/MatchMaking/Index'));
+const NotFound = lazy(() => import('./pages/NotFound/Index'));
 
 function App() {
   return (
@@ -52,10 +52,10 @@ function App() {
                         <Route path='play' element={withPingPong(Play)} />
                         <Route path='match-making' element={withPingPong(MatchMaking)} />
                         <Route path='vs-friend' element={<VsFriend />} />
-                        <Route path='*' element={<>Not Found</>} />
+                        <Route path='*' element={<NotFound />} />
                       </Route>
                     </Route>
-                    <Route path='*' element={<>Not Found</>} />
+                    <Route path='*' element={<NotFound />} />
                   </Route>
                 </Routes>
               </Suspense>

@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { useChatContext } from "../../../contexts/chatProvider";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 function Observer() {
 	const { state, sendJsonMessage } = useChatContext();
@@ -7,21 +8,20 @@ function Observer() {
 	const convId = useRef<number | string | null>(null);
 	const firstMsgId = useRef<number | string | null>(null);
 	const oldHeight = useRef(0);
+	const oldScrollTop = useRef(0);
 
 	useEffect(() => {
-		convId.current = state.conversation_id
+		convId.current = state.conversation.id
 		firstMsgId.current = state.messages[0]?.id;
-	}, [state.conversation_id, state.messages])
+	}, [state.conversation, state.messages])
 
 	const callback = ((entries: IntersectionObserverEntry[]) => {
 		const element = entries[0];
 		if (element.isIntersecting) {
-			// console.log('should fetch');
-			// console.log(convId.current, firstMsgId.current)
-			const parent = (container.current as HTMLElement)?.parentElement;
+			const parent = document.querySelector('.messages-container');
 			if (!container.current || !parent) return;
 			oldHeight.current = parent.scrollHeight;
-			console.log('oldHeight.current', oldHeight.current);
+			oldScrollTop.current = parent.scrollTop;
 			sendJsonMessage({
 				type: 'messages',
 				limit: 10,
@@ -45,17 +45,24 @@ function Observer() {
 		}
 	}, [])
 
-	useEffect(() => {
-		console.log('changed', (container.current as HTMLElement)?.parentElement?.scrollTop);
-		// container.current.parentElement.scrollTop = (container.current as HTMLElement)?.parentElement?.scrollTop - oldHeight.current
-		container.current.parentElement.scrollTop = (container.current as HTMLElement)?.parentElement?.scrollHeight - oldHeight.current + 50
+	useLayoutEffect(() => {
+		const parent = document.querySelector('.messages-container');
+		if (!container.current || !parent) return;
+		parent.scrollTop = parent.scrollHeight - oldHeight.current + oldScrollTop.current;
 	}, [state.messages])
 
-	return ( 
-		<div
-			ref={container}>
-			<div className="text-center">loading...</div>
-		</div>
+	return (
+		<>
+			{!state.conversation.limitReached && <div
+				ref={container} className="h-[40px] flex justify-center items-center">
+				<AiOutlineLoading3Quarters className='animate-spin' />
+			</div>}
+			{state.conversation.limitReached && 
+				<div className="h-40 flex justify-center items-center">
+					you have reached the limit!
+				</div>
+			}
+		</>
 	);
 }
 

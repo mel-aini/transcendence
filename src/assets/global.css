@@ -3,6 +3,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+	font-family: myFont;
+	src: url('./myFont.ttf');
+}
+.font-myFont {
+	font-family: myFont;
+}
 
 :root {
 	--primary-color: #14FFEC;

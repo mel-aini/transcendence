@@ -1,6 +1,11 @@
 import { AnimatePresence, Variants, motion } from "framer-motion";
 import Input from "../../../components/Input";
 import { IoClose } from "react-icons/io5";
+import { FiSearch } from "react-icons/fi";
+import { useChatContext } from "../../../contexts/chatProvider";
+import { useAuthContext } from "../../../contexts/authProvider";
+import { ChangeEvent, FormEvent, useRef } from "react";
+import { isEmpty } from "../../../utils/validation";
 
 const transition = {
 	duration: 0.3
@@ -25,6 +30,22 @@ interface Props {
 }
 
 function SearchFriends({isOpen, onClose}: Props) {
+	const { sendJsonMessage } = useChatContext();
+	const { state } = useAuthContext();
+	const inputRef = useRef('');
+
+	const onSubmit = (e: FormEvent) => {
+		e.preventDefault();
+		if (isEmpty(inputRef.current)) return;
+		sendJsonMessage({
+			user_id: state.user_id,
+			type: 'search_friend',
+			search: inputRef.current,
+			offset: 0,
+			limit: 10
+		})
+		inputRef.current = '';
+	}
 	return (
 		<>
 			{isOpen && <div 
@@ -44,7 +65,12 @@ function SearchFriends({isOpen, onClose}: Props) {
 							<IoClose className="text-3xl fill-border" />
 						</button>
 					</div>
-					<Input type="text" placeholder="search for a friend" className="bg-bg border border-border w-full" />
+					<form onSubmit={onSubmit} className="flex justify-between gap-2">
+						<Input onChange={(e) => inputRef.current = e.target.value} type="text" placeholder="search for a friend" className="bg-bg border border-border w-full" />
+						<button type="submit" className="shrink-0 size-[48px] flex justify-center items-center border border-border rounded-md">
+							<FiSearch />
+						</button>
+					</form>
 				</motion.div>}
 			</AnimatePresence>
 		</>
