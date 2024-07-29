@@ -1,17 +1,22 @@
-import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
+import { UserData } from "../types/profile";
+import { useQuery } from "@tanstack/react-query";
+import api from "../api/axios";
 
 export interface GlobalStateProps {
 	isLoading: boolean
 	alert: boolean
 	alertMessage: string
 	search: boolean
+	userData: UserData | null
 }
 
 const initialState: GlobalStateProps = {
 	isLoading: false,
 	alert: false,
 	alertMessage: '',
-	search: false
+	search: false,
+	userData: null
 };
 
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
@@ -50,13 +55,29 @@ const reducer = (state: GlobalStateProps, action: any) => {
 				...state,
 				search: !state.search
 			}
+		case 'USER_DATA':
+			return { 
+				...state,
+				userData: action.userData
+			}
 		default:
 			return state;
 	}
 }
 
+async function fetchData() {
+	const res = await api.get('api/profile');
+	return res;
+}
+
 const GlobalContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	const {data, isLoading, isError} = useQuery({queryKey: ['profile'], queryFn: () => fetchData()});
+
+	useEffect(() => {
+		console.log(data?.data);
+		dispatch({type: "USER_DATA", userData: data?.data});
+	}, [data]);
 	
 	return (
 		<GlobalContext.Provider value={{state, dispatch}}>

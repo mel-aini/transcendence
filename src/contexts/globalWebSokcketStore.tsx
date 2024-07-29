@@ -5,35 +5,11 @@ import { useProfileContext } from "./profileStore";
 import { FriendsData, Relation } from "../types/profile";
 import { useGlobalContext } from "./store";
 
-export interface GlobalData {
-	friendActionChanged: boolean
-}
-
-const initialState: GlobalData = {
-	friendActionChanged: false
-};
-
-export const GlobalWebSocketContext = createContext<{GlobalState: GlobalData, dispatchGlobal: Dispatch<any>, lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
+export const GlobalWebSocketContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
 	lastJsonMessage: '',
 	sendJsonMessage: () => {
 	},
-	dispatchGlobal: () => {},
-	GlobalState: initialState
 });
-
-const reducer = (state: GlobalData, action: any) => {
-	console.log("hnaaa");
-	switch (action.type)
-	{
-		case 'friendActionChanged':
-			return { 
-				...state, 
-				friendActionChanged: action.friendActionChanged
-			}
-		default:
-			return state;
-	}
-}
 
 const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	const { dispatch } = useGlobalContext();
@@ -44,7 +20,6 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			shouldReconnect: () => true,
 		},
 	);
-	const [GlobalState, dispatchGlobal] = useReducer(reducer, initialState);
 
 	const setValue = (relation: string) => {
 		if (relation == "add")
@@ -140,7 +115,7 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	}, [lastJsonMessage])
 
 	return (
-		<GlobalWebSocketContext.Provider value={{lastJsonMessage, sendJsonMessage, GlobalState, dispatchGlobal}}>
+		<GlobalWebSocketContext.Provider value={{lastJsonMessage, sendJsonMessage}}>
 			{children}
 		</GlobalWebSocketContext.Provider>
 	)

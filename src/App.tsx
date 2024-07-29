@@ -1,4 +1,4 @@
-      import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
 import GlobalContextProvider from "./contexts/store";
 import Layout from "./components/Layout";
@@ -12,6 +12,7 @@ import withoutAuth from  './guards/withoutAuth'
 import AuthContextProvider from "./contexts/authProvider";
 import GlobalWebSocketContextProvider, { GlobalWebSocketContext } from "./contexts/globalWebSokcketStore";
 import withProfile from "./guards/withProfile";
+import withPingPong from "./guards/withPingPong";
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
@@ -29,7 +30,7 @@ function App() {
   return (
       <GlobalContextProvider>
         <AuthContextProvider>
-            <PingPongContextProvider>
+            {/* <PingPongContextProvider> */}
               {/* <GlobalWebSocketContextProvider> */}
               <Suspense fallback={<LoadingPage />}>
                 <Routes>
@@ -48,8 +49,8 @@ function App() {
                       </Route>
                       <Route path='/ping-pong'>
                         <Route index element={<PingPong />} />
-                        <Route path='play' element={<Play />} />
-                        <Route path='match-making' element={<MatchMaking />} />
+                        <Route path='play' element={withPingPong(Play)} />
+                        <Route path='match-making' element={withPingPong(MatchMaking)} />
                         <Route path='vs-friend' element={<VsFriend />} />
                         <Route path='*' element={<>Not Found</>} />
                       </Route>
@@ -59,7 +60,7 @@ function App() {
                 </Routes>
               </Suspense>
               {/* </GlobalWebSocketContextProvider> */}
-            </PingPongContextProvider>
+            {/* </PingPongContextProvider> */}
         </AuthContextProvider>
       </GlobalContextProvider>
   )

@@ -32,7 +32,8 @@ export default {
         'test': 'test 0.3s',
       },
       screens: {
-        smh: {'raw': '(min-height: 800px)'}
+        smh: {'raw': '(min-height: 800px)'},
+        'mobile': '400px',
       },
       backgroundImage: {
         'login': "url('/famous-table-tennis-players.png')",

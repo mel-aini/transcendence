@@ -1,30 +1,79 @@
+import { useNavigate } from "react-router-dom";
 import NewButton from "../../../../components/NewButton";
+import { usePingPongContext } from "../../../../contexts/pingPongProvider";
 import UserBox from "./UserBox";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-function Result({xp}: {xp: number}) {
+function Result() {
+	const { state } = usePingPongContext();
+	const navigate = useNavigate();
+	const [xp, setXp] = useState<number>(0);
+
+	// dispatch({type: "RESULT", result: {...state.result, isEndGame: false}});
+
+	const clickHandler = () => {
+		navigate('/ping-pong');
+	}
+
+	useEffect(() => {
+		const id = setTimeout(() => {
+			if (xp < state.result.xp)
+				setXp((prev) => prev + 1);
+		}, 10);
+		return () => clearTimeout(id);
+	}, [xp]);
 
 	return (
-		<div className="w-full flex flex-col justify-between items-center">
+		<motion.div className="w-full flex flex-col justify-between items-center"
+		initial="hidden"
+		animate="visible"
+		>
 			{
-				(xp > 0) ?
-				<h1 className="text-third text-center text-4xl pb-11">Congratulations, you win</h1>
-				:
-				<h1 className="text-[#DD1B1B] text-center text-4xl pb-11">oops, You Lose</h1>
+				(state.result.status == "win") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
+				className="relative top-0 text-third text-center text-4xl pb-11">Congratulations, you win</motion.h1>
 			}
-			<span className="text-[#FFD214] text-center text-xl pb-11">+{xp} XP</span>
-			<span className="text-center text-2xl pb-[53px]">Final score:</span>
-			<div className="flex flex-col md:flex-row w-full justify-center items-center gap-4 pb-[53px]">
+			{
+				(state.result.status == "lose") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
+				className="relative top-0 text-[#DD1B1B] text-center text-4xl pb-11">oops, You Lose</motion.h1>
+			}
+			{
+				(state.result.status == "equal") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
+				className="relative top-0 text-gray1 text-center text-4xl pb-11">Draw</motion.h1>
+			}
+			<motion.span
+			initial={{opacity: 0, top: '-5rem'}}
+			animate={{opacity: 1, top: '0rem'}}
+			transition={{duration: 0.3, delay: 0.5}}
+			className="relative top-0 text-[#FFD214] text-center text-xl pb-11">+{xp} XP</motion.span>
+			<motion.span
+			initial={{opacity: 0, top: '-5rem'}}
+			animate={{opacity: 1, top: '0rem'}}
+			transition={{duration: 0.3, delay: 1}}
+			className="relative top-0 text-center text-2xl pb-[53px]">Final score:</motion.span>
+			<motion.div
+			initial={{opacity: 0, top: '-5rem'}}
+			animate={{opacity: 1, top: '0rem'}}
+			transition={{duration: 0.3, delay: 1.5}}
+			className="relative top-0 flex w-full justify-center items-center gap-4 pb-[53px]">
 				<UserBox username="user1" level={3} userImage="" />
-				<div className={"w-[86px] h-[86px] flex justify-center items-center rounded-[10px] border-border bg-secondary shrink-0 text-[32px] " + ((xp > 0) ? "text-primary" : "")}>
-					10
+				<div className={"max-w-[86px] w-full h-[86px] flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px] " + ((state.result.status == "win") ? "text-primary" : "")}>
+					{state.score.my}
 				</div>
-				<div className={"w-[86px] h-[86px] flex justify-center items-center rounded-[10px] border-border bg-secondary shrink-0 text-[32px] " + ((xp == 0) ? "text-primary" : "")}>
-					8
+				<div className={"max-w-[86px] w-full h-[86px] flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px] " + ((state.result.status == "lose") ? "text-primary" : "")}>
+					{state.score.side}
 				</div>
 				<UserBox username="user2" level={10} userImage="" />
-			</div>
-			<NewButton className="max-w-[344px] h-full w-full">continue</NewButton>
-		</div>
+			</motion.div>
+			<motion.div
+			initial={{opacity: 0, top: '-5rem'}}
+			animate={{opacity: 1, top: '0rem'}}
+			transition={{duration: 0.3, delay: 2}}
+			onClick={clickHandler}
+			className="relative top-0 max-w-[344px] h-full w-full">
+				<NewButton className="h-full w-full">continue</NewButton>
+			</motion.div>
+		</motion.div>
 	);
 }
 

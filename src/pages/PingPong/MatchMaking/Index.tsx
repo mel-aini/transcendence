@@ -1,14 +1,15 @@
 import User from "../../../components/User";
-import { Levels, PingPongStateProps, usePingPongContext } from "../../../contexts/pingPongProvider";
+import { Levels, usePingPongContext } from "../../../contexts/pingPongProvider";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { primaryColor, secondaryColor } from "../../../utils/colors";
+import { useGlobalContext } from "../../../contexts/store";
 
 interface PlayerBarProps {
 	username?: string,
 	avatar?: string,
-	level?: string,
+	level?: number,
 	unknown?: boolean,
 	state: Levels
 }
@@ -21,16 +22,16 @@ function PlayerBar({username, avatar, level, unknown, state}: PlayerBarProps) {
 		<div className="grow">
 			<div className={"flex justify-center sm:justify-between items-center bg-secondary border border-border rounded-md px-3 sm:px-8 h-[80px] select-none" + styleClass}>
 				{
-					unknown && <span className="w-full text-center">?</span>
-				}
-				{username && avatar && level &&
-				<>
-					<div className="flex items-center gap-3 overflow-hidden">
-						<User border className="border-primary" url={avatar} />
-						<div className="truncate">{username}</div>
-					</div>
-					<span className="hidden sm:block">Lvl {level}</span>
-				</>
+					unknown ?
+					<span className="w-full text-center">?</span>
+					:
+					<>
+						<div className="flex items-center gap-3 overflow-hidden">
+							<User border className="border-primary" url={avatar} />
+							<div className="truncate">{username}</div>
+						</div>
+						<span className="hidden sm:block">Lvl {level}</span>
+					</>
 				}
 			</div>
 		</div>
@@ -77,16 +78,9 @@ function Title({level}: {level: Levels}) {
 
 function MatchMaking() {
 	const {state, dispatch} = usePingPongContext();
+	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
 	const avatar_link = 'https://images.unsplash.com/photo-1669937401447-7cfc6e9906e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fGdhbWluZyUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D';
-	
-	useEffect(() => {
-		if (state.level == Levels.FindingOpponent) {
-			setTimeout(() => {
-				dispatch({type: 'CHLEVEL', level: Levels.OpponentFound})
-			}, 3000)
-		}
-	}, [])
 
 	const cancelAction = () => {
 		dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
@@ -101,7 +95,7 @@ function MatchMaking() {
 					<Title level={state.level} />
 				</div>
 				<div className="flex justify-center items-center gap-5 select-none">
-					<PlayerBar username="user1" state={state.level} level="2" avatar={avatar_link} />
+					<PlayerBar username={profileData.userData?.username} state={state.level} level={profileData.userData?.level.current} avatar={profileData.userData?.profile_image} />
 					<span>vs</span>
 					{state.level == Levels.FindingOpponent && <PlayerBar state={state.level} unknown/>}
 					{state.level >= Levels.OpponentFound && 
@@ -111,7 +105,7 @@ function MatchMaking() {
 							transition={{duration: 0.3}}
 							className="grow"
 							>
-							<PlayerBar state={state.level} username="user2" level="3" avatar={avatar_link} />
+							<PlayerBar state={state.level} username={state.opponent} level={3} avatar={avatar_link} />
 						</motion.div>
 					}
 				</div>
@@ -131,21 +125,23 @@ function Loader() {
 	const navigate = useNavigate();
 	const handler = () => {
 		setTimer(prev => {
-			if (prev == 0) {
-				dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-				navigate('/ping-pong/play');
-				return prev;
-			}
-			return prev - 1
+			if (prev > 0)
+				return prev - 1
+			return prev
 		})
 	}
-
+	
 	useEffect(() => {
 		const id = setInterval(handler, 1000)
+		if (timer == 0)
+		{
+			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+			navigate('/ping-pong/play');
+		}
 		return () => {
 			clearInterval(id)
 		}
-	}, [])
+	}, [timer])
 
 	return (
 		<motion.div

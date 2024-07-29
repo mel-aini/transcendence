@@ -1,16 +1,24 @@
-import GameContextProvider from "../../../contexts/gameStore";
+import { useEffect } from "react";
+import { usePingPongContext } from "../../../contexts/pingPongProvider";
 import Game from "./Game/Game";
 import Result from "./Result/Result";
 
 function Index() {
+	const { state } = usePingPongContext();
+
+	useEffect(() => {
+	}, [state.result.isEndGame]);
 
 	return (
-		<GameContextProvider>
-			<div className="min-h-[90vh] flex justify-center items-center">
-				<Game />
-				{/* <Result xp={0}/> */}
+			<div className="flex justify-center items-center duration-300">
+				{
+					state.result.isEndGame
+					?
+					<Result />
+					:
+					<Game />
+				}
 			</div>
-		</GameContextProvider>
 	);
 }
 
