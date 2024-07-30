@@ -288,6 +288,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			sendJsonMessage({
 				type: 'messages',
 				conversation_id: state.conversation.id,
+				user_id: authState.user_id
 			})
 		}
 	}, [state.conversation])
