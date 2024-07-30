@@ -7,6 +7,8 @@ function Index() {
 	const { state } = usePingPongContext();
 
 	useEffect(() => {
+		console.log(state.result.isEndGame);
+		
 	}, [state.result.isEndGame]);
 
 	return (

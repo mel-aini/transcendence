@@ -60,7 +60,6 @@ function App() {
                 </Routes>
               </Suspense>
               {/* </GlobalWebSocketContextProvider> */}
-            {/* </PingPongContextProvider> */}
         </AuthContextProvider>
       </GlobalContextProvider>
   )

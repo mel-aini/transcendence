@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import Table from "./Table";
+import { usePingPongContext } from "../../../../contexts/pingPongProvider";
 
 function Game() {
 	const refParent = useRef<HTMLDivElement>(null);

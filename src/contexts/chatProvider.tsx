@@ -200,22 +200,22 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			onClose: () => {
 				console.log('connection closed')
 				setErrorInLastMessage();
-				// setIsReconnect(true);
+				setIsReconnect(true);
 			},
 			onError: () => {
 				console.log('error occured in websocket')
 				setErrorInLastMessage()
 			},
 			retryOnError: false,
-			// shouldReconnect: () => {
-			// 	return true;
-			// },
-			// reconnectAttempts: 100,
-			// reconnectInterval: 3000,
-			// onReconnectStop: () => {
-			// 	console.log('failed to reconnect');
-			// 	setIsReconnect(false);
-			// }
+			shouldReconnect: () => {
+				return true;
+			},
+			reconnectAttempts: 100,
+			reconnectInterval: 3000,
+			onReconnectStop: () => {
+				console.log('failed to reconnect');
+				setIsReconnect(false);
+			}
 		}
 	  )
 	
@@ -295,12 +295,12 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	return (
 		<ChatContext.Provider value={{state, dispatch, lastJsonMessage, sendJsonMessage, readyState}}>
 			<>
-				{/* <Modal isOpen={isReconnect} onClose={() => {}} >
+				<Modal isOpen={isReconnect} onClose={() => {}} >
 					<div className="flex gap-5 items-center bg-secondary px-10 p-5 rounded-md">
 						<h1>Reconnecting</h1>
 						<AiOutlineLoading3Quarters className='animate-spin' />
 					</div>
-				</Modal> */}
+				</Modal>
 				{children}
 			</>
 		</ChatContext.Provider>
