@@ -8,7 +8,7 @@ function Index() {
 
 	useEffect(() => {
 		console.log(state.result.isEndGame);
-		
+		// console.log(state.opponent);
 	}, [state.result.isEndGame]);
 
 	return (

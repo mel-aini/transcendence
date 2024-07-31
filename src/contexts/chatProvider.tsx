@@ -200,7 +200,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			onClose: () => {
 				console.log('connection closed')
 				setErrorInLastMessage();
-				setIsReconnect(true);
+				// setIsReconnect(true);
 			},
 			onError: () => {
 				console.log('error occured in websocket')

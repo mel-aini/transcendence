@@ -10,8 +10,6 @@ function Result() {
 	const navigate = useNavigate();
 	const [xp, setXp] = useState<number>(0);
 
-	// dispatch({type: "RESULT", result: {...state.result, isEndGame: false}});
-
 	const clickHandler = () => {
 		navigate('/ping-pong');
 	}
@@ -39,7 +37,7 @@ function Result() {
 			}
 			{
 				(state.result.status == "equal") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
-				className="relative top-0 text-gray1 text-center text-4xl pb-11">Draw</motion.h1>
+				className="relative top-0 text-gray1 text-center text-4xl pb-11">Null</motion.h1>
 			}
 			<motion.span
 			initial={{opacity: 0, top: '-5rem'}}

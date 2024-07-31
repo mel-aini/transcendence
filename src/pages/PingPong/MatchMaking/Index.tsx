@@ -1,10 +1,11 @@
 import User from "../../../components/User";
-import { Levels, usePingPongContext } from "../../../contexts/pingPongProvider";
+import { GAME_WS_URL, Levels, usePingPongContext } from "../../../contexts/pingPongProvider";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { primaryColor, secondaryColor } from "../../../utils/colors";
 import { useGlobalContext } from "../../../contexts/store";
+import useWebSocket from "react-use-websocket";
 
 interface PlayerBarProps {
 	username?: string,
@@ -87,7 +88,7 @@ function MatchMaking() {
 		navigate('/ping-pong')
 	}
 
-	return ( 
+	return (
 		<div className="min-h-[calc(100vh-100px)] flex justify-center items-center">
 			<div className="w-full max-w-[700px] flex flex-col bg-secondary border border-border rounded-md p-10 gap-14">
 				<div>

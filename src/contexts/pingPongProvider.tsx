@@ -161,7 +161,7 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	useEffect(() => {
-		console.log(lastJsonMessage);
+		// console.log(lastJsonMessage);
 		
 		if (!isEmptyObject(lastJsonMessage))
 		{
@@ -197,6 +197,7 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			else if (lastJsonMessage.type == "score")
 			{
+				// console.log(lastJsonMessage);
 				(state.directions.my == "right") ?
 				dispatch({type: "SCORE", score: {...state.score, my: lastJsonMessage.right, side: lastJsonMessage.left}})
 				:
@@ -204,10 +205,13 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			else if (lastJsonMessage.type == "end")
 			{
+				// console.log(lastJsonMessage);
+				
 				dispatch({type: "RESULT", result: {...state.result, status: lastJsonMessage.status, xp: lastJsonMessage.xp, isEndGame: true}});
 			}
 			else if (lastJsonMessage.type == "disconnect")
 			{
+				console.log(lastJsonMessage);
 				dispatch({type: "RESULT", result: {...state.result, status: lastJsonMessage.status, xp: lastJsonMessage.xp, isEndGame: true}});
 				lastJsonMessage.status == "win"
 				?
