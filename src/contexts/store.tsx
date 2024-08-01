@@ -75,7 +75,6 @@ const GlobalContextProvider = ({children} : {children: ReactNode}) => {
 	const {data, isLoading, isError} = useQuery({queryKey: ['profile'], queryFn: () => fetchData()});
 
 	useEffect(() => {
-		console.log(data?.data);
 		dispatch({type: "USER_DATA", userData: data?.data});
 	}, [data]);
 	

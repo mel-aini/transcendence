@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, createContext, useContext, useLayoutEffect, useReducer } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useEffect, useLayoutEffect, useReducer } from "react";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { JwtPayload, jwtDecode } from "jwt-decode";
@@ -28,7 +28,7 @@ const reducer = (state: GlobalStateProps, action: any) => {
 		case 'USERNAME':
 			return { ...state, username: action.username}
 		case 'USER_ID':
-			return { ...state, username: action.userId}
+			return { ...state, user_id: action.userId}
 		default:
 			return state;
 	}
@@ -46,7 +46,6 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 			reqConfig.headers.Authorization = `Bearer ${state.accessToken}`;
 			return reqConfig;
 		})
-
 		if (state.accessToken) {
 			const payload: JwtPayload & { user_id: string } = jwtDecode(state.accessToken);
 			dispatch({type: 'USER_ID', userId: payload.user_id})
@@ -58,6 +57,7 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 			api.interceptors.request.eject(id)
 		}
 	}, [state.accessToken])
+
 
 	useLayoutEffect(() => {
 		// intercept responses

@@ -285,6 +285,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 		// console.log('trying to make new call to the web socket...', state.conversation_id)
 		if (state.conversation.state == 'loading') {
 			dispatch({type: 'MESSAGES', messages: []})
+			console.log(authState)
 			sendJsonMessage({
 				type: 'messages',
 				conversation_id: state.conversation.id,
