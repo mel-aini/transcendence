@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, createContext, useContext, useLayoutEffect, useReducer } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useEffect, useLayoutEffect, useReducer } from "react";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { JwtPayload, jwtDecode } from "jwt-decode";
@@ -28,7 +28,7 @@ const reducer = (state: GlobalStateProps, action: any) => {
 		case 'USERNAME':
 			return { ...state, username: action.username}
 		case 'USER_ID':
-			return { ...state, username: action.userId}
+			return { ...state, user_id: action.userId}
 		default:
 			return state;
 	}
@@ -46,7 +46,6 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 			reqConfig.headers.Authorization = `Bearer ${state.accessToken}`;
 			return reqConfig;
 		})
-
 		if (state.accessToken) {
 			const payload: JwtPayload & { user_id: string } = jwtDecode(state.accessToken);
 			dispatch({type: 'USER_ID', userId: payload.user_id})
@@ -59,11 +58,11 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 		}
 	}, [state.accessToken])
 
+
 	useLayoutEffect(() => {
 		// intercept responses
 		const id = api.interceptors.response.use(resConfig => resConfig, async (error) => {
 			const originRequest = error.config;
-
 			
 				if (error.response.status == 401) {
 					if (!error.config.headers[NO_RETRY_HEADER]) {
@@ -71,8 +70,10 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 						navigate('/login')
 						return Promise.reject(error)
 					}
-					error.config.headers[NO_RETRY_HEADER] = 'true';
+					originRequest.config.headers[NO_RETRY_HEADER] = 'true';
 					const res = await api.post('/api/token/refresh/');
+					console.log('trying to refresh token');
+					console.log(res)
 					return api(originRequest);
 				}
 		})

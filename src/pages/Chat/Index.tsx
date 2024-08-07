@@ -11,15 +11,14 @@ import { useAuthContext } from "../../contexts/authProvider";
 function Index() {
 	const {state, dispatch} = useChatContext();
 	// todo: to remove
-	const [isOpen, setIsOpen] = useState(false);
-	const [username, setUsername] = useState('');
-	const {dispatch: authDispatch} = useAuthContext();
+	// const [isOpen, setIsOpen] = useState(false);
+	// const [username, setUsername] = useState('');
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		authDispatch({type: 'USERNAME', username: username})
-		setIsOpen(false);
-	}
+	// const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	// 	e.preventDefault();
+	// 	authDispatch({type: 'USERNAME', username: username})
+	// 	setIsOpen(false);
+	// }
 	//
 
 	useEffect(() => {
@@ -51,7 +50,7 @@ function Index() {
 
 		window.addEventListener('resize', resizeHandler)
 		// todo: to remove
-			setIsOpen(true)
+			// setIsOpen(true)
 		//
 		return () => {
 			window.removeEventListener('resize', resizeHandler);
@@ -61,11 +60,11 @@ function Index() {
 
 	return (
 		<div className="relative w-full h-[100vh] lg:flex">
-			<Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+			{/* <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
 				<form onSubmit={handleSubmit}>
 					<Input onChange={(e) => setUsername(e.target.value)} type="text" placeholder="enter username" />
 				</form>
-			</Modal>
+			</Modal> */}
 			<NavBar className="hidden px-4 py-5 h-full lg:flex flex-col justify-between border-r border-r-dark" />
 			<ChatBar />
 			<AnimatePresence>
