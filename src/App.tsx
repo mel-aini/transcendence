@@ -54,6 +54,12 @@ function App() {
                         <Route path='vs-friend' element={<VsFriend />} />
                         <Route path='*' element={<NotFound />} />
                       </Route>
+                      {/* Tournement, /tournements/tournement-id */}
+                      <Route path='/tournements'>
+                        <Route path=':id' element={<>route dial tournement</>} />
+                        <Route path='*' element={<NotFound />} />
+                      </Route>
+                      {/*  */}
                     </Route>
                     <Route path='*' element={<NotFound />} />
                   </Route>

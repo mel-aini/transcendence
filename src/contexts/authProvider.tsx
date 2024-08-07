@@ -63,7 +63,6 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 		// intercept responses
 		const id = api.interceptors.response.use(resConfig => resConfig, async (error) => {
 			const originRequest = error.config;
-
 			
 				if (error.response.status == 401) {
 					if (!error.config.headers[NO_RETRY_HEADER]) {
@@ -71,8 +70,10 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 						navigate('/login')
 						return Promise.reject(error)
 					}
-					error.config.headers[NO_RETRY_HEADER] = 'true';
+					originRequest.config.headers[NO_RETRY_HEADER] = 'true';
 					const res = await api.post('/api/token/refresh/');
+					console.log('trying to refresh token');
+					console.log(res)
 					return api(originRequest);
 				}
 		})
