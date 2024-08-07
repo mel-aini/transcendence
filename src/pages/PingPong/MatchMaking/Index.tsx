@@ -1,11 +1,16 @@
 import User from "../../../components/User";
-import { GAME_WS_URL, Levels, usePingPongContext } from "../../../contexts/pingPongProvider";
-import { useEffect, useState } from "react";
+import { Levels, usePingPongContext } from "../../../contexts/pingPongProvider";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { primaryColor, secondaryColor } from "../../../utils/colors";
 import { useGlobalContext } from "../../../contexts/store";
 import useWebSocket from "react-use-websocket";
+import Customize_icon from "/Customize_icon.svg"
+import { IoIosArrowBack ,IoIosArrowForward } from "react-icons/io";
+import CustomizeTab from "./CustomizeTab";
+
+export const customizeContext = createContext<any>({});
 
 interface PlayerBarProps {
 	username?: string,
@@ -82,67 +87,89 @@ function MatchMaking() {
 	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
 	const avatar_link = 'https://images.unsplash.com/photo-1669937401447-7cfc6e9906e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fGdhbWluZyUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D';
+	const [customize, setCustomize] = useState<boolean>(false);
 
 	const cancelAction = () => {
 		dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-		navigate('/ping-pong')
+		navigate(-1)
 	}
 
+	const handler = () => {
+		if (state.timer > 0)
+			dispatch({type: "TIMER", timer: state.timer - 1});
+	}
+
+	useEffect(() => {
+		if (state.level == Levels.OpponentFound && window.location.pathname == "/ping-pong/match-making")
+		{
+			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+			navigate(-1);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (state.level >= Levels.OpponentFound)
+		{
+			const id = setInterval(handler, 1000)
+			if (state.timer == 0)
+			{
+				// dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+				navigate('../play');
+			}
+			return () => {
+				clearInterval(id)
+			}
+		}
+	}, [state.level, state.timer]);
+
+
 	return (
+		<customizeContext.Provider value={{customize, setCustomize}}>
 		<div className="min-h-[calc(100vh-100px)] flex justify-center items-center">
-			<div className="w-full max-w-[700px] flex flex-col bg-secondary border border-border rounded-md p-10 gap-14">
-				<div>
-					<h1 className="text-xl mb-5 font-medium">Matchmaking</h1>
-					<Title level={state.level} />
+			{
+				customize ?
+				<CustomizeTab />
+				:
+				<div className="w-full max-w-[700px] flex flex-col bg-secondary border border-border rounded-md p-10 gap-14">
+					<div className="flex flex-col gap-5 justify-between">
+						<div className="flex items-center justify-between">
+							<h1 className="text-xl font-medium">Matchmaking</h1>
+							{
+								state.level == Levels.OpponentFound &&
+								<img onClick={() => setCustomize(true)} src={Customize_icon} alt="customize_icon" />
+							}
+						</div>
+						<Title level={state.level} />
+					</div>
+					<div className="flex justify-center items-center gap-5 select-none">
+						<PlayerBar username={profileData.userData?.username} state={state.level} level={profileData.userData?.level.current} avatar={profileData.userData?.profile_image} />
+						<span>vs</span>
+						{state.level == Levels.FindingOpponent && <PlayerBar state={state.level} unknown/>}
+						{state.level >= Levels.OpponentFound && 
+							<motion.div
+								initial={{x: 10, opacity: 0}}
+								animate={{x: 0, opacity: 1}}
+								transition={{duration: 0.3}}
+								className="grow"
+								>
+								<PlayerBar state={state.level} username={state.opponent} level={3} avatar={avatar_link} />
+							</motion.div>
+						}
+					</div>
+					<div className="w-full flex justify-between items-center">
+						<span onClick={cancelAction} className="cursor-pointer hover:underline duration-300 select-none">cancel</span>
+						{ state.level >= Levels.OpponentFound && <Loader /> }
+					</div>
 				</div>
-				<div className="flex justify-center items-center gap-5 select-none">
-					<PlayerBar username={profileData.userData?.username} state={state.level} level={profileData.userData?.level.current} avatar={profileData.userData?.profile_image} />
-					<span>vs</span>
-					{state.level == Levels.FindingOpponent && <PlayerBar state={state.level} unknown/>}
-					{state.level >= Levels.OpponentFound && 
-						<motion.div
-							initial={{x: 10, opacity: 0}}
-							animate={{x: 0, opacity: 1}}
-							transition={{duration: 0.3}}
-							className="grow"
-							>
-							<PlayerBar state={state.level} username={state.opponent} level={3} avatar={avatar_link} />
-						</motion.div>
-					}
-				</div>
-				<div className="w-full flex justify-between items-center">
-					<span onClick={cancelAction} className="cursor-pointer hover:underline duration-300 select-none">cancel</span>
-					{state.level >= Levels.OpponentFound && <Loader />}
-				</div>
-			</div>
+			}
 		</div> 
+		</customizeContext.Provider>
 	);
 }
 
 
 function Loader() {
-	const { dispatch } = usePingPongContext();
-	const [timer, setTimer] = useState(9);
-	const navigate = useNavigate();
-	const handler = () => {
-		setTimer(prev => {
-			if (prev > 0)
-				return prev - 1
-			return prev
-		})
-	}
-	
-	useEffect(() => {
-		const id = setInterval(handler, 1000)
-		if (timer == 0)
-		{
-			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-			navigate('/ping-pong/play');
-		}
-		return () => {
-			clearInterval(id)
-		}
-	}, [timer])
+	const { state } = usePingPongContext();
 
 	return (
 		<motion.div
@@ -155,7 +182,7 @@ function Loader() {
 				${primaryColor} ${'100%'}, 
 				${secondaryColor} ${'100%'}, ${secondaryColor} 100%)`}}
 			transition={{
-				duration: 10,
+				duration: state.timer,
 				ease: 'easeOut'
 			}}
 			className="relative size-[40px] self-center rounded-full sm:shrink-0 flex justify-center items-center"
@@ -167,7 +194,7 @@ function Loader() {
 				}}
 			>
 			<div className="size-[30px] text-sm bg-secondary rounded-full flex justify-center items-center">
-				{timer}
+				{state.timer}
 			</div>
 		</motion.div>
 	)

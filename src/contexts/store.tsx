@@ -65,20 +65,9 @@ const reducer = (state: GlobalStateProps, action: any) => {
 	}
 }
 
-async function fetchData() {
-	const res = await api.get('api/profile');
-	return res;
-}
-
 const GlobalContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const {data, isLoading, isError} = useQuery({queryKey: ['profile'], queryFn: () => fetchData()});
 
-	useEffect(() => {
-		console.log(data?.data);
-		dispatch({type: "USER_DATA", userData: data?.data});
-	}, [data]);
-	
 	return (
 		<GlobalContext.Provider value={{state, dispatch}}>
 			{children}

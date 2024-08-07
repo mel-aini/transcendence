@@ -11,7 +11,8 @@ import withoutAuth from  './guards/withoutAuth'
 import AuthContextProvider from "./contexts/authProvider";
 import GlobalWebSocketContextProvider, { GlobalWebSocketContext } from "./contexts/globalWebSokcketStore";
 import withProfile from "./guards/withProfile";
-import withPingPong from "./guards/withPingPong";
+import GameLayout from "./pages/PingPong/GameLayout";
+import withTournement from "./guards/withTournement";
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
@@ -21,6 +22,7 @@ const Profile = lazy(() => import('./pages/Profile/Index'));
 const Settings = lazy(() => import('./pages/Settings/Index'));
 const Dashboard = lazy(() => import('./pages/Dashboard/Index'));
 const PingPong = lazy(() => import('./pages/PingPong/Index'));
+const Tournement = lazy(() => import('./pages/Tournement/Index'));
 const Play = lazy(() => import('./pages/PingPong/Play/Index'));
 const VsFriend = lazy(() => import('./pages/PingPong/VsFriend/Index'));
 const MatchMaking = lazy(() => import('./pages/PingPong/MatchMaking/Index'));
@@ -28,10 +30,9 @@ const NotFound = lazy(() => import('./pages/NotFound/Index'));
 
 function App() {
   return (
-      <GlobalContextProvider>
-        <AuthContextProvider>
-            {/* <PingPongContextProvider> */}
+    <AuthContextProvider>
               {/* <GlobalWebSocketContextProvider> */}
+          <GlobalContextProvider>
               <Suspense fallback={<LoadingPage />}>
                 <Routes>
                   <Route path="/" element={<MainLayout />}>
@@ -49,9 +50,18 @@ function App() {
                       </Route>
                       <Route path='/ping-pong'>
                         <Route index element={<PingPong />} />
-                        <Route path='play' element={withPingPong(Play)} />
-                        <Route path='match-making' element={withPingPong(MatchMaking)} />
+                        <Route element={<GameLayout />}>
+                          <Route path='play' element={<Play />} />
+                          <Route path='match-making' element={<MatchMaking />} />
+                        </Route>
                         <Route path='vs-friend' element={<VsFriend />} />
+                        <Route path='*' element={<NotFound />} />
+                      </Route>
+                      <Route path='/tournement' element={withTournement(Tournement)}>
+                        <Route element={<GameLayout />}>
+                          <Route path='play' element={<Play />} />
+                          <Route path='match-making' element={<MatchMaking />} />
+                        </Route>
                         <Route path='*' element={<NotFound />} />
                       </Route>
                     </Route>
@@ -59,9 +69,9 @@ function App() {
                   </Route>
                 </Routes>
               </Suspense>
+        </GlobalContextProvider>
               {/* </GlobalWebSocketContextProvider> */}
-        </AuthContextProvider>
-      </GlobalContextProvider>
+      </AuthContextProvider>
   )
 }
 

@@ -71,7 +71,7 @@ const History = () => {
 						:
 						<div>Loading...</div>
 					}
-					<motion.div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col justify-between items-center gap-3 overflow-auto"
+					<motion.div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col justify-between items-center gap-3 overflow-auto scrollClass"
 						initial="hidden"
 						animate="visible"
 						>

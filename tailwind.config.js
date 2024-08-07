@@ -37,7 +37,10 @@ export default {
       },
       backgroundImage: {
         'login': "url('/famous-table-tennis-players.png')",
-      }
+      },
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+      },
     },
   },
   plugins: [

@@ -6,11 +6,6 @@ import Result from "./Result/Result";
 function Index() {
 	const { state } = usePingPongContext();
 
-	useEffect(() => {
-		console.log(state.result.isEndGame);
-		// console.log(state.opponent);
-	}, [state.result.isEndGame]);
-
 	return (
 			<div className="flex justify-center items-center duration-300">
 				{

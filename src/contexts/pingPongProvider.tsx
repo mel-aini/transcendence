@@ -28,16 +28,22 @@ export interface GameData {
 	ballData: Coordinates,
 	myPaddleData: Coordinates,
 	sidePaddleData: Coordinates,
-	score: score
+	score: score,
 	directions: {
 		my: "right" | "left",
 		side: "right" | "left",
-	}
+	},
 	result: {
 		isEndGame: boolean,
 		status: string,
 		xp: number,
-	}
+	},
+	custom: {
+		ball: string,
+		paddle: string,
+		table: string,
+	},
+	timer: number
 }
 
 const initialState: GameData = {
@@ -69,7 +75,13 @@ const initialState: GameData = {
 		isEndGame: false,
 		status: '',
 		xp: 0,
-	}
+	},
+	custom: {
+		ball: "white",
+		paddle: "white",
+		table: "rgba(255, 255, 255, 0.1)",
+	},
+	timer: 9
 };
 
 export const PingPongContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage, state: GameData, dispatch: Dispatch<any>}>({
@@ -138,6 +150,16 @@ const reducer = (state: GameData, action: any) => {
 					...state, 
 					result: action.result
 				}
+			case 'CUSTOM':
+				return { 
+					...state, 
+					custom: action.custom
+				}
+			case 'TIMER':
+				return { 
+					...state, 
+					timer: action.timer
+				}
 		default:
 			return state;
 	}
@@ -162,7 +184,7 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 
 	useEffect(() => {
 		// console.log(lastJsonMessage);
-		
+
 		if (!isEmptyObject(lastJsonMessage))
 		{
 			if (lastJsonMessage.type == "opponents")
@@ -211,7 +233,7 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			else if (lastJsonMessage.type == "disconnect")
 			{
-				console.log(lastJsonMessage);
+				// console.log(lastJsonMessage);
 				dispatch({type: "RESULT", result: {...state.result, status: lastJsonMessage.status, xp: lastJsonMessage.xp, isEndGame: true}});
 				lastJsonMessage.status == "win"
 				?

@@ -21,7 +21,7 @@ const AllFriends = () => {
 	const {data, isLoading, isError} = useQuery({queryKey: ['allFriends', id], queryFn: () => fetchData(newUri)});
 	const { state, dispatchProfile } = useProfileContext();
 	const [relation, setRelation] = useState<string>("friend");
-	const refScroll = useRef();
+	const refScroll = useRef(null);
 	const refFriend = useRef();
 	const refPending = useRef();
 	const refBlocked = useRef();
@@ -32,7 +32,6 @@ const AllFriends = () => {
 
 	const collectData = async (uri: string, isscroll?: boolean) => {
 		const ProfileRes: FriendsData[] = await api.get('api/' + uri).then((e) => e.data);
-		console.log(ProfileRes);
 		if (isscroll)
 		{
 			if (ProfileRes.length < 10)
@@ -163,7 +162,7 @@ const AllFriends = () => {
 						}
 					</div>
 					<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="outline-none focus:border-[0.5px] w-full bg-transparent border-b-[0.5px] px-3 py-[9px] font-thin" />
-					<div ref={refScroll} onScroll={scrollHandler} className="min-h-[590px] overflow-auto overscroll-none">
+					<div ref={refScroll} onScroll={scrollHandler} className="min-h-[590px] overflow-auto overscroll-none scrollClass pr-2">
 					{
 						state.friendsData && state.friendsData.map((friend: FriendsData, index: number) => {
 							return (

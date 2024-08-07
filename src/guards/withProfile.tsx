@@ -4,19 +4,12 @@ import GlobalWebSocketContextProvider, { useGlobalWebSocketContext } from "../co
 import { useParams } from "react-router-dom";
 
 function withProfile(Component: ComponentType) {
-	// const { id } = useParams();
-	// const { dispatchProfile } = useProfileContext();
-
-	// useEffect(() => {
-	// 	console.log(id);
-	// 	dispatchProfile({type: "REFRESH_USER"});
-	// }, [id]);
 
 	function UpdatedComponent() {
 		return (
 			<ProfileContextProvider>
 				<GlobalWebSocketContextProvider>
-					<Component />
+						<Component />
 				</GlobalWebSocketContextProvider>
 			</ProfileContextProvider>
 		);
