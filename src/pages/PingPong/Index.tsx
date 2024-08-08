@@ -25,7 +25,7 @@ function Index() {
 	const navigate = useNavigate();
 
 	return ( 
-		<div className="grid gap-5 grid-cols-1 lg:grid-cols-6 my-5">
+		<div className="grid gap-5 grid-cols-1 lg:grid-cols-6">
 			<PlayChoise
 				onClick={() => navigate('match-making')}
 				title="Matchmaking" 

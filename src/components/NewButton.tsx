@@ -19,7 +19,7 @@ const NewButton = ({children, className, type, disabled, variant = 'primary', ..
 	return (
 		<button type={type || 'button'} className={"relative select-none" + (className ? ' ' + className : '') + (disabled ? 'pointer-events-none opacity-50' : '')}>
 			<Polygon 
-				className={"bg-primary duration-200 " + appliedStyle}
+				className={"bg-primary duration-200 italic " + appliedStyle}
 				{...props}
 			>
 				{children}
