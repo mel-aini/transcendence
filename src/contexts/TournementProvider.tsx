@@ -62,6 +62,12 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 		isConnected: true,
 	};
 
+	const player1: Player = {
+		username: "ychadffggdghbi",
+		image: profilePic,
+		isConnected: true,
+	};
+
 	const isEmptyObject = (obj: any) => {
 		if (obj === null)
 			return (true);
@@ -84,10 +90,12 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 				round: j,
 				players: []
 			};
-			const play: Player[] | string[] = [];
+			const play: any = [];
 			let k = j;
 			while (k > 0)
 			{
+				if (j == 4 && k == 4)
+					play.push(player1);
 				if (j == 8)
 					play.push(player);
 				else
@@ -112,7 +120,7 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 	// 	}
 		
 	// }, [lastJsonMessage]);
-	
+
 	return (
 		<TournementContext.Provider value={{lastJsonMessage, sendJsonMessage, state, dispatch}}>
 			{children}
@@ -123,3 +131,28 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 const TOURNEMENT_WS_URL = "ws://127.0.0.1:8000/ws/game_tournament/";
 export const useTournementContext = () => useContext(TournementContext);
 export default TournementContextProvider;
+
+// send
+
+// {'type':'start'}
+
+// recieve
+
+// {'type':'end', 'status':'im the winer'}
+
+// {'type':'opponents', 'user1':'name', 'user2':'name'} // go to game and send "start"
+
+// {
+// 	'type': 'dashboard', 
+// 	'rounds':
+// 		[
+// 			{
+// 				'username1': 'ggggg', 'username2': 'fdfdfd', 'username3': 'fs','username4': 'qqqqqq'
+// 			},
+// 			{
+// 				'username4': 'qqqqqq', 'username1': 'ggggg'
+// 			}
+// 		] 
+// }
+
+// {'type':'waiting' }

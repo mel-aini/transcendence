@@ -16,13 +16,13 @@ const Index = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col gap-11">
+		<div className="flex flex-col gap-11 pb-6">
 			<Container className="h-[109px] w-full" childClassName="flex justify-between items-center p-5">
 				<h1 className="text-4xl md:text-5xl font-semibold">Tournement Title</h1>
 			</Container>
 			<span className="place-self-end">created by: mel-aini</span>
-			<div className="relative flex justify-center items-center md:gap-[52px] gap-8">
-					<div className="flex justify-center items-center">
+			<div className="relative flex justify-center items-center sm:gap-5 gap-3 w-full md:flex-row flex-col">
+					<div className="flex items-center justify-center grow w-full">
 						{
 							state.roundData.map((round: RoundData, index: number) => {
 								const matches: Match[] = [];
@@ -40,16 +40,16 @@ const Index = () => {
 								}
 								else
 									matches.push({player1: round.players[0]});
-								console.log(matches);
+								// console.log(matches);
 								return (
-									<div key={index} className="flex flex-col" style={(index == 0) ? {gap: "64px"} : {gap: `${64 * index}px`}}>
+									<div key={index} className={"flex flex-col justify-center " + ((index != state.roundData.length - 1) ? "w-full" : "w-auto")} style={(index == 0) ? {gap: "64px"} : {gap: `${64 * index}px`}}>
 									{
 										matches.map((match: Match, matchIndex: number) => {
 											return (
 												<>
 												{
 													(match.player2) ?
-													<Match key={matchIndex} player1={match.player1} player2={match.player2} gap={(index * 32 * 4.9375)}/>
+													<Match key={matchIndex} player1={match.player1} player2={match.player2} gap={(index * 32 * 4.90625)}/>
 													:
 													<PlayerBar key={matchIndex} player={match.player1} />
 												}
@@ -61,7 +61,7 @@ const Index = () => {
 							)})
 						}
 					</div>
-					<div className="flex justify-center items-center rotate-180">
+					<div className="flex items-center rotate-180 grow w-full">
 						{
 							state.roundData.map((round: RoundData, index: number) => {
 								const matches: Match[] = [];
@@ -79,16 +79,16 @@ const Index = () => {
 								}
 								else
 									matches.push({player1: round.players[1]});
-								console.log(matches);
+								// console.log(matches);
 								return (
-									<div key={index} className="flex flex-col" style={(index == 0) ? {gap: "64px"} : {gap: `${64 * index}px`}}>
+									<div key={index} className={"flex flex-col " + ((index != state.roundData.length - 1) ? "w-full" : "w-auto")} style={(index == 0) ? {gap: "64px"} : {gap: `${64 * index}px`}}>
 									{
 										matches.map((match: Match, matchIndex: number) => {
 											return (
 												<>
 												{
 													(match.player2) ?
-													<Match key={matchIndex} player1={match.player1} player2={match.player2} gap={(index * 32 * 4.9375)} isRightSide={true} />
+													<Match key={matchIndex} player1={match.player1} player2={match.player2} gap={(index * 32 * 4.90625)} isRightSide={true} />
 													:
 													<PlayerBar key={matchIndex} player={match.player1} isRightSide={true} />
 												}
@@ -107,3 +107,6 @@ const Index = () => {
 }
 
 export default Index;
+
+// 4.90625
+// 4.9375

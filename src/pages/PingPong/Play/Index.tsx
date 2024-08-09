@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { usePingPongContext } from "../../../contexts/pingPongProvider";
 import Game from "./Game/Game";
 import Result from "./Result/Result";

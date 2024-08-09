@@ -7,25 +7,34 @@ function Match({player1, player2, gap, isRightSide}: {player1: Player | string, 
 	const ref1 = useRef(null);
 	const ref2 = useRef(null);
 	const [height, setHeight] = useState<number>(0);
-
+	
 	const getHeight = () => {
-		const middle1: any = ref1.current;
-		const middle2: any = ref2.current;
-		if (middle1 && middle2)
+		const top1: any = ref1.current;
+		const top2: any = ref2.current;
+
+		if (top1 && top2)
 		{
-			isRightSide ?
-			setHeight(middle1.getBoundingClientRect().top - middle2.getBoundingClientRect().top)
-			:
-			setHeight(middle2.getBoundingClientRect().top - middle1.getBoundingClientRect().top);
+			setHeight(
+				isRightSide ?
+				top1.getBoundingClientRect().top - top2.getBoundingClientRect().top
+				:
+				top2.getBoundingClientRect().top - top1.getBoundingClientRect().top
+			);
 		}
 	}
 
 	useEffect(() => {
+		console.log(gap);
+		
 		getHeight();
+		window.addEventListener('resize', getHeight);
+		return () => {
+			window.removeEventListener('resize', getHeight);
+		};
 	}, []);
 
 	return (
-		<div className="flex items-center">
+		<div className="flex items-center w-full">
 			<div className="flex flex-col items-center justify-center" style={(gap == 0) ? {gap: "32px"} : {gap: `${gap}px`}}>
 				<PlayerBar ref={ref1} player={player1} isRightSide={isRightSide}/>
 				<PlayerBar ref={ref2} player={player2} isRightSide={isRightSide}/>
