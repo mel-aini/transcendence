@@ -13,6 +13,7 @@ import { FiSearch } from "react-icons/fi";
 import SearchUsers from "./SearchUsers";
 import { useAuthContext } from "../contexts/authProvider";
 // import Notifications from "./Notifications";
+import { FiBell } from "react-icons/fi";
 
 interface ArrowType extends HTMLAttributes<HTMLDivElement> {
 	left: number
@@ -32,7 +33,7 @@ function ProfileActions({setProfileActions}: {setProfileActions: any}) {
 	const elemCLass = 'cursor-pointer bg-secondary hover:bg-slate-800 duration-300 p-3'
 
 	return (
-		<div className="flex flex-col absolute right-0 -translate-y-3 top-full rounded-md select-none overflow-hidden">
+		<div className="flex flex-col absolute right-0 -translate-y-3 top-16 w-32 rounded-md select-none overflow-hidden ">
 			<div onClick={goToProfile} className={elemCLass}>go to profile</div>
 			<div className={elemCLass}>settings</div>
 			<div onClick={() => action('LOGOUT')} className={elemCLass}>logout</div>
@@ -63,7 +64,7 @@ async function fetchData() {
 }
 
 const NavBar = ({className}: {className?: string}) => {
-	const {data, isLoading, isError} = useQuery({queryKey: ['profile'], queryFn: fetchData})
+	// const {data, isLoading, isError} = useQuery({queryKey: ['profile'], queryFn: fetchData})
 	// profile actions
 	// profile actions
 	const { dispatch: authDispatch } = useAuthContext();
@@ -73,33 +74,62 @@ const NavBar = ({className}: {className?: string}) => {
 	const [event, setEvent] = useState<any>('auto');
 	const [notification, setNotification] = useState(true);
 
-	const clickHandler = async () => {
+	// const clickHandler = async () => {
 
-		if (xPos == 400) {
-			setEvent('none');
-			setXPos(0);
-			await new Promise(r => setTimeout(r, 500));
-		} else {
-			setXPos(400);
-		}
-		setEvent('auto');
-	}
+	// 	if (xPos == 400) {
+	// 		setEvent('none');
+	// 		setXPos(0);
+	// 		await new Promise(r => setTimeout(r, 500));
+	// 	} else {
+	// 		setXPos(400);
+	// 	}
+	// 	setEvent('auto');
+	// }
 
 	useEffect(() => {
-		authDispatch({type: 'USERNAME', username: data?.data.username});
+		authDispatch({type: 'USERNAME', username: state.userData?.username});
 	}, [])
 
-	if (isLoading) {
-		return (
-			<h1>loading...</h1>
-		)
-	}
+	// if (isLoading) {
+	// 	return (
+	// 		<h1>loading...</h1>
+	// 	)
+	// }
 
-	if (isError) {
-		return (
-			<h1>Error!</h1>
-		)
-	}
+	// if (isError) {
+	// 	return (
+	// 		<h1>Error!</h1>
+	// 	)
+	// }
+
+	return (
+		<div className='h-20 flex justify-between px-10'>
+			<h1 className='h-20 flex items-center'>logo</h1>
+			<div className="flex justify-end items-center gap-5 h-20">
+				<div onClick={() => dispatch({type: 'SEARCH'})} className="flex items-center text-gray1 h-10 pl-4 pr-32 rounded-md cursor-pointer border border-border">search</div>
+				<div className="relative flex items-center cursor-pointer">
+					<FiBell className="text-2xl" />
+					<span className="absolute -top-1 right-0 size-3 rounded-full bg-red-500"></span>
+				</div>
+				<User 
+					onClick={() => setProfileActions(prev => !prev)} 
+					width={35} 
+					border 
+					className="border-white cursor-pointer z-10 relative" 
+					url={state.userData?.profile_image || ''}>
+						{profileActions && <ProfileActions setProfileActions={setProfileActions} />}
+					</User>
+				{/* Search Modal */}
+				<Modal
+					className='top-20 translate-y-0 w-11/12 max-w-[600px]'
+					isOpen={state.search} 
+					onClose={() => dispatch({type: 'SEARCH'})}>
+					<SearchUsers />
+				</Modal>
+				{/* Search Modal */}
+			</div>
+		</div>
+	)
 
 	return (
 		<>
