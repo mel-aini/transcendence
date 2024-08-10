@@ -50,7 +50,7 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
-	const { lastJsonMessage, sendJsonMessage } = useWebSocket(TOURNEMENT_WS_URL + username,
+	const { lastJsonMessage, sendJsonMessage } = useWebSocket(TOURNEMENT_WS_URL + state.playersNum + "/" + username,
 		{
 			share: false,
 			shouldReconnect: () => false,
@@ -94,11 +94,11 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 			let k = j;
 			while (k > 0)
 			{
-				if (j == 4 && k == 4)
-					play.push(player1);
-				if (j == 8)
-					play.push(player);
-				else
+				// if (j == 4 && k == 4)
+				// 	play.push(player1);
+				// if (j == 8)
+				// 	play.push(player);
+				// else
 					play.push('player');
 				k--;
 			};
@@ -110,16 +110,38 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 		console.log(roundData);
 		
 		dispatch({type: "ROUND_DATA", roundData: roundData});
+		console.log(TOURNEMENT_WS_URL + state.playersNum + "/" + username);
+		
 	}, []);
 
-	// useEffect(() => {
-	// 	// console.log(lastJsonMessage);
+	useEffect(() => {
+		// console.log(lastJsonMessage);
 
-	// 	if (!isEmptyObject(lastJsonMessage))
-	// 	{
-	// 	}
+		if (!isEmptyObject(lastJsonMessage))
+		{
+			if (lastJsonMessage.type == "dashboard")
+			{
+				const roundData: RoundData[] = [];
+				lastJsonMessage.rounds.map((round) => {
+					console.log("round", round);
+					const tmp: RoundData = {
+						round: 0,
+						players: []
+					};
+					let i = 0;
+					for (var player in round) {
+						i++;
+						tmp.players.push(round[player]);
+						// console.log("player", round[player]);
+					}
+					tmp.round = i;
+					roundData.push(tmp);
+					console.log(roundData);
+				});
+			}
+		}
 		
-	// }, [lastJsonMessage]);
+	}, [lastJsonMessage]);
 
 	return (
 		<TournementContext.Provider value={{lastJsonMessage, sendJsonMessage, state, dispatch}}>
