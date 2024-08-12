@@ -46,7 +46,7 @@ function ChatBar() {
 			<div className="scroll-to-hide flex flex-col overflow-auto grow">
 				{/* Chat header */}
 				<div className="flex justify-between items-center pb-10 shrink-0 sticky top-0 left-0">
-					<h1 className="text-xl font-semibold text-primary">Chat</h1>
+					<h1></h1>
 					<div className="relative flex gap-3 items-center">
 						<IoAddCircle onClick={() => setSearchFriends(true)} className="fill-primary text-3xl cursor-pointer" />
 						<BsThreeDots onClick={() => setToggleMore(prev => !prev)} className="fill-white text-2xl cursor-pointer" />

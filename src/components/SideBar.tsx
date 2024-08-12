@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from "react";
+import { ComponentProps } from "react";
 import Polygon from "./Polygon";
 import { twMerge } from "tailwind-merge";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -27,11 +27,18 @@ function SideBar({ className }: { className?: string }) {
 	const navigate = useNavigate();
 
 	return (
-		<div className={twMerge("space-y-5", className)}>
-			<SideBarElem onClick={() => navigate('/dashboard')}>Dashboard</SideBarElem>
-			<SideBarElem onClick={() => navigate('/chat')}>Chat</SideBarElem>
-			<SideBarElem>Settings</SideBarElem>
-		</div>
+		<>
+			<div className={twMerge('w-[245px] shadow-right space-y-5 bg-bg', className)}>
+				<SideBarElem onClick={() => navigate('/dashboard')}>Dashboard</SideBarElem>
+				<SideBarElem onClick={() => navigate('/chat')}>Chat</SideBarElem>
+				<SideBarElem>Settings</SideBarElem>
+			</div>
+			<div className={twMerge("w-[245px] shadow-right space-y-5 bg-bg fixed top-20 left-0 ", className)}>
+				<SideBarElem onClick={() => navigate('/dashboard')}>Dashboard</SideBarElem>
+				<SideBarElem onClick={() => navigate('/chat')}>Chat</SideBarElem>
+				<SideBarElem>Settings</SideBarElem>
+			</div>
+		</>
 	);
 }
 

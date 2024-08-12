@@ -1,4 +1,4 @@
-import { ReactNode, Suspense, useEffect } from "react";
+import { ComponentType, ReactNode, Suspense, useEffect } from "react";
 import { useAuthContext } from "../contexts/authProvider";
 import jwt from "../utils/jwt";
 import Loading from "../components/Loading";
@@ -11,9 +11,10 @@ type route = string
 interface Props {
 	children: ReactNode
 	inFail?: route
+	Component?: ComponentType
 }
 
-function UpdateToken({children, inFail = '/login'}: Props) {
+function UpdateToken({children, inFail = '/login', Component}: Props) {
 	const { dispatch } = useAuthContext();
 	const location = useLocation();
 	
@@ -24,7 +25,8 @@ function UpdateToken({children, inFail = '/login'}: Props) {
 	return ( 
 		<Suspense fallback={<Loading />}>
 			{token && children}
-			{!token && <Navigate to={inFail} state={{ refer: location.pathname }} />}
+			{!token && Component && <Component />}
+			{!token && !Component && <Navigate to={inFail} state={{ refer: location.pathname }} />}
 		</Suspense>
 	 );
 }

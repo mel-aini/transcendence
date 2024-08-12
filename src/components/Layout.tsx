@@ -22,15 +22,15 @@ const Layout = () => {
 	}, [isLoading]);
 
 	return (
-		<div>
-			<NavBar className='relative z-10' />
-			<div className='flex gap-10 pl-10 md:pl-0 pr-10 py-10'>
-				<SideBar className='hidden md:block' />
-				<div className='w-full max-w-[1500px] mx-auto'>
+		<>
+			<NavBar className='z-50 shadow-bottom' />
+			<div className='relative z-40 bg-bg flex gap-10 pl-10 md:pl-0 pr-10'>
+				<SideBar className='px-5 py-10 hidden md:block z-10 h-[calc(100vh-5rem)]' />
+				<div className='w-full mx-auto bg-bg px-5 py-10'>
 					<Outlet />
 				</div>
 			</div>
-		</div>
+		</>
 	)
 }
 

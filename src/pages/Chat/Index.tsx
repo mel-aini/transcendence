@@ -59,13 +59,12 @@ function Index() {
 	}, [])
 
 	return (
-		<div className="relative w-full h-[100vh] lg:flex">
+		<div className="relative w-full h-[calc(100vh-10rem)] lg:flex">
 			{/* <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
 				<form onSubmit={handleSubmit}>
 					<Input onChange={(e) => setUsername(e.target.value)} type="text" placeholder="enter username" />
 				</form>
 			</Modal> */}
-			<NavBar className="hidden px-4 py-5 h-full lg:flex flex-col justify-between border-r border-r-dark" />
 			<ChatBar />
 			<AnimatePresence>
 				{state.isFocus && <Conversation />}
