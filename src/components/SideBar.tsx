@@ -1,13 +1,13 @@
 import { ComponentProps } from "react";
 import Polygon from "./Polygon";
 import { twMerge } from "tailwind-merge";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface SideBarElemProps extends ComponentProps<'div'> {
 	children: string
 }
 
-function SideBarElem({children, ...props}: SideBarElemProps) {
+export function SideBarElem({children, ...props}: SideBarElemProps) {
 	const { pathname } = useLocation();
 	const isActive = pathname == '/' + children.toLocaleLowerCase();
 
