@@ -50,7 +50,7 @@ function SearchFriends({isOpen, onClose}: Props) {
 		<>
 			{isOpen && <div 
 				onClick={onClose}
-				className="absolute z-10 bottom-0 left-0 right-0 top-0 bg-[rgba(0,0,0,0.7)]">
+				className="absolute z-10 bottom-0 left-0 right-0 top-0">
 			</div>}
 			<AnimatePresence>
 				{isOpen && <motion.div 

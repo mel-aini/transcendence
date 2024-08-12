@@ -28,6 +28,7 @@ function OnlineFriends() {
 			{
 				state.onlineFriends.length > 0 &&
 				state.onlineFriends.map((friend, index) => {
+					friend.avatar_link = "https://picsum.photos/200/30" + index + 1;
 					return <User onClick={() => clickHandler(friend)} key={index} online className="h-[40px] border min-w-[40px] cursor-pointer" width={40} url={friend.avatar_link} />
 				})
 			}

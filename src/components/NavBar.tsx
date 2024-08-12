@@ -46,10 +46,10 @@ const NavBar = ({ className }: {className?: string}) => {
 				<div className="flex justify-end items-center gap-5 h-20">
 					<FiSearch
 						onClick={() => dispatch({type: 'SEARCH'})} 
-						className="text-2xl md:hidden" />
+						className="text-2xl lg:hidden" />
 					<div 
 						onClick={() => dispatch({type: 'SEARCH'})} 
-						className="hidden md:flex items-center text-gray1 h-10 pl-4 pr-32 rounded-md cursor-pointer border border-border">search</div>
+						className="hidden lg:flex items-center text-gray1 h-10 pl-4 pr-32 rounded-md cursor-pointer border border-border">search</div>
 					<div className="relative flex items-center cursor-pointer">
 						<FiBell className="text-2xl" />
 						<span className="absolute -top-1 right-0 size-3 rounded-full bg-red-500"></span>
@@ -62,7 +62,7 @@ const NavBar = ({ className }: {className?: string}) => {
 						url={state.userData?.profile_image || ''}>
 							{profileActions && <ProfileActions setProfileActions={setProfileActions} />}
 					</User>
-					<HiOutlineMenuAlt3 className="text-2xl md:hidden" />
+					<HiOutlineMenuAlt3 className="text-2xl lg:hidden" />
 					{/* Search Modal */}
 					<Modal
 						className='top-20 translate-y-0 w-11/12 max-w-[600px]'

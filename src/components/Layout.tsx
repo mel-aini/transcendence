@@ -23,10 +23,10 @@ const Layout = () => {
 
 	return (
 		<>
-			<NavBar className='z-50 shadow-bottom' />
-			<div className='relative z-40 bg-bg flex gap-10 pl-10 md:pl-0 pr-10'>
-				<SideBar className='px-5 py-10 hidden md:block z-10 h-[calc(100vh-5rem)]' />
-				<div className='w-full mx-auto bg-bg px-5 py-10'>
+			<NavBar className='z-40 lg:z-50 shadow-bottom' />
+			<div className='relative z-40 bg-bg flex gap-10 pl-10 lg:pl-0 pr-10'>
+				<SideBar className='px-5 py-10 hidden lg:block z-10 h-[calc(100vh-5rem)]' />
+				<div className='w-full mx-auto bg-bg lg:px-5 py-10'>
 					<Outlet />
 				</div>
 			</div>
