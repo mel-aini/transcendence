@@ -60,14 +60,13 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 			if (typeof error == 'string') {
 				errorMsg = error;
 			}
-			// else {
-			// 	if (!error.error.message['email']) {
-			// 		console.log('valid email');
-			// 		dispatchLevel(1)
-			// 	} else {
-			// 		errorMsg = error.error.message['email']
-			// 	}
-			// }
+			else {
+				if (!error.error.message['email']) {
+					dispatchLevel(1)
+				} else {
+					errorMsg = error.error.message['email']
+				}
+			}
 			setFormError(errorMsg)
 		}
 		dispatch({type: 'LOADING', state: false});
@@ -80,13 +79,12 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 
 	const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		
 		if (formState[1].isError) return;
 
 		parseInput('email', email.value);
 		
 		if (email.value == '') return;
-
+		
 		setSubmit(true);
 		dispatch({type: 'LOADING', state: true});
 	}
@@ -103,7 +101,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 						placeholder='Email'
 						style={ formState[1].isError ? { borderColor:  invalidColor, color: invalidColor} : {}}
 					/>
-					{formError != '' && <p className="text-[12px] self-end text-invalid">{formError}</p>}
+					{formState[1].isError && <p className="text-sm self-end text-invalid">{formState[1].error}</p>}
 				</div>
 				<NewButton 
 					type="submit" 
@@ -117,3 +115,6 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 }
 
 export default EmailForm;
+
+
+// mellaini: ABCDefghi123

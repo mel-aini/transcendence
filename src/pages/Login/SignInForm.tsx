@@ -96,7 +96,9 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 				}
 		}
 		catch (error: any) {
-			console.log('error', error);
+			setIsValidUsername(true);
+			setIsValidPassword(true);
+			setInvalidLogin(true);
 		}
 		dispatch({type: 'LOADING', state: false});
 
