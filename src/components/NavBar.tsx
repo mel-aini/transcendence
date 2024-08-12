@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
 import User from "./User";
@@ -10,6 +10,7 @@ import { FiBell } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { FiSearch } from "react-icons/fi";
+import { useChatContext } from "../contexts/chatProvider";
 
 function ProfileActions({setProfileActions}: {setProfileActions: any}) {
 	const {dispatch} = useGlobalContext();
@@ -36,12 +37,29 @@ function ProfileActions({setProfileActions}: {setProfileActions: any}) {
 
 const NavBar = ({ className }: {className?: string}) => {
 	const {state, dispatch} = useGlobalContext();
+	const {state: chatState} = useChatContext();
 	const [profileActions, setProfileActions] = useState(false);
 	const [notification, setNotification] = useState(true);
+	const container = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const elem = container.current
+		if (chatState.isFocus && window.innerWidth <= 1024) {
+			elem?.classList.remove('z-50');
+			elem?.classList.add('z-40');
+			elem?.classList.add('lg:z-50');
+		} else {
+			elem?.classList.remove('z-40');
+			elem?.classList.remove('lg:z-50');
+			elem?.classList.add('z-50');
+		}
+	}, [chatState.isFocus])
 
 	return (
 		<>
-			<div className={twMerge('sticky top-0 left-0 h-20 flex justify-between px-10 bg-bg', className)}>
+			<div
+				ref={container} 
+				className={twMerge('nav-bar sticky top-0 left-0 h-20 z-40 lg:z-50 shadow-bottom flex justify-between px-10 bg-bg', className)}>
 				<h1 className='h-20 flex items-center'>logo</h1>
 				<div className="flex justify-end items-center gap-5 h-20">
 					<FiSearch
