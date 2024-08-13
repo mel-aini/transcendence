@@ -218,7 +218,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 		}
 	  )
-	
+
 	useEffect(() => {
 		console.log('new message', lastJsonMessage)
 		if (lastJsonMessage) {

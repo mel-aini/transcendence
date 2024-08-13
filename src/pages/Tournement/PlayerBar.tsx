@@ -1,5 +1,6 @@
 import { forwardRef, useEffect } from "react";
 import { Player } from "../../contexts/TournementProvider";
+import { useGlobalContext } from "../../contexts/store";
 
 interface playerProp {
 	player: Player | string,
@@ -7,14 +8,15 @@ interface playerProp {
 }
 
 const PlayerBar = forwardRef((props: playerProp, ref) => {
+	const {state: profileData} = useGlobalContext();
 
 	return (
 		<div ref={ref} className={"h-[61px] w-[163px] " + (props.isRightSide ? "rotate-180" : "")}>
-			<div className="h-full w-full bg-secondary rounded-[8px] border border-border flex gap-3 items-center px-4">
+			<div className={"h-full w-full bg-secondary rounded-[8px] border flex gap-3 items-center px-4 " + ((profileData.userData?.username == props.player.username) ? "border-primary" : "border-border")}>
 				{
 					(props.player != "player") ?
 					<>
-						<img src={props.player.image} alt="" className="w-[41px] h-[41px] rounded-full border border-border overflow-hidden shrink-0"/>
+						<img src={props.player.image} alt="" className={"w-[41px] h-[41px] rounded-full border overflow-hidden shrink-0 " + ((profileData.userData?.username == props.player.username) ? "border-primary" : "border-border")} />
 						<span className="truncate">{props.player.username}</span>
 					</>
 					:

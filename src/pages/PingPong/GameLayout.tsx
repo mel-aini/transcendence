@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 import PingPongContextProvider from "../../contexts/pingPongProvider";
 
-function GameLayout() {
+function GameLayout({isTournament}: {isTournament: boolean}) {
 	return ( 
-		<PingPongContextProvider>
+		<PingPongContextProvider isTournament={isTournament}>
 			<Outlet />
 		</PingPongContextProvider>
 	 );

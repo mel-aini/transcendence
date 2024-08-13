@@ -3,9 +3,11 @@ import Help from "./Help";
 import Ready from "./Ready";
 import { useEffect } from "react";
 import { usePingPongContext } from "../../../../contexts/pingPongProvider";
+import { useTournementContext } from "../../../../contexts/TournementProvider";
 
 function Box() {
 	const { sendJsonMessage, state, dispatch } = usePingPongContext();
+	const {sendJsonMessage: sendInTournament} = useTournementContext();
 
 	useEffect(() => {
 		const id = setInterval(() => {
@@ -14,6 +16,11 @@ function Box() {
 		}, 1000);
 		if ((state.counter == 0) && (state.status == "ready"))
 		{
+			state.isTournament ?
+			sendInTournament({
+				type: "start",
+			})
+			:
 			sendJsonMessage({
 				type: "start",
 			});

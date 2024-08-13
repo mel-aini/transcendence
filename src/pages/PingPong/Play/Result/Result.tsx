@@ -4,14 +4,23 @@ import { usePingPongContext } from "../../../../contexts/pingPongProvider";
 import UserBox from "./UserBox";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useTournementContext } from "../../../../contexts/TournementProvider";
 
 function Result() {
 	const { state } = usePingPongContext();
 	const navigate = useNavigate();
 	const [xp, setXp] = useState<number>(0);
+	const { sendJsonMessage } = useTournementContext();
 
 	const clickHandler = () => {
-		navigate('/ping-pong');
+		if (window.location.pathname == "/ping-pong/play")
+			navigate("/ping-pong");
+		else if (window.location.pathname == "/tournement/play")
+		{
+			if (state.result.status != "lose" && state.result.status != "eliminated")
+				sendJsonMessage({ type: 'qualifyboard' });
+			navigate("/tournement");
+		}
 	}
 
 	useEffect(() => {
@@ -32,18 +41,33 @@ function Result() {
 				className="relative top-0 text-third text-center text-4xl pb-11 italic font-montserrat">Congratulations, you win</motion.h1>
 			}
 			{
+				(state.result.status == "qualified") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
+				className="relative top-0 text-third text-center text-4xl pb-11 italic font-montserrat">Qualified</motion.h1>
+			}
+			{
+				(state.result.status == "im the winer") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
+				className="relative top-0 text-third text-center text-4xl pb-11 italic font-montserrat">Im The Winner</motion.h1>
+			}
+			{
 				(state.result.status == "lose") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
 				className="relative top-0 text-[#DD1B1B] text-center text-4xl pb-11 italic font-montserrat">oops, You Lose</motion.h1>
+			}
+			{
+				(state.result.status == "eliminated") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
+				className="relative top-0 text-[#DD1B1B] text-center text-4xl pb-11 italic font-montserrat">Eliminated</motion.h1>
 			}
 			{
 				(state.result.status == "equal") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
 				className="relative top-0 text-gray1 text-center text-4xl pb-11 italic font-montserrat">Null</motion.h1>
 			}
-			<motion.span
-			initial={{opacity: 0, top: '-5rem'}}
-			animate={{opacity: 1, top: '0rem'}}
-			transition={{duration: 0.3, delay: 0.5}}
-			className="relative top-0 text-[#FFD214] text-center text-xl pb-11">+{xp} XP</motion.span>
+			{
+				!state.isTournament &&
+				<motion.span
+				initial={{opacity: 0, top: '-5rem'}}
+				animate={{opacity: 1, top: '0rem'}}
+				transition={{duration: 0.3, delay: 0.5}}
+				className="relative top-0 text-[#FFD214] text-center text-xl pb-11">+{xp} XP</motion.span>
+			}
 			<motion.span
 			initial={{opacity: 0, top: '-5rem'}}
 			animate={{opacity: 1, top: '0rem'}}

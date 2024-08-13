@@ -90,8 +90,16 @@ function MatchMaking() {
 	const [customize, setCustomize] = useState<boolean>(false);
 
 	const cancelAction = () => {
-		dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-		navigate(-1)
+		if (window.location.pathname == "/ping-pong/match-making")
+		{
+			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+			navigate("/ping-pong");
+		}
+		else if (window.location.pathname == "/tournement/match-making")
+		{
+			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+			navigate("/tournement");
+		}
 	}
 
 	const handler = () => {
@@ -100,10 +108,18 @@ function MatchMaking() {
 	}
 
 	useEffect(() => {
-		if (state.level == Levels.OpponentFound && window.location.pathname == "/ping-pong/match-making")
+		if (state.level == Levels.OpponentFound)
 		{
-			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-			navigate(-1);
+			if (window.location.pathname == "/ping-pong/match-making")
+			{
+				dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+				navigate("/ping-pong");
+			}
+			else if (window.location.pathname == "/tournement/match-making")
+			{
+				dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+				navigate("/tournement");
+			}
 		}
 	}, []);
 

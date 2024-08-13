@@ -18,9 +18,9 @@ export function Nested({ Component }: { Component: ComponentType }) {
 	}, [])
 
 	return (
-		<ChatContextProvider>
+		// <ChatContextProvider>
 			<Component />
-		</ChatContextProvider>
+		// </ChatContextProvider>
 	)
 }
 

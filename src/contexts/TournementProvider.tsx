@@ -3,6 +3,8 @@ import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import profilePic from "/profilePic.svg";
 import { useGlobalContext } from "./store";
+import { Coordinates, Levels, usePingPongContext } from "./pingPongProvider";
+import { useNavigate } from "react-router-dom";
 
 export interface Player {
 	username: string,
@@ -18,11 +20,15 @@ export interface RoundData {
 interface TournementData {
 	playersNum: number,
 	roundData: RoundData[],
+	winner: Player | string
+	pongMessage: any
 }
 
 const initialState: TournementData = {
-	playersNum: 8,
-	roundData: []
+	playersNum: 4,
+	roundData: [],
+	winner: "player",
+	pongMessage: {}
 };
 
 export const TournementContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage, state: TournementData, dispatch: Dispatch<any>}>({
@@ -41,12 +47,24 @@ const reducer = (state: TournementData, action: any) => {
 				...state,
 				roundData: action.roundData
 			}
+		case 'WINNER':
+			return {
+				...state,
+				winner: action.winner
+			}
+		case 'PONG_MESSAGE':
+			return {
+				...state,
+				pongMessage: action.pongMessage
+			}
 		default:
 			return state;
 	}
 }
 
 const TournementContextProvider = ({children} : {children: ReactNode}) => {
+	// const {state: gameState, dispatch: gameDispatch} = usePingPongContext();
+	const navigate = useNavigate();
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
@@ -94,12 +112,7 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 			let k = j;
 			while (k > 0)
 			{
-				// if (j == 4 && k == 4)
-				// 	play.push(player1);
-				// if (j == 8)
-				// 	play.push(player);
-				// else
-					play.push('player');
+				play.push('player');
 				k--;
 			};
 			tmp.players = play;
@@ -107,37 +120,55 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 			j = j / 2;
 			i++;
 		}
-		console.log(roundData);
-		
+		// roundData.push({
+		// 	round: j,
+		// 	players: ['player']
+		// });
+		// console.log(roundData);
+
 		dispatch({type: "ROUND_DATA", roundData: roundData});
-		console.log(TOURNEMENT_WS_URL + state.playersNum + "/" + username);
-		
+		// console.log(TOURNEMENT_WS_URL + state.playersNum + "/" + username);
+
 	}, []);
 
 	useEffect(() => {
-		// console.log(lastJsonMessage);
 
 		if (!isEmptyObject(lastJsonMessage))
 		{
+			if (lastJsonMessage.type != "ball")
+				console.log(lastJsonMessage);
 			if (lastJsonMessage.type == "dashboard")
 			{
-				const roundData: RoundData[] = [];
-				lastJsonMessage.rounds.map((round) => {
-					console.log("round", round);
-					const tmp: RoundData = {
-						round: 0,
-						players: []
-					};
+				const isCompleted: boolean = (lastJsonMessage.rounds.length > state.roundData.length);
+				const roundData: RoundData[] = state.roundData;
+				lastJsonMessage.rounds.map((round, index: number) => {
 					let i = 0;
 					for (var player in round) {
+						const tmp: Player = {
+							image: "",
+							username: round[player],
+							isConnected: true
+						};
+						if (isCompleted)
+						{
+							if (index == lastJsonMessage.rounds.length - 1)
+								dispatch({type: "WINNER", winner: tmp});
+							else
+								roundData[index].players[i] = tmp;
+						}
+						else
+							roundData[index].players[i] = tmp;
 						i++;
-						tmp.players.push(round[player]);
-						// console.log("player", round[player]);
 					}
-					tmp.round = i;
-					roundData.push(tmp);
-					console.log(roundData);
 				});
+				// console.log(roundData);
+				dispatch({type: "ROUND_DATA", roundData: roundData});
+			}
+			else
+			{
+				dispatch({type: "PONG_MESSAGE", pongMessage: lastJsonMessage});
+				if (lastJsonMessage.type == 'opponents')
+					navigate('match-making');
 			}
 		}
 		
@@ -160,7 +191,7 @@ export default TournementContextProvider;
 
 // recieve
 
-// {'type':'end', 'status':'im the winer'}
+// {'type':'end', 'status':'im the winner'}
 
 // {'type':'opponents', 'user1':'name', 'user2':'name'} // go to game and send "start"
 
@@ -178,3 +209,12 @@ export default TournementContextProvider;
 // }
 
 // {'type':'waiting' }
+
+// xjacobs0
+// michael540
+// lclark0
+// christina300
+// andrea440
+// lowens0
+// csmith0
+// samuel980

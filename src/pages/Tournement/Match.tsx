@@ -24,8 +24,8 @@ function Match({player1, player2, gap, isRightSide}: {player1: Player | string, 
 	}
 
 	useEffect(() => {
-		console.log(gap);
-		
+		// console.log(gap);
+
 		getHeight();
 		window.addEventListener('resize', getHeight);
 		return () => {

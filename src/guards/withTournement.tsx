@@ -1,19 +1,12 @@
-import { ComponentType } from "react";
 import TournementContextProvider from "../contexts/TournementProvider";
+import { Outlet } from "react-router-dom";
 
-function withTournement(Component: ComponentType) {
-
-	function UpdatedComponent() {
-		return (
-			<TournementContextProvider>
-			    <Component />
-			</TournementContextProvider>
-		);
-	}
-
+function TournementLayout() {
 	return (
-		<UpdatedComponent />
+		<TournementContextProvider>
+			<Outlet />
+		</TournementContextProvider>
 	);
 }
 
-export default withTournement;
+export default TournementLayout;

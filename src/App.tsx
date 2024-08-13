@@ -13,6 +13,7 @@ import GlobalWebSocketContextProvider, { GlobalWebSocketContext } from "./contex
 import withProfile from "./guards/withProfile";
 import GameLayout from "./pages/PingPong/GameLayout";
 import withTournement from "./guards/withTournement";
+import TournementLayout from "./guards/withTournement";
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
@@ -50,15 +51,16 @@ function App() {
                       </Route>
                       <Route path='/ping-pong'>
                         <Route index element={<PingPong />} />
-                        <Route element={<GameLayout />}>
+                        <Route element={<GameLayout isTournament={false}/>}>
                           <Route path='play' element={<Play />} />
                           <Route path='match-making' element={<MatchMaking />} />
                         </Route>
                         <Route path='vs-friend' element={<VsFriend />} />
                         <Route path='*' element={<NotFound />} />
                       </Route>
-                      <Route path='/tournement' element={withTournement(Tournement)}>
-                        <Route element={<GameLayout />}>
+                      <Route path='/tournement' element={<TournementLayout />} >
+                        <Route index element={<Tournement />} />
+                        <Route element={<GameLayout isTournament={true}/>}>
                           <Route path='play' element={<Play />} />
                           <Route path='match-making' element={<MatchMaking />} />
                         </Route>

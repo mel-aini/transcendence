@@ -5,6 +5,7 @@ import { usePingPongContext } from "../../../../contexts/pingPongProvider";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTimer } from 'react-timer-hook';
+import { useTournementContext } from "../../../../contexts/TournementProvider";
 
 const Goal = () => {
 	const {state} = usePingPongContext();
@@ -90,13 +91,16 @@ const Header = () => {
 				{/* <div className="bg-secondary w-[40px] h-[40px] flex justify-center items-center">
 					<img src={pause} alt="pause" />
 				</div> */}
-				<div className="bg-secondary px-1 h-[40px] w-[61px] flex justify-center items-center">
-					<span className="w-[44px]">
-						{String(minutes).padStart(2, '0')}
-						:
-						{String(seconds).padStart(2, '0')}
-					</span>
-				</div>
+				{
+					!state.isTournament &&
+					<div className="bg-secondary px-1 h-[40px] w-[61px] flex justify-center items-center">
+						<span className="w-[44px]">
+							{String(minutes).padStart(2, '0')}
+							:
+							{String(seconds).padStart(2, '0')}
+						</span>
+					</div>
+				}
 				<div onClick={clickHandler} className="bg-secondary w-[40px] h-[40px] flex justify-center items-center">
 					<img src={help} alt="help" />
 				</div>
