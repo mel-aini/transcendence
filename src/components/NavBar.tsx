@@ -1,170 +1,154 @@
-import { HTMLAttributes, useEffect, useState } from "react";
-import NavBarElem from "./NavBarElem";
-import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
 import User from "./User";
 import useLog from "../hooks/useLog";
-import api from "../api/axios";
-import { useQuery } from "@tanstack/react-query";
 import Modal from "./Modal";
-import Input from "./Input";
-import { FiSearch } from "react-icons/fi";
 import SearchUsers from "./SearchUsers";
-import { useAuthContext } from "../contexts/authProvider";
 // import Notifications from "./Notifications";
 import { FiBell } from "react-icons/fi";
+import { twMerge } from "tailwind-merge";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { FiSearch } from "react-icons/fi";
+import { useChatContext } from "../contexts/chatProvider";
+import Notification from "./Notification";
+import { SideBarElem } from "./SideBar";
 
-interface ArrowType extends HTMLAttributes<HTMLDivElement> {
-	left: number
+type DropMenuTypes = null | 'profile' | 'notification' | 'navbar';
+
+interface DropMenuProps {
+	setDropMenu: any, 
+	type: DropMenuTypes
 }
 
-function ProfileActions({setProfileActions}: {setProfileActions: any}) {
+function DropMenu({ setDropMenu, type }: DropMenuProps) {
 	const {dispatch} = useGlobalContext();
 	const navigate = useNavigate();
 	const action = useLog();
 
 	const goToProfile = () => {
-		setProfileActions(false)
+		setDropMenu(false)
 		dispatch({type: 'LOADING', state: true})
 		navigate('/profile')
 	}
 
 	const elemCLass = 'cursor-pointer bg-secondary hover:bg-slate-800 duration-300 p-3'
 
-	return (
-		<div className="flex flex-col absolute right-0 -translate-y-3 top-16 w-32 rounded-md select-none overflow-hidden ">
-			<div onClick={goToProfile} className={elemCLass}>go to profile</div>
-			<div className={elemCLass}>settings</div>
-			<div onClick={() => action('LOGOUT')} className={elemCLass}>logout</div>
-		</div>
-	)
+	{/* profile actions */}
+	if (type == 'profile') {
+		return (
+			<div className="flex flex-col absolute z-50 right-0 top-full w-32 rounded-md select-none overflow-hidden ">
+				<div onClick={goToProfile} className={elemCLass}>go to profile</div>
+				<div className={elemCLass}>settings</div>
+				<div onClick={() => action('LOGOUT')} className={elemCLass}>logout</div>
+			</div>
+		)
+	}
+
+	{/* notifications */}
+	if (type == 'notification') {
+		return (
+			<div className="scrollClass absolute z-50 right-0 top-full w-[450px] max-h-[400px] p-5 border border-border rounded-md bg-bg overflow-auto space-y-5">
+				<Notification />
+				<Notification />
+				<Notification />
+				<Notification />
+			</div>
+		)
+	}
+	
+	{/* navigation list */}
+	if (type == 'navbar') {
+		return (
+			<div className="space-y-5 w-[250px absolute z-50 right-0 top-full p-5 bg-bg rounded-lg">
+				<SideBarElem onClick={() => navigate('/dashboard')}>Dashboard</SideBarElem>
+				<SideBarElem onClick={() => navigate('/chat')}>Chat</SideBarElem>
+				<SideBarElem>Settings</SideBarElem>
+			</div>
+		)
+	}
 }
 
-const Arrow = (props: ArrowType) => {
 
-	return (
-		<div {...props} 
-			className="cursor-pointer w-[40px] h-[40px] absolute top-0 flex flex-col justify-evenly items-center"
-			style={{left: props.left == 0 ? 0 : -20}}
-			>
-				<IoIosArrowBack 
-					className="text-3xl fill-primary duration-300" 
-					style={{rotate: props.left == 0 ? '180deg' : '0deg'}}
-				/>
-		</div>
-	)
-}
-
-type XPos = 0 | 400;
-
-async function fetchData() {
-	const res = await api.get('api/profile/');
-	return res;
-}
-
-const NavBar = ({className}: {className?: string}) => {
-	// const {data, isLoading, isError} = useQuery({queryKey: ['profile'], queryFn: fetchData})
-	// profile actions
-	// profile actions
-	const { dispatch: authDispatch } = useAuthContext();
+const NavBar = ({ className }: {className?: string}) => {
 	const {state, dispatch} = useGlobalContext();
-	const [profileActions, setProfileActions] = useState(false);
-	const [xPos, setXPos] = useState<XPos>(0);
-	const [event, setEvent] = useState<any>('auto');
-	const [notification, setNotification] = useState(true);
-
-	// const clickHandler = async () => {
-
-	// 	if (xPos == 400) {
-	// 		setEvent('none');
-	// 		setXPos(0);
-	// 		await new Promise(r => setTimeout(r, 500));
-	// 	} else {
-	// 		setXPos(400);
-	// 	}
-	// 	setEvent('auto');
-	// }
+	const {state: chatState} = useChatContext();
+	const [dropMenu, setDropMenu] = useState(false);
+	const dropMenuType = useRef< DropMenuTypes >(null)
+	const container = useRef<HTMLDivElement>(null);
+	const { pathname } = useLocation();
 
 	useEffect(() => {
-		authDispatch({type: 'USERNAME', username: state.userData?.username});
-	}, [])
+		const elem = container.current
+		if (chatState.isFocus && window.innerWidth <= 1024) {
+			elem?.classList.remove('z-50');
+			elem?.classList.add('z-40');
+			elem?.classList.add('lg:z-50');
+		} else {
+			elem?.classList.remove('z-40');
+			elem?.classList.remove('lg:z-50');
+			elem?.classList.add('z-50');
+		}
+	}, [chatState.isFocus])
 
-	// if (isLoading) {
-	// 	return (
-	// 		<h1>loading...</h1>
-	// 	)
-	// }
-
-	// if (isError) {
-	// 	return (
-	// 		<h1>Error!</h1>
-	// 	)
-	// }
-
-	return (
-		<div className='h-20 flex justify-between px-10'>
-			<h1 className='h-20 flex items-center'>logo</h1>
-			<div className="flex justify-end items-center gap-5 h-20">
-				<div onClick={() => dispatch({type: 'SEARCH'})} className="flex items-center text-gray1 h-10 pl-4 pr-32 rounded-md cursor-pointer border border-border">search</div>
-				<div className="relative flex items-center cursor-pointer">
-					<FiBell className="text-2xl" />
-					<span className="absolute -top-1 right-0 size-3 rounded-full bg-red-500"></span>
-				</div>
-				<User 
-					onClick={() => setProfileActions(prev => !prev)} 
-					width={35} 
-					border 
-					className="border-white cursor-pointer z-10 relative" 
-					url={state.userData?.profile_image || ''}>
-						{profileActions && <ProfileActions setProfileActions={setProfileActions} />}
-					</User>
-				{/* Search Modal */}
-				<Modal
-					className='top-20 translate-y-0 w-11/12 max-w-[600px]'
-					isOpen={state.search} 
-					onClose={() => dispatch({type: 'SEARCH'})}>
-					<SearchUsers />
-				</Modal>
-				{/* Search Modal */}
-			</div>
-		</div>
-	)
+	useEffect(() => {
+		setDropMenu(false);
+	}, [pathname])
 
 	return (
 		<>
-			<div className={"relative w-full h-[100px] flex items-center" + (className ? ` ${className}` : '')}>
-				<div className="w-full flex justify-end items-center overflow-x-hidden">
+			<div
+				ref={container} 
+				className={twMerge('nav-bar sticky top-0 left-0 h-20 z-40 lg:z-50 shadow-bottom flex justify-between px-10 bg-bg', className)}>
+				<h1 className='h-20 flex items-center'>logo</h1>
+				<div className="relative flex justify-end items-center gap-5 h-20">
+					<FiSearch
+						onClick={() => dispatch({type: 'SEARCH'})} 
+						className="text-2xl lg:hidden" />
+					<div 
+						onClick={() => dispatch({type: 'SEARCH'})} 
+						className="hidden lg:flex items-center text-gray1 h-10 pl-4 pr-32 rounded-md cursor-pointer border border-border">search</div>
 					<div
-						className="relative flex justify-end duration-300"
-						style={{transform: `translateX(${xPos}px)`, pointerEvents: event}}
-						> 
-						<Arrow onClick={clickHandler} left={xPos} />
-						<NavBarElem type="Dashboard" />
-						<NavBarElem type="Chat" />
-						<NavBarElem onClick={() => setNotification(prev => !prev)} type="Notifications" />
-						<NavBarElem onClick={() => dispatch({type: 'SEARCH'})} type="Search" className="cursor-pointer" />
+						onClick={() => {
+							dropMenuType.current = 'notification';
+							setDropMenu(prev => !prev)
+						}} 
+						className="relative flex items-center cursor-pointer">
+						<FiBell className="text-2xl" />
+						<span className="absolute -top-1 right-0 size-3 rounded-full bg-red-500"></span>
 					</div>
-					{/* {notification && <Notifications className="w-[530px] absolute h-[400px] top-24 right-0" />} */}
-					<div className="w-[42px] h-[42px] bg-bg cursor-pointer flex justify-center items-center z-10">
-						<User 
-							onClick={() => setProfileActions(prev => !prev)} 
-							width={35} 
-							border 
-							className="border-white cursor-pointer z-10" 
-							url={data?.data.profile_image} />
-					</div>
+					<User 
+						onClick={() => {
+							dropMenuType.current = 'profile';
+							setDropMenu(prev => !prev)}
+						}
+						width={35} 
+						border 
+						className="border-white cursor-pointer" 
+						url={state.userData?.profile_image || ''}>
+					</User>
+					{dropMenu && <DropMenu setDropMenu={setDropMenu} type={dropMenuType.current} />}
+					<HiOutlineMenuAlt3
+						onClick={() => {
+							dropMenuType.current = 'navbar';
+							setDropMenu(prev => !prev)}
+						}
+						className="text-2xl lg:hidden cursor-pointer" />
+					{/* Search Modal */}
+					<Modal
+						className='top-20 translate-y-0 w-11/12 max-w-[600px]'
+						isOpen={state.search} 
+						onClose={() => dispatch({type: 'SEARCH'})}>
+						<SearchUsers />
+					</Modal>
+					{/* Search Modal */}
+					{/* Overlay */}
+					{dropMenu && <div
+						onClick={() => setDropMenu(false)}
+						className="fixed top-0 bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.2)]" />}
+					{/* Overlay */}
 				</div>
-				{profileActions && <ProfileActions setProfileActions={setProfileActions} />}
 			</div>
-			{/* Search Modal */}
-			<Modal
-				className='top-20 translate-y-0 w-11/12 max-w-[600px]'
-				isOpen={state.search} 
-				onClose={() => dispatch({type: 'SEARCH'})}>
-				<SearchUsers />
-			</Modal>
-			{/* Search Modal */}
 		</>
 	)
 }

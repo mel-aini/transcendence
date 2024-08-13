@@ -7,7 +7,7 @@ interface UserProps extends HTMLAttributes<HTMLDivElement> {
 	url: string
 	online?: boolean
 	className?: string
-	children: ReactNode
+	children?: ReactNode
 }
 
 const User = ({border = false, width = 40, style, url, online, className, children, ...props}: UserProps) => {

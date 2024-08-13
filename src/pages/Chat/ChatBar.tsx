@@ -42,11 +42,11 @@ function ChatBar() {
 			initial={{opacity: 1}}
 			exit={{opacity: 1}}
 			transition={{duration: 0.5}}
-			className="w-full px-5 pt-5 h-full relative flex flex-col z-0 lg:max-w-[400px] bg-bg lg:border-r lg:border-r-dark">
+			className="w-full lg:pr-5 pt-5 h-full relative flex flex-col z-0 lg:max-w-[400px] bg-bg lg:border-r lg:border-r-dark">
 			<div className="scroll-to-hide flex flex-col overflow-auto grow">
 				{/* Chat header */}
-				<div className="flex justify-between items-center pb-10 shrink-0 sticky top-0 left-0">
-					<h1 className="text-xl font-semibold text-primary">Chat</h1>
+				<div className="flex justify-between items-center pb-10 shrink-0">
+					<h1></h1>
 					<div className="relative flex gap-3 items-center">
 						<IoAddCircle onClick={() => setSearchFriends(true)} className="fill-primary text-3xl cursor-pointer" />
 						<BsThreeDots onClick={() => setToggleMore(prev => !prev)} className="fill-white text-2xl cursor-pointer" />
@@ -89,7 +89,7 @@ function ChatBar() {
 				{/* search friends */}
 				<SearchFriends isOpen={searchFriends} onClose={() => setSearchFriends(false)} />
 			</div>
-			<NavBar className="lg:hidden w-full py-5 bg-bg border-t border-dark flex items-center justify-between shrink-0" />
+			{/* <NavBar className="lg:hidden w-full py-5 bg-bg border-t border-dark flex items-center justify-between shrink-0" /> */}
 		</motion.div>
 	);
 }

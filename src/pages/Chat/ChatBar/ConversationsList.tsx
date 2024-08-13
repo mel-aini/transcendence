@@ -35,6 +35,7 @@ function ConversationsList({className, ...props}: Props) {
 		<div className="flex flex-col gap-[20px]" {...props}>
 			{
 				state.conversations.length != 0 && state.conversations.map((conv, index) => {
+					conv.friend.avatar = "https://picsum.photos/200/30" + index + 1;
 					return <ConversationBar onClick={() => handler(conv)} key={index} data={conv} />
 				})
 			}

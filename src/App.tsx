@@ -40,8 +40,9 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path="/signup" element={withoutAuth(SignUp)} />
                     <Route path="/login" element={withoutAuth(Login)} />
-                    <Route path="/chat" element={withAuth(Chat)} />
+                    {/* <Route path="/chat" element={withAuth(Chat)} /> */}
                     <Route element={withAuth(Layout)}>
+                      <Route path="/chat" element={<Chat />} />
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/profile" element={withProfile(Profile)} />
                       <Route path="/dashboard" element={<Dashboard />} />

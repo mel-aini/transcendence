@@ -11,7 +11,7 @@ export default {
         secondary: '#141619',
         third: '#14FF67',
         dark: '#2F2E39',
-        bg: '#0C0D0F',
+        bg: '#111215',
         white: '#FFFFFF',
         gray1: '#858585',
         gray2: '#313131',
@@ -41,6 +41,10 @@ export default {
       fontFamily: {
         montserrat: ['Montserrat', 'sans-serif'],
       },
+      boxShadow: {
+        'bottom': '0px 4px 4px 0px rgba(0, 0, 0, 0.5)',
+        'right': '4px 0px 4px 0px rgba(0, 0, 0, 0.5)',
+      }
     },
   },
   plugins: [

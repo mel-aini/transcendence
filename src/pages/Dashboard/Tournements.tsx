@@ -3,6 +3,7 @@ import Container from "../../components/Container";
 import NewButton from "../../components/NewButton";
 import { Link, useNavigate } from "react-router-dom";
 import NewTournement from "./NewTournement";
+import Title from "../../components/Title";
 
 interface Props {
 	className?: string
@@ -21,7 +22,11 @@ const Tournements = ({ className }: Props) => {
 		// <div className={className}>
 		<displayContext.Provider value={{display, setDisplay}}>
 			<Container className="sm:h-[109px] h-[160px] w-full" childClassName="flex flex-col sm:flex-row justify-between items-center p-10 gap-5 sm:gap-14">
-				<h1 className="text-4xl md:text-5xl font-semibold">Tournements</h1>
+						<Title 
+							firstCharClassName='text-5xl '
+							restWordClassName="text-4xl"
+								>tournament
+						</Title>
 				{/* <div onClick={clickHandler}> */}
 					<Link to="/tournement">
 						<NewButton className="h-[46px] w-full max-w-[340px]">Create New Tournement</NewButton>

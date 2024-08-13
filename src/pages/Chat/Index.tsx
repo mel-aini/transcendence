@@ -23,25 +23,6 @@ function Index() {
 
 	useEffect(() => {
 
-		const chatHandler = (data: any) => {
-			switch (data.type) {
-				case 'message':
-					dispatch({type: 'MESSAGE', message: data.message})
-					break;
-				case 'messages':
-					dispatch({type: 'MESSAGES', messages: data.messages})
-					break;
-				case 'online':
-					dispatch({type: 'ONLINE', onlineFriends: data.onlineFriends})
-					break;
-				case 'conversations':
-					dispatch({type: 'CONVERSATIONS', conversations: data.conversations})
-					break;
-				default:
-					break;
-			}
-		}
-		
 		dispatch({type: 'FOCUS', state: window.innerWidth >= 1024})
 
 		const resizeHandler = () => {
@@ -59,16 +40,15 @@ function Index() {
 	}, [])
 
 	return (
-		<div className="relative w-full h-[100vh] lg:flex">
+		<div className="relative w-full h-[calc(100vh-10rem)] lg:flex shrink">
 			{/* <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
 				<form onSubmit={handleSubmit}>
 					<Input onChange={(e) => setUsername(e.target.value)} type="text" placeholder="enter username" />
 				</form>
 			</Modal> */}
-			<NavBar className="hidden px-4 py-5 h-full lg:flex flex-col justify-between border-r border-r-dark" />
 			<ChatBar />
 			<AnimatePresence>
-				{state.isFocus && <Conversation />}
+				<Conversation />
 			</AnimatePresence>
 		</div>
 	)

@@ -66,6 +66,7 @@ const RemainForm = ({email}: Props) => {
 		}
 		if (i == formState.length) setFormError('');
 	}, [formState])
+
 	const submitForm = async () => {
 		const data: IResponse = {
 			type: "normal",
@@ -86,38 +87,10 @@ const RemainForm = ({email}: Props) => {
 		}
 		dispatch({type: 'LOADING', state: false});
 	}
-	const inputs = [
-		{
-			type: 'username',
-			placeholder: 'username',
-			onChangeHandler: (e: any) => {
-				setUsername(e.target.value)
-				parseInput('username', e.target.value);
-			},
-			onBlurHandler: (index: number) => blurHandler(index, 'username'),
-		},
-		{
-			type: 'password',
-			placeholder: 'password',
-			onChangeHandler: (e: any) => {
-				setPassword(e.target.value)
-				parseInput('password', e.target.value);
-			},
-			onBlurHandler: (index: number) => blurHandler(index, 'password'),
-		},
-		{
-			type: 'password',
-			placeholder: 'confirm password',
-			onChangeHandler: (e: any) => {
-				setRetypePassword(e.target.value)
-				parseInput('retype_password', e.target.value, password);
-			},
-			onBlurHandler: (index: number) => blurHandler(index, 'retype_password'),
-		},
-	]
+
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
-		
+
 		for (let i = 0; i < formState.length; i++) {
 			if (formState[i].isError) return;
 		}
@@ -135,24 +108,44 @@ const RemainForm = ({email}: Props) => {
 	return (
 		<>
 			<h1 className="text-2xl font-semibold mb-14">Your are a step away...</h1>
-			<form onSubmit={submitHandler} className="flex flex-col justify-between w-full h-[300px]">
+			<form onSubmit={submitHandler} className="flex flex-col justify-between w-full h-[350px]">
 				<div className="flex flex-col gap-5 w-full">
-					<>
-					{ inputs.map((field, index) => {
-							return (
-								<Input
-									key={index}
-									onChange={field.onChangeHandler}
-									onBlur={() => field.onBlurHandler(index == 1 || 2 ? index + 1 : index)} 
-									className="w-full" 
-									type={field.type}
-									placeholder={field.placeholder}
-									style={formState[index == 1 || 2 ? index + 1 : index].isError ? { borderColor: invalidColor, color: invalidColor } : {}}
-									/>
-								)
-					}) }
-					</>
-					{formError != '' && <p className="text-[12px] self-end text-invalid">{formError}</p>}
+				<>
+					<Input
+						onChange={(e) => {
+							setUsername(e.target.value)
+							parseInput('username', e.target.value);
+						}}
+						onBlur={() => blurHandler(0, 'username')} 
+						className="w-full" 
+						type='username'
+						placeholder='username'
+						style={formState[0].isError ? { borderColor: invalidColor, color: invalidColor } : {}}
+						/>
+					<Input
+						onChange={(e) => {
+							setPassword(e.target.value)
+							parseInput('password', e.target.value);
+						}}
+						onBlur={() => blurHandler(2, 'password')} 
+						className="w-full" 
+						type='password'
+						placeholder='password'
+						style={formState[2].isError ? { borderColor: invalidColor, color: invalidColor } : {}}
+						/>
+					<Input
+						onChange={(e) => {
+							setRetypePassword(e.target.value)
+							parseInput('retype_password', e.target.value, password);
+						}}
+						onBlur={() => blurHandler(3, 'retype_password')} 
+						className="w-full" 
+						type='password'
+						placeholder='confirm password'
+						style={formState[3].isError ? { borderColor: invalidColor, color: invalidColor } : {}}
+						/>
+				</>
+				{formError != '' && <p className="text-sm self-end text-invalid">{formError}</p>}
 				</div>
 				<NewButton 
 					type="submit" 
