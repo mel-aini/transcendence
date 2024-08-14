@@ -33,7 +33,7 @@ function FriendBar({friend} : {friend: FriendsData}) {
 					</div>
 					<span className="font-normal text-base truncate mobile:w-16 w-10">{friend.username}</span>
 				</div>
-				<span className="font-normal text-base mobile:block hidden shrink-0">lvl {friend.level}</span>
+				<span className="font-normal text-base mobile:block hidden shrink-0">lvl </span> {/* {friend.level.current} */} 
 			</div>
 			{
 				send ?

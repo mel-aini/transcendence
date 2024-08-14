@@ -58,9 +58,9 @@ const Header = () => {
 	});
 
 	const clickHandler = () => {
-		dispatch({type: "STATUS", status: "help"});
 		if (state.counter > 0)
 			return ;
+		dispatch({type: "STATUS", status: "help"});
 		dispatch({type: "COUNTER", counter: 1});
 	}
 

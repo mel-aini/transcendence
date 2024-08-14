@@ -45,10 +45,6 @@ function Result() {
 				className="relative top-0 text-third text-center text-4xl pb-11 italic font-montserrat">Qualified</motion.h1>
 			}
 			{
-				(state.result.status == "im the winer") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
-				className="relative top-0 text-third text-center text-4xl pb-11 italic font-montserrat">Im The Winner</motion.h1>
-			}
-			{
 				(state.result.status == "lose") && <motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
 				className="relative top-0 text-[#DD1B1B] text-center text-4xl pb-11 italic font-montserrat">oops, You Lose</motion.h1>
 			}

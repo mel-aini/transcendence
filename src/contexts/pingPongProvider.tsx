@@ -72,8 +72,8 @@ const initialState: GameData = {
 		side: 0,
 	},
 	directions: {
-		my: "right",
-		side: "left",
+		my: "left",
+		side: "right",
 	},
 	result: {
 		isEndGame: false,

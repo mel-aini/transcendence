@@ -8,17 +8,24 @@ function TournementFrom() {
 	return (
 		<div className="flex flex-col gap-8 items-center w-full">
 			<div className="flex flex-col gap-4 items-center w-full">
-				<input type="text" placeholder="Tournement title" className="border border-border rounded-md max-w-[344px] w-full h-[50px] px-4 bg-transparent focus:border-primary outline-none duration-200" />
-				<input type="text" placeholder="nickname" className="border border-border rounded-md max-w-[344px] w-full h-[50px] px-4 bg-transparent focus:border-primary outline-none duration-200" />
+				<input type="text" placeholder="Tournament’s  alias" className="placeholder-[#858585] border border-border rounded-md max-w-[344px] w-full h-[50px] px-4 bg-transparent focus:border-primary outline-none duration-200" />
+				{/* <input type="text" placeholder="Number of players" className="border border-border rounded-md max-w-[344px] w-full h-[50px] px-4 bg-transparent focus:border-primary outline-none duration-200" /> */}
+				<div className="flex items-center justify-between border border-border rounded-md max-w-[344px] w-full h-[50px] px-4 bg-transparent">
+					<label htmlFor="players_num" className="text-[#858585]">Number of players:</label>
+					<select id="players_num" className="bg-transparent outline-none">
+						<option value={4} selected>4 players</option>
+						<option value={8}>8 players</option>
+					</select>
+				</div>
 			</div>
 			<div className="w-full flex justify-center">
-				<NewButton className="h-[52px] w-full max-w-[344px]">Start</NewButton>
+				<NewButton className="h-[52px] w-full max-w-[344px]">Join</NewButton>
 			</div>
 		</div>
 	);
 }
 
-function NewTournement() {
+function JoinTournement() {
 	const display = useContext(displayContext);
 
 	return (
@@ -43,7 +50,7 @@ function NewTournement() {
 						<span className="absolute w-[13px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-[0.5px] rotate-[135deg]" />
 					</div>
 					<img src={trophy} alt="" className="w-[150px] h-[150px]"/>
-					<span className="text-2xl text-center">New Tournement</span>
+					<span className="text-2xl text-center">Join Tournament</span>
 					<TournementFrom />
 				</motion.div>
 			</motion.div>
@@ -52,4 +59,4 @@ function NewTournement() {
 	);
 }
 
-export default NewTournement;
+export default JoinTournement;

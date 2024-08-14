@@ -69,7 +69,8 @@ export interface FriendsData {
 	profile_image: Url,
 	online?: boolean,
 	profile: Path,
-	relation?: Relation
+	relation?: Relation,
+	level: Level
 }
 
 export interface ProfileRes {

@@ -27,6 +27,11 @@ interface TournementData {
 const initialState: TournementData = {
 	playersNum: 4,
 	roundData: [],
+	// winner: {
+	// 	username: "winner",
+	// 	image: "",
+	// 	isConnected: true
+	// },
 	winner: "player",
 	pongMessage: {}
 };

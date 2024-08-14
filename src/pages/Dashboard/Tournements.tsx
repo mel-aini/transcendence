@@ -2,7 +2,7 @@ import { createContext, forwardRef, useContext, useEffect, useRef, useState } fr
 import Container from "../../components/Container";
 import NewButton from "../../components/NewButton";
 import { Link, useNavigate } from "react-router-dom";
-import NewTournement from "./NewTournement";
+import JoinTournement from "./JoinTournement";
 import Title from "../../components/Title";
 
 interface Props {
@@ -33,7 +33,7 @@ const Tournements = ({ className }: Props) => {
 					</Link>
 				{/* </div> */}
 			</Container>
-			<NewTournement />
+			<JoinTournement />
 		</displayContext.Provider>
 		// </div>
 	)

@@ -22,7 +22,7 @@ const Index = () => {
 			</Container>
 			<span className="place-self-end">created by: mel-aini</span>
 			{/* <div className="relative flex justify-center items-center sm:gap-5 gap-3 w-full md:flex-row flex-col"> */}
-			<div className="relative flex justify-center items-center gap-5 min-w-[1062px]">
+			<div className="relative flex justify-center items-center gap-5 min-w-[1062px] overflow-auto">
 					<div className="flex items-center justify-center grow w-full">
 						{
 							state.roundData.map((round: RoundData, index: number) => {
@@ -62,6 +62,9 @@ const Index = () => {
 							)})
 						}
 					</div>
+					<span className="top-full -translate-y-1/2">
+						<PlayerBar player={state.winner} isWinner={true}/>
+					</span>
 					<div className="flex items-center rotate-180 grow w-full">
 						{
 							state.roundData.map((round: RoundData, index: number) => {
@@ -101,9 +104,6 @@ const Index = () => {
 							)})
 						}
 					</div>
-				<span className="absolute top-full -translate-y-1/2">
-					<PlayerBar player={state.winner} />
-				</span>
 			</div>
 		</div>
 	);

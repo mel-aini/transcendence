@@ -5,6 +5,9 @@ import { useEffect } from "react";
 import { usePingPongContext } from "../../../../contexts/pingPongProvider";
 import { useTournementContext } from "../../../../contexts/TournementProvider";
 
+import { PiMouseLeftClickFill } from "react-icons/pi";
+import { MdTouchApp } from "react-icons/md";
+
 function Box() {
 	const { sendJsonMessage, state, dispatch } = usePingPongContext();
 	const {sendJsonMessage: sendInTournament} = useTournementContext();
@@ -33,28 +36,34 @@ function Box() {
 	return (
 			(state.counter > 0)
 			?
-			<AnimatePresence>
-			<motion.div
-				initial={{opacity: 0}}
-				animate={{opacity: 1}}
-				exit={{ opacity: 0}}
-				transition={{duration: 0.3}}
-				className={`flex flex-col justify-between items-center absolute duration-150 bg-gray3 rounded-[10px] left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[42%] h-[45%]`}>
-				{
-					(state.status == "ready") ?
-					<Ready counter={state.counter}/>
-					:
-					<Help />
-				}
+			<>
+			{
+				(state.status == "ready") ?
 				<motion.div
-				initial={{width: '100%'}}
-				animate={{width: '0%'}}
-				transition={{duration: state.counter, ease: 'easeOut'}}
-				className="self-start h-[2px] w-full bg-primary" />
-			</motion.div>
-			</AnimatePresence>
+					initial={{opacity: 0}}
+					animate={{opacity: 1}}
+					transition={{duration: 0.3}}
+					className={`flex flex-col justify-between items-center absolute duration-150 bg-gray3 rounded-[10px] left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[42%] h-[50%]`}>
+					{/* {
+						(state.status == "ready") ?
+						<Ready counter={state.counter}/>
+						:
+						<Help />
+					} */}
+						<Ready counter={state.counter}/>
+					<motion.div
+					initial={{width: '100%'}}
+					animate={{width: '0%'}}
+					transition={{duration: state.counter, ease: 'easeOut'}}
+					className="self-start h-[2px] w-full bg-primary" />
+				</motion.div>
+				:
+				<Help />
+			}
+			</>
 			:
-			<></>
+			<>
+			</>
 	);
 }
 

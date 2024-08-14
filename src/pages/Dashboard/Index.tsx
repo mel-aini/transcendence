@@ -4,7 +4,7 @@ import PingPong from "./PingPong";
 import Tournements from "./Tournements";
 import { useGlobalContext } from "../../contexts/store";
 import { createContext, useEffect, useState } from "react";
-import NewTournement from "./NewTournement";
+import NewTournement from "./JoinTournement";
 import AllTournements from "./AllTournements";
 import { FiSearch } from "react-icons/fi";
 
