@@ -3,8 +3,9 @@ import useOAuth from "../../hooks/useOAuth";
 import { useEffect } from "react";
 import NewButton from "../../components/NewButton";
 import { useGlobalContext } from "../../contexts/store";
-import T from "./T";
-import Input from "../../components/Input";
+import Logo from "../../components/Logo";
+import '../../assets/homeAnimation.css'
+
 const Index = () => {
 	const { dispatch} = useGlobalContext();
 	const [ handleOAuth ] = useOAuth();
@@ -15,21 +16,27 @@ const Index = () => {
 	}, [])
 
 	return (
-		<div className="bg-bg w-full h-[100vh] px-10 flex justify-center items-center">
-			<div className="flex flex-col items-center gap-16">
-				<div>
-					{/* <T /> */}
-				</div>
-				<h1 className="font-myFont text-7xl uppercase">
-					<span className="font-myFont text-primary">T</span>RANSENDENCE</h1>
-				<p 
-					className="max-w-[800px] text-center leading-normal bg-[rgba(20,22,25, 0.5)] p-5 border border-border rounded-md"
-					>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eum, quia sapiente sunt amet, odit vitae atque esse minima soluta, nemo dolorem architecto sed quos cum expedita magnam fugit velit. Quia!
-				</p>
+		<div
+			className="relative w-full h-[100vh] px-10 flex justify-center items-center overflow-hidden">
+			<div
+				style={{backgroundImage: 'url(/images/bg-image.png)'}}  
+				className="absolute -z-30 top-0 left-0 bottom-0 right-0 bg-cover bg-center" />
+			<div
+				className="absolute -z-10 top-0 left-0 bottom-0 right-0 bg-gradient-to-b from-[rgba(0,0,0,0.3)] to-black" />
+			<img
+				src="/images/avatar.png"
+				className="avatar absolute -z-20 bottom-0 left-1/2 h-[70%]" />
+			<div className="flex flex-col justify-between items-center gap-16 h-full py-40">
+				 <div>		
+					<Logo animate className="text-7xl" />
+					<h2 
+						className="max-w-[800px] text-center font-medium text-2xl mt-5"
+						>Lorem ipsum dolor sit amet consectetu
+					</h2>
+				 </div>
 				<Link to="/signup">
 					<NewButton className="w-[300px]">Get Started</NewButton>
 				</Link>
-				<Input className="font-myFont uppercase text-6xl bg-transparent" type="text" />
 			</div>
 		</div>
 	);
