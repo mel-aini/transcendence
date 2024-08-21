@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import trophy from "/trophy.svg"
-import NewButton from "../../components/NewButton";
+import Button from "../../components/Button";
 import { useContext } from "react";
 import { displayContext } from "./Tournements";
 
@@ -19,7 +19,7 @@ function TournementFrom() {
 				</div>
 			</div>
 			<div className="w-full flex justify-center">
-				<NewButton className="h-[52px] w-full max-w-[344px]">Join</NewButton>
+				<Button className="h-[52px] w-full max-w-[344px]">Join</Button>
 			</div>
 		</div>
 	);

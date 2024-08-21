@@ -70,7 +70,7 @@ function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 	}, [state.userData?.username ,state.userData?.email , state.userData?.tfa.content])
 
 	return (
-		<div className="flex gap-2 justify-between h-12">
+		<div className="flex gap-2 justify-between h-12 max-w-96">
 			<div className="relative w-full h-full">
 				<input ref={inputRef} disabled onChange={(e) => changehandler(e)} type="text" className={"w-full border outline-none py-3 px-4 h-full rounded-[5px] bg-transparent " + ((editStatus === "edit") ? "opacity-50 " : " ") + ((Error) ? "border-red-600" : "border-border")} placeholder={type === "tfa" ? "Enter your email" : type} />
 				{Error && <motion.span

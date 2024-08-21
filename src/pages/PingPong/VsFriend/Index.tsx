@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { FriendsData } from "../../../types/profile";
 import { useNavigate } from "react-router-dom";
 import { usePingPongContext } from "../../../contexts/pingPongProvider";
+import LayoutHeader from "../../../components/LayoutHeader";
 
 function FriendBar({friend} : {friend: FriendsData}) {
 	const [send, setSend] = useState<boolean>(false);
@@ -21,7 +22,7 @@ function FriendBar({friend} : {friend: FriendsData}) {
 	}
 
 	return (
-		<div className="flex justify-between items-center h-[50px] gap-4  shrink-0">
+		<div className="flex justify-between items-center h-[50px] gap-4 shrink-0">
 			<div className="h-full w-full flex mobile:justify-between justify-center items-center border border-border rounded-md mobile:px-5 px-3 gap-2">
 				<div className="flex items-center gap-4 select-none">
 					<div className="relative w-[31px] h-[31px]">
@@ -118,37 +119,40 @@ function VsFriend() {
 	}, [isLoading]);
 
 	return (
-		<div className="min-h-[calc(100vh-100px)] flex justify-center items-center">
-			<div className="w-full max-w-[770px] flex flex-col bg-secondary border border-border rounded-md p-10 gap-7">
-				<div className="flex flex-col gap-4">
-					<h1 className="text-2xl font-semibold">Play against a friend</h1>
-					<p className="text-base font-normal">search for a friend and invite it in game</p>
-				</div>
-				<div className="flex flex-col gap-5">
-					<div className="flex h-[50px] gap-3">
-						<input onChange={(e) => changeHandler(e)} type="text" className="w-full h-full border border-border focus:border-primary duration-200 rounded-md px-5 py-3 outline-none bg-transparent" placeholder="search" />
-						<div onClick={clickHandler} className="w-[50px] shrink-0 h-full flex justify-center items-center border border-border rounded-md cursor-pointer">
-							<FiSearch className='text-2xl' />
+		<>
+			<LayoutHeader>Play against a friend</LayoutHeader>
+			<div className="flex justify-center items-center">
+				<div className="w-full max-w-[770px] flex flex-col bg-secondary border border-border rounded-md p-10 gap-7">
+					<div className="flex flex-col gap-4">
+						<h1 className="text-2xl font-semibold">Play against a friend</h1>
+						<p className="text-base font-normal">search for a friend and invite it in game</p>
+					</div>
+					<div className="flex flex-col gap-5">
+						<div className="flex h-[50px] gap-3">
+							<input onChange={(e) => changeHandler(e)} type="text" className="w-full h-full border border-border focus:border-primary duration-200 rounded-md px-5 py-3 outline-none bg-transparent" placeholder="search" />
+							<div onClick={clickHandler} className="w-[50px] shrink-0 h-full flex justify-center items-center border border-border rounded-md cursor-pointer">
+								<FiSearch className='text-2xl' />
+							</div>
+						</div>
+						<div ref={scrollRef} onScroll={(e) => scrollHandler(e)} className="flex flex-col gap-3 max-h-[180px] overflow-auto scrollClass pr-2">
+							{
+								isLoading ?
+								<div>loading...</div>
+								:
+								friends && friends.map((friend: FriendsData, key: number) => {
+									return (
+										<FriendBar friend={friend} key={key} />
+									)
+								})
+							}
 						</div>
 					</div>
-					<div ref={scrollRef} onScroll={(e) => scrollHandler(e)} className="flex flex-col gap-3 max-h-[180px] overflow-auto scrollClass pr-2">
-						{
-							isLoading ?
-							<div>loading...</div>
-							:
-							friends && friends.map((friend: FriendsData, key: number) => {
-								return (
-									<FriendBar friend={friend} key={key} />
-								)
-							})
-						}
+					<div className="self-end">
+						<span onClick={handleCancel} className="font-extralight cursor-pointer hover:underline duration-300 select-none">back</span>
 					</div>
 				</div>
-				<div className="self-end">
-					<span onClick={handleCancel} className="font-extralight cursor-pointer hover:underline duration-300 select-none">back</span>
-				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 

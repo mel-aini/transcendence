@@ -1,8 +1,7 @@
 import { Dispatch, useState } from "react";
-import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { invalidColor, primaryColor, whiteColor } from "../../utils/colors";
-import NewButton from "../../components/NewButton";
+import Button from "../../components/Button";
 import { useGlobalContext } from "../../contexts/store";
 import useInputChecker from "../../hooks/useInputChecker";
 import { BACKEND_END_POINT } from "../../utils/global";
@@ -70,7 +69,7 @@ const UsernameForm = ({dispatchLevel}: Props) => {
 
 	return (
 		<>
-			<h1 className="text-2xl font-semibold mb-14">Create your username</h1>
+			<h1 className="text-2xl font-semibold mb-14 italic">Create your username</h1>
 			<form onSubmit={submitHandler} className="flex flex-col justify-between w-full h-[150px]">
 				<Input
 					onChange={(e) => setUsername(e.target.value)}
@@ -83,7 +82,7 @@ const UsernameForm = ({dispatchLevel}: Props) => {
 					} : {}}
 				/>
 					{formError != '' && <p className="text-[12px] self-end text-invalid">{formError}</p>}
-				<NewButton onSubmit={submitHandler} className="w-full">complete Sign up</NewButton>
+				<Button onSubmit={submitHandler} className="w-full">complete Sign up</Button>
 			</form>
 		</>
 	)

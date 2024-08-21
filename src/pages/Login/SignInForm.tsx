@@ -1,12 +1,11 @@
 import Input from "../../components/Input";
-import Button from "../../components/Button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Dispatch, SetStateAction, useState } from "react";
 import { invalidColor } from "../../utils/colors";
 import { useGlobalContext } from "../../contexts/store";
 import callToApi from "../../utils/callToApi";
 import OAuthBar from "../Sign-up/OAuthBar";
-import NewButton from "../../components/NewButton";
+import Button from "../../components/Button";
 import { useAuthContext } from "../../contexts/authProvider";
 
 interface IResponse {
@@ -105,7 +104,7 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 	}
     return (
         <>
-            <h1 className="font-semibold text-2xl mb-14">Welcome Back!</h1>
+            <h1 className="font-semibold text-2xl italic mb-14">Welcome Back!</h1>
             <form onSubmit={(e) => submitHandler(e)} className="flex flex-col justify-between w-full h-[265px]">
 				<div className="flex flex-col gap-5 w-full">
 					<Input
@@ -130,9 +129,9 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 					{(emptyInput && !invalidLogin) ? <p className="text-sm self-end text-invalid">Please fill the Sign In form</p> : ''}
 					{(invalidLogin) ? <p className="text-sm self-end text-invalid">invalid Username or Password</p> : ''}
 				</div>
-				<NewButton 
+				<Button 
 					type="submit">Sign In
-				</NewButton>
+				</Button>
 			</form>
 		</>
     );

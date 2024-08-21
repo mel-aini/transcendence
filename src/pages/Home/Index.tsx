@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import useOAuth from "../../hooks/useOAuth";
 import { useEffect } from "react";
-import NewButton from "../../components/NewButton";
+import Button from "../../components/Button";
 import { useGlobalContext } from "../../contexts/store";
 import Logo from "../../components/Logo";
 import '../../assets/homeAnimation.css'
@@ -35,7 +35,7 @@ const Index = () => {
 					</h2>
 				 </div>
 				<Link to="/signup">
-					<NewButton className="w-[300px]">Get Started</NewButton>
+					<Button className="w-[300px]">Get Started</Button>
 				</Link>
 			</div>
 		</div>

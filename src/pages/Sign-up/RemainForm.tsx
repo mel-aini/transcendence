@@ -6,7 +6,7 @@ import { primaryColor, invalidColor, whiteColor } from "../../utils/colors";
 import { BACKEND_END_POINT } from "../../utils/global";
 import { useGlobalContext } from "../../contexts/store";
 import callToApi from "../../utils/callToApi";
-import NewButton from "../../components/NewButton";
+import Button from "../../components/Button";
 
 interface IBody {
 	username: string,
@@ -107,7 +107,7 @@ const RemainForm = ({email}: Props) => {
 
 	return (
 		<>
-			<h1 className="text-2xl font-semibold mb-14">Your are a step away...</h1>
+			<h1 className="text-2xl font-semibold mb-14 italic">Your are a step away...</h1>
 			<form onSubmit={submitHandler} className="flex flex-col justify-between w-full h-[350px]">
 				<div className="flex flex-col gap-5 w-full">
 				<>
@@ -147,12 +147,12 @@ const RemainForm = ({email}: Props) => {
 				</>
 				{formError != '' && <p className="text-sm self-end text-invalid">{formError}</p>}
 				</div>
-				<NewButton 
+				<Button 
 					type="submit" 
 					onClick={submitHandler}
 					>
 						complete Sign up
-				</NewButton>
+				</Button>
 			</form>
 		</>
 	)

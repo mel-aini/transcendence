@@ -2,8 +2,8 @@ import { twMerge } from "tailwind-merge";
 
 interface Props {
 	children: string
-	firstCharClassName: string
-	restWordClassName: string
+	firstCharClassName?: string
+	restWordClassName?: string
 }
 
 function Title({ children, firstCharClassName, restWordClassName }: Props) {

@@ -36,7 +36,7 @@ export default {
         'mobile': '400px',
       },
       backgroundImage: {
-        'login': "url('/famous-table-tennis-players.png')",
+        'login': "url('/images/warrior.png')",
       },
       fontFamily: {
         montserrat: ['Montserrat', 'sans-serif'],

@@ -1,6 +1,6 @@
 import { createContext, forwardRef, useContext, useEffect, useRef, useState } from "react";
 import Container from "../../components/Container";
-import NewButton from "../../components/NewButton";
+import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import JoinTournement from "./JoinTournement";
 import Title from "../../components/Title";
@@ -29,7 +29,7 @@ const Tournements = ({ className }: Props) => {
 						</Title>
 				{/* <div onClick={clickHandler}> */}
 					<Link to="/tournement">
-						<NewButton className="h-[46px] w-full max-w-[340px]">Create New Tournement</NewButton>
+						<Button className="h-[46px] w-full max-w-[340px]">Create New Tournement</Button>
 					</Link>
 				{/* </div> */}
 			</Container>

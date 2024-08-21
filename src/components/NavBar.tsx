@@ -64,7 +64,7 @@ function DropMenu({ setDropMenu, type }: DropMenuProps) {
 			<div className="space-y-5 w-[250px absolute z-50 right-0 top-full p-5 bg-bg rounded-lg">
 				<SideBarElem onClick={() => navigate('/dashboard')}>Dashboard</SideBarElem>
 				<SideBarElem onClick={() => navigate('/chat')}>Chat</SideBarElem>
-				<SideBarElem>Settings</SideBarElem>
+				<SideBarElem onClick={() => navigate('/settings')}>Settings</SideBarElem>
 			</div>
 		)
 	}

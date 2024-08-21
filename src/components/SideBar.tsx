@@ -31,12 +31,12 @@ function SideBar({ className }: { className?: string }) {
 			<div className={twMerge('w-[245px] shadow-right space-y-5 bg-bg', className)}>
 				<SideBarElem onClick={() => navigate('/dashboard')}>Dashboard</SideBarElem>
 				<SideBarElem onClick={() => navigate('/chat')}>Chat</SideBarElem>
-				<SideBarElem>Settings</SideBarElem>
+				<SideBarElem onClick={() => navigate('/settings')}>Settings</SideBarElem>
 			</div>
 			<div className={twMerge("w-[245px] shadow-right space-y-5 bg-bg fixed top-20 left-0 ", className)}>
 				<SideBarElem onClick={() => navigate('/dashboard')}>Dashboard</SideBarElem>
 				<SideBarElem onClick={() => navigate('/chat')}>Chat</SideBarElem>
-				<SideBarElem>Settings</SideBarElem>
+				<SideBarElem onClick={() => navigate('/settings')}>Settings</SideBarElem>
 			</div>
 		</>
 	);

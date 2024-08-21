@@ -1,51 +1,31 @@
-import { SVGProps } from "react";
+import { HTMLAttributes, ReactNode } from "react";
+import Polygon from "./Polygon";
 
-interface ButtonProps extends SVGProps<SVGGElement> {
-	children: string,
-	width?: number,
-	height?: number | string
+interface ButtonProps extends HTMLAttributes<HTMLDivElement> {
+	children: ReactNode,
 	className?: string,
-	svgClassName?: string
+	type?: 'submit'
+	disabled?: boolean
 }
 
-const Button = ( { 
-	children, 
-	width = 200, 
-	height = 35,
-	className, 
-	svgClassName, 
-	...props } : ButtonProps) => {
-
+const Button = ({children, className, type, disabled = false, ...props}: ButtonProps) => {
 	return (
 		<button
-			className={"select-none" + (className ? (" " + className) : '')}
-			style={{ width, height }}>
-			<svg
-				width={ width }
-				height={ height }
-				viewBox={`0 0 ${ width } ${ height }`}
+			disabled={disabled}
+			type={type || 'button'} className={"relative group select-none" + (className ? ' ' + className : '') + (disabled ? 'pointer-events-none opacity-50' : '')}>
+			<Polygon 
+				className={"bg-primary duration-200 italic"}
+				{...props}
 			>
-				<g 
-					className={"cursor-pointer hover:opacity-90 duration-300" + (svgClassName ? (" " + svgClassName) : '')}
+				<Polygon
+					className={"bg-white absolute -z-10 top-0 -left-full group-hover:left-full duration-300 w-full italic"}
 					{...props}
-					>
-					<polygon
-						points={`25, 0 ${width}, 0 ${width}, ${height} 0,${height}`}
-						className="fill-primary"
-					/>
-					<text x={`${width - 12}`} y="65%" textAnchor="end" className="font-semibold fill-white">{children}</text>
-				</g>
-			</svg>
+				/>
+				{children}
+			</Polygon>
+			<div className={"polygon-border absolute top-[8px] left-[5px] w-full px-10 h-[42px] bg-white flex justify-center items-center font-semibold"}></div>
 		</button>
-	);
+	)
 }
 
 export default Button;
-
-// Documentation:
-
-/*
-
-
-
-*/
