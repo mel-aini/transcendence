@@ -18,7 +18,7 @@ function ConversationHeader() {
 				<IoIosArrowBack onClick={handler} className="lg:hidden text-xl cursor-pointer" />
 				{state.conversation.state == 'ok' &&
 					<>
-						<User width={30} url={state.conversation_header.avatar} />
+						<User className="size-[30px]" url={state.conversation_header.avatar} />
 						<div className="flex gap-2 items-end">
 							<h2>{state.conversation_header.username}</h2>
 							{isOnline(state.conversation_header.username) && <h3 className="text-sm font-light text-green-500">online</h3>}

@@ -8,8 +8,9 @@ import { useGlobalContext } from "../../../contexts/store";
 import useWebSocket from "react-use-websocket";
 import Customize_icon from "/Customize_icon.svg"
 import { IoIosArrowBack ,IoIosArrowForward } from "react-icons/io";
-import CustomizeTab from "./CustomizeTab";
+import CustomizeTab from "../../Settings/CustomizeTab";
 import LayoutHeader from "../../../components/LayoutHeader";
+import { Section, SectionContent, SectionHeader } from "../../Settings/Index";
 
 export const customizeContext = createContext<any>({});
 
@@ -88,7 +89,6 @@ function MatchMaking() {
 	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
 	const avatar_link = 'https://images.unsplash.com/photo-1669937401447-7cfc6e9906e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fGdhbWluZyUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D';
-	const [customize, setCustomize] = useState<boolean>(false);
 
 	const cancelAction = () => {
 		if (window.location.pathname == "/ping-pong/match-making")
@@ -141,47 +141,58 @@ function MatchMaking() {
 
 
 	return (
-		<customizeContext.Provider value={{customize, setCustomize}}>
+		<>
 			<LayoutHeader>Matchmaking</LayoutHeader>
+			<div className="space-y-5">
+			<div className="w-full flex justify-end mb-5">
+				<span onClick={cancelAction} className="cursor-pointer hover:underline duration-300 select-none">cancel</span>
+				{ state.level >= Levels.OpponentFound && <Loader /> }
+			</div>
 			<div>
-				{
-					customize ?
-					<CustomizeTab />
-					:
-					<div>
-						<div className="flex flex-col gap-5 justify-between">
-							<div className="flex items-center justify-between">
-								{/* <h1 className="text-xl font-medium">Matchmaking</h1> */}
-								{
-									state.level == Levels.OpponentFound &&
-									<img onClick={() => setCustomize(true)} src={Customize_icon} alt="customize_icon" />
-								}
-							</div>
-							{/* <Title level={state.level} /> */}
-						</div>
-						<div className="flex justify-center items-center gap-5 select-none">
-							<PlayerBar username={profileData.userData?.username} state={state.level} level={profileData.userData?.level.current} avatar={profileData.userData?.profile_image} />
-							<span>vs</span>
-							{state.level == Levels.FindingOpponent && <PlayerBar state={state.level} unknown/>}
-							{state.level >= Levels.OpponentFound && 
-								<motion.div
-									initial={{x: 10, opacity: 0}}
-									animate={{x: 0, opacity: 1}}
-									transition={{duration: 0.3}}
-									className="grow"
-									>
-									<PlayerBar state={state.level} username={state.opponent} level={3} avatar={avatar_link} />
-								</motion.div>
-							}
-						</div>
-						<div className="w-full flex justify-between items-center">
-							<span onClick={cancelAction} className="cursor-pointer hover:underline duration-300 select-none">cancel</span>
-							{ state.level >= Levels.OpponentFound && <Loader /> }
+				<div className="flex justify-between items-center gap-5 select-none h-44 border border-border rounded-lg px-10">
+					<div className="flex items-center gap-5 flex-1 justify-start">
+						<User className="size-28 border-primary" border url={profileData.userData?.profile_image} />
+						<div>
+							<h3>{profileData.userData?.username || 'mel-aini'}</h3>
+							<h4>{profileData.userData?.level.current || 'Lvl 5'}</h4>
 						</div>
 					</div>
-				}
-			</div> 
-		</customizeContext.Provider>
+					{/* <PlayerBar username={profileData.userData?.username} state={state.level} level={profileData.userData?.level.current} avatar={profileData.userData?.profile_image} /> */}
+					<span>vs</span>
+					{state.level == Levels.FindingOpponent &&
+						<div className="flex-1 flex justify-end items-center gap-5">
+							<div className="flex flex-col gap-2 items-end">
+								<div className="w-20 h-4 bg-gray2 animate-pulse rounded-lg"></div>
+								<div className="w-12 h-4 bg-gray2 animate-pulse rounded-lg"></div>
+							</div>
+							<div className="size-28 rounded-full bg-gray2 animate-pulse"></div>
+						</div>
+					}
+					{state.level >= Levels.OpponentFound && 
+						<motion.div
+							initial={{x: 10, opacity: 0}}
+							animate={{x: 0, opacity: 1}}
+							transition={{duration: 0.3}}
+							className="flex-1 flex justify-end items-center gap-5"
+							>
+							<div>
+								<h3>{ state.opponent }</h3>
+								<h4>{ state.level }</h4>
+							</div>
+							<User className="size-28 border-primary" border url={profileData.userData?.profile_image} />
+						</motion.div>
+					}
+				</div>
+			</div>
+			<Section activated={true}>
+				<SectionHeader onClick={() => console.log('active')}>Display Settings</SectionHeader>
+				{true && 
+					<SectionContent>
+						<CustomizeTab />
+					</SectionContent>}
+			</Section>
+			</div>
+		</>
 	);
 }
 

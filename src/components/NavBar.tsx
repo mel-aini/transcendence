@@ -127,9 +127,8 @@ const NavBar = ({ className }: {className?: string}) => {
 							dropMenuType.current = 'profile';
 							setDropMenu(prev => !prev)}
 						}
-						width={35} 
 						border 
-						className="border-white cursor-pointer" 
+						className="border-white cursor-pointer size-[30px]" 
 						url={state.userData?.profile_image || ''}>
 					</User>
 					{dropMenu && <DropMenu setDropMenu={setDropMenu} type={dropMenuType.current} />}

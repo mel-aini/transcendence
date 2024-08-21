@@ -14,7 +14,7 @@ const Button = ({children, className, type, disabled = false, ...props}: ButtonP
 			disabled={disabled}
 			type={type || 'button'} className={"relative group select-none" + (className ? ' ' + className : '') + (disabled ? 'pointer-events-none opacity-50' : '')}>
 			<Polygon 
-				className={"bg-primary duration-200 italic"}
+				className={"bg-primary duration-200 italic overflow-hidden"}
 				{...props}
 			>
 				<Polygon
@@ -23,7 +23,7 @@ const Button = ({children, className, type, disabled = false, ...props}: ButtonP
 				/>
 				{children}
 			</Polygon>
-			<div className={"polygon-border absolute top-[8px] left-[5px] w-full px-10 h-[42px] bg-white flex justify-center items-center font-semibold"}></div>
+			<div className={"polygon-border absolute top-[8px] left-[5px] w-full px-10 h-[42px] bg-white font-semibold"}></div>
 		</button>
 	)
 }

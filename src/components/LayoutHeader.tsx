@@ -12,7 +12,7 @@ function LayoutHeader({ children, className }: Props) {
 		<div className={twMerge("h-[110px] bg-secondary rounded-xl grid grid-cols-2 mb-10 overflow-hidden", className)}>
 			<div
 				style={{textShadow: '0px 0 34px rgba(20,255,236,0.5)'}} 
-				className="flex items-center pl-10">
+				className="flex items-center pl-10 z-10">
 				<Title firstCharClassName="text-5xl" restWordClassName="text-4xl">{ String(children) }</Title>
 			</div>
 			<div className="size-full relative">

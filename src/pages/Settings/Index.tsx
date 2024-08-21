@@ -4,6 +4,7 @@ import EditBar from "./EditBar";
 import TFA from "./TFA";
 import { IoIosArrowDown } from "react-icons/io";
 import { ComponentProps, ReactNode, useState } from "react";
+import CustomizeTab from "./CustomizeTab";
 
 interface SectionProps {
 	children?: ReactNode[]
@@ -11,7 +12,7 @@ interface SectionProps {
 	className?: string
 }
 
-function Section({ activated, children }: SectionProps) {
+export function Section({ activated, children }: SectionProps) {
 	return (
 		<div>
 			{ children && children[0] }
@@ -31,7 +32,7 @@ interface SectionHeaderProps extends ComponentProps<'div'> {
 	className?: string
 }
 
-function SectionHeader({ children, activated, className, ...props }: SectionHeaderProps) {
+export function SectionHeader({ children, activated, className, ...props }: SectionHeaderProps) {
 	return (
 		<div 
 			className={
@@ -50,7 +51,7 @@ interface SectionContentProps extends ComponentProps<'div'> {
 	className?: string
 }
 
-function SectionContent({ children, className }: SectionContentProps) {
+export function SectionContent({ children, className }: SectionContentProps) {
 	return (
 		<div className={twMerge("px-5", className)}>
 			{ children }
@@ -93,7 +94,7 @@ function Settings() {
 					<SectionHeader onClick={() => toggleActiveSection('display')}>Display</SectionHeader>
 					{activeSection == 'display' && 
 						<SectionContent>
-							<TFA />
+							<CustomizeTab />
 						</SectionContent>}
 				</Section>
 			</div>

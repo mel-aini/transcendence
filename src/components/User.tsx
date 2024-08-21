@@ -1,23 +1,21 @@
 import { CSSProperties, HTMLAttributes, ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface UserProps extends HTMLAttributes<HTMLDivElement> {
 	border?: boolean,
-	width?: number | string,
 	style?: CSSProperties,
-	url: string
+	url: string | undefined
 	online?: boolean
 	className?: string
 	children?: ReactNode
 }
 
-const User = ({border = false, width = 40, style, url, online, className, children, ...props}: UserProps) => {
+const User = ({border = false, style, url, online, className, children, ...props}: UserProps) => {
 	return (
 		<div 
-			className={`${border ? 'border': ''} relative rounded-full bg-cover bg-center` + (className ? ` ${className}` : '')}
+			className={twMerge(`${border ? 'border': ''} relative rounded-full bg-cover bg-center size-10`, className)}
 			style={{
 				backgroundImage: `url(${url})`,
-				width,
-				height: width
 			}}
 			{...props}
 			>
