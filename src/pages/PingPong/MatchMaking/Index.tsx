@@ -143,21 +143,21 @@ function MatchMaking() {
 	return (
 		<customizeContext.Provider value={{customize, setCustomize}}>
 			<LayoutHeader>Matchmaking</LayoutHeader>
-			<div className="min-h-[calc(100vh-100px)] flex justify-center items-center">
+			<div>
 				{
 					customize ?
 					<CustomizeTab />
 					:
-					<div className="w-full max-w-[700px] flex flex-col bg-secondary border border-border rounded-md p-10 gap-14">
+					<div>
 						<div className="flex flex-col gap-5 justify-between">
 							<div className="flex items-center justify-between">
-								<h1 className="text-xl font-medium">Matchmaking</h1>
+								{/* <h1 className="text-xl font-medium">Matchmaking</h1> */}
 								{
 									state.level == Levels.OpponentFound &&
 									<img onClick={() => setCustomize(true)} src={Customize_icon} alt="customize_icon" />
 								}
 							</div>
-							<Title level={state.level} />
+							{/* <Title level={state.level} /> */}
 						</div>
 						<div className="flex justify-center items-center gap-5 select-none">
 							<PlayerBar username={profileData.userData?.username} state={state.level} level={profileData.userData?.level.current} avatar={profileData.userData?.profile_image} />
