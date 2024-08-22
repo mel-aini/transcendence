@@ -3,14 +3,14 @@ import Help from "./Help";
 import Ready from "./Ready";
 import { useEffect } from "react";
 import { usePingPongContext } from "../../../../contexts/pingPongProvider";
-import { useTournementContext } from "../../../../contexts/TournementProvider";
+import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 
 import { PiMouseLeftClickFill } from "react-icons/pi";
 import { MdTouchApp } from "react-icons/md";
 
 function Box() {
 	const { sendJsonMessage, state, dispatch } = usePingPongContext();
-	const {sendJsonMessage: sendInTournament} = useTournementContext();
+	const {sendJsonMessage: sendInTournament} = useTournamentContext();
 
 	useEffect(() => {
 		const id = setInterval(() => {

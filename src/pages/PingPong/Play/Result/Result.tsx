@@ -4,22 +4,22 @@ import { usePingPongContext } from "../../../../contexts/pingPongProvider";
 import UserBox from "./UserBox";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useTournementContext } from "../../../../contexts/TournementProvider";
+import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 
 function Result() {
 	const { state } = usePingPongContext();
 	const navigate = useNavigate();
 	const [xp, setXp] = useState<number>(0);
-	const { sendJsonMessage } = useTournementContext();
+	const { sendJsonMessage } = useTournamentContext();
 
 	const clickHandler = () => {
 		if (window.location.pathname == "/ping-pong/play")
 			navigate("/ping-pong");
-		else if (window.location.pathname == "/tournement/play")
+		else if (window.location.pathname == "/Tournament/play")
 		{
 			if (state.result.status != "lose" && state.result.status != "eliminated")
 				sendJsonMessage({ type: 'qualifyboard' });
-			navigate("/tournement");
+			navigate("/Tournament");
 		}
 	}
 

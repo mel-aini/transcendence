@@ -5,7 +5,7 @@ import { usePingPongContext } from "../../../../contexts/pingPongProvider";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTimer } from 'react-timer-hook';
-import { useTournementContext } from "../../../../contexts/TournementProvider";
+import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 
 const Goal = () => {
 	const {state} = usePingPongContext();
@@ -61,7 +61,7 @@ const Header = () => {
 		if (state.counter > 0)
 			return ;
 		dispatch({type: "STATUS", status: "help"});
-		dispatch({type: "COUNTER", counter: 1});
+		dispatch({type: "COUNTER", counter: 2});
 	}
 
 	useEffect(() => {

@@ -8,7 +8,7 @@ const Notification = () => {
 					<FiBell className="text-3xl" />
 				</div>
 				<div>
-					<p>your next game in the tournement will start in 2 days</p>
+					<p>your next game in the Tournament will start in 2 days</p>
 				</div>
 			</div>
 			<div className="pl-[52px] grid grid-cols-2 gap-2">

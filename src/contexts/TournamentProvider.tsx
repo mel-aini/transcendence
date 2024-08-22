@@ -17,14 +17,14 @@ export interface RoundData {
 	players: Player[] | string[],
 }
 
-interface TournementData {
+interface TournamentData {
 	playersNum: number,
 	roundData: RoundData[],
 	winner: Player | string
 	pongMessage: any
 }
 
-const initialState: TournementData = {
+const initialState: TournamentData = {
 	playersNum: 4,
 	roundData: [],
 	// winner: {
@@ -36,7 +36,7 @@ const initialState: TournementData = {
 	pongMessage: {}
 };
 
-export const TournementContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage, state: TournementData, dispatch: Dispatch<any>}>({
+export const TournamentContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage, state: TournamentData, dispatch: Dispatch<any>}>({
 	lastJsonMessage: '',
 	sendJsonMessage: () => {
 	},
@@ -44,9 +44,14 @@ export const TournementContext = createContext<{lastJsonMessage: any, sendJsonMe
 	dispatch: () => {}
 });
 
-const reducer = (state: TournementData, action: any) => {
+const reducer = (state: TournamentData, action: any) => {
 	switch (action.type)
 	{
+		case 'PLAYERS_NUM':
+			return {
+				...state,
+				playersNum: action.playersNum
+			}
 		case 'ROUND_DATA':
 			return {
 				...state,
@@ -67,13 +72,13 @@ const reducer = (state: TournementData, action: any) => {
 	}
 }
 
-const TournementContextProvider = ({children} : {children: ReactNode}) => {
+const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 	// const {state: gameState, dispatch: gameDispatch} = usePingPongContext();
 	const navigate = useNavigate();
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData } = useGlobalContext();
-	const username: string | undefined = profileData.userData?.username;
-	const { lastJsonMessage, sendJsonMessage } = useWebSocket(TOURNEMENT_WS_URL + state.playersNum + "/" + username,
+	const username: string | undefined = profileData.userData?.username; // state.joinTournament.alias
+	const { lastJsonMessage, sendJsonMessage } = useWebSocket(Tournament_WS_URL + state.playersNum + "/" + username,
 		{
 			share: false,
 			shouldReconnect: () => false,
@@ -81,12 +86,6 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 	);
 	const player: Player = {
 		username: "ychahbi",
-		image: profilePic,
-		isConnected: true,
-	};
-
-	const player1: Player = {
-		username: "ychadffggdghbi",
 		image: profilePic,
 		isConnected: true,
 	};
@@ -132,7 +131,7 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 		// console.log(roundData);
 
 		dispatch({type: "ROUND_DATA", roundData: roundData});
-		// console.log(TOURNEMENT_WS_URL + state.playersNum + "/" + username);
+		// console.log(Tournament_WS_URL + state.playersNum + "/" + username);
 
 	}, []);
 
@@ -180,15 +179,15 @@ const TournementContextProvider = ({children} : {children: ReactNode}) => {
 	}, [lastJsonMessage]);
 
 	return (
-		<TournementContext.Provider value={{lastJsonMessage, sendJsonMessage, state, dispatch}}>
+		<TournamentContext.Provider value={{lastJsonMessage, sendJsonMessage, state, dispatch}}>
 			{children}
-		</TournementContext.Provider>
+		</TournamentContext.Provider>
 	)
 }
 
-const TOURNEMENT_WS_URL = "ws://127.0.0.1:8000/ws/game_tournament/";
-export const useTournementContext = () => useContext(TournementContext);
-export default TournementContextProvider;
+const Tournament_WS_URL = "ws://127.0.0.1:8000/ws/game_tournament/";
+export const useTournamentContext = () => useContext(TournamentContext);
+export default TournamentContextProvider;
 
 // send
 

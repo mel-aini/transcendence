@@ -1,5 +1,5 @@
 import { forwardRef, useEffect } from "react";
-import { Player } from "../../contexts/TournementProvider";
+import { Player } from "../../contexts/TournamentProvider";
 import { useGlobalContext } from "../../contexts/store";
 import { GiCrownOfThorns } from "react-icons/gi";
 import { GiCrenelCrown } from "react-icons/gi";

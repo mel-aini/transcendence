@@ -12,8 +12,7 @@ import AuthContextProvider from "./contexts/authProvider";
 import GlobalWebSocketContextProvider, { GlobalWebSocketContext } from "./contexts/globalWebSokcketStore";
 import withProfile from "./guards/withProfile";
 import GameLayout from "./pages/PingPong/GameLayout";
-import withTournement from "./guards/withTournement";
-import TournementLayout from "./guards/withTournement";
+import TournamentLayout from "./guards/TournamentLayout";
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
@@ -23,7 +22,7 @@ const Profile = lazy(() => import('./pages/Profile/Index'));
 const Settings = lazy(() => import('./pages/Settings/Index'));
 const Dashboard = lazy(() => import('./pages/Dashboard/Index'));
 const PingPong = lazy(() => import('./pages/PingPong/Index'));
-const Tournement = lazy(() => import('./pages/Tournement/Index'));
+const Tournament = lazy(() => import('./pages/Tournament/Index'));
 const Play = lazy(() => import('./pages/PingPong/Play/Index'));
 const VsFriend = lazy(() => import('./pages/PingPong/VsFriend/Index'));
 const MatchMaking = lazy(() => import('./pages/PingPong/MatchMaking/Index'));
@@ -59,8 +58,8 @@ function App() {
                         <Route path='vs-friend' element={<VsFriend />} />
                         <Route path='*' element={<NotFound />} />
                       </Route>
-                      <Route path='/tournement' element={<TournementLayout />} >
-                        <Route index element={<Tournement />} />
+                      <Route path='/Tournament' element={<TournamentLayout />} >
+                        <Route index element={<Tournament />} />
                         <Route element={<GameLayout isTournament={true}/>}>
                           <Route path='play' element={<Play />} />
                           <Route path='match-making' element={<MatchMaking />} />

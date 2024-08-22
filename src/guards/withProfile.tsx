@@ -9,7 +9,7 @@ function withProfile(Component: ComponentType) {
 		return (
 			<ProfileContextProvider>
 				<GlobalWebSocketContextProvider>
-						<Component />
+					<Component />
 				</GlobalWebSocketContextProvider>
 			</ProfileContextProvider>
 		);

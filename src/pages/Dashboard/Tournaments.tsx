@@ -2,7 +2,7 @@ import { createContext, forwardRef, useContext, useEffect, useRef, useState } fr
 import Container from "../../components/Container";
 import NewButton from "../../components/NewButton";
 import { Link, useNavigate } from "react-router-dom";
-import JoinTournement from "./JoinTournement";
+import JoinTournament from "./JoinTournament";
 import Title from "../../components/Title";
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 export const displayContext = createContext<any>({});
 
-const Tournements = ({ className }: Props) => {
+const Tournaments = ({ className }: Props) => {
 	const [display, setDisplay] = useState<boolean>(false);
 
 	const clickHandler = () => {
@@ -25,18 +25,18 @@ const Tournements = ({ className }: Props) => {
 						<Title 
 							firstCharClassName='text-5xl '
 							restWordClassName="text-4xl"
-								>tournament
+								>Tournament
 						</Title>
-				{/* <div onClick={clickHandler}> */}
-					<Link to="/tournement">
-						<NewButton className="h-[46px] w-full max-w-[340px]">Create New Tournement</NewButton>
-					</Link>
-				{/* </div> */}
+				<div onClick={clickHandler}>
+					{/* <Link to="/Tournament"> */}
+						<NewButton className="h-[46px] w-full max-w-[340px]">Create New Tournament</NewButton>
+					{/* </Link> */}
+				</div>
 			</Container>
-			<JoinTournement />
+			<JoinTournament />
 		</displayContext.Provider>
 		// </div>
 	)
 }
 
-export default Tournements;
+export default Tournaments;

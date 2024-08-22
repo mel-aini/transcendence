@@ -2,7 +2,7 @@ import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer }
 import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useGlobalContext } from "./store";
-import { useTournementContext } from "./TournementProvider";
+import { useTournamentContext } from "./TournamentProvider";
 import { useNavigate } from "react-router-dom";
 
 export interface Coordinates {
@@ -171,7 +171,7 @@ const reducer = (state: GameData, action: any) => {
 					...state, 
 					gameId: action.gameId
 				}
-			case 'IS_TOURNAMENT':
+			case 'IS_Tournament':
 				return { 
 					...state, 
 					isTournament: action.isTournament
@@ -200,7 +200,7 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 			},
 		)
 	;
-	const { state: tournState } = useTournementContext();
+	const { state: tournState } = useTournamentContext();
 	const navigate = useNavigate();
 
 	const isEmptyObject = (obj: any) => {
@@ -210,7 +210,7 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 	};
 
 	useEffect(() => {
-		dispatch({type: 'IS_TOURNAMENT', isTournament: isTournament});
+		dispatch({type: 'IS_Tournament', isTournament: isTournament});
 	}, []);
 
 	useEffect(() => {

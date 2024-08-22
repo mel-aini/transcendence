@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Box from "./Box";
 import { Levels, usePingPongContext } from "../../../../contexts/pingPongProvider";
 import { useNavigate } from "react-router-dom";
-import { useTournementContext } from "../../../../contexts/TournementProvider";
+import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 
 // width = 1.6 * height
 
@@ -11,7 +11,7 @@ const Table = ({width}: {width: number}) => {
 	const sidePaddle = useRef<HTMLDivElement>(null);
 	const table = useRef<HTMLDivElement>(null);
 	const { sendJsonMessage, state } = usePingPongContext();
-	const {sendJsonMessage: sendInTournament} = useTournementContext();
+	const {sendJsonMessage: sendInTournament} = useTournamentContext();
 	const navigate = useNavigate();
 
 	const movePaddle = (e: any) => {
@@ -51,10 +51,10 @@ const Table = ({width}: {width: number}) => {
 		// 	dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
 		// 	navigate("/ping-pong");
 		// }
-		// else if (window.location.pathname == "/tournement/match-making")
+		// else if (window.location.pathname == "/Tournament/match-making")
 		// {
 		// 	dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-		// 	navigate("/tournement");
+		// 	navigate("/Tournament");
 		// }
 	}, [])
 

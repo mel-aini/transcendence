@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Container from "../../components/Container";
-import { Player, RoundData, useTournementContext } from "../../contexts/TournementProvider";
+import { Player, RoundData, useTournamentContext } from "../../contexts/TournamentProvider";
 import Match from "./Match";
 import PlayerBar from "./PlayerBar";
 
@@ -10,7 +10,7 @@ interface Match {
 }
 
 const Index = () => {
-	const { state, dispatch } = useTournementContext();
+	const { state, dispatch } = useTournamentContext();
 
 	useEffect(() => {
 	}, []);
@@ -18,7 +18,7 @@ const Index = () => {
 	return (
 		<div className="flex flex-col gap-11 pb-6">
 			<Container className="h-[109px] w-full" childClassName="flex justify-between items-center p-5">
-				<h1 className="text-4xl md:text-5xl font-semibold">Tournement Title</h1>
+				<h1 className="text-4xl md:text-5xl font-semibold">Tournament Title</h1>
 			</Container>
 			<span className="place-self-end">created by: mel-aini</span>
 			{/* <div className="relative flex justify-center items-center sm:gap-5 gap-3 w-full md:flex-row flex-col"> */}

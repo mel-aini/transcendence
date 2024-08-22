@@ -95,10 +95,10 @@ function MatchMaking() {
 			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
 			navigate("/ping-pong");
 		}
-		else if (window.location.pathname == "/tournement/match-making")
+		else if (window.location.pathname == "/Tournament/match-making")
 		{
 			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-			navigate("/tournement");
+			navigate("/Tournament");
 		}
 	}
 
@@ -115,10 +115,10 @@ function MatchMaking() {
 				dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
 				navigate("/ping-pong");
 			}
-			else if (window.location.pathname == "/tournement/match-making")
+			else if (window.location.pathname == "/Tournament/match-making")
 			{
 				dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-				navigate("/tournement");
+				navigate("/Tournament");
 			}
 		}
 	}, []);
