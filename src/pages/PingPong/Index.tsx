@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 import { useNavigate } from "react-router-dom";
-import LayoutHeader from "../../components/LayoutHeader";
+import LayoutHeader from "../../layout/LayoutHeader";
 
 interface Props extends ComponentProps<'div'> {
 	className?: string,

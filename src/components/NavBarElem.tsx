@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { HTMLAttributes } from 'react';
-import Polygon from './Polygon';
+import Polygon from './helpers/Polygon';
 import { RiDashboardLine } from "react-icons/ri";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { FiBell } from "react-icons/fi";

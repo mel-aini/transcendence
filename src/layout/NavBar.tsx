@@ -1,21 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
-import User from "./User";
+import User from "../components/User";
 import useLog from "../hooks/useLog";
-import Modal from "./Modal";
-import SearchUsers from "./SearchUsers";
+import Modal from "../components/Modal";
+import SearchUsers from "../components/SearchUsers";
 // import Notifications from "./Notifications";
-import { FiBell } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { FiSearch } from "react-icons/fi";
 import { useChatContext } from "../contexts/chatProvider";
-import Notification from "./Notification";
+import Notification from "../components/Notification";
+import Logo from "../components/Logo";
+import Notifications from "../components/Notifications";
 import { SideBarElem } from "./SideBar";
-import Logo from "./Logo";
+import Search from "./Search";
+import NotificationsBell from "./NotificationsBell";
 
-type DropMenuTypes = null | 'profile' | 'notification' | 'navbar';
+export type DropMenuTypes = null | 'profile' | 'notification' | 'navbar';
 
 interface DropMenuProps {
 	setDropMenu: any, 
@@ -50,10 +51,7 @@ function DropMenu({ setDropMenu, type }: DropMenuProps) {
 	if (type == 'notification') {
 		return (
 			<div className="scrollClass absolute z-50 right-0 top-full w-[450px] max-h-[400px] p-5 border border-border rounded-md bg-bg overflow-auto space-y-5">
-				<Notification />
-				<Notification />
-				<Notification />
-				<Notification />
+				<Notifications />
 			</div>
 		)
 	}
@@ -70,9 +68,8 @@ function DropMenu({ setDropMenu, type }: DropMenuProps) {
 	}
 }
 
-
 const NavBar = ({ className }: {className?: string}) => {
-	const {state, dispatch} = useGlobalContext();
+	const { state } = useGlobalContext();
 	const {state: chatState} = useChatContext();
 	const [dropMenu, setDropMenu] = useState(false);
 	const dropMenuType = useRef< DropMenuTypes >(null)
@@ -107,21 +104,8 @@ const NavBar = ({ className }: {className?: string}) => {
 					</Link>
 				</div>
 				<div className="relative flex justify-end items-center gap-5 h-20">
-					<FiSearch
-						onClick={() => dispatch({type: 'SEARCH'})} 
-						className="text-2xl lg:hidden" />
-					<div 
-						onClick={() => dispatch({type: 'SEARCH'})} 
-						className="hidden lg:flex items-center text-gray1 h-10 pl-4 pr-32 rounded-md cursor-pointer border border-border">search</div>
-					<div
-						onClick={() => {
-							dropMenuType.current = 'notification';
-							setDropMenu(prev => !prev)
-						}} 
-						className="relative flex items-center cursor-pointer">
-						<FiBell className="text-2xl" />
-						<span className="absolute -top-1 right-0 size-3 rounded-full bg-red-500"></span>
-					</div>
+					<Search />
+					<NotificationsBell dropMenuType={dropMenuType} setDropMenu={setDropMenu}  />
 					<User 
 						onClick={() => {
 							dropMenuType.current = 'profile';
@@ -138,14 +122,6 @@ const NavBar = ({ className }: {className?: string}) => {
 							setDropMenu(prev => !prev)}
 						}
 						className="text-2xl lg:hidden cursor-pointer" />
-					{/* Search Modal */}
-					<Modal
-						className='top-20 translate-y-0 w-11/12 max-w-[600px]'
-						isOpen={state.search} 
-						onClose={() => dispatch({type: 'SEARCH'})}>
-						<SearchUsers />
-					</Modal>
-					{/* Search Modal */}
 					{/* Overlay */}
 					{dropMenu && <div
 						onClick={() => setDropMenu(false)}

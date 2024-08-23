@@ -9,8 +9,8 @@ import useWebSocket from "react-use-websocket";
 import Customize_icon from "/Customize_icon.svg"
 import { IoIosArrowBack ,IoIosArrowForward } from "react-icons/io";
 import CustomizeTab from "../../Settings/CustomizeTab";
-import LayoutHeader from "../../../components/LayoutHeader";
 import { Section, SectionContent, SectionHeader } from "../../Settings/Index";
+import LayoutHeader from "../../../layout/LayoutHeader";
 
 export const customizeContext = createContext<any>({});
 

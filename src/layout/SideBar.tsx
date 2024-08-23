@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
-import Polygon from "./Polygon";
 import { twMerge } from "tailwind-merge";
 import { useLocation, useNavigate } from "react-router-dom";
+import Polygon from "../components/helpers/Polygon";
 
 interface SideBarElemProps extends ComponentProps<'div'> {
 	children: string
@@ -14,7 +14,7 @@ export function SideBarElem({children, ...props}: SideBarElemProps) {
 	return ( 
 		<div className='relative' {...props} >
 			<span className='w-[21px] h-full bg-secondary absolute top-0 left-0 cursor-pointer'></span>
-			<Polygon 
+			<Polygon
 				className={'flex justify-start font-medium text-lg uppercase italic bg-secondary ' + (isActive ? 'text-primary' : 'text-white')}
 				>
 					{children}</Polygon>

@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import Title from "./Title";
+import Title from "../components/Title";
 
 interface Props {
 	image?: string

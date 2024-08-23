@@ -1,6 +1,11 @@
 import { FiBell } from "react-icons/fi";
+import { INotification } from "../contexts/store";
 
-const Notification = () => {
+interface Props {
+	data: INotification
+}
+
+const Notification = ({ data }: Props) => {
 	return (
 		<div className="p-5 bg-secondary rounded-lg space-y-5">
 			<div className="flex gap-5 items-center">

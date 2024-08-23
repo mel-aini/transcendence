@@ -1,10 +1,10 @@
 import { twMerge } from "tailwind-merge";
-import LayoutHeader from "../../components/LayoutHeader";
 import EditBar from "./EditBar";
 import TFA from "./TFA";
 import { IoIosArrowDown } from "react-icons/io";
 import { ComponentProps, ReactNode, useState } from "react";
 import CustomizeTab from "./CustomizeTab";
+import LayoutHeader from "../../layout/LayoutHeader";
 
 interface SectionProps {
 	children?: ReactNode[]

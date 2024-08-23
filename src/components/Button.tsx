@@ -1,5 +1,5 @@
 import { HTMLAttributes, ReactNode } from "react";
-import Polygon from "./Polygon";
+import Polygon from "./helpers/Polygon";
 
 interface ButtonProps extends HTMLAttributes<HTMLDivElement> {
 	children: ReactNode,

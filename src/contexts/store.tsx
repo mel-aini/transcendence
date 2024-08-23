@@ -1,7 +1,19 @@
-import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 import { UserData } from "../types/profile";
-import { useQuery } from "@tanstack/react-query";
-import api from "../api/axios";
+
+export interface INotification {
+	code: 200 | 400
+	data: {
+		notification_id: string, 
+		type: "friend-request" | "game-request" | "text" | "join-game" | "join-tournament"
+		content: string
+		read: true, 
+		id: string
+	}
+	identifier: any
+	message: "notification"
+	type: "notification"
+}
 
 export interface GlobalStateProps {
 	isLoading: boolean
@@ -9,6 +21,7 @@ export interface GlobalStateProps {
 	alertMessage: string
 	search: boolean
 	userData: UserData | null
+	notifications: INotification[]
 }
 
 const initialState: GlobalStateProps = {
@@ -16,18 +29,14 @@ const initialState: GlobalStateProps = {
 	alert: false,
 	alertMessage: '',
 	search: false,
-	userData: null
+	userData: null,
+	notifications: []
 };
 
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
 	state: initialState,
 	dispatch: () => {}
 });
-
-// export const GLOBAL_CONTEXT_OPTIONS = {
-// 	ALERT: 'ALERT',
-// 	LOADING: 'LOADING'
-// }
 
 const reducer = (state: GlobalStateProps, action: any) => {
 	switch (action.type)
@@ -59,6 +68,11 @@ const reducer = (state: GlobalStateProps, action: any) => {
 			return { 
 				...state,
 				userData: action.userData
+			}
+		case 'NOTIFICATIONS':
+			return { 
+				...state,
+				notifications: [...state.notifications, ...action.notifications]
 			}
 		default:
 			return state;

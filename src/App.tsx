@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
 import GlobalContextProvider from "./contexts/store";
-import Layout from "./components/Layout";
+import Layout from "./layout/Layout";
 import MainLayout from "./MainLayout";
 import PingPongContextProvider from "./contexts/pingPongProvider";
 import { Suspense, lazy } from "react";
@@ -40,7 +40,7 @@ function App() {
                     <Route path="/signup" element={withoutAuth(SignUp)} />
                     <Route path="/login" element={withoutAuth(Login)} />
                     {/* <Route path="/chat" element={withAuth(Chat)} /> */}
-                    <Route element={<Layout />}>
+                    <Route element={withAuth(Layout)}>
                       <Route path="/chat" element={<Chat />} />
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/profile" element={withProfile(Profile)} />
