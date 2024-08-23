@@ -52,11 +52,6 @@ function InfiniteScrollObserver({ endPoint, start = 0, chunkSize = 10, whenFetch
 				ref={container} className="h-[40px] flex justify-center items-center">
 				<AiOutlineLoading3Quarters className='animate-spin' />
 			</div>}
-			{isLimitReached && 
-				<div className="h-40 flex justify-center items-center">
-					you have reached the limit!
-				</div>
-			}
 		</>
 	);
 }

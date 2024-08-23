@@ -7,7 +7,7 @@ export interface INotification {
 		notification_id: string, 
 		type: "friend-request" | "game-request" | "text" | "join-game" | "join-tournament"
 		content: string
-		read: true, 
+		read: boolean, 
 		id: string
 	}
 	identifier: any

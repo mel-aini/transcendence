@@ -13,13 +13,14 @@ const Notification = ({ data }: Props) => {
 					<FiBell className="text-3xl" />
 				</div>
 				<div>
-					<p>your next game in the Tournament will start in 2 days</p>
+					<p>{data.data.content}</p>
 				</div>
 			</div>
+			{data.data.type == 'friend-request' ||  data.data.type == 'game-request' && 
 			<div className="pl-[52px] grid grid-cols-2 gap-2">
 				<button className="flex justify-center items-center border border-border py-2 rounded-lg">reject</button>
 				<button className="flex justify-center items-center border border-primary text-primary py-2 rounded-lg">accept</button>
-			</div>
+			</div>}
 		</div>
 	);
 }

@@ -16,19 +16,21 @@ async function getNotifications() {
 }
 
 function NotificationBell({dropMenuType, setDropMenu}: Props) {
-	const { dispatch } = useGlobalContext();
-	const [bell, setBell] = useState(false);
+	const { state, dispatch } = useGlobalContext();
+	const [ bell, setBell ] = useState(false);
 	const { data, isLoading, isError } = useQuery({
         queryKey: ['searchUsers'], 
         queryFn: async () => getNotifications()
     });
 
 	useEffect(() => {
-		console.log('when mounted');
-		console.log(data?.data)
 		if (data)
 			dispatch({type: 'NOTIFICATIONS', notifications: data.data});
 	}, [])
+
+	useEffect(() => {
+		state.notifications.length > 0 && setBell(!state.notifications[0].data.read)
+	}, [state.notifications])
 
 	if (isLoading) {
 		return (
