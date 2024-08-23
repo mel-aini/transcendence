@@ -1,6 +1,6 @@
 import { createContext, forwardRef, useContext, useEffect, useRef, useState } from "react";
 import Container from "../../components/Container";
-import NewButton from "../../components/NewButton";
+import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import JoinTournament from "./JoinTournament";
 import Title from "../../components/Title";
@@ -27,11 +27,11 @@ const Tournaments = ({ className }: Props) => {
 							restWordClassName="text-4xl"
 								>Tournament
 						</Title>
-				<div onClick={clickHandler}>
-					{/* <Link to="/Tournament"> */}
-						<NewButton className="h-[46px] w-full max-w-[340px]">Create New Tournament</NewButton>
-					{/* </Link> */}
-				</div>
+				{/* <div onClick={clickHandler}> */}
+					<Link to="/tournament">
+						<Button className="h-[46px] w-full max-w-[340px]">Create New Tournament</Button>
+					</Link>
+				{/* </div> */}
 			</Container>
 			<JoinTournament />
 		</displayContext.Provider>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
 import User from "./User";
 import useLog from "../hooks/useLog";
@@ -13,6 +13,7 @@ import { FiSearch } from "react-icons/fi";
 import { useChatContext } from "../contexts/chatProvider";
 import Notification from "./Notification";
 import { SideBarElem } from "./SideBar";
+import Logo from "./Logo";
 
 type DropMenuTypes = null | 'profile' | 'notification' | 'navbar';
 
@@ -63,7 +64,7 @@ function DropMenu({ setDropMenu, type }: DropMenuProps) {
 			<div className="space-y-5 w-[250px absolute z-50 right-0 top-full p-5 bg-bg rounded-lg">
 				<SideBarElem onClick={() => navigate('/dashboard')}>Dashboard</SideBarElem>
 				<SideBarElem onClick={() => navigate('/chat')}>Chat</SideBarElem>
-				<SideBarElem>Settings</SideBarElem>
+				<SideBarElem onClick={() => navigate('/settings')}>Settings</SideBarElem>
 			</div>
 		)
 	}
@@ -100,7 +101,11 @@ const NavBar = ({ className }: {className?: string}) => {
 			<div
 				ref={container} 
 				className={twMerge('nav-bar sticky top-0 left-0 h-20 z-40 lg:z-50 shadow-bottom flex justify-between px-10 bg-bg', className)}>
-				<h1 className='h-20 flex items-center'>logo</h1>
+				<div className='h-20 flex items-center'>
+					<Link to={'/'}>
+						<Logo className="font-medium cursor-pointer" />
+					</Link>
+				</div>
 				<div className="relative flex justify-end items-center gap-5 h-20">
 					<FiSearch
 						onClick={() => dispatch({type: 'SEARCH'})} 
@@ -122,9 +127,8 @@ const NavBar = ({ className }: {className?: string}) => {
 							dropMenuType.current = 'profile';
 							setDropMenu(prev => !prev)}
 						}
-						width={35} 
 						border 
-						className="border-white cursor-pointer" 
+						className="border-white cursor-pointer size-[30px]" 
 						url={state.userData?.profile_image || ''}>
 					</User>
 					{dropMenu && <DropMenu setDropMenu={setDropMenu} type={dropMenuType.current} />}

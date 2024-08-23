@@ -2,7 +2,7 @@ import { HTMLAttributes, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface PolygonProps extends HTMLAttributes<HTMLDivElement> {
-	children: ReactNode,
+	children?: ReactNode,
 	className?: string
 }
 

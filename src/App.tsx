@@ -40,7 +40,7 @@ function App() {
                     <Route path="/signup" element={withoutAuth(SignUp)} />
                     <Route path="/login" element={withoutAuth(Login)} />
                     {/* <Route path="/chat" element={withAuth(Chat)} /> */}
-                    <Route element={withAuth(Layout)}>
+                    <Route element={<Layout />}>
                       <Route path="/chat" element={<Chat />} />
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/profile" element={withProfile(Profile)} />

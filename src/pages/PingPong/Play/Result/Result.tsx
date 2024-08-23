@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import NewButton from "../../../../components/NewButton";
+import Button from "../../../../components/Button";
 import { usePingPongContext } from "../../../../contexts/pingPongProvider";
 import UserBox from "./UserBox";
 import { motion } from "framer-motion";
@@ -89,7 +89,7 @@ function Result() {
 			transition={{duration: 0.3, delay: 2}}
 			onClick={clickHandler}
 			className="relative top-0 max-w-[344px] h-full w-full">
-				<NewButton className="h-full w-full">continue</NewButton>
+				<Button className="h-full w-full">continue</Button>
 			</motion.div>
 		</motion.div>
 	);

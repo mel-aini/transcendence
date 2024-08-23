@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import trophy from "/trophy.svg"
-import NewButton from "../../components/NewButton";
+import Button from "../../components/Button";
 import { useContext, useRef, useState } from "react";
 import { displayContext } from "./Tournaments";
 import { GiHumanPyramid } from "react-icons/gi";
@@ -67,7 +67,7 @@ function TournamentFrom() {
 				<PlayersNum />
 			</div>
 			<div onClick={clickHandler} className="w-full flex justify-center">
-				<NewButton className="w-full max-w-[344px]">Join</NewButton>
+				<Button className="w-full max-w-[344px]">Join</Button>
 			</div>
 		</div>
 	);

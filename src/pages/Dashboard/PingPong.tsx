@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import NewButton from "../../components/NewButton";
+import Button from "../../components/Button";
 import Title from "../../components/Title";
 
 interface Props {
@@ -22,7 +22,7 @@ const PingPong = ({ className }: Props) => {
 					</div>
 					<div>
 						<Link to="/ping-pong">
-							<NewButton className="h-full w-full max-w-[340px]">Start a game</NewButton>
+							<Button className="h-full w-full max-w-[340px]">Start a game</Button>
 						</Link>
 					</div>
 				</div>

@@ -1,5 +1,6 @@
 import { ComponentProps } from "react";
 import { useNavigate } from "react-router-dom";
+import LayoutHeader from "../../components/LayoutHeader";
 
 interface Props extends ComponentProps<'div'> {
 	className?: string,
@@ -24,27 +25,30 @@ function PlayChoise({className, title, description, ...props}: Props) {
 function Index() {
 	const navigate = useNavigate();
 
-	return ( 
-		<div className="grid gap-5 grid-cols-1 lg:grid-cols-6">
-			<PlayChoise
-				onClick={() => navigate('match-making')}
-				title="Matchmaking" 
-				description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis." 
-				className="lg:col-start-1 lg:col-end-5"/>
-			<PlayChoise 
-				title="Vs Bot" 
-				description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttito."
-				className="lg:col-start-5 lg:col-end-7" />
-			<PlayChoise 
-				title="1 vs 1" 
-				description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttito." 
-				className="lg:col-start-1 lg:col-end-3" />
-			<PlayChoise
-				onClick={() => navigate('vs-friend')}
-				title="Vs Friend" 
-				description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis." 
-				className="lg:col-start-3 lg:col-end-7" />
-		</div> 
+	return (
+		<>
+			<LayoutHeader>Ping Pong</LayoutHeader>
+			<div className="grid gap-5 grid-cols-1 lg:grid-cols-6">
+				<PlayChoise
+					onClick={() => navigate('match-making')}
+					title="Matchmaking" 
+					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis." 
+					className="lg:col-start-1 lg:col-end-5"/>
+				<PlayChoise 
+					title="Vs Bot" 
+					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttito."
+					className="lg:col-start-5 lg:col-end-7" />
+				<PlayChoise 
+					title="1 vs 1" 
+					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttito." 
+					className="lg:col-start-1 lg:col-end-3" />
+				<PlayChoise
+					onClick={() => navigate('vs-friend')}
+					title="Vs Friend" 
+					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis." 
+					className="lg:col-start-3 lg:col-end-7" />
+			</div> 
+		</>
 	);
 }
 

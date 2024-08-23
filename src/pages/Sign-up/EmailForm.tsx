@@ -5,7 +5,7 @@ import { primaryColor, invalidColor, whiteColor } from "../../utils/colors";
 import { BACKEND_END_POINT } from "../../utils/global";
 import { useGlobalContext } from "../../contexts/store";
 import callToApi from "../../utils/callToApi";
-import NewButton from "../../components/NewButton";
+import Button from "../../components/Button";
 
 interface IBody {
 	username: string,
@@ -91,7 +91,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 
 	return (
 		<>
-			<h1 className="text-2xl font-semibold mb-14">Welcome</h1>
+			<h1 className="text-2xl font-semibold mb-14 italic">Welcome</h1>
 			<form onSubmit={submitHandler} className="flex flex-col justify-between w-full h-[150px]">
 				<div className="flex flex-col gap-5 w-full">
 					<Input
@@ -103,12 +103,12 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 					/>
 					{formState[1].isError && <p className="text-sm self-end text-invalid">{formState[1].error}</p>}
 				</div>
-				<NewButton 
+				<Button 
 					type="submit" 
 					onClick={submitHandler}
 					>
 						continue with email
-				</NewButton>
+				</Button>
 			</form>
 		</>
 	)
