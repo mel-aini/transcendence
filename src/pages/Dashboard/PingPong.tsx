@@ -26,7 +26,7 @@ const PingPong = ({ className }: Props) => {
 						</Link>
 					</div>
 				</div>
-				<div className="hidden sm:block grow shrink-0 bg-login bg-no-repeat bg-cover bg-center">
+				<div className="hidden sm:block grow shrink-0 bg-login bg-no-repeat bg-cover bg-top">
 					<div className="w-full h-full bg-gradient-to-l from-transparent to-secondary"></div>
 				</div>
 			</div>

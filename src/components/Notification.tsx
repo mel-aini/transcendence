@@ -1,11 +1,26 @@
 import { FiBell } from "react-icons/fi";
 import { INotification } from "../contexts/store";
 
+interface MockINotification {
+	code: 200 | 400
+	data: {
+		notification_id: string, 
+		type: "friend-request" | "game-request" | "text" | "join-game" | "join-tournament"
+		content: string
+		read: boolean, 
+		id: string
+	}
+	identifier: any
+	message: "notification"
+	type: "notification"
+}
+
 interface Props {
 	data: INotification
 }
 
 const Notification = ({ data }: Props) => {
+
 	return (
 		<div className="p-5 bg-secondary rounded-lg space-y-5">
 			<div className="flex gap-5 items-center">

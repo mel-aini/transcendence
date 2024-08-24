@@ -185,7 +185,7 @@ function MatchMaking() {
 				</div>
 			</div>
 			<Section activated={true}>
-				<SectionHeader onClick={() => console.log('active')}>Display Settings</SectionHeader>
+				<SectionHeader>Display Settings</SectionHeader>
 				{true && 
 					<SectionContent>
 						<CustomizeTab />

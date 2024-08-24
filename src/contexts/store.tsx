@@ -21,7 +21,6 @@ export interface GlobalStateProps {
 	alertMessage: string
 	search: boolean
 	userData: UserData | null
-	notifications: INotification[]
 }
 
 const initialState: GlobalStateProps = {
@@ -29,8 +28,7 @@ const initialState: GlobalStateProps = {
 	alert: false,
 	alertMessage: '',
 	search: false,
-	userData: null,
-	notifications: []
+	userData: null
 };
 
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
@@ -68,11 +66,6 @@ const reducer = (state: GlobalStateProps, action: any) => {
 			return { 
 				...state,
 				userData: action.userData
-			}
-		case 'NOTIFICATIONS':
-			return { 
-				...state,
-				notifications: [...state.notifications, ...action.notifications]
 			}
 		default:
 			return state;
