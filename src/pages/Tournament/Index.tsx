@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Container from "../../components/Container";
-import { Player, RoundData, useTournamentContext } from "../../contexts/TournamentProvider";
+import { Player, RoundData, Tournament_WS_URL, useTournamentContext } from "../../contexts/TournamentProvider";
 import Match from "./Match";
 import PlayerBar from "./PlayerBar";
+import { useGlobalContext } from "../../contexts/store";
+import { useNavigate } from "react-router-dom";
 
 interface Match {
 	player1: Player | string,
@@ -11,9 +13,17 @@ interface Match {
 
 const Index = () => {
 	const { state, dispatch } = useTournamentContext();
+	const { state: profileData } = useGlobalContext();
+	const username: string | undefined = profileData.userData?.username;
+	const navigate = useNavigate();
 
 	useEffect(() => {
 	}, []);
+
+	const handleLeave = () => {
+		dispatch({type: "SOCKET_URL", socketUrl: null});
+		navigate("/dashboard");
+	}
 
 	return (
 		<div className="flex flex-col gap-11 pb-6">
@@ -105,6 +115,7 @@ const Index = () => {
 						}
 					</div>
 			</div>
+			<span onClick={handleLeave} className="font-extralight cursor-pointer hover:underline duration-300 select-none">leave</span>
 		</div>
 	);
 }

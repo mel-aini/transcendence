@@ -2,7 +2,7 @@ import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer }
 import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useGlobalContext } from "./store";
-import { useTournamentContext } from "./TournamentProvider";
+import { Player, RoundData, useTournamentContext } from "./TournamentProvider";
 import { useNavigate } from "react-router-dom";
 
 export interface Coordinates {
@@ -176,6 +176,8 @@ const reducer = (state: GameData, action: any) => {
 					...state, 
 					isTournament: action.isTournament
 				}
+			case 'RESET':
+				return initialState;
 		default:
 			return state;
 	}
@@ -186,21 +188,14 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
 	const fullWsUrl:string = state.gameId ? GAME_WS_URL + username + "/" + state.gameId : GAME_WS_URL + username + "/random/";
-	const { lastJsonMessage, sendJsonMessage } = isTournament
-	?
-	{
-		lastJsonMessage: {},
-		sendJsonMessage: () => {}
-	}
-	:
-		useWebSocket(fullWsUrl,
+	const { lastJsonMessage, sendJsonMessage } = useWebSocket(fullWsUrl,
 			{
 				share: false,
 				shouldReconnect: () => false,
 			},
-		)
-	;
-	const { state: tournState } = useTournamentContext();
+			!isTournament
+		);
+	const { lastJsonMessage: tournMessage } = useTournamentContext();
 	const navigate = useNavigate();
 
 	const isEmptyObject = (obj: any) => {
@@ -209,17 +204,18 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 		return JSON.stringify(obj) === '{}';
 	};
 
-	useEffect(() => {
-		dispatch({type: 'IS_Tournament', isTournament: isTournament});
-	}, []);
+	// useEffect(() => {
+	// 	dispatch({type: 'IS_Tournament', isTournament: isTournament});
+	// }, []);
 
 	useEffect(() => {
-		// console.log(lastJsonMessage);
+		console.log(lastJsonMessage);
 
 		if (!isEmptyObject(lastJsonMessage))
 		{
 			if (lastJsonMessage.type == "opponents")
 			{
+				dispatch({type: 'IS_Tournament', isTournament: isTournament});
 				(lastJsonMessage.user1 == username) ? dispatch({type: "OPPONENT", opponent: lastJsonMessage.user2})
 				:
 				dispatch({type: "OPPONENT", opponent: lastJsonMessage.user1});
@@ -277,58 +273,62 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 	}, [lastJsonMessage]);
 
 	useEffect(() => {
-		// console.log(tournState.pongMessage);
 
-		if (!isEmptyObject(tournState.pongMessage) && isTournament)
+		if (!isEmptyObject(tournMessage))
 		{
-			if (tournState.pongMessage.type == "opponents")
+			if (tournMessage.type != "ball")
+				console.log("PING_PONG context", tournMessage);
+
+			if (tournMessage.type == "opponents")
 			{
-				(tournState.pongMessage.user1 == username) ? dispatch({type: "OPPONENT", opponent: tournState.pongMessage.user2})
+				(tournMessage.user1 == username) ? dispatch({type: "OPPONENT", opponent: tournMessage.user2})
 				:
-				dispatch({type: "OPPONENT", opponent: tournState.pongMessage.user1});
+				dispatch({type: "OPPONENT", opponent: tournMessage.user1});
 				dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
+				dispatch({type: 'IS_Tournament', isTournament: isTournament});
+				navigate('match-making');
 			}
-			else if (tournState.pongMessage.type == "init_paddle")
+			else if (tournMessage.type == "init_paddle")
 			{
-				(tournState.pongMessage.my == 1) ?
+				(tournMessage.my == 1) ?
 				dispatch({type: "DIRECTIONS", directions: {...state.directions, my: "left", side: "right"}})
 				:
 				dispatch({type: "DIRECTIONS", directions: {...state.directions, my: "right", side: "left"}});
 
-				dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, x: tournState.pongMessage.my}});
-				dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, x: tournState.pongMessage.side}});
+				dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, x: tournMessage.my}});
+				dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, x: tournMessage.side}});
 
 			}
-			else if (tournState.pongMessage.type == "ball")
+			else if (tournMessage.type == "ball")
 			{
 				const ballData: Coordinates = {
-					x: tournState.pongMessage.x,
-					y: tournState.pongMessage.y
+					x: tournMessage.x,
+					y: tournMessage.y
 				}
 				dispatch({type: "ball_Data", ballData: ballData});
 			}
-			else if (tournState.pongMessage.type == "paddle")
+			else if (tournMessage.type == "paddle")
 			{
-				dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, y: tournState.pongMessage.pos}});
+				dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, y: tournMessage.pos}});
 			}
-			else if (tournState.pongMessage.type == "score")
+			else if (tournMessage.type == "score")
 			{
-				// console.log(tournState.pongMessage);
+				// console.log(tournMessage);
 				(state.directions.my == "right") ?
-				dispatch({type: "SCORE", score: {...state.score, my: tournState.pongMessage.right, side: tournState.pongMessage.left}})
+				dispatch({type: "SCORE", score: {...state.score, my: tournMessage.right, side: tournMessage.left}})
 				:
-				dispatch({type: "SCORE", score: {...state.score, my: tournState.pongMessage.left, side: tournState.pongMessage.right}});
+				dispatch({type: "SCORE", score: {...state.score, my: tournMessage.left, side: tournMessage.right}});
 			}
-			else if (tournState.pongMessage.type == "end")
+			else if (tournMessage.type == "end")
 			{
-				// console.log(tournState.pongMessage);
-				dispatch({type: "RESULT", result: {...state.result, status: tournState.pongMessage.status, isEndGame: true}})
+				// console.log(tournMessage);
+				dispatch({type: "RESULT", result: {...state.result, status: tournMessage.status, isEndGame: true}})
 			}
-			else if (tournState.pongMessage.type == "disconnect")
+			else if (tournMessage.type == "disconnect")
 			{
-				// console.log(tournState.pongMessage);
-				dispatch({type: "RESULT", result: {...state.result, status: tournState.pongMessage.status, isEndGame: true}});
-				tournState.pongMessage.status == "win"
+				// console.log(tournMessage);
+				dispatch({type: "RESULT", result: {...state.result, status: tournMessage.status, isEndGame: true}});
+				tournMessage.status == "win"
 				?
 				dispatch({type: "SCORE", score: {...state.score, my: 3, side: 0}})
 				:
@@ -336,7 +336,7 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 			}
 		}
 		
-	}, [tournState.pongMessage]);
+	}, [tournMessage]);
 	
 	return (
 		<PingPongContext.Provider value={{lastJsonMessage, sendJsonMessage, state, dispatch}}>

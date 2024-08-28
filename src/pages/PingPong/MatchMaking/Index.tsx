@@ -109,19 +109,21 @@ function MatchMaking() {
 	}
 
 	useEffect(() => {
-		if (state.level == Levels.OpponentFound)
-		{
-			if (window.location.pathname == "/ping-pong/match-making")
-			{
-				dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-				navigate("/ping-pong");
-			}
-			else if (window.location.pathname == "/Tournament/match-making")
-			{
-				dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-				navigate("/Tournament");
-			}
-		}
+		// if (state.level == Levels.OpponentFound)
+		// {
+		// 	if (window.location.pathname == "/ping-pong/match-making")
+		// 	{
+		// 		dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+		// 		navigate("/ping-pong");
+		// 	}
+		// 	else if (window.location.pathname == "/Tournament/match-making")
+		// 	{
+		// 		dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+		// 		navigate("/Tournament");
+		// 		console.log("here");
+		// 	}
+		// }
+
 	}, []);
 
 	useEffect(() => {
@@ -131,7 +133,7 @@ function MatchMaking() {
 			if (state.timer == 0)
 			{
 				// dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-				navigate('../play');
+				navigate('../play', { replace: true });
 			}
 			return () => {
 				clearInterval(id)

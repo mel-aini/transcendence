@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 
 function Result() {
-	const { state } = usePingPongContext();
+	const { state, dispatch } = usePingPongContext();
 	const navigate = useNavigate();
 	const [xp, setXp] = useState<number>(0);
 	const { sendJsonMessage } = useTournamentContext();
@@ -19,6 +19,7 @@ function Result() {
 		{
 			if (state.result.status != "lose" && state.result.status != "eliminated")
 				sendJsonMessage({ type: 'qualifyboard' });
+			dispatch({ type: 'RESET' });
 			navigate("/Tournament");
 		}
 	}

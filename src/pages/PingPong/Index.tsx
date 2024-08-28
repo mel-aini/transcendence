@@ -1,6 +1,9 @@
 import { ComponentProps } from "react";
 import { useNavigate } from "react-router-dom";
 import LayoutHeader from "../../layout/LayoutHeader";
+import { useTournamentContext } from "../../contexts/TournamentProvider";
+import { ReadyState } from "react-use-websocket";
+import { useGlobalContext } from "../../contexts/store";
 
 interface Props extends ComponentProps<'div'> {
 	className?: string,
@@ -24,13 +27,19 @@ function PlayChoise({className, title, description, ...props}: Props) {
 
 function Index() {
 	const navigate = useNavigate();
+	const { readyState } = useTournamentContext();
+
+	const clickHandler = (route: string) => {
+		if (readyState != ReadyState.OPEN)
+			navigate(route);
+	}
 
 	return (
 		<>
 			<LayoutHeader>Ping Pong</LayoutHeader>
 			<div className="grid gap-5 grid-cols-1 lg:grid-cols-6">
 				<PlayChoise
-					onClick={() => navigate('match-making')}
+					onClick={() => clickHandler('match-making')}
 					title="Matchmaking" 
 					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis." 
 					className="lg:col-start-1 lg:col-end-5"/>
@@ -43,7 +52,7 @@ function Index() {
 					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttito." 
 					className="lg:col-start-1 lg:col-end-3" />
 				<PlayChoise
-					onClick={() => navigate('vs-friend')}
+					onClick={() => clickHandler('vs-friend')}
 					title="Vs Friend" 
 					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis." 
 					className="lg:col-start-3 lg:col-end-7" />

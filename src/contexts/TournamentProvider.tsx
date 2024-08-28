@@ -1,5 +1,5 @@
-import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
-import useWebSocket from "react-use-websocket";
+import { Dispatch, ReactNode, createContext, useCallback, useContext, useEffect, useReducer, useState } from "react";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import profilePic from "/profilePic.svg";
 import { useGlobalContext } from "./store";
@@ -20,8 +20,8 @@ export interface RoundData {
 interface TournamentData {
 	playersNum: number,
 	roundData: RoundData[],
-	winner: Player | string
-	pongMessage: any
+	winner: Player | "player",
+	socketUrl: string | null,
 }
 
 const initialState: TournamentData = {
@@ -33,13 +33,14 @@ const initialState: TournamentData = {
 	// 	isConnected: true
 	// },
 	winner: "player",
-	pongMessage: {}
+	socketUrl: null,
 };
 
-export const TournamentContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage, state: TournamentData, dispatch: Dispatch<any>}>({
+export const TournamentContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage, readyState: ReadyState, state: TournamentData, dispatch: Dispatch<any>}>({
 	lastJsonMessage: '',
 	sendJsonMessage: () => {
 	},
+	readyState: ReadyState.UNINSTANTIATED,
 	state: initialState,
 	dispatch: () => {}
 });
@@ -62,10 +63,10 @@ const reducer = (state: TournamentData, action: any) => {
 				...state,
 				winner: action.winner
 			}
-		case 'PONG_MESSAGE':
+		case 'SOCKET_URL':
 			return {
 				...state,
-				pongMessage: action.pongMessage
+				socketUrl: action.socketUrl
 			}
 		default:
 			return state;
@@ -78,32 +79,15 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username; // state.joinTournament.alias
-	const { lastJsonMessage, sendJsonMessage } = useWebSocket(Tournament_WS_URL + state.playersNum + "/" + username,
-		{
-			share: false,
-			shouldReconnect: () => false,
-		},
-	);
-	const player: Player = {
-		username: "ychahbi",
-		image: profilePic,
-		isConnected: true,
-	};
 
-	const isEmptyObject = (obj: any) => {
-		if (obj === null)
-			return (true);
-		return JSON.stringify(obj) === '{}';
-	};
-
-	useEffect(() => {
+	const initRounds = useCallback((): RoundData[] => {
+		const resetRoundData: RoundData[] = [];
 		let roundsNum = 0;
 		let i: number = state.playersNum / 2;
 		while (i >= 1) {
 			roundsNum++;
 			i = i / 2;
 		}
-		const roundData: RoundData[] = [];
 		i = 0;
 		let j = state.playersNum;
 		while (i < roundsNum)
@@ -120,19 +104,35 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 				k--;
 			};
 			tmp.players = play;
-			roundData.push(tmp);
+			resetRoundData.push(tmp);
 			j = j / 2;
 			i++;
 		}
-		// roundData.push({
-		// 	round: j,
-		// 	players: ['player']
-		// });
-		// console.log(roundData);
+		return resetRoundData;
+	}, [state.playersNum])
 
-		dispatch({type: "ROUND_DATA", roundData: roundData});
-		// console.log(Tournament_WS_URL + state.playersNum + "/" + username);
+	const {lastJsonMessage, sendJsonMessage, readyState } = useWebSocket(state.socketUrl,
+		{
+			onOpen: () => console.log('WebSocket connected'),
+			onClose: () => {
+				console.log('WebSocket disconnected')
+				dispatch({type: "ROUND_DATA", roundData: initRounds()});
+				dispatch({type: "WINNER", winner: "player"});
+			},
+			share: false,
+			shouldReconnect: () => false,
+		},
+		state.socketUrl !== null
+	);
 
+	const isEmptyObject = (obj: any) => {
+		if (obj === null)
+			return (true);
+		return JSON.stringify(obj) === '{}';
+	};
+
+	useEffect(() => {
+		dispatch({type: "ROUND_DATA", roundData: initRounds()});
 	}, []);
 
 	useEffect(() => {
@@ -140,7 +140,8 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		if (!isEmptyObject(lastJsonMessage))
 		{
 			if (lastJsonMessage.type != "ball")
-				console.log(lastJsonMessage);
+				console.log("TOURNAMENT context", lastJsonMessage);
+
 			if (lastJsonMessage.type == "dashboard")
 			{
 				const isCompleted: boolean = (lastJsonMessage.rounds.length > state.roundData.length);
@@ -165,27 +166,20 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 						i++;
 					}
 				});
-				// console.log(roundData);
 				dispatch({type: "ROUND_DATA", roundData: roundData});
-			}
-			else
-			{
-				dispatch({type: "PONG_MESSAGE", pongMessage: lastJsonMessage});
-				if (lastJsonMessage.type == 'opponents')
-					navigate('match-making');
 			}
 		}
 		
 	}, [lastJsonMessage]);
 
 	return (
-		<TournamentContext.Provider value={{lastJsonMessage, sendJsonMessage, state, dispatch}}>
+		<TournamentContext.Provider value={{lastJsonMessage, sendJsonMessage, readyState, state, dispatch}}>
 			{children}
 		</TournamentContext.Provider>
 	)
 }
 
-const Tournament_WS_URL = "ws://127.0.0.1:8000/ws/game_tournament/";
+export const Tournament_WS_URL = "ws://127.0.0.1:8000/ws/game_tournament/";
 export const useTournamentContext = () => useContext(TournamentContext);
 export default TournamentContextProvider;
 
@@ -222,3 +216,5 @@ export default TournamentContextProvider;
 // lowens0
 // csmith0
 // samuel980
+
+// Tournament_WS_URL + state.playersNum + "/" + username
