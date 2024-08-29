@@ -6,6 +6,7 @@ import JoinTournament from "./JoinTournament";
 import Title from "../../components/Title";
 import { Tournament_WS_URL, useTournamentContext } from "../../contexts/TournamentProvider";
 import { useGlobalContext } from "../../contexts/store";
+import { ReadyState } from "react-use-websocket";
 
 interface Props {
 	className?: string
@@ -15,17 +16,13 @@ export const displayContext = createContext<any>({});
 
 const Tournaments = ({ className }: Props) => {
 	const [display, setDisplay] = useState<boolean>(false);
-	const { state, dispatch } = useTournamentContext();
+	const { state, dispatch, readyState } = useTournamentContext();
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
 	const navigate = useNavigate();
 
 	const clickHandler = () => {
-		// setDisplay(true);
-		if (state.socketUrl === null)
-			dispatch({type: "SOCKET_URL", socketUrl: Tournament_WS_URL + state.playersNum + "/" + username});
-		navigate("/Tournament");
-		// Tournament_WS_URL + state.playersNum + "/" + username
+		(readyState != ReadyState.OPEN) ? setDisplay(true) : navigate("/Tournament");
 	}
 
 	return (
@@ -38,9 +35,7 @@ const Tournaments = ({ className }: Props) => {
 								>Tournament
 						</Title>
 				<div onClick={clickHandler}>
-					{/* <Link to="/tournament"> */}
-						<Button className="h-[46px] w-full max-w-[340px]">Create New Tournament</Button>
-					{/* </Link> */}
+					<Button className="h-full w-full max-w-[340px]">Join Tournament</Button>
 				</div>
 			</Container>
 			<JoinTournament />

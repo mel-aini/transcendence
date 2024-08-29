@@ -1,5 +1,5 @@
 import { forwardRef, useEffect } from "react";
-import { Player } from "../../contexts/TournamentProvider";
+import { Player, useTournamentContext } from "../../contexts/TournamentProvider";
 import { useGlobalContext } from "../../contexts/store";
 import { GiCrownOfThorns } from "react-icons/gi";
 import { GiCrenelCrown } from "react-icons/gi";
@@ -11,7 +11,7 @@ interface playerProp {
 }
 
 const PlayerBar = forwardRef((props: playerProp, ref) => {
-	const {state: profileData} = useGlobalContext();
+	const {state} = useTournamentContext();
 
 	return (
 		<div ref={ref} className={"h-[61px] w-[163px] " + (props.isRightSide ? "rotate-180" : "")}>
@@ -23,7 +23,7 @@ const PlayerBar = forwardRef((props: playerProp, ref) => {
 							{ props.isWinner && <GiCrenelCrown className="absolute w-[41px] h-[41px] -translate-x-1/2 -translate-y-1/2 top-[-10%] left-1/2" fill="#14ffec"/> }
 							<img src={props.player.image} alt="" className="w-[41px] h-[41px] rounded-full border overflow-hidden shrink-0 border-border" />
 						</div>
-						<span className={"truncate " + ((profileData.userData?.username == props.player.username) ? "text-primary" : "")}>{props.player.username}</span>
+						<span className={"truncate " + ((state.alias == props.player.username) ? "text-primary" : "")}>{props.player.username}</span>
 					</>
 					:
 					<>

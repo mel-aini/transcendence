@@ -195,7 +195,7 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 			},
 			!isTournament
 		);
-	const { lastJsonMessage: tournMessage } = useTournamentContext();
+	const { lastJsonMessage: tournMessage, sendJsonMessage: sendTournMessage, state: tournState } = useTournamentContext();
 	const navigate = useNavigate();
 
 	const isEmptyObject = (obj: any) => {
@@ -277,15 +277,19 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 		if (!isEmptyObject(tournMessage))
 		{
 			if (tournMessage.type != "ball")
-				console.log("PING_PONG context", tournMessage);
+				console.log(tournMessage);
 
 			if (tournMessage.type == "opponents")
 			{
-				(tournMessage.user1 == username) ? dispatch({type: "OPPONENT", opponent: tournMessage.user2})
+				dispatch({type: 'IS_Tournament', isTournament: isTournament});
+				(tournMessage.user1 == tournState.alias) ? dispatch({type: "OPPONENT", opponent: tournMessage.user2})
 				:
 				dispatch({type: "OPPONENT", opponent: tournMessage.user1});
 				dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
-				dispatch({type: 'IS_Tournament', isTournament: isTournament});
+				sendTournMessage( { type: 'handshake' } );
+			}
+			else if (tournMessage.type == "ready")
+			{
 				navigate('match-making');
 			}
 			else if (tournMessage.type == "init_paddle")

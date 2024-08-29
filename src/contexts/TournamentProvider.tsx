@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, createContext, useCallback, useContext, useEffect, useReducer, useState } from "react";
+import { Dispatch, ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import profilePic from "/profilePic.svg";
@@ -18,6 +18,7 @@ export interface RoundData {
 }
 
 interface TournamentData {
+	alias: string,
 	playersNum: number,
 	roundData: RoundData[],
 	winner: Player | "player",
@@ -25,6 +26,7 @@ interface TournamentData {
 }
 
 const initialState: TournamentData = {
+	alias: '',
 	playersNum: 4,
 	roundData: [],
 	// winner: {
@@ -48,6 +50,11 @@ export const TournamentContext = createContext<{lastJsonMessage: any, sendJsonMe
 const reducer = (state: TournamentData, action: any) => {
 	switch (action.type)
 	{
+		case 'ALIAS':
+			return {
+				...state,
+				alias: action.alias
+			}
 		case 'PLAYERS_NUM':
 			return {
 				...state,
@@ -113,11 +120,15 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 
 	const {lastJsonMessage, sendJsonMessage, readyState } = useWebSocket(state.socketUrl,
 		{
-			onOpen: () => console.log('WebSocket connected'),
-			onClose: () => {
-				console.log('WebSocket disconnected')
+			onOpen: () => {
+				console.log('WebSocket connected')
 				dispatch({type: "ROUND_DATA", roundData: initRounds()});
 				dispatch({type: "WINNER", winner: "player"});
+			},
+			onClose: () => {
+				console.log('WebSocket disconnected');
+				// dispatch({type: "ROUND_DATA", roundData: initRounds()});
+				// dispatch({type: "WINNER", winner: "player"});
 			},
 			share: false,
 			shouldReconnect: () => false,
@@ -131,16 +142,16 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		return JSON.stringify(obj) === '{}';
 	};
 
-	useEffect(() => {
-		dispatch({type: "ROUND_DATA", roundData: initRounds()});
-	}, []);
+	// useEffect(() => {
+	// 	dispatch({type: "ROUND_DATA", roundData: initRounds()});
+	// }, []);
 
 	useEffect(() => {
 
 		if (!isEmptyObject(lastJsonMessage))
 		{
-			if (lastJsonMessage.type != "ball")
-				console.log("TOURNAMENT context", lastJsonMessage);
+			// if (lastJsonMessage.type != "ball")
+			// 	console.log("TOURNAMENT context", lastJsonMessage);
 
 			if (lastJsonMessage.type == "dashboard")
 			{

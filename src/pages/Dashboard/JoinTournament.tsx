@@ -1,37 +1,27 @@
 import { AnimatePresence, motion } from "framer-motion";
 import trophy from "/trophy.svg"
 import Button from "../../components/Button";
-import { useContext, useRef, useState } from "react";
+import { useContext, useDeferredValue, useEffect, useRef, useState } from "react";
 import { displayContext } from "./Tournaments";
 import { GiHumanPyramid } from "react-icons/gi";
-import { useTournamentContext } from "../../contexts/TournamentProvider";
+import { Tournament_WS_URL, useTournamentContext } from "../../contexts/TournamentProvider";
 import { validate } from "../../utils/validation";
+import { useNavigate } from "react-router-dom";
 
 function PlayersNum() {
-	const [are4, setare4] = useState<boolean>(true);
-	const [are8, setare8] = useState<boolean>(false);
+	const { state, dispatch } = useTournamentContext();
 
 	const clickHandler = (num: number) => {
-		if (num === 4)
-		{
-			setare4(true);
-			setare8(false);
-		}
-		else
-		{
-			setare4(false);
-			setare8(true);
-		}
+		dispatch({type: "PLAYERS_NUM", playersNum: num});
 	}
 
 	return (
 		<div className="flex items-center max-w-[344px] w-full h-[50px] bg-transparent">
-			<div onClick={() => clickHandler(4)} className={"flex items-center justify-center grow h-full px-4 border border-border rounded-md cursor-pointer select-none " + (are4 ? "bg-border" : "")}>
-				{/* <GiHumanPyramid className="text-3xl pr-2"/> */}
+			<div onClick={() => clickHandler(4)} className={"flex items-center justify-center grow h-full px-4 border border-border rounded-md cursor-pointer select-none " + ((state.playersNum === 4) ? "bg-border" : "")}>
 				<span>4 players</span>
 			</div>
 				<GiHumanPyramid className="text-3xl pr-2 grow"/>
-			<div onClick={() => clickHandler(8)} className={"flex items-center justify-center grow h-full px-4 border border-border rounded-md cursor-pointer select-none " + (are8 ? "bg-border" : "")}>
+			<div onClick={() => clickHandler(8)} className={"flex items-center justify-center grow h-full px-4 border border-border rounded-md cursor-pointer select-none " + ((state.playersNum === 8) ? "bg-border" : "")}>
 				<span>8 players</span>
 			</div>
 		</div>
@@ -40,26 +30,37 @@ function PlayersNum() {
 
 function TournamentFrom() {
 	const [validAlias, setValidAlias] = useState<boolean>(true);
-	const alias = useRef<string>('');
+	const inputRef = useRef<HTMLInputElement>(null);
+	// const alias = useRef<string>('');
+	const { state, dispatch } = useTournamentContext();
+	const navigate = useNavigate();
 
-	const changeHandler = (e: any) => {
-		const input = e.currentTarget;
-		(validate("username", input.value)) ?
+	const changeHandler = () => {
+		const input = inputRef.current;
+		(validate("username", inputRef.current.value)) ?
 		setValidAlias(true)
 		:
 		setValidAlias(false);
-		alias.current = input.value;
+		dispatch({type: "ALIAS", alias: inputRef.current.value});
 	}
 
 	const clickHandler = () => {
-		console.log(alias);
-		
+		if (!validAlias || state.alias === '') return ;
+		// if (state.socketUrl === null)
+			dispatch({type: "SOCKET_URL", socketUrl: Tournament_WS_URL + state.playersNum + "/" + state.alias});
+		navigate("/Tournament");
+		// Tournament_WS_URL + state.playersNum + "/" + username
 	}
+
+	useEffect(() => {
+		if (inputRef)
+			inputRef.current.value = state.alias;
+	}, []);
 
 	return (
 		<div className="flex flex-col gap-8 items-center w-full">
 			<div className="relative flex flex-col gap-4 items-center w-full">
-				<input onChange={(e) => changeHandler(e)} type="text" placeholder="Tournament’s  alias" className={"placeholder-[#858585] border rounded-md max-w-[344px] w-full h-[50px] px-4 bg-transparent outline-none duration-200 " + (validAlias ? "border-border" : "border-red-600") } />
+				<input ref={inputRef} onChange={changeHandler} type="text" placeholder="Tournament’s  alias" className={"placeholder-[#858585] border rounded-md max-w-[344px] w-full h-[50px] px-4 bg-transparent outline-none duration-200 " + (validAlias ? "border-border" : "border-red-600") } />
 				{
 					!validAlias &&
 					<span className="absolute top-0 left-[30%] bg-secondary px-1 -translate-x-1/2 -translate-y-1/2 text-red-600 text-xs">invalid alias</span>
