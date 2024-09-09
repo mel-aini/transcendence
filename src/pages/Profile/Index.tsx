@@ -24,8 +24,9 @@ const Index = () => {
 	const { state, dispatchProfile } = useProfileContext();
 	
 	useEffect(() => {
-		dispatchProfile({type: "USER_DATA", userData: data?.data});
-	} ,[data])
+		if (!isLoading)
+			dispatchProfile({type: "USER_DATA", userData: data?.data});
+	} ,[isLoading])
 
 	if (isLoading) {
 		return (
@@ -41,7 +42,6 @@ const Index = () => {
 
 	return (
 			<div className="flex flex-col justify-center items-center relative">
-				{ state.settings && <Settings /> }
 				<ProfileHeader />
 				{
 					state.userData?.relation !== 'you' &&

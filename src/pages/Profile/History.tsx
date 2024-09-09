@@ -23,31 +23,31 @@ const History = () => {
 	const {data, isLoading, isError} = useQuery({queryKey: ['matches', id], queryFn: () => fetchData(id)});
 	const { state, dispatchProfile } = useProfileContext();
 	const navigate = useNavigate();
-	const parentRef = useRef();
+	const parentRef = useRef(null);
 	const [width, setWidth] = useState<number>(0);
 
+	const handler = () => {
+		if (!parentRef.current) return;
+		setWidth((parentRef.current as HTMLElement).offsetWidth);
+	}
+
 	useEffect(() => {
-		// collectMatchesData();
-		dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
-		
+		if (!isLoading)
+			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
 
 		if (!parentRef.current) return;
 		setWidth((parentRef.current as HTMLElement).offsetWidth);
 
-		const handler = () => {
-			if (!parentRef.current) return;
-			setWidth((parentRef.current as HTMLElement).offsetWidth);
-		}
-
 		window.addEventListener('resize', handler)
+
 		return () => {
 			window.removeEventListener('resize', handler)
 		}
-	}, [data])
+	}, [isLoading])
 
 	if (isLoading) {
 		return (
-			<h1>loading...</h1>
+			<h1>Loading...</h1>
 		)
 	}
 

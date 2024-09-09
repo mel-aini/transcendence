@@ -8,10 +8,11 @@ import api from "../../api/axios";
 import { useParams } from "react-router-dom";
 import Settings from "../Settings/Index";
 import edit_icon from "/edit_icon.svg"
+import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
 
 const ProfileHeader = () => {
 	const { state, dispatchProfile } = useProfileContext();
-	// const user = window.location.pathname.substring(1);
+	const { sendJsonMessage } = useGlobalWebSocketContext();
 	const { id } = useParams();
 	const formRef = useRef();
 
@@ -23,6 +24,14 @@ const ProfileHeader = () => {
 		if (res.status === 200)
 			dispatchProfile({type: "USER_DATA", userData: {...state.userData, profile_image: res.data.url}});
 	}
+
+	useEffect(() => {
+		if (id)
+		{
+			const checkOnline = setInterval(() => sendJsonMessage( { type: "online", identifier: state.userData?.username } ), 10000);
+			return () => clearInterval(checkOnline);
+		}
+	}, [state.userData]);
 
 	return (
 		<>

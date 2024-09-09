@@ -12,7 +12,6 @@ const Table = ({width}: {width: number}) => {
 	const table = useRef<HTMLDivElement>(null);
 	const { sendJsonMessage, state } = usePingPongContext();
 	const {sendJsonMessage: sendInTournament} = useTournamentContext();
-	const navigate = useNavigate();
 
 	const movePaddle = (e: any) => {
 		const tableDim: any = table.current;
@@ -42,21 +41,6 @@ const Table = ({width}: {width: number}) => {
 			myPaddle.current?.removeEventListener("pointermove", movePaddle);
 		}, { once: true });
 	}
-
-	useEffect(() => {
-		// if (state.level != Levels.OpponentFound)
-		// 	navigate(-1);
-		// if (window.location.pathname == "/ping-pong/match-making")
-		// {
-		// 	dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-		// 	navigate("/ping-pong");
-		// }
-		// else if (window.location.pathname == "/Tournament/match-making")
-		// {
-		// 	dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-		// 	navigate("/Tournament");
-		// }
-	}, [])
 
 	return (
 		<div ref={table} className="touch-none relative w-full max-h-[750px]" style={{height: `${width * 1/2}px`}}>

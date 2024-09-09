@@ -1,16 +1,18 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import api from "../api/axios";
 
 interface InfiniteScrollObserverProps {
 	endPoint: string
 	start?: number
 	chunkSize?: number
+	searchUsers?: boolean
 	whenFetched?: (data?: any) => void
 	whenError?: (error?: any) => void
 }
 
-function InfiniteScrollObserver({ endPoint, start = 0, chunkSize = 10, whenFetched, whenError }: InfiniteScrollObserverProps) {
+function InfiniteScrollObserver({ endPoint, start = 0, chunkSize = 10, whenFetched, whenError, searchUsers }: InfiniteScrollObserverProps) {
 	const container = useRef(null);
 	const dataRange = useRef<number[]>([start, start + chunkSize]);
 	const [isLimitReached, setIsLimitReached] = useState(false);
@@ -20,10 +22,11 @@ function InfiniteScrollObserver({ endPoint, start = 0, chunkSize = 10, whenFetch
 		if (element.isIntersecting) {
 			// fetch Data
 			try {
-				const data = await axios.get(endPoint + '/?start=' + dataRange.current[0] + '&end=' + dataRange.current[1]);
+				const start: string = searchUsers ? '&start=' : '/?start=';
+				const data = await api.get(endPoint + start + dataRange.current[0] + '&end=' + dataRange.current[1]);
 				dataRange.current[0] += chunkSize;
 				dataRange.current[1] += chunkSize;
-				if (whenFetched) whenFetched(data);
+				if (whenFetched) whenFetched(data.data);
 			} catch (error) {
 				setIsLimitReached(true);
 				if (whenError) whenError(error);

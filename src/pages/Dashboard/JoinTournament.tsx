@@ -7,6 +7,7 @@ import { GiHumanPyramid } from "react-icons/gi";
 import { Tournament_WS_URL, useTournamentContext } from "../../contexts/TournamentProvider";
 import { validate } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../contexts/authProvider";
 
 function PlayersNum() {
 	const { state, dispatch } = useTournamentContext();
@@ -32,6 +33,7 @@ function TournamentFrom() {
 	const [validAlias, setValidAlias] = useState<boolean>(true);
 	const inputRef = useRef<HTMLInputElement>(null);
 	// const alias = useRef<string>('');
+	const { state: token }  = useAuthContext();
 	const { state, dispatch } = useTournamentContext();
 	const navigate = useNavigate();
 
@@ -47,7 +49,7 @@ function TournamentFrom() {
 	const clickHandler = () => {
 		if (!validAlias || state.alias === '') return ;
 		// if (state.socketUrl === null)
-			dispatch({type: "SOCKET_URL", socketUrl: Tournament_WS_URL + state.playersNum + "/" + state.alias});
+			dispatch({type: "SOCKET_URL", socketUrl: Tournament_WS_URL + state.playersNum + "/" + state.alias + "/?token=" + token.accessToken});
 		navigate("/Tournament");
 		// Tournament_WS_URL + state.playersNum + "/" + username
 	}

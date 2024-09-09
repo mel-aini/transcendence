@@ -1,46 +1,12 @@
 import { FiSearch } from "react-icons/fi";
 import Input from "./Input";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import User from "./User";
-
-interface User {
-    username: string
-    profile_image: string
-}
-
-const Users: User[] = [
-    {
-        username: 'mel-aini',
-        profile_image: "url('/famous-table-tennis-players.png')"
-    },
-    {
-        username: 'ochouikh',
-        profile_image: "url('/famous-table-tennis-players.png')"
-    },
-    {
-        username: 'abel-all',
-        profile_image: "url('/famous-table-tennis-players.png')"
-    },
-    {
-        username: 'ychahbi',
-        profile_image: "url('/famous-table-tennis-players.png')"
-    },
-    {
-        username: 'ebennamer',
-        profile_image: "url('/famous-table-tennis-players.png')"
-    },
-]
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-async function getUsers({}) {
-    // const res = await axios.get()
-    const res = await axios.get('http://localhost:3000/users')
-    // await sleep(3000)
-    return res;
-}
+import InfiniteScrollObserver from "./InfiniteScrollObserver";
+import { FriendsData } from "../types/profile";
+import { useNavigate } from "react-router-dom";
 
 function UserSkelton() {
     return (
@@ -51,62 +17,68 @@ function UserSkelton() {
     )
 }
 
-function Result({user}: {user: string}) {
-
-    const { data, isLoading, isError, refetch } = useQuery({
-        queryKey: ['searchUsers'], 
-        queryFn: async () => getUsers(user)
-    });
-
-    useEffect(() => {
-        refetch();
-    }, [user])
-    if (isLoading) return (
-        <div className="space-y-3">
-            <UserSkelton />
-            <UserSkelton />
-            <UserSkelton />
-            <UserSkelton />
-            <UserSkelton />
-        </div>
-    )
-    if (isError) return (
-        <div>error</div>
-    )
+function Result({users}: {users: FriendsData[]}) {
+    const navigate = useNavigate();
 
     return (
         <div className="space-y-3">
             {
-                data && data.data.map((elem: User, index: number) => {
-                    return <div key={index} className="flex items-center gap-3">
-                        <User border url={elem.profile_image} />
-                        <h1>{elem.username}</h1>
-                    </div>
+                users ? users.map((elem: FriendsData, index: number) => {
+                    return (
+                        <div key={index} className="flex justify-between items-center w-full gap-3 h-[70px] rounded-md border border-border bg-gray3 px-5">
+                            <div className="flex items-center gap-4 cursor-pointer shrink overflow-hidden whitespace-nowrap">
+                                <img src={elem.profile_image} alt={"icon"} width={38} height={38} className="rounded-full overflow-hidden shrink-0"/>
+                                <span className="shrink overflow-hidden text-ellipsis">{elem.username}</span>
+                            </div>
+                            <div onClick={() => navigate(elem.profile)} className="w-[142px] h-[40px] bg-secondary rounded-md flex justify-center items-center gap-1 cursor-pointer select-none">
+                                <span>view profile</span>
+                            </div>
+                        </div>
+                    )
                 })
+                :
+                <UserSkelton />
             }
         </div>   
     );
 }
 
 function SearchUsers() {
-    const [user, setUser] = useState('');
-
-    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log('submitted')
+    const [input, setInput] = useState<string>('');
+    const [data, setData] = useState<FriendsData[]>([]);
+    const [isFetched, setIsFetched] = useState(true);
+    
+    const whenFetched = (result: FriendsData[]) => {
+        setData(result);
     }
+
+
+    useEffect(() => {
+        if (!isFetched) {
+            setIsFetched(true)
+        }
+    }, [isFetched])
 
     return (
         <div className="bg-secondary rounded-md p-10 space-y-5">
-            <form
+            {/* <form
                 onSubmit={(e) => submitHandler(e)} 
-                className='flex justify-between gap-3'>
-                <Input onChange={(e) => setUser(e.target.value)} type='text' className="w-full border-border" placeholder="search for a user" />
+                className='flex justify-between gap-3'> */}
+                <Input onChange={(e) => {
+                    setInput(e.target.value);
+                    setIsFetched(false);
+                    // setData([]);
+                }} 
+                type='text' className="w-full border-border" placeholder="search for a user" />
                 {/* <button className="shrink-0 size-[48px] rounded-md border border-border flex justify-center items-center">
                     <FiSearch />
                 </button> */}
-            </form>
-            {user != '' && <Result user={user}  />}
+            {/* </form> */}
+            {<Result users={data} />}
+            {isFetched && <InfiniteScrollObserver
+                endPoint={`/api/search/?filter=${input}`}
+                whenFetched={whenFetched}
+                searchUsers={true} />}
         </div>
     );
 }

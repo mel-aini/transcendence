@@ -13,15 +13,16 @@ function Result() {
 	const { sendJsonMessage } = useTournamentContext();
 
 	const clickHandler = () => {
-		if (window.location.pathname == "/ping-pong/play")
-			navigate("/ping-pong");
-		else if (window.location.pathname == "/Tournament/play")
+		// if (window.location.pathname == "/ping-pong/play")
+		if (state.isTournament)
 		{
 			if (state.result.status != "lose" && state.result.status != "eliminated")
 				sendJsonMessage({ type: 'qualifyboard' });
 			dispatch({ type: 'RESET' });
 			navigate("/Tournament");
 		}
+		else
+		navigate("/ping-pong");
 	}
 
 	useEffect(() => {
