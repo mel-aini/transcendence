@@ -1,25 +1,39 @@
 import { FiBell } from "react-icons/fi";
 import { INotification } from "../contexts/store";
-
-interface MockINotification {
-	code: 200 | 400
-	data: {
-		notification_id: string, 
-		type: "friend-request" | "game-request" | "text" | "join-game" | "join-tournament"
-		content: string
-		read: boolean, 
-		id: string
-	}
-	identifier: any
-	message: "notification"
-	type: "notification"
-}
+import { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
+import { ProfileRequest } from "../types/profile";
+import { useEffect, useState } from "react";
 
 interface Props {
-	data: INotification
+	notData: INotification
 }
 
-const Notification = ({ data }: Props) => {
+const Notification = ({ notData }: Props) => {
+	const { lastJsonMessage, sendJsonMessage } = useGlobalWebSocketContext()
+	const [data, setData] = useState(notData)
+	const acceptDenyFriend = (type: "accept" | "deny") => {
+		const request: ProfileRequest = {
+			type: type,
+			identifier: data.id,
+			data: {}
+		};
+		sendJsonMessage(request);
+	}
+
+	useEffect(() => {
+		if (lastJsonMessage && lastJsonMessage.data && lastJsonMessage.data.type == "user-action") {
+			if (lastJsonMessage.data.data == 'accept') {
+				// sendJsonMessage
+				setData({
+					...data,
+					type: "text",
+					content: 'you accepted your friend request'
+				})
+			}
+		}
+	}, [lastJsonMessage])
+	console.log(data);
+	if (!data) return null;
 
 	return (
 		<div className="p-5 bg-secondary rounded-lg space-y-5">
@@ -28,10 +42,17 @@ const Notification = ({ data }: Props) => {
 					<FiBell className="text-3xl" />
 				</div>
 				<div>
-					<p>{data.data.content}</p>
+					<p>{data.content}</p>
 				</div>
 			</div>
-			{data.data.type == 'friend-request' ||  data.data.type == 'game-request' && 
+			{data.type == 'friend-request' && 
+			<div className="pl-[52px] grid grid-cols-2 gap-2">
+				<button 
+					onClick={() => acceptDenyFriend('deny')} className="flex justify-center items-center border border-border py-2 rounded-lg">reject</button>
+				<button 
+					onClick={() => acceptDenyFriend('accept')} className="flex justify-center items-center border border-primary text-primary py-2 rounded-lg">accept</button>
+			</div>}
+			{data.type == 'game-request' && 
 			<div className="pl-[52px] grid grid-cols-2 gap-2">
 				<button className="flex justify-center items-center border border-border py-2 rounded-lg">reject</button>
 				<button className="flex justify-center items-center border border-primary text-primary py-2 rounded-lg">accept</button>

@@ -1,8 +1,7 @@
 import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
 import { INotification } from "./store";
-import useWebSocket from "react-use-websocket";
-import { NOTI_WS_ENDPOINT } from "../utils/global";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
+import { useGlobalWebSocketContext } from "./globalWebSokcketStore";
 
 export interface GlobalStateProps {
 	newNotifications: INotification[],
@@ -44,15 +43,21 @@ const reducer = (state: GlobalStateProps, action: any) => {
 
 const NotificationsProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
-
-	const { lastJsonMessage, sendJsonMessage } = useWebSocket(
-		NOTI_WS_ENDPOINT
-	  )
+	const { lastJsonMessage, sendJsonMessage } = useGlobalWebSocketContext()
+	// const { lastJsonMessage, sendJsonMessage } = useWebSocket(
+	// 	NOTI_WS_ENDPOINT
+	//   )
 
 	useEffect(() => {
+		console.log('new message from ws');
+		console.log(lastJsonMessage);
 		if (lastJsonMessage) {
-			if (lastJsonMessage.type == 'notification' && lastJsonMessage.message == 'notification')
-			dispatch({type: 'PUSH_NOTIFICATION', notification: lastJsonMessage, dispatch})
+			if (lastJsonMessage.type == 'notification' && lastJsonMessage.message == 'notification') {
+				console.log('lastJsonMessage.data');
+				console.log(lastJsonMessage.data);
+				dispatch({type: 'PUSH_NOTIFICATION', notification: lastJsonMessage.data, dispatch})
+			}
+
 		}
 	}, [lastJsonMessage])
 

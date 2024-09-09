@@ -5,6 +5,7 @@ import axios from "axios";
 import { DropMenuTypes } from "./DropMenu";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNotificationsContext } from "../contexts/notificationsProvider";
+import api from "../api/axios";
 
 interface Props {
 	dropMenuType: MutableRefObject<DropMenuTypes>
@@ -27,7 +28,7 @@ const bellVariants = {
 }
 
 async function getNotifications() {
-    const res = await axios.get('http://localhost:3000/api/notifications?start=0&end=1')
+    const res = await api.get('api/notifications/?start=0&end=1')
     return res;
 }
 
@@ -40,9 +41,10 @@ function NotificationBell({dropMenuType, setDropMenu}: Props) {
 
 	useEffect(() => {
 		if (data) {
+			console.log('data', data)
 			const notifications = data.data;
 			// notifications.length > 0 && setBell(!notifications[0].data.read)
-			notifications.length > 0 && dispatch({type: 'MARK_IS_READ', payload: notifications[0].data.read});
+			notifications.length > 0 && dispatch({type: 'MARK_IS_READ', payload: notifications[0].read});
 		}
 	}, [data])
 
