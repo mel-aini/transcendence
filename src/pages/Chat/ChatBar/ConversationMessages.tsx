@@ -24,7 +24,7 @@ function ConversationMessages() {
 	}, [state.conversation.state])
 
 	return ( 
-		<div className="flex flex-col gap-8">
+		<div className="conv-msgs flex flex-col gap-8">
 			{
 				state.conversation.state == 'ok' &&
 				<>

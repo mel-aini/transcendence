@@ -41,7 +41,6 @@ function NotificationBell({dropMenuType, setDropMenu}: Props) {
 
 	useEffect(() => {
 		if (data) {
-			console.log('data', data)
 			const notifications = data.data;
 			// notifications.length > 0 && setBell(!notifications[0].data.read)
 			notifications.length > 0 && dispatch({type: 'MARK_IS_READ', payload: notifications[0].read});

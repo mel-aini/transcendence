@@ -49,8 +49,8 @@ const NotificationsProvider = ({children} : {children: ReactNode}) => {
 	//   )
 
 	useEffect(() => {
-		console.log('new message from ws');
-		console.log(lastJsonMessage);
+		// console.log('new message from ws');
+		// console.log(lastJsonMessage);
 		if (lastJsonMessage) {
 			if (lastJsonMessage.type == 'notification' && lastJsonMessage.message == 'notification') {
 				console.log('lastJsonMessage.data');
