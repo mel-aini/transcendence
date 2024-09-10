@@ -7,6 +7,7 @@ import { useChatContext } from "../contexts/chatProvider";
 import api from "../api/axios";
 import useIsOnline from "../hooks/useIsOnline";
 import { useNavigate } from "react-router-dom";
+import { LuMessagesSquare } from "react-icons/lu";
 
 interface Props {
 	notData: INotification
@@ -29,19 +30,19 @@ const Notification = ({ notData }: Props) => {
 	}
 
 	const goToChat = async () => {
-		console.log('try to fetch user ' + notData.sender);
+		if (data.type != 'message') return;
 		navigate('/chat')
 		chatDispatch({type: 'CONVERSATION', conversation: {
 			id: notData.id,
 			state: 'loading'
 		}});
 	
-		const data = await api.get('/api/users/' + notData.sender);
+		const userData = await api.get('/api/users/' + notData.sender);
 		// console.log(data.data);
 		chatDispatch({type: 'CONVERSATION_HEADER', conversation_header: {
-			username: data.data.username,
-			avatar: data.data.profile_image,
-			isOnline: isOnline(data.data.username)
+			username: userData.data.username,
+			avatar: userData.data.profile_image,
+			isOnline: isOnline(userData.data.username)
 		}})
 		
 	}
@@ -62,10 +63,13 @@ const Notification = ({ notData }: Props) => {
 	if (!data) return null;
 
 	return (
-		<div className="p-5 bg-secondary rounded-lg space-y-5">
-			<div className="flex gap-5 items-center">
+		<div className={"p-5 bg-secondary rounded-lg space-y-5" + (data.type == 'message' ? ' hover:bg-slate-900 duration-300 cursor-pointer' : '')}>
+			<div
+				onClick={goToChat}
+				className={"flex gap-5 items-center"}>
 				<div className="shrink-0 w-8 flex justify-center items-center">
-					<FiBell className="text-3xl" />
+					{data.type != 'message' && <FiBell className="text-3xl" />}
+					{data.type == 'message' && <LuMessagesSquare className="text-3xl" />}
 				</div>
 				<div>
 					<p>{data.content}</p>
@@ -83,12 +87,12 @@ const Notification = ({ notData }: Props) => {
 				<button className="flex justify-center items-center border border-border py-2 rounded-lg">reject</button>
 				<button className="flex justify-center items-center border border-primary text-primary py-2 rounded-lg">accept</button>
 			</div>}
-			{data.type == 'message' && 
+			{/* {data.type == 'message' && 
 			<div className="pl-[52px] w-full">
 				<button
 					onClick={goToChat} 
 					className="w-full flex justify-center items-center border border-border py-2 rounded-lg">open in chat</button>
-			</div>}
+			</div>} */}
 		</div>
 	);
 }
