@@ -3,38 +3,12 @@ import { IoChatbubbleOutline } from "react-icons/io5";
 import { FiBell } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import api from "../../../api/axios";
-import { useQuery } from "@tanstack/react-query";
-import { useAuthContext } from "../../../contexts/authProvider";
-import { useEffect } from "react";
 
 interface Props {
 	className?: string
 }
 
-async function fetchData() {
-	const res = await api.get('api/profile/');
-	return res;
-}
-
 function NavBar({className}: Props) {
-	const {data, isLoading, isError} = useQuery({queryKey: ['profile'], queryFn: fetchData})
-	const { dispatch } = useAuthContext()
-
-	useEffect(() => {
-		dispatch({type: 'USERNAME', username: data?.data.username});
-	}, [])
-
-	if (isLoading) {
-		return (
-			<div>loading...</div>
-		)
-	}
-	if (isError) {
-		return (
-			<div>Error!</div>
-		)
-	}
 
 	return ( 
 		<div className={className}>

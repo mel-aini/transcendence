@@ -1,9 +1,11 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { useChatContext } from "../../../contexts/chatProvider";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useAuthContext } from "../../../contexts/authProvider";
 
 function Observer() {
 	const { state, sendJsonMessage } = useChatContext();
+	const { state: authState } = useAuthContext();
 	const container = useRef(null);
 	const convId = useRef<number | string | null>(null);
 	const firstMsgId = useRef<number | string | null>(null);
@@ -26,7 +28,8 @@ function Observer() {
 				type: 'messages',
 				limit: 10,
 				conversation_id: convId.current,
-				message_id: firstMsgId.current
+				message_id: firstMsgId.current,
+				user_id: authState.user_id
 			})
 		}
 	})

@@ -55,6 +55,7 @@ export interface ChatStateProps {
 	messages: Message[],
 	onlineFriends: OnlineFriend[],
 	conversations: Conversation[],
+	searchConversations: Conversation[],
 	conversation: ConversationState
 	conversation_header: Header
 	lastMessage: Message | null
@@ -69,6 +70,7 @@ const initialState: ChatStateProps = {
 		id: null,
 		state: null
 	},
+	searchConversations: [],
 	conversation_header: {
 		username: '',
 		avatar: '',
@@ -137,6 +139,11 @@ const reducer = (state: ChatStateProps, action: any) => {
 			return { 
 				...state, 
 				conversations: action.conversations
+			}
+		case 'SEARCH_CONVERSATIONS':
+			return { 
+				...state, 
+				searchConversations: action.conversations
 			}
 		default:
 			return state;
@@ -220,7 +227,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	  )
 
 	useEffect(() => {
-		console.log('new message', lastJsonMessage)
+		console.log('new message')
+		console.log(lastJsonMessage);
 		if (lastJsonMessage) {
 			if (lastJsonMessage.online) {
 				dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})
@@ -235,6 +243,10 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					state: 'ok',
 					limitReached: lastJsonMessage.messages.length != 10
 				}})
+			}
+			if (lastJsonMessage.search_conversation) {
+				console.log('heeeeeeeere!')
+				dispatch({type: 'SEARCH_CONVERSATIONS', conversations: lastJsonMessage.search_conversation});
 			}
 			if (lastJsonMessage.type == 'message') {
 				if (lastJsonMessage.receiver == authState.username) {

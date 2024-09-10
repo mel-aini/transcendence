@@ -1,26 +1,25 @@
-import { ComponentType, useEffect } from "react";
-import ProfileContextProvider, { useProfileContext } from "../contexts/profileStore";
-import GlobalWebSocketContextProvider, { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
-import { useParams } from "react-router-dom";
+// import { ComponentType, useEffect } from "react";
+// import ProfileContextProvider, { useProfileContext } from "../contexts/profileStore";
+// import GlobalWebSocketContextProvider, { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
+// import { useParams } from "react-router-dom";
 
-function withProfile(Component: ComponentType) {
+// function withProfile(Component: ComponentType) {
 
-	function UpdatedComponent() {
-		return (
-			<ProfileContextProvider>
-				<GlobalWebSocketContextProvider>
-					<Component />
-				</GlobalWebSocketContextProvider>
-			</ProfileContextProvider>
-		);
-	}
+// 	function UpdatedComponent() {
+// 		return (
 
-	return (
-		<UpdatedComponent />
-	);
-}
+// 					<Component />
+// 				</GlobalWebSocketContextProvider>
+// 			</ProfileContextProvider>
+// 		);
+// 	}
 
-export default withProfile;
+// 	return (
+// 		<UpdatedComponent />
+// 	);
+// }
+
+// export default withProfile;
 
 // user login
 // username: mel-test

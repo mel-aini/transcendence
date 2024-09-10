@@ -2,17 +2,11 @@ import { Dispatch, ReactNode, createContext, useContext, useReducer } from "reac
 import { UserData } from "../types/profile";
 
 export interface INotification {
-	code: 200 | 400
-	data: {
-		notification_id: string, 
-		type: "friend-request" | "game-request" | "text" | "join-game" | "join-tournament"
-		content: string
-		read: boolean, 
-		id: string
-	}
-	identifier: any
-	message: "notification"
-	type: "notification"
+	notification_id: string, 
+	type: "friend-request" | "game-request" | "text" | "join-game" | "join-tournament"
+	content: string
+	read: boolean, 
+	id: string
 }
 
 export interface GlobalStateProps {

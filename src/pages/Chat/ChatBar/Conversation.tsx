@@ -7,14 +7,6 @@ import { useAuthContext } from '../../../contexts/authProvider';
 import { ReadyState } from 'react-use-websocket';
 import { isEmpty } from '../../../utils/validation';
 
-interface Imessage {
-	content : string
-	date :  string
-	id? :  number
-	receiver :  string
-	sender : string
-}
-
 function Conversation() {
 	const { state, dispatch, sendJsonMessage, readyState } = useChatContext();
 	const [message, setMessage] = useState('');
@@ -35,7 +27,6 @@ function Conversation() {
 		// 	receiver: 'salam',
 		// 	sender: 'user1'
 		// }
-		console.log('trying to send message...');
 		const ServerMessage = {
 			id: state.conversation.id,
 			type: 'send_message',
@@ -100,6 +91,17 @@ function Conversation() {
 			}
 		}
 	}, [state.isFocus])
+
+	useEffect(() => {
+		if (state.lastMessage) {
+			const msgsContainer = document.querySelector('.messages-container');
+			if (msgsContainer) {
+				(msgsContainer as HTMLDivElement).style.scrollBehavior = 'smooth';
+				msgsContainer.scrollTo(0, msgsContainer.scrollHeight);
+				(msgsContainer as HTMLDivElement).style.scrollBehavior = '';
+			}
+		}
+	}, [state.lastMessage])
 
 	return ( 
 		<AnimatePresence>

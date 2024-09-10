@@ -10,7 +10,7 @@ import withAuth from  './guards/withAuth'
 import withoutAuth from  './guards/withoutAuth'
 import AuthContextProvider from "./contexts/authProvider";
 import GlobalWebSocketContextProvider, { GlobalWebSocketContext } from "./contexts/globalWebSokcketStore";
-import withProfile from "./guards/withProfile";
+// import withProfile from "./guards/withProfile";
 import GameLayout from "./pages/PingPong/GameLayout";
 import TournamentLayout from "./guards/TournamentLayout";
 
@@ -43,10 +43,10 @@ function App() {
                     <Route element={withAuth(Layout)}>
                       <Route path="/chat" element={<Chat />} />
                       <Route path="/settings" element={<Settings />} />
-                      <Route path="/profile" element={withProfile(Profile)} />
+                      <Route path="/profile" element={<Profile />} />
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path='/users'>
-                        <Route path=':id' element={withProfile(Profile)} />
+                        <Route path=':id' element={<Profile />} />
                         <Route path='*' element={<>Not Found</>} />
                       </Route>
                       <Route path='/ping-pong'>

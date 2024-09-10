@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import api from "../api/axios";
@@ -24,6 +23,9 @@ function InfiniteScrollObserver({ endPoint, start = 0, chunkSize = 10, whenFetch
 			try {
 				const start: string = searchUsers ? '&start=' : '/?start=';
 				const data = await api.get(endPoint + start + dataRange.current[0] + '&end=' + dataRange.current[1]);
+				if (data.data.length == 0) {
+					throw new Error('limit reached');
+				} 
 				dataRange.current[0] += chunkSize;
 				dataRange.current[1] += chunkSize;
 				if (whenFetched) whenFetched(data.data);

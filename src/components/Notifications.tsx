@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { useNotificationsContext } from "../contexts/notificationsProvider";
 import { MdOutlineClearAll } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import api from "../api/axios";
 
 async function getNotifications() {
-    const res = await axios.get('http://localhost:3000/api/notifications?start=0&end=10')
+    const res = await api.get('api/notifications/?start=0&end=10')
     return res;
 }
 
@@ -21,13 +21,15 @@ function Notifications() {
     });
 
 	const whenFetched = (data: any) => {
-		setNotifications(prev => [...prev, ...data.data]);
+		setNotifications(prev => [...prev, ...data]);
+		console.log('when fetched')
+		console.log(data)
 	}
 
 	const clearNotifications = () => {
 		sendJsonMessage({
 			type: "noti_clear",
-			identifier: null,
+			identifier: '-',
 			data: {}
 		})
 	}
@@ -40,6 +42,8 @@ function Notifications() {
 			data: {}
 		})
 		if (data) {
+			console.log('after fetched');
+			console.log(data);
 			setNotifications(data.data)
 		}
 	}, [data])
@@ -82,12 +86,12 @@ function Notifications() {
 					{
 						notifications.map((notification, index) => {
 							return (
-								<Notification key={index} data={notification} />
+								<Notification key={index} notData={notification} />
 							)
 						})
 					}
 					<InfiniteScrollObserver
-						endPoint="http://localhost:3000/api/notifications"
+						endPoint="api/notifications"
 						start={10}
 						chunkSize={10}
 						whenFetched={whenFetched} />

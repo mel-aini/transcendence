@@ -38,7 +38,7 @@ const NavBar = ({ className }: {className?: string}) => {
 	}, [pathname])
 
 	return (
-		// <NotificationsProvider>
+		<NotificationsProvider>
 			<div
 				ref={container} 
 				className={twMerge('nav-bar sticky top-0 left-0 h-20 z-40 lg:z-50 shadow-bottom flex justify-between px-10 bg-bg', className)}>
@@ -49,7 +49,7 @@ const NavBar = ({ className }: {className?: string}) => {
 				</div>
 				<div className="relative flex justify-end items-center gap-5 h-20">
 					<Search />
-					{/* <NotificationsBell dropMenuType={dropMenuType} setDropMenu={setDropMenu}  /> */}
+					<NotificationsBell dropMenuType={dropMenuType} setDropMenu={setDropMenu}  />
 					<User 
 						onClick={() => {
 							dropMenuType.current = 'profile';
@@ -60,7 +60,7 @@ const NavBar = ({ className }: {className?: string}) => {
 						url={state.userData?.profile_image || ''}>
 					</User>
 					{dropMenu && <DropMenu setDropMenu={setDropMenu} type={dropMenuType.current} />}
-					{/* <NewNotifications /> */}
+					<NewNotifications />
 					<HiOutlineMenuAlt3
 						onClick={() => {
 							dropMenuType.current = 'navbar';
@@ -74,7 +74,7 @@ const NavBar = ({ className }: {className?: string}) => {
 					{/* Overlay */}
 				</div>
 			</div>
-		// </NotificationsProvider>
+		</NotificationsProvider>
 	)
 }
 

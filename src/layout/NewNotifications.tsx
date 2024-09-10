@@ -15,7 +15,7 @@ function NewNotifications() {
 					exit={{ opacity: 0, y: -20 }}
 					transition={{ duration: 0.3 }}
 					className="absolute z-50 right-0 top-full w-[450px] max-h-[400px] p-5 border border-border rounded-md bg-bg overflow-auto space-y-5">
-					<Notification data={state.newNotifications[0]} />
+					<Notification notData={state.newNotifications[0]} />
 				</motion.div>
 			}
 		</AnimatePresence>

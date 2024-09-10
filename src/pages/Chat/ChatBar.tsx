@@ -13,6 +13,7 @@ import { useChatContext } from "../../contexts/chatProvider";
 import { useAuthContext } from "../../contexts/authProvider";
 import { isEmpty } from "../../utils/validation";
 import Input from "../../components/Input";
+import SearchConversationsList from "./ChatBar/SearchConversationsList";
 
 function ChatBar() {
 	const [toggleSearch, setToggleSearch] = useState(false);
@@ -20,21 +21,33 @@ function ChatBar() {
 	const [searchFriends, setSearchFriends] = useState(false);
 	const action = useLog();
 	const { sendJsonMessage } = useChatContext();
+	const {state: authState} = useAuthContext();
 	const { state } = useAuthContext();
 	
-	const inputRef = useRef('');
+	const [input, setInput] = useState('');
 
 	const onSubmit = (e: FormEvent) => {
 		e.preventDefault();
-		if (isEmpty(inputRef.current)) return;
+		if (isEmpty(input)) return;
 		sendJsonMessage({
 			user_id: state.user_id,
 			type: 'search_conversation',
-			search: inputRef.current,
+			search: input,
 			offset: 0,
 			limit: 10
 		})
-		inputRef.current = '';
+		setInput('');
+	}
+
+
+	const searchConversation = () => {
+		sendJsonMessage({
+			user_id: authState.user_id,
+			type: 'search_conversation',
+			search: input,
+			offset: 0,
+			limit: 10
+		})
 	}
 
 	return ( 
@@ -76,15 +89,18 @@ function ChatBar() {
 								className="pb-5"
 								>
 								<form onSubmit={onSubmit} className="flex justify-between gap-2">
-									<Input onChange={(e) => inputRef.current = e.target.value} type="text" placeholder="search" className='w-full bg-transparent border border-border h-[48px] px-3 rounded-md outline-none' />
-									<button type="submit" className="shrink-0 size-[48px] flex justify-center items-center border border-border rounded-md">
+									<Input onChange={(e) => setInput(e.target.value)} type="text" placeholder="search" className='w-full bg-transparent border border-border h-[48px] px-3 rounded-md outline-none' />
+									<button 
+										onClick={searchConversation}
+										type="submit" className="shrink-0 size-[48px] flex justify-center items-center border border-border rounded-md">
 										<FiSearch />
 									</button>
 								</form>
 							</motion.div>
 						}
 					</AnimatePresence>
-					<ConversationsList className="shrink-0" />
+					{!toggleSearch && <ConversationsList className="shrink-0" />}
+					{toggleSearch && <SearchConversationsList input={input} className="shrink-0" />}
 				</div>
 				{/* search friends */}
 				<SearchFriends isOpen={searchFriends} onClose={() => setSearchFriends(false)} />
