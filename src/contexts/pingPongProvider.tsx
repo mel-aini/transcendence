@@ -4,6 +4,8 @@ import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useGlobalContext } from "./store";
 import { Player, RoundData, useTournamentContext } from "./TournamentProvider";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "./authProvider";
+import { UserData } from "../types/profile";
 
 export interface Coordinates {
 	x: number,
@@ -24,7 +26,7 @@ export enum Levels {
 
 export interface GameData {
 	level: Levels,
-	opponent: string,
+	opponent: UserData | null,
 	counter: number,
 	status: string,
 	ballData: Coordinates,
@@ -52,7 +54,7 @@ export interface GameData {
 
 const initialState: GameData = {
 	level: Levels.FindingOpponent,
-	opponent: '',
+	opponent: null,
 	counter: 3,
 	status: "ready",
 	ballData: {
@@ -187,8 +189,10 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
-	const fullWsUrl:string = state.gameId ? GAME_WS_URL + username + "/" + state.gameId : GAME_WS_URL + username + "/random/";
-	const { lastJsonMessage, sendJsonMessage } = useWebSocket(fullWsUrl,
+	const { state: token }  = useAuthContext();
+	// const fullWsUrl:string = state.gameId ? GAME_WS_URL + username + "/" + state.gameId : GAME_WS_URL + username + "/random/";
+	const fullWsUrl:string = state.gameId ? GAME_WS_URL + state.gameId + "/?token=" : GAME_WS_URL + "random/?token=";
+	const { lastJsonMessage, sendJsonMessage } = useWebSocket(fullWsUrl + token.accessToken,
 			{
 				share: false,
 				shouldReconnect: () => false,
@@ -209,14 +213,16 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 	// }, []);
 
 	useEffect(() => {
-		console.log(lastJsonMessage);
+		// console.log(lastJsonMessage);
 
 		if (!isEmptyObject(lastJsonMessage))
 		{
+			if (lastJsonMessage.type != "ball")
+				console.log(lastJsonMessage);
 			if (lastJsonMessage.type == "opponents")
 			{
 				dispatch({type: 'IS_Tournament', isTournament: isTournament});
-				(lastJsonMessage.user1 == username) ? dispatch({type: "OPPONENT", opponent: lastJsonMessage.user2})
+				(lastJsonMessage.user1.username == username) ? dispatch({type: "OPPONENT", opponent: lastJsonMessage.user2})
 				:
 				dispatch({type: "OPPONENT", opponent: lastJsonMessage.user1});
 				dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
@@ -282,6 +288,7 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 			if (tournMessage.type == "opponents")
 			{
 				dispatch({type: 'IS_Tournament', isTournament: isTournament});
+				// (tournMessage.user1.username == username) ? dispatch({type: "OPPONENT", opponent: tournMessage.user2})
 				(tournMessage.user1 == tournState.alias) ? dispatch({type: "OPPONENT", opponent: tournMessage.user2})
 				:
 				dispatch({type: "OPPONENT", opponent: tournMessage.user1});

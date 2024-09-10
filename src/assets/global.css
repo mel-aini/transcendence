@@ -176,3 +176,15 @@ background: var(--white-color);
 .scrollClass::-webkit-scrollbar-thumb {
 	background-color: white;
 }
+
+.scrollClassHorizontal::-webkit-scrollbar {
+	height: 3px;
+}
+
+.scrollClassHorizontal::-webkit-scrollbar-track {
+	background-color: #2F2E39;
+}
+
+.scrollClassHorizontal::-webkit-scrollbar-thumb {
+	background-color: var(--primary-color);
+}

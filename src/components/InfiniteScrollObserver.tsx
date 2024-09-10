@@ -6,11 +6,12 @@ interface InfiniteScrollObserverProps {
 	endPoint: string
 	start?: number
 	chunkSize?: number
+	searchUsers?: boolean
 	whenFetched?: (data?: any) => void
 	whenError?: (error?: any) => void
 }
 
-function InfiniteScrollObserver({ endPoint, start = 0, chunkSize = 10, whenFetched, whenError }: InfiniteScrollObserverProps) {
+function InfiniteScrollObserver({ endPoint, start = 0, chunkSize = 10, whenFetched, whenError, searchUsers }: InfiniteScrollObserverProps) {
 	const container = useRef(null);
 	const dataRange = useRef<number[]>([start, start + chunkSize]);
 	const [isLimitReached, setIsLimitReached] = useState(false);
@@ -20,7 +21,8 @@ function InfiniteScrollObserver({ endPoint, start = 0, chunkSize = 10, whenFetch
 		if (element.isIntersecting) {
 			// fetch Data
 			try {
-				const data = await api.get(endPoint + '/?start=' + dataRange.current[0] + '&end=' + dataRange.current[1]);
+				const start: string = searchUsers ? '&start=' : '/?start=';
+				const data = await api.get(endPoint + start + dataRange.current[0] + '&end=' + dataRange.current[1]);
 				if (data.data.length == 0) {
 					throw new Error('limit reached');
 				} 

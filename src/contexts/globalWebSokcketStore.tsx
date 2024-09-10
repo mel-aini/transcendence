@@ -88,6 +88,10 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 				
 				dispatch({type: 'ALERT', content: lastJsonMessage.message})
 			}
+			else if (lastJsonMessage.type === "online")
+			{
+				dispatchProfile({type: "USER_DATA", userData: {...state.userData, online: lastJsonMessage.data.value}});
+			}
 		}
 		else if (!isEmptyObject(lastJsonMessage)) { // lastJsonMessage.code === 404
 			if (lastJsonMessage.type === "user-action")
@@ -126,3 +130,13 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 export const WS_URL = "ws://localhost:8000/ws/sys/?token=";
 export const useGlobalWebSocketContext = () => useContext(GlobalWebSocketContext);
 export default GlobalWebSocketContextProvider;
+
+//		 "type": "user-action" | "online" | "notification" | "update" | "invite"
+//		 "code": 200 | 400 | 403
+//		 "message" : "user not Found" 
+//		 "identifier": "other"
+//		 "data":
+//		 {
+//		 	"value": "add" | "accept" | "deny" | "block" | "unblock" | "unfriend" | "cancel" | "online" | "online"| "offline"
+//		 }
+//		 }

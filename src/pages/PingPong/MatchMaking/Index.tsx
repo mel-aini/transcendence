@@ -91,15 +91,25 @@ function MatchMaking() {
 	const avatar_link = 'https://images.unsplash.com/photo-1669937401447-7cfc6e9906e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fGdhbWluZyUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D';
 
 	const cancelAction = () => {
-		if (window.location.pathname == "/ping-pong/match-making")
+		// if (window.location.pathname == "/ping-pong/match-making")
+		// {
+		// 	dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+		// 	navigate("/ping-pong");
+		// }
+		// else if (window.location.pathname == "/Tournament/match-making")
+		// {
+		// 	dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+		// 	navigate("/Tournament");
+		// }
+		if (state.isTournament)
 		{
-			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-			navigate("/ping-pong");
-		}
-		else if (window.location.pathname == "/Tournament/match-making")
-		{
-			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
+			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
 			navigate("/Tournament");
+		}
+		else
+		{
+			// dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
+			navigate("/ping-pong");
 		}
 	}
 
@@ -109,21 +119,8 @@ function MatchMaking() {
 	}
 
 	useEffect(() => {
-		// if (state.level == Levels.OpponentFound)
-		// {
-		// 	if (window.location.pathname == "/ping-pong/match-making")
-		// 	{
-		// 		dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-		// 		navigate("/ping-pong");
-		// 	}
-		// 	else if (window.location.pathname == "/Tournament/match-making")
-		// 	{
-		// 		dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-		// 		navigate("/Tournament");
-		// 		console.log("here");
-		// 	}
-		// }
-
+		if (state.isTournament && state.level != Levels.OpponentFound)
+			navigate("/Tournament");
 	}, []);
 
 	useEffect(() => {
@@ -156,7 +153,7 @@ function MatchMaking() {
 						<User className="size-28 border-primary" border url={profileData.userData?.profile_image} />
 						<div>
 							<h3>{profileData.userData?.username || 'mel-aini'}</h3>
-							<h4>{profileData.userData?.level.current || 'Lvl 5'}</h4>
+							<h4>{'Lvl ' + profileData.userData?.level.current || 'Lvl 5'}</h4>
 						</div>
 					</div>
 					{/* <PlayerBar username={profileData.userData?.username} state={state.level} level={profileData.userData?.level.current} avatar={profileData.userData?.profile_image} /> */}
@@ -178,10 +175,10 @@ function MatchMaking() {
 							className="flex-1 flex justify-end items-center gap-5"
 							>
 							<div>
-								<h3>{ state.opponent }</h3>
-								<h4>{ state.level }</h4>
+								<h3>{ state.opponent?.username }</h3>
+								<h4>{ 'Lvl ' + state.opponent?.level.current }</h4>
 							</div>
-							<User className="size-28 border-primary" border url={profileData.userData?.profile_image} />
+							<User className="size-28 border-primary" border url={state.opponent?.profile_image} />
 						</motion.div>
 					}
 				</div>
