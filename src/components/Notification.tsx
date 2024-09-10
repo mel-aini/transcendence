@@ -3,6 +3,10 @@ import { INotification } from "../contexts/store";
 import { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
 import { ProfileRequest } from "../types/profile";
 import { useEffect, useState } from "react";
+import { useChatContext } from "../contexts/chatProvider";
+import api from "../api/axios";
+import useIsOnline from "../hooks/useIsOnline";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
 	notData: INotification
@@ -10,7 +14,11 @@ interface Props {
 
 const Notification = ({ notData }: Props) => {
 	const { lastJsonMessage, sendJsonMessage } = useGlobalWebSocketContext()
-	const [data, setData] = useState(notData)
+	const { dispatch: chatDispatch } = useChatContext();
+	const [data, setData] = useState(notData);
+	const navigate = useNavigate();
+	const isOnline = useIsOnline();
+
 	const acceptDenyFriend = (type: "accept" | "deny") => {
 		const request: ProfileRequest = {
 			type: type,
@@ -18,6 +26,24 @@ const Notification = ({ notData }: Props) => {
 			data: {}
 		};
 		sendJsonMessage(request);
+	}
+
+	const goToChat = async () => {
+		console.log('try to fetch user ' + notData.sender);
+		navigate('/chat')
+		chatDispatch({type: 'CONVERSATION', conversation: {
+			id: notData.id,
+			state: 'loading'
+		}});
+	
+		const data = await api.get('/api/users/' + notData.sender);
+		// console.log(data.data);
+		chatDispatch({type: 'CONVERSATION_HEADER', conversation_header: {
+			username: data.data.username,
+			avatar: data.data.profile_image,
+			isOnline: isOnline(data.data.username)
+		}})
+		
 	}
 
 	useEffect(() => {
@@ -32,7 +58,7 @@ const Notification = ({ notData }: Props) => {
 			}
 		}
 	}, [lastJsonMessage])
-	console.log(data);
+
 	if (!data) return null;
 
 	return (
@@ -56,6 +82,12 @@ const Notification = ({ notData }: Props) => {
 			<div className="pl-[52px] grid grid-cols-2 gap-2">
 				<button className="flex justify-center items-center border border-border py-2 rounded-lg">reject</button>
 				<button className="flex justify-center items-center border border-primary text-primary py-2 rounded-lg">accept</button>
+			</div>}
+			{data.type == 'message' && 
+			<div className="pl-[52px] w-full">
+				<button
+					onClick={goToChat} 
+					className="w-full flex justify-center items-center border border-border py-2 rounded-lg">open in chat</button>
 			</div>}
 		</div>
 	);

@@ -3,10 +3,11 @@ import { UserData } from "../types/profile";
 
 export interface INotification {
 	notification_id: string, 
-	type: "friend-request" | "game-request" | "text" | "join-game" | "join-tournament"
+	type: "friend-request" | "game-request" | "text" | "join-game" | "join-tournament" | "message"
 	content: string
 	read: boolean, 
-	id: string
+	id: string,
+	sender?: string
 }
 
 export interface GlobalStateProps {
