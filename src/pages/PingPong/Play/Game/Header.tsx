@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTimer } from 'react-timer-hook';
 import { useTournamentContext } from "../../../../contexts/TournamentProvider";
+import { usePingPongSocket } from "../../../../contexts/PingPongSocketProvider";
 
 const Goal = () => {
 	const {state} = usePingPongContext();
@@ -40,7 +41,8 @@ const Goal = () => {
 }
 
 const Header = () => {
-	const {state, dispatch, sendJsonMessage} = usePingPongContext();
+	const {state, dispatch} = usePingPongContext();
+	const {sendJsonMessage} = usePingPongSocket();
 	const time = new Date();
 	time.setSeconds(time.getSeconds() + 300);
 	const {
@@ -81,7 +83,7 @@ const Header = () => {
 						<span className="absolute inline-flex items-center justify-center w-full h-full">{state.score.side}</span>
 					</div>
 					<div className="bg-secondary lg:w-full lg:max-w-[133px] h-[40px] flex md:justify-start justify-center items-center px-2 shrink-0 sm:shrink">
-						<img src="/ebennamr.jpeg" alt="" className="w-[26px] h-[26px] border rounded-full overflow-hidden shrink-0"/>
+						<img src={state.opponent?.profile_image} alt="" className="w-[26px] h-[26px] border rounded-full overflow-hidden shrink-0"/>
 						<span className="shrink truncate text-xs hidden sm:block pl-3">{state.opponent?.username}</span>
 					</div>
 				</div>

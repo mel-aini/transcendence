@@ -4,6 +4,7 @@ import { Levels, usePingPongContext } from "../../../../contexts/pingPongProvide
 import { useNavigate } from "react-router-dom";
 import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 import { useProfileContext } from "../../../../contexts/profileStore";
+import { usePingPongSocket } from "../../../../contexts/PingPongSocketProvider";
 
 // width = 1.6 * height
 
@@ -11,7 +12,8 @@ const Table = ({width}: {width: number}) => {
 	const myPaddle = useRef<HTMLDivElement>(null);
 	const sidePaddle = useRef<HTMLDivElement>(null);
 	const table = useRef<HTMLDivElement>(null);
-	const { sendJsonMessage, state } = usePingPongContext();
+	const { state } = usePingPongContext();
+	const { sendJsonMessage } = usePingPongSocket();
 	const { state: profileState } = useProfileContext();
 	const {sendJsonMessage: sendInTournament} = useTournamentContext();
 

@@ -7,9 +7,11 @@ import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 
 import { PiMouseLeftClickFill } from "react-icons/pi";
 import { MdTouchApp } from "react-icons/md";
+import { usePingPongSocket } from "../../../../contexts/PingPongSocketProvider";
 
 function Box() {
-	const { sendJsonMessage, state, dispatch } = usePingPongContext();
+	const { state, dispatch } = usePingPongContext();
+	const { sendJsonMessage } = usePingPongSocket();
 	const {sendJsonMessage: sendInTournament} = useTournamentContext();
 
 	useEffect(() => {

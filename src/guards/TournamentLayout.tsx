@@ -1,4 +1,3 @@
-import TournamentContextProvider from "../contexts/TournamentProvider";
 import { Outlet } from "react-router-dom";
 import PingPongContextProvider from "../contexts/pingPongProvider";
 

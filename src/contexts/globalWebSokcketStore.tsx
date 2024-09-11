@@ -58,7 +58,7 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 		{
 			if (lastJsonMessage.type === "user-action") {
 				const value = setValue(lastJsonMessage.data.value);
-				if (!isEmptyObject(state.userData) && lastJsonMessage.identifier === state.userData.username) {
+				if (!isEmptyObject(state.userData) && lastJsonMessage.identifier === state.userData?.username) {
 					dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: value}});
 				}
 				else {
