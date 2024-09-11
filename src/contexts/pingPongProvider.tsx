@@ -192,7 +192,6 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 	const { state: token }  = useAuthContext();
 	// const fullWsUrl:string = state.gameId ? GAME_WS_URL + username + "/" + state.gameId : GAME_WS_URL + username + "/random/";
 	const { state: routeState } = useLocation();
-	console.log(routeState);
 	
 	const fullWsUrl:string = (routeState && routeState.gameId) ? GAME_WS_URL + routeState.gameId + "/?token=" : GAME_WS_URL + "random/?token=";
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(fullWsUrl + token.accessToken,
