@@ -6,7 +6,7 @@ import ChatContextProvider from "../contexts/chatProvider";
 import { useLocation } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
 import TournamentContextProvider from "../contexts/TournamentProvider";
-import ProfileContextProvider from "../contexts/profileStore";
+import ProfileContextProvider, { useProfileContext } from "../contexts/profileStore";
 import GlobalWebSocketContextProvider from "../contexts/globalWebSokcketStore";
 
 export function Nested({ Component }: { Component: ComponentType }) {

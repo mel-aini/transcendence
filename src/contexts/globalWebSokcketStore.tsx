@@ -41,8 +41,8 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	const modifyObjectByName = (array : FriendsData[] | null, username: string, newValue: Relation) => {
-		console.log(array);
-		const obj: FriendsData | undefined = array ? array.find(obj => obj.username === username) : undefined;
+		// console.log("array", array);
+		const obj: FriendsData | undefined = (array && array?.length != 0) ? array.find(obj => obj.username === username) : undefined;
 		if (obj) {
 			obj.relation = newValue;
 			return array;
@@ -50,7 +50,7 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	useEffect(() => {
-		console.log(lastJsonMessage);
+		// console.log(lastJsonMessage);
 		
 		if (!isEmptyObject(lastJsonMessage) && lastJsonMessage.code === 200)
 		{
@@ -60,12 +60,14 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 					dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: value}});
 				}
 				else {
-					const updatedArray = modifyObjectByName([...state.friendsData], lastJsonMessage.identifier, value);
+					const updatedArray = modifyObjectByName(state.friendsData, lastJsonMessage.identifier, value);
 					if (updatedArray) {
-						dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
+						dispatchProfile({type: "FRIEND_DATA", friendsData: updatedArray});
 					}
 				}
 			}
+			// else if (lastJsonMessage.type === "invite") {
+			// }
 			else if (lastJsonMessage.type === "update")
 			{
 				if (lastJsonMessage.identifier === "username")
@@ -84,8 +86,11 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 				{
 					dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
 				}
+				else if (lastJsonMessage.identifier === "game_settings")
+				{
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings, paddle: lastJsonMessage.data.paddle, ball: lastJsonMessage.data.ball, background: lastJsonMessage.data.background}}});
+				}
 				console.log(lastJsonMessage.message);
-				
 				dispatch({type: 'ALERT', content: lastJsonMessage.message})
 			}
 			else if (lastJsonMessage.type === "online")
@@ -97,10 +102,12 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			if (lastJsonMessage.type === "user-action")
 			{
 				if (lastJsonMessage.identifier === state.userData?.username)
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData}});
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: state.userData?.relation}});
 				else
-					dispatchProfile({type: "FRIEND_DATA", friendsData: {...state.friendsData}});
+					dispatchProfile({type: "FRIEND_DATA", friendsData: state.friendsData});
 			}
+			// else if (lastJsonMessage.type === "invite") {
+			// }
 			else if (lastJsonMessage.type === "update")
 			{
 				if (lastJsonMessage.identifier === "tfa-status" || lastJsonMessage.identifier === "tfa-change")
@@ -113,7 +120,13 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 				}
 				else if (lastJsonMessage.identifier === "email")
 				{
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: state.userData?.email}});
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, email: state.userData?.email}});
+				}
+				else if (lastJsonMessage.identifier === "game_settings")
+				{
+					console.log(state.userData);
+					
+					dispatchProfile({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings}}});
 				}
 				dispatch({type: 'ALERT', content: lastJsonMessage.message})
 			}
@@ -131,12 +144,12 @@ export const WS_URL = "ws://localhost:8000/ws/sys/?token=";
 export const useGlobalWebSocketContext = () => useContext(GlobalWebSocketContext);
 export default GlobalWebSocketContextProvider;
 
-//		 "type": "user-action" | "online" | "notification" | "update" | "invite"
-//		 "code": 200 | 400 | 403
-//		 "message" : "user not Found" 
-//		 "identifier": "other"
-//		 "data":
-//		 {
-//		 	"value": "add" | "accept" | "deny" | "block" | "unblock" | "unfriend" | "cancel" | "online" | "online"| "offline"
-//		 }
-//		 }
+//		{
+//		    "type":  "update"
+//		    "code": 200 | 400 | 403
+//		    "message" : "success" | "failure"
+//		    "identifier": "game_settings"
+//		    "data":
+//		    {
+//		    }
+//		}

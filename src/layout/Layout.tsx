@@ -6,6 +6,7 @@ import { useGlobalContext } from '../contexts/store';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
 import { useAuthContext } from '../contexts/authProvider';
+import { useProfileContext } from '../contexts/profileStore';
 
 async function fetchData() {
 	const res = await api.get('api/profile');
@@ -16,11 +17,13 @@ const Layout = () => {
 
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
+	const { dispatchProfile } = useProfileContext();
 
 	const {data, isLoading, isError} = useQuery({queryKey: ['getProfile'], queryFn: () => fetchData()});
 
 	useEffect(() => {
 		if (!isLoading) {
+			dispatchProfile({type: "USER_DATA", userData: data?.data});
 			dispatch({type: "USER_DATA", userData: data?.data});
 			authDispatch({type: 'USERNAME', username: data?.data.username});
 		}

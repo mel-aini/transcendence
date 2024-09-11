@@ -6,20 +6,33 @@ import { FriendsData } from "../../../types/profile";
 import { useNavigate } from "react-router-dom";
 import { usePingPongContext } from "../../../contexts/pingPongProvider";
 import LayoutHeader from "../../../layout/LayoutHeader";
+import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
 
 function FriendBar({friend} : {friend: FriendsData}) {
 	const [send, setSend] = useState<boolean>(false);
 	const navigate = useNavigate();
+	const { sendJsonMessage } = useGlobalWebSocketContext(); // refactor lastJsonMessage
 
 	const goToProfile = () => {
 		navigate(friend.profile);
 	}
 
-	const sendPlayInv = () => {
-		// if (!send)
-			// setSend(true);
-		setSend(!send);
+	const sendPlayInv = (username: string) => {
+		sendJsonMessage({
+			type: "invite",
+			identifier: username,
+			data: {}
+		});
+		setSend(true);
 	}
+
+	useEffect(() => {
+		const delay = setTimeout(() => {
+			if (send)
+				setSend(false);
+		}, 10000);
+		return () => clearTimeout(delay);
+	}, [send]);
 
 	return (
 		<div className="flex justify-between items-center h-[50px] gap-4 shrink-0">
@@ -34,16 +47,16 @@ function FriendBar({friend} : {friend: FriendsData}) {
 					</div>
 					<span className="font-normal text-base truncate mobile:w-16 w-10">{friend.username}</span>
 				</div>
-				<span className="font-normal text-base mobile:block hidden shrink-0">lvl </span> {/* {friend.level.current} */} 
+				<span className="font-normal text-base mobile:block hidden shrink-0">lvl {friend.level.current}</span>
 			</div>
 			{
 				send ?
 				<div className="border border-border bg-secondary rounded-md h-full shrink-0 flex justify-center items-center sm:px-10 px-6">
-					<span className="text-gray1 sm:text-base text-sm">sent</span>
+					<span className="text-gray1 sm:text-base text-sm select-none">sent</span>
 				</div>
 				:
-				<div onClick={sendPlayInv} className="border border-border bg-bg rounded-md h-full shrink-0 flex justify-center items-center sm:px-9 px-5 cursor-pointer select-none">
-					<span className="text-primary sm:text-base text-sm">invite</span>
+				<div onClick={() => sendPlayInv(friend.username)} className="border border-border bg-bg rounded-md h-full shrink-0 flex justify-center items-center sm:px-9 px-5 cursor-pointer select-none">
+					<span className="text-primary sm:text-base text-sm select-none">invite</span>
 				</div>
 			}
 		</div>

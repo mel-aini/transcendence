@@ -11,7 +11,7 @@ export interface MatchesData {
 
 export interface UpdateReq {
 	type: "update" 
-	identifier: "username" | "email" | "tfa-status" | "tfa-change" | "",
+	identifier: "username" | "email" | "tfa-status" | "tfa-change" | "game_settings" | "",
 	data: 
 	{
 		value?: string | boolean
@@ -41,6 +41,11 @@ export interface UserData {
 		image: Url,
 		current: number,
 		progress: number
+	},
+	game_settings: {
+		paddle : string,
+		ball : string,
+		background : string
 	}
 }
 
