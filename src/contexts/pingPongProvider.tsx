@@ -3,7 +3,7 @@ import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useGlobalContext } from "./store";
 import { Player, RoundData, useTournamentContext } from "./TournamentProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "./authProvider";
 import { UserData } from "../types/profile";
 
@@ -191,7 +191,10 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 	const username: string | undefined = profileData.userData?.username;
 	const { state: token }  = useAuthContext();
 	// const fullWsUrl:string = state.gameId ? GAME_WS_URL + username + "/" + state.gameId : GAME_WS_URL + username + "/random/";
-	const fullWsUrl:string = state.gameId ? GAME_WS_URL + state.gameId + "/?token=" : GAME_WS_URL + "random/?token=";
+	const { state: routeState } = useLocation();
+	console.log(routeState);
+	
+	const fullWsUrl:string = (routeState && routeState.gameId) ? GAME_WS_URL + routeState.gameId + "/?token=" : GAME_WS_URL + "random/?token=";
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(fullWsUrl + token.accessToken,
 			{
 				share: false,
