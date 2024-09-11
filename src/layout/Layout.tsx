@@ -19,7 +19,7 @@ const Layout = () => {
 	const { dispatch: authDispatch } = useAuthContext();
 	const { dispatchProfile } = useProfileContext();
 
-	const {data, isLoading, isError} = useQuery({queryKey: ['getProfile'], queryFn: () => fetchData()});
+	const {data, isLoading, isError} = useQuery({queryKey: ['getProfile'], queryFn: () => fetchData(), refetchOnMount: true});
 
 	useEffect(() => {
 		if (!isLoading) {

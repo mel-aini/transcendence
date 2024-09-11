@@ -1,10 +1,11 @@
-import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useProfileContext } from "./profileStore";
 import { FriendsData, Relation } from "../types/profile";
 import { useGlobalContext } from "./store";
 import { useAuthContext } from "./authProvider";
+import { useNotificationsContext } from "./notificationsProvider";
 
 export const GlobalWebSocketContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
 	lastJsonMessage: '',
@@ -16,6 +17,7 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	const { dispatch } = useGlobalContext();
 	const { state, dispatchProfile } = useProfileContext();
 	const { state: token }  = useAuthContext();
+	const { dispatch: notDispatch } = useNotificationsContext();
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_URL + token.accessToken,
 		{
 			share: false,
@@ -96,6 +98,10 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			else if (lastJsonMessage.type === "online")
 			{
 				dispatchProfile({type: "USER_DATA", userData: {...state.userData, online: lastJsonMessage.data.value}});
+			}
+			else if (lastJsonMessage.type == 'notification') {
+				console.log('notification pushed')
+				notDispatch({type: 'PUSH_NOTIFICATION', notification: lastJsonMessage.data, dispatch: notDispatch})
 			}
 		}
 		else if (!isEmptyObject(lastJsonMessage)) { // lastJsonMessage.code === 404

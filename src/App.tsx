@@ -13,6 +13,7 @@ import GlobalWebSocketContextProvider, { GlobalWebSocketContext } from "./contex
 // import withProfile from "./guards/withProfile";
 import GameLayout from "./pages/PingPong/GameLayout";
 import TournamentLayout from "./guards/TournamentLayout";
+import NotificationsProvider from "./contexts/notificationsProvider";
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
@@ -30,50 +31,52 @@ const NotFound = lazy(() => import('./pages/NotFound/Index'));
 
 function App() {
   return (
-    <AuthContextProvider>
-              {/* <GlobalWebSocketContextProvider> */}
-          <GlobalContextProvider>
-              <Suspense fallback={<LoadingPage />}>
-                <Routes>
-                  <Route path="/" element={<MainLayout />}>
-                    <Route index element={<Home />} />
-                    <Route path="/signup" element={withoutAuth(SignUp)} />
-                    <Route path="/login" element={withoutAuth(Login)} />
-                    {/* <Route path="/chat" element={withAuth(Chat)} /> */}
-                    <Route element={withAuth(Layout)}>
-                      <Route path="/chat" element={<Chat />} />
-                      <Route path="/settings" element={<Settings />} />
-                      <Route path="/profile" element={<Profile />} />
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path='/users'>
-                        <Route path=':id' element={<Profile />} />
-                        <Route path='*' element={<>Not Found</>} />
-                      </Route>
-                      <Route path='/ping-pong'>
-                        <Route index element={<PingPong />} />
-                        <Route element={<GameLayout isTournament={false}/>}>
-                          <Route path='play' element={<Play />} />
-                          <Route path='match-making' element={<MatchMaking />} />
+		<NotificationsProvider>
+      <AuthContextProvider>
+                {/* <GlobalWebSocketContextProvider> */}
+            <GlobalContextProvider>
+                <Suspense fallback={<LoadingPage />}>
+                  <Routes>
+                    <Route path="/" element={<MainLayout />}>
+                      <Route index element={<Home />} />
+                      <Route path="/signup" element={withoutAuth(SignUp)} />
+                      <Route path="/login" element={withoutAuth(Login)} />
+                      {/* <Route path="/chat" element={withAuth(Chat)} /> */}
+                      <Route element={withAuth(Layout)}>
+                        <Route path="/chat" element={<Chat />} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path='/users'>
+                          <Route path=':id' element={<Profile />} />
+                          <Route path='*' element={<>Not Found</>} />
                         </Route>
-                        <Route path='vs-friend' element={<VsFriend />} />
-                        <Route path='*' element={<NotFound />} />
-                      </Route>
-                      <Route path='/Tournament' element={<TournamentLayout />} >
-                        <Route index element={<Tournament />} />
-                        <Route element={<GameLayout isTournament={true}/>}>
-                          <Route path='play' element={<Play />} />
-                          <Route path='match-making' element={<MatchMaking />} />
+                        <Route path='/ping-pong'>
+                          <Route index element={<PingPong />} />
+                          <Route element={<GameLayout isTournament={false}/>}>
+                            <Route path='play' element={<Play />} />
+                            <Route path='match-making' element={<MatchMaking />} />
+                          </Route>
+                          <Route path='vs-friend' element={<VsFriend />} />
+                          <Route path='*' element={<NotFound />} />
                         </Route>
-                        <Route path='*' element={<NotFound />} />
+                        <Route path='/Tournament' element={<TournamentLayout />} >
+                          <Route index element={<Tournament />} />
+                          <Route element={<GameLayout isTournament={true}/>}>
+                            <Route path='play' element={<Play />} />
+                            <Route path='match-making' element={<MatchMaking />} />
+                          </Route>
+                          <Route path='*' element={<NotFound />} />
+                        </Route>
                       </Route>
+                      <Route path='*' element={<NotFound />} />
                     </Route>
-                    <Route path='*' element={<NotFound />} />
-                  </Route>
-                </Routes>
-              </Suspense>
-        </GlobalContextProvider>
-              {/* </GlobalWebSocketContextProvider> */}
-      </AuthContextProvider>
+                  </Routes>
+                </Suspense>
+          </GlobalContextProvider>
+                {/* </GlobalWebSocketContextProvider> */}
+        </AuthContextProvider>
+    </NotificationsProvider>
   )
 }
 
