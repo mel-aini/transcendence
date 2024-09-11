@@ -15,7 +15,6 @@ export interface ProfileData {
 	userData: UserData | null,
 	friendsData: FriendsData[] | null,
 	matchesData: MatchesData[] | null,
-	seeAllFriends: boolean,
 	refreshUser: boolean,
 	// user: string,
 }
@@ -24,7 +23,6 @@ const initialState: ProfileData = {
 	userData: null,
 	friendsData: null,
 	matchesData: null,
-	seeAllFriends: false,
 	refreshUser: false,
 	// user: "profile",
 };
@@ -51,11 +49,6 @@ const reducer = (state: ProfileData, action: any) => {
 			return { 
 				...state, 
 				matchesData: action.matchesData
-			}
-		case 'SEE_ALL_FRIENDS':
-			return { 
-				...state, 
-				seeAllFriends: action.seeAllFriends
 			}
 		case 'REFRESH_USER':
 			return { 

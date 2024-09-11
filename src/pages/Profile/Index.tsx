@@ -20,13 +20,18 @@ async function fetchData(id: string | undefined) {
 
 const Index = () => {
 	const { id } = useParams();
-	const {data, isLoading, isError} = useQuery({queryKey: ['profile', id], queryFn: () => fetchData(id)});
+	const {data, isLoading, isError, isRefetching} = useQuery({queryKey: ['profile', id], queryFn: () => fetchData(id), refetchInterval: 5000});
 	const { state, dispatchProfile } = useProfileContext();
-	
+
 	useEffect(() => {
 		if (!isLoading)
 			dispatchProfile({type: "USER_DATA", userData: data?.data});
 	} ,[isLoading, id])
+
+	useEffect(() => {
+		if (!isRefetching)
+			dispatchProfile({type: "USER_DATA", userData: data?.data});
+	} ,[isRefetching])
 
 	if (isLoading) {
 		return (

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import { FriendsData, ProfileRes } from "../../types/profile"
 import FriendBar from "./FriendBar"
 import { AnimatePresence, motion } from "framer-motion"
@@ -15,10 +15,10 @@ async function fetchData(uri: string ) {
 	return res;
 }
 
-const AllFriends = () => {
+const AllFriends = ({setSeeAllFriends}: {setSeeAllFriends: Dispatch<SetStateAction<boolean>>}) => {
 	const { id } = useParams();
 	const newUri: string = id ? "friends/" + id : "friends";
-	const {data, isLoading, isError} = useQuery({queryKey: ['allFriends', id], queryFn: () => fetchData(newUri)});
+	const {data, isLoading, isError, isRefetching} = useQuery({queryKey: ['allFriends', id], queryFn: () => fetchData(newUri), refetchInterval: 5000});
 	const { state, dispatchProfile } = useProfileContext();
 	const [relation, setRelation] = useState<string>("friend");
 	const refScroll = useRef(null);
@@ -78,8 +78,14 @@ const AllFriends = () => {
 	}
 
 	useEffect(() => {
-		dispatchProfile({type: "FRIEND_DATA", friendsData: data?.data});
-	}, [data]);
+		if (!isLoading)
+			dispatchProfile({type: "FRIEND_DATA", friendsData: data?.data});
+	}, [isLoading]);
+
+	useEffect(() => {
+		if (!isRefetching)
+			dispatchProfile({type: "FRIEND_DATA", friendsData: data?.data});
+	}, [isRefetching]);
 
 	if (isLoading) {
 		return (
@@ -138,7 +144,7 @@ const AllFriends = () => {
 				transition={{duration: 0.3}}
 				exit={{ opacity: 0}}
 				className="absolute">
-				<div className="fixed top-0 start-0 bg-black opacity-70 w-full min-h-[100vh]" onClick={() => dispatchProfile({type: "SEE_ALL_FRIENDS", seeAllFriends: false})}/>
+				<div className="fixed top-0 start-0 bg-black opacity-70 w-full min-h-[100vh]" onClick={() => setSeeAllFriends(false)}/>
 				<motion.div
 					initial={{y: 'calc(-50% - 10px)', x: '-50%'}}
 					animate={{y: '-50%'}}

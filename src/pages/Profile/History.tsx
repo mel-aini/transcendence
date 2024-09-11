@@ -20,7 +20,7 @@ async function fetchData(id: string | undefined) {
 
 const History = () => {
 	const { id } = useParams();
-	const {data, isLoading, isError} = useQuery({queryKey: ['matches', id], queryFn: () => fetchData(id)});
+	const {data, isLoading, isError, isRefetching} = useQuery({queryKey: ['matches', id], queryFn: () => fetchData(id), refetchInterval: 5000});
 	const { state, dispatchProfile } = useProfileContext();
 	const navigate = useNavigate();
 	const parentRef = useRef(null);
@@ -44,6 +44,11 @@ const History = () => {
 			window.removeEventListener('resize', handler)
 		}
 	}, [isLoading])
+
+	useEffect(() => {
+		if (!isRefetching)
+			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
+	}, [isRefetching])
 
 	if (isLoading) {
 		return (
@@ -76,7 +81,7 @@ const History = () => {
 						animate="visible"
 						>
 					{
-						state.matchesData ? state.matchesData.map((match: MatchesData, key: number) => {
+						(state.matchesData && state.matchesData.length !== 0) ? state.matchesData.map((match: MatchesData, key: number) => {
 							const variant = {
 								hidden: { opacity: 0, },
 								visible: { opacity: 1,
@@ -130,7 +135,7 @@ const History = () => {
 							);
 						})
 						:
-						<div>Loading...</div>
+						<div>No Matches Yet !!!</div>
 					}
 					</motion.div>
 			</Container>

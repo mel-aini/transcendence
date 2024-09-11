@@ -9,12 +9,6 @@ import { useProfileContext } from "../../contexts/profileStore";
 import api from "../../api/axios";
 import { useQuery } from "@tanstack/react-query";
 
-// const uri = window.location.pathname.substring(1);
-// const index = uri.indexOf('/');
-// const id = (index === -1) ? undefined : uri.substring(index);
-// const newUri = id ? "friends" + id + "/" : "friends/";
-// const friendsResponse: FriendsData[] = await api.get('api/' + newUri + "?start=0&end=23").then((e) => e.data);
-
 async function fetchData(id: string | undefined) {
 	const uri: string = id ? "friends/" + id + "/" : "friends";
 	const res = await api.get('api/' + uri + "?start=0&end=23");
@@ -23,18 +17,24 @@ async function fetchData(id: string | undefined) {
 
 const Friends = () => {
 	const { id } = useParams();
-	const {data, isLoading, isError} = useQuery({queryKey: ['friends', id], queryFn: () => fetchData(id)});
-	const { state, dispatchProfile } = useProfileContext();
+	const {data, isLoading, isError, isRefetching} = useQuery({queryKey: ['friends', id], queryFn: () => fetchData(id), refetchInterval: 5000});
 	const navigate = useNavigate();
 	const [friends, setFriends] = useState< FriendsData[] | null >(null);
+	const [seeAllFriends, setSeeAllFriends] = useState<boolean>(false);
 	
 	const userClick = (path:string) => {
 		navigate(path);
 	}
 
 	useEffect(() => {
-		setFriends(data?.data);
-	}, [data]);
+		if (!isLoading)
+			setFriends(data?.data);
+	}, [isLoading]);
+
+	useEffect(() => {
+		if (!isRefetching)
+			setFriends(data?.data);
+	}, [isRefetching]);
 
 	if (isLoading) {
 		return (
@@ -54,8 +54,8 @@ const Friends = () => {
 			<Container className="h-full select-none" childClassName="relative flex flex-col justify-between items-center px-7 py-5">
 				<div className="relative flex justify-between items-center w-full">
 					<h1 className="text-2xl font-semibold">Friends</h1>
-					<span className="cursor-pointer" onClick={() => dispatchProfile({type: "SEE_ALL_FRIENDS", seeAllFriends: true})}>see all</span>
-					{ state.seeAllFriends && <AllFriends /> }
+					<span className="cursor-pointer" onClick={() => setSeeAllFriends(true)}>see all</span>
+					{ seeAllFriends && <AllFriends setSeeAllFriends={setSeeAllFriends} /> }
 				</div>
 				<div className="flex justify-start items-center gap-3 w-full overflow-hidden">
 					{friends && friends.map((friend: FriendsData, key: number) => {
