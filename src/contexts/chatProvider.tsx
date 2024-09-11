@@ -31,9 +31,11 @@ export interface Conversation {
 }
 
 interface OnlineFriend {
+	id?: string | number
 	avatar_link: Url
 	conversation_id: string | number
 	username: Username
+	isOnline?: boolean
 }
 
 interface Message {
@@ -180,7 +182,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	}
 
 	const updateConversations = (id: string | number, data: updatedConv) => {
-		console.log('heeeey 1')
 		let OldConv: Conversation | any = {};
 		const newArr = state.conversations.filter((conv: Conversation) => {
 			const condition = conv.id != id;
@@ -197,7 +198,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			OldConv.status = data.status
 		}
 		newArr.unshift(OldConv);
-		console.log('heeeey 2');
 		// console.log(OldConv.username != state.conversation_header.username)
 		if (OldConv.username != state.conversation_header.username && OldConv.sender != authState.username) {
 			notDispatch({type: 'PUSH_NOTIFICATION', notification: {
@@ -260,10 +260,9 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					limitReached: lastJsonMessage.messages.length != 10
 				}})
 			}
-			if (lastJsonMessage.search_conversation) {
-				console.log('heeeeeeeere!')
-				dispatch({type: 'SEARCH_CONVERSATIONS', conversations: lastJsonMessage.search_conversation});
-			}
+			// if (lastJsonMessage.search_conversation) {
+			// 	dispatch({type: 'SEARCH_CONVERSATIONS', conversations: lastJsonMessage.search_conversation});
+			// }
 			if (lastJsonMessage.type == 'message') {
 				if (lastJsonMessage.receiver == authState.username) {
 					// I'm the receiver
@@ -307,6 +306,30 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					sender: lastJsonMessage.data.sender,
 					status: lastJsonMessage.data.status
 				});
+			}
+			if (lastJsonMessage.type == 'update_data') {
+				let newList: OnlineFriend[] = [];
+				type responseData = {
+					id:	number | string
+					username: string
+					avatar_link: string
+					is_online:	boolean
+					conversation_id: number | string
+				}
+				const data: responseData = lastJsonMessage.data
+				const isFound = state.onlineFriends.find((friend: OnlineFriend) => friend.username == data.username);
+				if (!isFound) {
+					newList = [...state.onlineFriends, data]
+				}
+				else {
+					newList = state.onlineFriends.filter((friend: OnlineFriend) => {
+						if (friend.username == data.username) {
+							return data.is_online
+						}
+						return true
+					})
+				}
+				dispatch({type: 'ONLINE', onlineFriends: newList})
 			}
 		}
 	}, [lastJsonMessage])

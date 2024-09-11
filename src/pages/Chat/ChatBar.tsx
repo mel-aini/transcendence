@@ -1,12 +1,10 @@
-import SearchBar from "../../components/SearchBar";
 import ConversationsList from "./ChatBar/ConversationsList";
-import NavBar from "./ChatBar/NavBar";
 import { AnimatePresence, motion } from 'framer-motion'
 import { IoAddCircle } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 import OnlineFriends from "./ChatBar/OnlineFriends";
 import { FiSearch } from "react-icons/fi";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import useLog from "../../hooks/useLog";
 import SearchFriends from "./ChatBar/SearchFriends";
 import { useChatContext } from "../../contexts/chatProvider";
@@ -20,10 +18,8 @@ function ChatBar() {
 	const [toggleMore, setToggleMore] = useState(false);
 	const [searchFriends, setSearchFriends] = useState(false);
 	const action = useLog();
-	const { sendJsonMessage } = useChatContext();
-	const {state: authState} = useAuthContext();
+	const { state: chatState, dispatch, sendJsonMessage } = useChatContext();
 	const { state } = useAuthContext();
-	
 	const [input, setInput] = useState('');
 
 	const onSubmit = (e: FormEvent) => {
@@ -39,16 +35,15 @@ function ChatBar() {
 		setInput('');
 	}
 
-
-	const searchConversation = () => {
-		sendJsonMessage({
-			user_id: authState.user_id,
-			type: 'search_conversation',
-			search: input,
-			offset: 0,
-			limit: 10
+	useEffect(() => {
+		const result = chatState.conversations.filter((conv) => {
+			if (conv.last_message.includes(input)) return true
+			else if (conv.friend.username.includes(input)) return true
+			else if (conv.sender.includes(input)) return true
+			return false;
 		})
-	}
+		dispatch({type: 'SEARCH_CONVERSATIONS', conversations: result})
+	}, [input])
 
 	return ( 
 		<motion.div
@@ -90,11 +85,6 @@ function ChatBar() {
 								>
 								<form onSubmit={onSubmit} className="flex justify-between gap-2">
 									<Input onChange={(e) => setInput(e.target.value)} type="text" placeholder="search" className='w-full bg-transparent border border-border h-[48px] px-3 rounded-md outline-none' />
-									<button 
-										onClick={searchConversation}
-										type="submit" className="shrink-0 size-[48px] flex justify-center items-center border border-border rounded-md">
-										<FiSearch />
-									</button>
 								</form>
 							</motion.div>
 						}

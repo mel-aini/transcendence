@@ -23,16 +23,11 @@ function SearchConversationsList({input, ...props}: Props) {
 			isOnline: isOnline(conversation.friend.username)
 		}})
 	}
-
-	useEffect(() => {
-		console.log('state.searchConversations')
-		console.log(state.searchConversations)
-	}, [state.searchConversations])
-
+	
 	return ( 
 		<div {...props}>
-			<h1>result for search "{input}"</h1>
-			<div>
+			{input != "" && <h1 className="mb-5">result for search "{input}"</h1>}
+			<div className="space-y-[20px]">
 				{
 					state.searchConversations.map((conv, index) => {
 						return (
