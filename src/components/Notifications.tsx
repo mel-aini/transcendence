@@ -6,6 +6,7 @@ import { useNotificationsContext } from "../contexts/notificationsProvider";
 import { MdOutlineClearAll } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import api from "../api/axios";
+import { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
 
 async function getNotifications() {
     const res = await api.get('api/notifications/?start=0&end=10')
@@ -14,7 +15,8 @@ async function getNotifications() {
 
 function Notifications() {
 	const [notifications, setNotifications] = useState<INotification[]>([]);
-	const { dispatch, lastJsonMessage, sendJsonMessage } = useNotificationsContext();
+	const { lastJsonMessage, sendJsonMessage } = useGlobalWebSocketContext();
+	const { dispatch } = useNotificationsContext();
 	const { data, isLoading, isError } = useQuery({
         queryKey: ['notifications'], 
         queryFn: async () => getNotifications()
