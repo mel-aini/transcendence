@@ -78,21 +78,21 @@ interface BallCustomizationProps {
 
 function BallCustomization({ ballColor, setBallColor }: BallCustomizationProps) {
 	const [dropMenu, setDropMenu] = useState(false);
-	const [color, setColor] = useColor(ballColor);
+	// const [color, setColor] = useColor(ballColor);
 
 	return (
 		<div className="flex items-center gap-5">
 			<span>ball:</span>
 			<button className="relative size-10 border border-border hover:border-white duration-300 rounded-md grid place-items-center">
 				<span onClick={() => setDropMenu(prev => !prev)} className="size-5 rounded-full" style={{backgroundColor: ballColor}}/>
-				{
+				{/* {
 					dropMenu &&
 					<div className="absolute top-full left-0 mt-3">
 						<ColorPicker hideAlpha hideInput={["rgb", "hsv"]} color={color} onChange={setColor} onChangeComplete={() => setBallColor(color.hex)} height={100} />
 					</div>
-				}
+				} */}
 
-				{/* <DropMenu isOpen={dropMenu} className="w-[200%] grid grid-cols-2">
+				<DropMenu isOpen={dropMenu} className="w-[200%] grid grid-cols-2">
 					{
 						ballColors.map((color, index) => {
 							return (
@@ -104,7 +104,7 @@ function BallCustomization({ ballColor, setBallColor }: BallCustomizationProps) 
 							)
 						})
 					}
-				</DropMenu> */}
+				</DropMenu>
 			</button>
 		</div>
 	)

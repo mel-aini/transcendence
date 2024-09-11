@@ -13,7 +13,7 @@ const SendingInvitation = ({username, origin}: {username: string, origin: string
 
 	function clickHandler() {
 		if (origin === "profile") {
-			const updatedArray = modifyObjectByName([...state.friendsData], username);
+			const updatedArray = modifyObjectByName(state.friendsData, username);
 			if (updatedArray) {
 				dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
 			}

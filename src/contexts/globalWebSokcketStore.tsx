@@ -92,7 +92,7 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 				{
 					dispatchProfile({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings, paddle: lastJsonMessage.data.paddle, ball: lastJsonMessage.data.ball, background: lastJsonMessage.data.background}}});
 				}
-				console.log(lastJsonMessage.message);
+				// console.log(lastJsonMessage.message);
 				dispatch({type: 'ALERT', content: lastJsonMessage.message})
 			}
 			else if (lastJsonMessage.type === "online")
@@ -130,8 +130,6 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 				}
 				else if (lastJsonMessage.identifier === "game_settings")
 				{
-					console.log(state.userData);
-					
 					dispatchProfile({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings}}});
 				}
 				dispatch({type: 'ALERT', content: lastJsonMessage.message})
@@ -149,13 +147,3 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 export const WS_URL = "ws://localhost:8000/ws/sys/?token=";
 export const useGlobalWebSocketContext = () => useContext(GlobalWebSocketContext);
 export default GlobalWebSocketContextProvider;
-
-//		{
-//		    "type":  "update"
-//		    "code": 200 | 400 | 403
-//		    "message" : "success" | "failure"
-//		    "identifier": "game_settings"
-//		    "data":
-//		    {
-//		    }
-//		}

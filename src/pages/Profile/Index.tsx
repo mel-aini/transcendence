@@ -26,7 +26,7 @@ const Index = () => {
 	useEffect(() => {
 		if (!isLoading)
 			dispatchProfile({type: "USER_DATA", userData: data?.data});
-	} ,[isLoading])
+	} ,[isLoading, id])
 
 	if (isLoading) {
 		return (

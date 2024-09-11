@@ -14,7 +14,7 @@ const PendingInvitation = ({username, origin}: {username: string, origin: string
 
 	const clickHandler = (type: "accept" | "deny") => {
 		if (origin === "profile") {
-			const updatedArray = modifyObjectByName([...state.friendsData], username);
+			const updatedArray = modifyObjectByName(state.friendsData, username);
 			if (updatedArray) {
 				dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
 			}
