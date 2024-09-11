@@ -1,7 +1,6 @@
-import { Dispatch, MutableRefObject, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useEffect } from "react";
 import { FiBell } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { DropMenuTypes } from "./DropMenu";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNotificationsContext } from "../contexts/notificationsProvider";

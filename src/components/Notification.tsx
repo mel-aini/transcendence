@@ -27,6 +27,25 @@ const Notification = ({ notData }: Props) => {
 			data: {}
 		};
 		sendJsonMessage(request);
+		sendJsonMessage({
+			type: "to_text",
+			identifier: data.notification_id,
+			data: {}
+		});
+	}
+	const acceptDenyGame = (type: "accept" | "deny") => {
+		sendJsonMessage({
+			type: "to_text",
+			identifier: data.notification_id,
+			data: {}
+		});
+		if (type == 'accept') {
+			navigate('/ping-pong/match-making', {
+				state: {
+					gameId: data.id
+				}
+			})
+		}
 	}
 
 	const goToChat = async () => {
@@ -85,7 +104,9 @@ const Notification = ({ notData }: Props) => {
 			{data.type == 'game-request' && 
 			<div className="pl-[52px] grid grid-cols-2 gap-2">
 				<button className="flex justify-center items-center border border-border py-2 rounded-lg">reject</button>
-				<button className="flex justify-center items-center border border-primary text-primary py-2 rounded-lg">accept</button>
+				<button 
+					onClick={() => acceptDenyGame('accept')}
+					className="flex justify-center items-center border border-primary text-primary py-2 rounded-lg">accept</button>
 			</div>}
 			{/* {data.type == 'message' && 
 			<div className="pl-[52px] w-full">

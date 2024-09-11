@@ -19,13 +19,13 @@ function Notifications() {
 	const { dispatch } = useNotificationsContext();
 	const { data, isLoading, isError } = useQuery({
         queryKey: ['notifications'], 
-        queryFn: async () => getNotifications()
+        queryFn: async () => getNotifications(),
+		staleTime: 0,
+		gcTime: 0
     });
 
 	const whenFetched = (data: any) => {
 		setNotifications(prev => [...prev, ...data]);
-		console.log('when fetched')
-		console.log(data)
 	}
 
 	const clearNotifications = () => {
@@ -44,8 +44,6 @@ function Notifications() {
 			data: {}
 		})
 		if (data) {
-			console.log('after fetched');
-			console.log(data);
 			setNotifications(data.data)
 		}
 	}, [data])
