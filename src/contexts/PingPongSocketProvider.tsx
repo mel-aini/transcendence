@@ -1,7 +1,7 @@
-import { ReactNode, createContext, useContext } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
-import { useLocation } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useAuthContext } from "./authProvider";
 
 export const PingPongSocket = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
@@ -12,10 +12,9 @@ export const PingPongSocket = createContext<{lastJsonMessage: any, sendJsonMessa
 
 const PingPongSocketProvider = ({isTournament, children} : {isTournament: boolean, children: ReactNode}) => {
 	const { state: token }  = useAuthContext();
-	const { state: routeState } = useLocation();
-	console.log("routeState", routeState);
-
-	const fullWsUrl: string = (routeState && routeState.gameId) ? GAME_WS_URL + routeState.gameId + "/?token=" : GAME_WS_URL + "random/?token=";
+	const [ searchParams ] = useSearchParams();
+	const gameId = searchParams.get('gameId')
+	const fullWsUrl: string = gameId ? GAME_WS_URL + gameId + "/?token=" : GAME_WS_URL + "random/?token=";
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(fullWsUrl + token.accessToken,
 			{
 				share: false,

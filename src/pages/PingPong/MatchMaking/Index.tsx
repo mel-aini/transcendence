@@ -2,7 +2,7 @@ import User from "../../../components/User";
 import { Levels, usePingPongContext } from "../../../contexts/pingPongProvider";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { primaryColor, secondaryColor } from "../../../utils/colors";
 import { useGlobalContext } from "../../../contexts/store";
 import useWebSocket from "react-use-websocket";
@@ -89,6 +89,7 @@ function MatchMaking() {
 	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
 	const avatar_link = 'https://images.unsplash.com/photo-1669937401447-7cfc6e9906e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fGdhbWluZyUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D';
+	const [ searchParams ] = useSearchParams();
 
 	const cancelAction = () => {
 		// if (window.location.pathname == "/ping-pong/match-making")
@@ -130,7 +131,8 @@ function MatchMaking() {
 			if (state.timer == 0)
 			{
 				// dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-				navigate('../play', { replace: true });
+				const gameId = searchParams.get('gameId')
+				navigate('../play' + (gameId ? ('?gameId=' + gameId) : ''), { replace: true });
 			}
 			return () => {
 				clearInterval(id)

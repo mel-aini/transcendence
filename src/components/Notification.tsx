@@ -32,7 +32,15 @@ const Notification = ({ notData }: Props) => {
 			identifier: data.notification_id,
 			data: {}
 		});
+		setData(prev => {
+			return {
+				...prev,
+				type: 'text',
+				content: `you ${type == 'accept' ? 'accepted' : 'denied'} your friend request`
+			}
+		})
 	}
+
 	const acceptDenyGame = (type: "accept" | "deny" | 'join') => {
 		sendJsonMessage({
 			type: "to_text",
@@ -40,12 +48,27 @@ const Notification = ({ notData }: Props) => {
 			data: {}
 		});
 		if (type == 'accept' || type == 'join') {
-			navigate('/ping-pong/match-making', {
-				state: {
-					gameId: data.id
-				}
-			})
+			navigate('/ping-pong/match-making?gameId=' + data.id)
 		}
+		let notificationContent: string;
+		switch (type) {
+			case 'accept':
+				notificationContent = 'you accepted your friend game request'
+				break;
+			case 'deny':
+				notificationContent = 'you denied your friend game request'
+				break;
+			case 'join':
+				notificationContent = data.content
+				break;
+		}
+		setData(prev => {
+			return {
+				...prev,
+				type: 'text',
+				content: notificationContent
+			}
+		})
 	}
 
 	const goToChat = async () => {
@@ -57,13 +80,11 @@ const Notification = ({ notData }: Props) => {
 		}});
 	
 		const userData = await api.get('/api/users/' + notData.sender);
-		// console.log(data.data);
 		chatDispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: userData.data.username,
 			avatar: userData.data.profile_image,
 			isOnline: isOnline(userData.data.username)
 		}})
-		
 	}
 
 	useEffect(() => {
