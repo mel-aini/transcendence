@@ -5,9 +5,11 @@ import UserBox from "./UserBox";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTournamentContext } from "../../../../contexts/TournamentProvider";
+import { useGlobalContext } from "../../../../contexts/store";
 
 function Result() {
 	const { state, dispatch } = usePingPongContext();
+	const { dispatch: dispatchGlobal } = useGlobalContext();
 	const navigate = useNavigate();
 	const [xp, setXp] = useState<number>(0);
 	const { sendJsonMessage } = useTournamentContext();
@@ -22,7 +24,10 @@ function Result() {
 			navigate("/Tournament");
 		}
 		else
-		navigate("/ping-pong");
+		{
+			dispatchGlobal({ type: 'GAME_ID', gameId: null });
+			navigate("/ping-pong");
+		}
 	}
 
 	useEffect(() => {

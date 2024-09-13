@@ -4,7 +4,6 @@ import { Levels, usePingPongContext } from "../../../../contexts/pingPongProvide
 import { useNavigate } from "react-router-dom";
 import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 import { useProfileContext } from "../../../../contexts/profileStore";
-import { usePingPongSocket } from "../../../../contexts/PingPongSocketProvider";
 
 // width = 1.6 * height
 
@@ -12,8 +11,7 @@ const Table = ({width}: {width: number}) => {
 	const myPaddle = useRef<HTMLDivElement>(null);
 	const sidePaddle = useRef<HTMLDivElement>(null);
 	const table = useRef<HTMLDivElement>(null);
-	const { state } = usePingPongContext();
-	const { sendJsonMessage } = usePingPongSocket();
+	const { state, sendJsonMessage } = usePingPongContext();
 	const { state: profileState } = useProfileContext();
 	const {sendJsonMessage: sendInTournament} = useTournamentContext();
 
@@ -47,7 +45,7 @@ const Table = ({width}: {width: number}) => {
 	}
 
 	return (
-		<div ref={table} className="touch-none relative w-full max-h-[750px]" style={{height: `${width * 1/2}px`}}>
+		<div ref={table} className="touch-none relative w-full max-h-[750px]" style={{height: `${width / 1.6}px`}}>
 			<div className="absolute first-table-half w-[68.69%] h-full border rounded-l-[10px] border-border" style={{ backgroundColor: profileState.userData?.game_settings.background + "1a" }} />
 			<div className="absolute second-table-half w-[68.69%] h-full border rounded-l-[10px] rotate-180 left-full -translate-x-full border-border" style={{ backgroundColor: profileState.userData?.game_settings.background + "1a" }} />
 

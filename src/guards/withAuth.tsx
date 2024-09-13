@@ -8,6 +8,7 @@ import { useGlobalContext } from "../contexts/store";
 import TournamentContextProvider from "../contexts/TournamentProvider";
 import ProfileContextProvider, { useProfileContext } from "../contexts/profileStore";
 import GlobalWebSocketContextProvider from "../contexts/globalWebSokcketStore";
+import { usePingPongContext } from "../contexts/pingPongProvider";
 
 export function Nested({ Component }: { Component: ComponentType }) {
 	const { state } = useLocation();
@@ -41,7 +42,7 @@ function withAuth(Component: ComponentType) {
 
 			return (
 				<UpdateToken>
-					<Nested Component={Component} />
+					<Nested Component={Component} />zz
 				</UpdateToken>
 			)
 		}

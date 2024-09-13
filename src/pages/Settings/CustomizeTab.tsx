@@ -15,9 +15,9 @@ function CustomizeTab() {
 	// const { state } = usePingPongContext();
 	const { state } = useProfileContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
-	const [ ballColor, setBallColor ] = useState<string>(state.userData?.game_settings.ball);
-	const [ paddleColor, setPaddleColor ] = useState<string>(state.userData?.game_settings.paddle);
-	const [ tableColor, setTableColor ] = useState<string>(state.userData?.game_settings.background);
+	const [ ballColor, setBallColor ] = useState<string>(state.userData?.game_settings.ball ? state.userData?.game_settings.ball : "#ffffff");
+	const [ paddleColor, setPaddleColor ] = useState<string>(state.userData?.game_settings.paddle ? state.userData?.game_settings.paddle : "#ffffff");
+	const [ tableColor, setTableColor ] = useState<string>(state.userData?.game_settings.background ? state.userData?.game_settings.background : "#ffffff");
 	const saveChanges = () => {
 		if ((ballColor == state.userData?.game_settings.ball)
 			&& (paddleColor == state.userData?.game_settings.paddle)

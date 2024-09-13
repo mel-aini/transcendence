@@ -28,10 +28,14 @@ function PlayChoise({className, title, description, ...props}: Props) {
 function Index() {
 	const navigate = useNavigate();
 	const { readyState } = useTournamentContext();
+	const { dispatch: dispatchGlobal } = useGlobalContext();
 
 	const clickHandler = (route: string) => {
 		if (readyState != ReadyState.OPEN)
+		{
+			dispatchGlobal({ type: 'GAME_ID', gameId: null });
 			navigate(route);
+		}
 	}
 
 	return (

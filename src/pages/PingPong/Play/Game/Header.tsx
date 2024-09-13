@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTimer } from 'react-timer-hook';
 import { useTournamentContext } from "../../../../contexts/TournamentProvider";
-import { usePingPongSocket } from "../../../../contexts/PingPongSocketProvider";
 
 const Goal = () => {
 	const {state} = usePingPongContext();
@@ -40,24 +39,16 @@ const Goal = () => {
 	)
 }
 
+const timeConverter = (time: number) => {
+	const minutes = Math.floor(time / 60);
+	let seconds = (time % 60)
+	console.log(minutes, seconds);
+	return { minutes, seconds }
+}
+
 const Header = () => {
 	const {state, dispatch} = usePingPongContext();
-	const {sendJsonMessage} = usePingPongSocket();
-	const time = new Date();
-	time.setSeconds(time.getSeconds() + 300);
-	const {
-		seconds,
-		minutes,
-		isRunning,
-		start,
-		pause,
-		resume,
-		restart,
-	  } = useTimer({ expiryTimestamp: time, onExpire: () => {
-			pause();
-			sendJsonMessage({ type: "end", });
-		}
-	});
+	const { minutes, seconds } = timeConverter(state.time);
 
 	const clickHandler = () => {
 		if (state.counter > 0)
@@ -67,8 +58,9 @@ const Header = () => {
 	}
 
 	useEffect(() => {
-		if (state.status == "ready") if (state.counter == 0) resume(); else pause();
-	}, [state.counter]);
+		
+		
+	}, []);
 
 	return (
 		<div className="w-full gap-1 items-center grid grid-cols-3 grid-rows-2 lg:grid-rows-1">
@@ -97,9 +89,9 @@ const Header = () => {
 					!state.isTournament &&
 					<div className="bg-secondary px-1 h-[40px] w-[61px] flex justify-center items-center">
 						<span className="w-[44px]">
-							{String(minutes).padStart(2, '0')}
+							{/* {minutes} */}
 							:
-							{String(seconds).padStart(2, '0')}
+							{/* {seconds.padStart(5, '0')} */}
 						</span>
 					</div>
 				}

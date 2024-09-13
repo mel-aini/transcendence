@@ -23,6 +23,8 @@ const Layout = () => {
 
 	useEffect(() => {
 		if (!isLoading) {
+			console.log("data", data?.data);
+			
 			dispatchProfile({type: "USER_DATA", userData: data?.data});
 			dispatch({type: "USER_DATA", userData: data?.data});
 			authDispatch({type: 'USERNAME', username: data?.data.username});

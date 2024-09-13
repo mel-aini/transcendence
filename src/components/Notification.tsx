@@ -1,5 +1,5 @@
 import { FiBell } from "react-icons/fi";
-import { INotification } from "../contexts/store";
+import { INotification, useGlobalContext } from "../contexts/store";
 import { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
 import { ProfileRequest } from "../types/profile";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import api from "../api/axios";
 import useIsOnline from "../hooks/useIsOnline";
 import { useNavigate } from "react-router-dom";
 import { LuMessagesSquare } from "react-icons/lu";
+import { usePingPongContext } from "../contexts/pingPongProvider";
 
 interface Props {
 	notData: INotification
@@ -19,6 +20,7 @@ const Notification = ({ notData }: Props) => {
 	const [data, setData] = useState(notData);
 	const navigate = useNavigate();
 	const isOnline = useIsOnline();
+	const { dispatch: dispatchGlobal } = useGlobalContext();
 
 	const acceptDenyFriend = (type: "accept" | "deny") => {
 		const request: ProfileRequest = {
@@ -48,7 +50,9 @@ const Notification = ({ notData }: Props) => {
 			data: {}
 		});
 		if (type == 'accept' || type == 'join') {
-			navigate('/ping-pong/match-making?gameId=' + data.id)
+			dispatchGlobal({ type: 'GAME_ID', gameId: data.id });
+			navigate('/ping-pong/match-making');
+			// navigate('/ping-pong/match-making?gameId=' + data.id)
 		}
 		let notificationContent: string;
 		switch (type) {

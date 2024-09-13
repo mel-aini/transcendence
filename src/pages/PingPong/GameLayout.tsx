@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
 import PingPongContextProvider from "../../contexts/pingPongProvider";
-import PingPongSocketProvider from "../../contexts/PingPongSocketProvider";
+import { Suspense, useEffect } from "react";
+import { useGlobalContext } from "../../contexts/store";
+import LoadingPage from "../../components/LoadingPage";
 
 function GameLayout({isTournament}: {isTournament: boolean}) {
 	return (
@@ -9,11 +11,9 @@ function GameLayout({isTournament}: {isTournament: boolean}) {
 				isTournament ?
 					<Outlet />
 				:
-					<PingPongSocketProvider isTournament={false}>
-						<PingPongContextProvider isTournament={false}>
-							<Outlet />
-						</PingPongContextProvider>
-					</PingPongSocketProvider>
+				<PingPongContextProvider isTournament={false}>
+					<Outlet />
+				</PingPongContextProvider>
 			}
 		</>
 	);

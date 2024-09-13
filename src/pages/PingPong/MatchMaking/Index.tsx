@@ -88,7 +88,6 @@ function MatchMaking() {
 	const {state, dispatch} = usePingPongContext();
 	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
-	const avatar_link = 'https://images.unsplash.com/photo-1669937401447-7cfc6e9906e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fGdhbWluZyUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D';
 	const [ searchParams ] = useSearchParams();
 
 	const cancelAction = () => {
@@ -131,8 +130,11 @@ function MatchMaking() {
 			if (state.timer == 0)
 			{
 				// dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-				const gameId = searchParams.get('gameId')
-				navigate('../play' + (gameId ? ('?gameId=' + gameId) : ''), { replace: true });
+				// const gameId = searchParams.get('gameId')
+				dispatch({ type: "TIMER", timer: 9 });
+				navigate('../play', { replace: true });
+				// const gameId = searchParams.get('gameId')
+				// navigate('../play' + (gameId ? ('?gameId=' + gameId) : ''), { replace: true });
 			}
 			return () => {
 				clearInterval(id)
