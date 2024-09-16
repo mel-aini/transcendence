@@ -74,23 +74,28 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			{
 				if (lastJsonMessage.identifier === "username")
 				{
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: lastJsonMessage.data.value}});
+					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: lastJsonMessage.data.value}});
+					dispatch({type: "USER_DATA", userData: {...state.userData, username: lastJsonMessage.data.value}});
 				}
 				else if (lastJsonMessage.identifier === "email")
 				{
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, email: lastJsonMessage.data.value}});
+					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, email: lastJsonMessage.data.value}});
+					dispatch({type: "USER_DATA", userData: {...state.userData, email: lastJsonMessage.data.value}});
 				}
 				else if (lastJsonMessage.identifier === "tfa-status")
 				{
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.value}}});
+					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.value}}});
+					dispatch({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.value}}});
 				}
 				else if (lastJsonMessage.identifier === "tfa-change")
 				{
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
+					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
+					dispatch({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
 				}
 				else if (lastJsonMessage.identifier === "game_settings")
 				{
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings, paddle: lastJsonMessage.data.paddle, ball: lastJsonMessage.data.ball, background: lastJsonMessage.data.background}}});
+					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings, paddle: lastJsonMessage.data.paddle, ball: lastJsonMessage.data.ball, background: lastJsonMessage.data.background}}});
+					dispatch({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings, paddle: lastJsonMessage.data.paddle, ball: lastJsonMessage.data.ball, background: lastJsonMessage.data.background}}});
 				}
 				// console.log(lastJsonMessage.message);
 				dispatch({type: 'ALERT', content: lastJsonMessage.message})
@@ -118,19 +123,23 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			{
 				if (lastJsonMessage.identifier === "tfa-status" || lastJsonMessage.identifier === "tfa-change")
 				{
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa}}});
+					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa}}});
+					dispatch({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa}}});
 				}
 				else if (lastJsonMessage.identifier === "username")
 				{
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: state.userData?.username}});
+					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: state.userData?.username}});
+					dispatch({type: "USER_DATA", userData: {...state.userData, username: state.userData?.username}});
 				}
 				else if (lastJsonMessage.identifier === "email")
 				{
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, email: state.userData?.email}});
+					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, email: state.userData?.email}});
+					dispatch({type: "USER_DATA", userData: {...state.userData, email: state.userData?.email}});
 				}
 				else if (lastJsonMessage.identifier === "game_settings")
 				{
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings}}});
+					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings}}});
+					dispatch({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings}}});
 				}
 				dispatch({type: 'ALERT', content: lastJsonMessage.message})
 			}

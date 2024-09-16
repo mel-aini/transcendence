@@ -9,7 +9,7 @@ import { useGlobalContext } from "../../../../contexts/store";
 
 function Result() {
 	const { state, dispatch } = usePingPongContext();
-	const { dispatch: dispatchGlobal } = useGlobalContext();
+	const { state: globalState, dispatch: dispatchGlobal } = useGlobalContext();
 	const navigate = useNavigate();
 	const [xp, setXp] = useState<number>(0);
 	const { sendJsonMessage } = useTournamentContext();
@@ -81,14 +81,14 @@ function Result() {
 			animate={{opacity: 1, top: '0rem'}}
 			transition={{duration: 0.3, delay: 1.5}}
 			className="relative top-0 flex w-full justify-center items-center gap-4 pb-[53px]">
-				<UserBox username="user1" level={3} userImage="" />
+				<UserBox username={globalState.userData?.username} level={globalState.userData?.level.current} userImage={globalState.userData?.profile_image} />
 				<div className={"max-w-[86px] w-full h-[86px] flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px] " + ((state.result.status == "win") ? "text-primary" : "")}>
 					{state.score.my}
 				</div>
 				<div className={"max-w-[86px] w-full h-[86px] flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px] " + ((state.result.status == "lose") ? "text-primary" : "")}>
 					{state.score.side}
 				</div>
-				<UserBox username="user2" level={10} userImage="" />
+				<UserBox username={state.opponent?.username} level={state.opponent?.level.current} userImage={state.opponent?.profile_image} />
 			</motion.div>
 			<motion.div
 			initial={{opacity: 0, top: '-5rem'}}

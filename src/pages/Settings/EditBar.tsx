@@ -7,16 +7,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ring } from 'ldrs'
 import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
 import { UpdateReq } from "../../types/profile";
+import { useGlobalContext } from "../../contexts/store";
 
 ring.register()
 
 function EditBar({type}: {type: "username" | "email" | "tfa"}) {
-	const { state, dispatchProfile } = useProfileContext();
+	// const { state, dispatchProfile } = useProfileContext();
+	const { state } = useGlobalContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	let newValue: string | undefined = (type === "username") ? state.userData?.username : ((type === "email") ? state.userData?.email : state.userData?.tfa.content);
 	const [editStatus, setEditStatus] = useState<"edit" | "wait" | "save">("edit");
 	const [Error, setError] = useState<boolean>(false);
-	const inputRef = useRef();
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const changehandler = (e: any) => {
 		newValue = e.currentTarget.value;

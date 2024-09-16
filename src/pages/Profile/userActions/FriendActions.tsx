@@ -21,7 +21,7 @@ const FriendActions = ({username, origin}: {username: string, origin: string}) =
 	const { state, dispatchProfile } = useProfileContext();
 	const [seeMore, setSeeMore] = useState<boolean>(false);
 
-	const clickHandler = (type: "unfriend" | "block") => {
+	const clickHandler = (type: "unfriend" | "block" | "invite") => {
 		if (origin === "profile") {
 			const updatedArray = modifyObjectByName(state.friendsData, username);
 			if (updatedArray) {
@@ -52,7 +52,7 @@ const FriendActions = ({username, origin}: {username: string, origin: string}) =
 				</>
 				:
 				<>
-					<div className="bg-secondary w-[40px] flex justify-center items-center h-full rounded-md cursor-pointer select-none">
+					<div onClick={() => clickHandler("invite")} className="bg-secondary w-[40px] flex justify-center items-center h-full rounded-md cursor-pointer select-none">
 						<img src={play_icon} alt="" width={20} height={20}/>
 					</div>
 					<div className="bg-secondary w-[40px] flex justify-center items-center h-full rounded-md cursor-pointer select-none">
