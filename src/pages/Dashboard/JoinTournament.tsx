@@ -38,7 +38,7 @@ function TournamentFrom() {
 	const navigate = useNavigate();
 
 	const changeHandler = () => {
-		const input = inputRef.current;
+		// const input = inputRef.current;
 		(validate("username", inputRef.current.value)) ?
 		setValidAlias(true)
 		:

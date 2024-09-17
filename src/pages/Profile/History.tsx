@@ -11,6 +11,7 @@ import loss from "/deny.svg"
 import api from "../../api/axios";
 import { useProfileContext } from "../../contexts/profileStore";
 import { useQuery } from "@tanstack/react-query";
+import { RxValueNone } from "react-icons/rx";
 
 async function fetchData(id: string | undefined) {
 	const uri: string = id ? "matches/" + id : "matches";
@@ -106,7 +107,7 @@ const History = () => {
 										{/* <div > */}
 											{(status == "win") && <img className="w-[24px] h-[24px]" src={win}/>}
 											{(status == "lose") && <img className="w-[25px] h-[25px]" src={loss}/>}
-											{(status == "draw") && <img className="w-[24px] h-[24px] mr-1" src="/draw.png"/>}
+											{(status == "draw") && <RxValueNone className="text-2xl " />}
 										{/* </div> */}
 										{/* <div className={`flex justify-between ` + (status == "lose" ? "flex-row-reverse" : "")}> */}
 										{

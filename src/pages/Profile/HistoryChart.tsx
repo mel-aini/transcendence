@@ -9,7 +9,7 @@ const HistoryChart = ({width, height, data}: {width: number, height: number, dat
 
 
 	return (
-		<motion.svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="px-4 sm:px-10 md:px-12 lg:px-16 my-24 md:my-28"
+		<motion.svg width={width} height={height} viewBox={`-10 -10 ${width + 10} ${height+ 10}`} className="px-4 sm:px-10 md:px-12 lg:px-16 my-24 md:my-28"
 			initial="hidden"
 			animate="visible">
 

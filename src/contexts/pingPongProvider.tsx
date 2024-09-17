@@ -49,7 +49,8 @@ export interface GameData {
 	},
 	timer: number,
 	isTournament: boolean,
-	time: number
+	time: number,
+	alias?: string
 }
 
 const initialState: GameData = {
@@ -89,7 +90,8 @@ const initialState: GameData = {
 	},
 	timer: 9,
 	isTournament: false,
-	time: 0
+	time: 0,
+	alias: undefined
 };
 
 export const PingPongContext = createContext<{ state: GameData, dispatch: Dispatch<any>, lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
@@ -177,6 +179,11 @@ const reducer = (state: GameData, action: any) => {
 				return { 
 					...state, 
 					time: action.time
+				}
+			case 'ALIAS':
+				return { 
+					...state, 
+					alias: action.alias
 				}
 			case 'RESET':
 				return initialState;
@@ -293,9 +300,16 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 			if (tournMessage.type == "opponents")
 			{
 				dispatch({type: 'IS_Tournament', isTournament: isTournament});
-				(tournMessage.user1.alias == tournState.alias) ? dispatch({type: "OPPONENT", opponent: tournMessage.user2})
-				:
-				dispatch({type: "OPPONENT", opponent: tournMessage.user1});
+				if (tournMessage.user1.alias == tournState.alias)
+				{
+					dispatch({type: "OPPONENT", opponent: tournMessage.user2});
+					dispatch({type: "ALIAS", alias: tournMessage.user2.alias});
+				}
+				else
+				{
+					dispatch({type: "OPPONENT", opponent: tournMessage.user1});
+					dispatch({type: "ALIAS", alias: tournMessage.user1.alias});
+				}
 				dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
 				sendTournMessage( { type: 'handshake' } );
 			}

@@ -156,8 +156,8 @@ function MatchMaking() {
 					<div className="flex items-center gap-5 flex-1 justify-start">
 						<User className="size-28 border-primary" border url={profileData.userData?.profile_image} />
 						<div>
-							<h3>{profileData.userData?.username || 'mel-aini'}</h3>
-							<h4>{'Lvl ' + profileData.userData?.level.current || 'Lvl 5'}</h4>
+							<h3>{profileData.userData?.username}</h3>
+							<h4>{'Lvl ' + profileData.userData?.level.current}</h4>
 						</div>
 					</div>
 					{/* <PlayerBar username={profileData.userData?.username} state={state.level} level={profileData.userData?.level.current} avatar={profileData.userData?.profile_image} /> */}
@@ -179,7 +179,7 @@ function MatchMaking() {
 							className="flex-1 flex justify-end items-center gap-5"
 							>
 							<div>
-								<h3>{ state.opponent?.username }</h3>
+								<h3>{ state.isTournament ? state.alias : state.opponent?.username }</h3>
 								<h4>{ 'Lvl ' + state.opponent?.level.current }</h4>
 							</div>
 							<User className="size-28 border-primary" border url={state.opponent?.profile_image} />

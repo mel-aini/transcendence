@@ -84,8 +84,6 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 	// const {state: gameState, dispatch: gameDispatch} = usePingPongContext();
 	const navigate = useNavigate();
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const { state: profileData } = useGlobalContext();
-	const username: string | undefined = profileData.userData?.username; // state.joinTournament.alias
 
 	const initRounds = useCallback((): RoundData[] => {
 		const resetRoundData: RoundData[] = [];
@@ -150,8 +148,8 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 
 		if (!isEmptyObject(lastJsonMessage))
 		{
-			// if (lastJsonMessage.type != "ball")
-			// 	console.log("TOURNAMENT context", lastJsonMessage);
+			if (lastJsonMessage.type != "ball")
+				console.log("TOURNAMENT context", lastJsonMessage);
 
 			if (lastJsonMessage.type == "dashboard")
 			{
