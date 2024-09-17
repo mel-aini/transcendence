@@ -3,9 +3,11 @@ import { useProfileContext } from "../../contexts/profileStore";
 import EditBar from "./EditBar";
 import { UpdateReq } from "../../types/profile";
 import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
+import { useGlobalContext } from "../../contexts/store";
 
 function TFA() {
-	const {state} = useProfileContext();
+	// const {state} = useProfileContext();
+	const {state} = useGlobalContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	const [enableTFA, setEnableTFA] = useState<boolean | undefined>(state.userData?.tfa.status);
 

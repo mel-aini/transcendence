@@ -41,14 +41,16 @@ const Goal = () => {
 
 const timeConverter = (time: number) => {
 	const minutes = Math.floor(time / 60);
-	let seconds = (time % 60)
-	console.log(minutes, seconds);
-	return { minutes, seconds }
+	const seconds = Math.floor(time % 60);
+	// console.log(minutes, seconds);
+	const finalSeconds = seconds < 10 ? `0${seconds}` : seconds.toString();
+	const finalMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
+	return { finalMinutes, finalSeconds }
 }
 
 const Header = () => {
 	const {state, dispatch} = usePingPongContext();
-	const { minutes, seconds } = timeConverter(state.time);
+	const { finalMinutes, finalSeconds } = timeConverter(state.time);
 
 	const clickHandler = () => {
 		if (state.counter > 0)
@@ -89,9 +91,9 @@ const Header = () => {
 					!state.isTournament &&
 					<div className="bg-secondary px-1 h-[40px] w-[61px] flex justify-center items-center">
 						<span className="w-[44px]">
-							{/* {minutes} */}
+							{finalMinutes}
 							:
-							{/* {seconds.padStart(5, '0')} */}
+							{finalSeconds}
 						</span>
 					</div>
 				}

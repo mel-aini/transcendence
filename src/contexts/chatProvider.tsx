@@ -6,6 +6,7 @@ import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Modal from "../components/Modal";
 import { useNotificationsContext } from "./notificationsProvider";
+import { useNavigate } from "react-router-dom";
 
 type Url = string;
 type Username = string;
@@ -165,6 +166,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	const { state: authState } = useAuthContext();
 	const [isReconnect, setIsReconnect] = useState(false);
 	const { dispatch: notDispatch } = useNotificationsContext();
+	const navigate = useNavigate();
 
 	function setErrorInLastMessage() {
 		if (state.lastMessage != null) {
@@ -273,12 +275,12 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 						receiver: authState.username,
 						state: 'ok'
 					}});
-					updateConversations(state.conversation.id, {
-						last_date: dateMeta.getDate(),
-						last_message: lastJsonMessage.message,
-						sender: state.conversation_header.username,
-						status: 'True'
-					});
+					// updateConversations(state.conversation.id, {
+					// 	last_date: dateMeta.getDate(),
+					// 	last_message: lastJsonMessage.message,
+					// 	sender: state.conversation_header.username,
+					// 	status: 'True'
+					// });
 					
 				} else {
 					// I'm the sender
@@ -290,12 +292,12 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 						receiver: state.conversation_header.username,
 						state: 'ok'
 					}});
-					updateConversations(state.conversation.id, {
-						last_date: dateMeta.getDate(),
-						last_message: lastJsonMessage.message,
-						sender: authState.username || '',
-						status: 'False'
-					});
+					// updateConversations(state.conversation.id, {
+					// 	last_date: dateMeta.getDate(),
+					// 	last_message: lastJsonMessage.message,
+					// 	sender: authState.username || '',
+					// 	status: 'False'
+					// });
 				}
 			}
 			if (lastJsonMessage.type == 'conversation_update') {
@@ -308,6 +310,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				});
 			}
 			if (lastJsonMessage.type == 'update_data') {
+				// for update online users status
 				let newList: OnlineFriend[] = [];
 				type responseData = {
 					id:	number | string
@@ -319,9 +322,11 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				const data: responseData = lastJsonMessage.data
 				const isFound = state.onlineFriends.find((friend: OnlineFriend) => friend.username == data.username);
 				if (!isFound) {
+					console.log('user offline');
 					newList = [...state.onlineFriends, data]
 				}
 				else {
+					console.log('user online');
 					newList = state.onlineFriends.filter((friend: OnlineFriend) => {
 						if (friend.username == data.username) {
 							return data.is_online
@@ -330,6 +335,14 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					})
 				}
 				dispatch({type: 'ONLINE', onlineFriends: newList})
+			}
+			if (lastJsonMessage.type == 'getConversation') {
+				// console.log('trying to open chat with this friend');
+				dispatch({type: 'FOCUS', state: true})
+				dispatch({type: 'CONVERSATION', conversation: {
+					id: lastJsonMessage.id,
+					state: 'loading'
+				}});
 			}
 		}
 	}, [lastJsonMessage])

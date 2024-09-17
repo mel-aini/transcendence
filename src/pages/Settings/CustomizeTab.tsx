@@ -6,6 +6,7 @@ import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore"
 import { useProfileContext } from "../../contexts/profileStore";
 import { ColorPicker,Saturation, Hue,  useColor } from "react-color-palette";
 import "react-color-palette/css";
+import { useGlobalContext } from "../../contexts/store";
 
 const paddleColors = [ '#E2A65F', '#DB5050', '#14FFEC', '#C8EB87', '#FFFFFF', '#8B6DE2' ]
 const ballColors = [ '#E2A65F', '#DB5050', '#14FFEC', '#C8EB87', '#FFFFFF', '#8B6DE2' ]
@@ -13,11 +14,12 @@ const tableColors = [ '#141619', '#1D403D', '#343434' ]
 
 function CustomizeTab() {
 	// const { state } = usePingPongContext();
-	const { state } = useProfileContext();
+	// const { state } = useProfileContext();
+	const { state } = useGlobalContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
-	const [ ballColor, setBallColor ] = useState<string>(state.userData?.game_settings.ball ? state.userData?.game_settings.ball : "#ffffff");
-	const [ paddleColor, setPaddleColor ] = useState<string>(state.userData?.game_settings.paddle ? state.userData?.game_settings.paddle : "#ffffff");
-	const [ tableColor, setTableColor ] = useState<string>(state.userData?.game_settings.background ? state.userData?.game_settings.background : "#ffffff");
+	const [ ballColor, setBallColor ] = useState<string>(state.userData?.game_settings.ball);
+	const [ paddleColor, setPaddleColor ] = useState<string>(state.userData?.game_settings.paddle);
+	const [ tableColor, setTableColor ] = useState<string>(state.userData?.game_settings.background);
 	const saveChanges = () => {
 		if ((ballColor == state.userData?.game_settings.ball)
 			&& (paddleColor == state.userData?.game_settings.paddle)

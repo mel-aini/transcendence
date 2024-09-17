@@ -84,7 +84,7 @@ export interface ProfileRes {
 }
 
 export interface ProfileRequest {
-	type: "add" | "accept" | "deny" | "block" | "unblock" | "unfriend" | "cancel" | "online",
+	type: "add" | "accept" | "deny" | "block" | "unblock" | "unfriend" | "cancel" | "online" | "invite",
 	identifier: string,
 	data: {}
 }

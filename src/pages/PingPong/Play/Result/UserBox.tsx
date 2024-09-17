@@ -1,7 +1,7 @@
 interface Props {
-	username: string,
-	level: number,
-	userImage: string
+	username?: string,
+	level?: number,
+	userImage?: string
 }
 
 function UserBox({username, level, userImage}: Props) {
