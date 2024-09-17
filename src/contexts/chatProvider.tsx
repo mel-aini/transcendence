@@ -6,6 +6,7 @@ import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Modal from "../components/Modal";
 import { useNotificationsContext } from "./notificationsProvider";
+import { useNavigate } from "react-router-dom";
 
 type Url = string;
 type Username = string;
@@ -165,6 +166,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	const { state: authState } = useAuthContext();
 	const [isReconnect, setIsReconnect] = useState(false);
 	const { dispatch: notDispatch } = useNotificationsContext();
+	const navigate = useNavigate();
 
 	function setErrorInLastMessage() {
 		if (state.lastMessage != null) {
@@ -333,6 +335,14 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					})
 				}
 				dispatch({type: 'ONLINE', onlineFriends: newList})
+			}
+			if (lastJsonMessage.type == 'getConversation') {
+				// console.log('trying to open chat with this friend');
+				dispatch({type: 'FOCUS', state: true})
+				dispatch({type: 'CONVERSATION', conversation: {
+					id: lastJsonMessage.id,
+					state: 'loading'
+				}});
 			}
 		}
 	}, [lastJsonMessage])

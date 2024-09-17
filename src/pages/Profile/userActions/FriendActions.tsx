@@ -14,12 +14,18 @@ import { WS_URL } from "../../../contexts/store"
 import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore"
 import { useProfileContext } from "../../../contexts/profileStore"
 import { modifyObjectByName } from "../UserActions"
+import { useChatContext } from "../../../contexts/chatProvider"
+import { useAuthContext } from "../../../contexts/authProvider"
+import { useNavigate } from "react-router-dom"
 
 const FriendActions = ({username, origin}: {username: string, origin: string}) => {
 	const { sendJsonMessage } = useGlobalWebSocketContext();
+	const { sendJsonMessage: sendChatJsonMessage } = useChatContext();
+	const { state: authState } = useAuthContext();
 	// const userData = useContext(profileContext);
 	const { state, dispatchProfile } = useProfileContext();
 	const [seeMore, setSeeMore] = useState<boolean>(false);
+	const navigate = useNavigate();
 
 	const clickHandler = (type: "unfriend" | "block" | "invite") => {
 		if (origin === "profile") {
@@ -36,6 +42,15 @@ const FriendActions = ({username, origin}: {username: string, origin: string}) =
 			data: {}
 		};
 		sendJsonMessage(request);
+	}
+
+	const sendMessageHandler = () => {
+		sendChatJsonMessage({
+			type: 'getConversation', 
+			user1: authState.username, 
+			user2: username
+		})
+		navigate('/chat');
 	}
 
 	return (
@@ -55,7 +70,9 @@ const FriendActions = ({username, origin}: {username: string, origin: string}) =
 					<div onClick={() => clickHandler("invite")} className="bg-secondary w-[40px] flex justify-center items-center h-full rounded-md cursor-pointer select-none">
 						<img src={play_icon} alt="" width={20} height={20}/>
 					</div>
-					<div className="bg-secondary w-[40px] flex justify-center items-center h-full rounded-md cursor-pointer select-none">
+					<div 
+						onClick={sendMessageHandler}
+						className="bg-secondary w-[40px] flex justify-center items-center h-full rounded-md cursor-pointer select-none">
 						<img src={send_icon} alt="" width={20} height={20}/>
 					</div>
 				</>

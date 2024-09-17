@@ -3,6 +3,7 @@ import { useChatContext } from "../../../contexts/chatProvider";
 import { IoIosArrowBack } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 import useIsOnline from "../../../hooks/useIsOnline";
+import { Link } from "react-router-dom";
 
 function ConversationHeader() {
 	const { state, dispatch } = useChatContext();
@@ -18,9 +19,13 @@ function ConversationHeader() {
 				<IoIosArrowBack onClick={handler} className="lg:hidden text-xl cursor-pointer" />
 				{state.conversation.state == 'ok' &&
 					<>
-						<User className="size-[30px]" url={state.conversation_header.avatar} />
+						<Link to={'/users/' + state.conversation_header.username}>
+							<User className="size-[30px] cursor-pointer" url={state.conversation_header.avatar} />
+						</Link>
 						<div className="flex gap-2 items-end">
-							<h2>{state.conversation_header.username}</h2>
+							<Link to={'/users/' + state.conversation_header.username}>
+								<h2>{state.conversation_header.username}</h2>
+							</Link>
 							{isOnline(state.conversation_header.username) && <h3 className="text-sm font-light text-green-500">online</h3>}
 						</div>
 					</>
