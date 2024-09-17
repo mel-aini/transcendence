@@ -11,6 +11,7 @@ import { IoIosArrowBack ,IoIosArrowForward } from "react-icons/io";
 import CustomizeTab from "../../Settings/CustomizeTab";
 import { Section, SectionContent, SectionHeader } from "../../Settings/Index";
 import LayoutHeader from "../../../layout/LayoutHeader";
+import { useTournamentContext } from "../../../contexts/TournamentProvider";
 
 export const customizeContext = createContext<any>({});
 
@@ -86,6 +87,7 @@ function Title({level}: {level: Levels}) {
 
 function MatchMaking() {
 	const {state, dispatch} = usePingPongContext();
+	const {state: tournState} = useTournamentContext();
 	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
 	const [ searchParams ] = useSearchParams();
@@ -142,7 +144,6 @@ function MatchMaking() {
 		}
 	}, [state.level, state.timer]);
 
-
 	return (
 		<>
 			<LayoutHeader>Matchmaking</LayoutHeader>
@@ -156,7 +157,7 @@ function MatchMaking() {
 					<div className="flex items-center gap-5 flex-1 justify-start">
 						<User className="size-28 border-primary" border url={profileData.userData?.profile_image} />
 						<div>
-							<h3>{profileData.userData?.username}</h3>
+							<h3>{state.isTournament ? tournState.alias : profileData.userData?.username}</h3>
 							<h4>{'Lvl ' + profileData.userData?.level.current}</h4>
 						</div>
 					</div>
