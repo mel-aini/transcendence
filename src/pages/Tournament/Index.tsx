@@ -17,7 +17,7 @@ const Index = () => {
 
 	useEffect(() => {
 		if (state.socketUrl === null)
-			navigate(-1);
+			navigate("/dashboard");
 	}, []);
 
 	const handleLeave = () => {

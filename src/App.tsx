@@ -60,7 +60,7 @@ function App() {
                           <Route path='vs-friend' element={<VsFriend />} />
                           <Route path='*' element={<NotFound />} />
                         </Route>
-                        <Route path='/Tournament' element={<TournamentLayout />} >
+                        <Route path='/tournament' element={<TournamentLayout />} >
                           <Route index element={<Tournament />} />
                           <Route element={<GameLayout isTournament={true}/>}>
                             <Route path='play' element={<Play />} />

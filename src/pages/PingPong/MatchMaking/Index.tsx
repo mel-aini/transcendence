@@ -106,7 +106,7 @@ function MatchMaking() {
 		if (state.isTournament)
 		{
 			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
-			navigate("/Tournament");
+			navigate("/tournament");
 		}
 		else
 		{
@@ -122,7 +122,7 @@ function MatchMaking() {
 
 	useEffect(() => {
 		if (state.isTournament && state.level != Levels.OpponentFound)
-			navigate("/Tournament");
+			navigate("/tournament");
 	}, []);
 
 	useEffect(() => {
