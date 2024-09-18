@@ -11,7 +11,7 @@ function UserBox({username, level, userImage}: Props) {
 				<img src={userImage} alt="img" className="max-w-[41px] w-full h-[41px] rounded-full border border-primary overflow-hidden" />
 				<span className="text-base hidden md:block">{username}</span>
 			</div>
-			<span className="hidden md:block">lvl {level}</span>
+			{level && <span className="hidden md:block">lvl {level}</span>}
 		</div>
 	);
 }

@@ -4,14 +4,14 @@ import { Suspense, useEffect } from "react";
 import { useGlobalContext } from "../../contexts/store";
 import LoadingPage from "../../components/LoadingPage";
 
-function GameLayout({isTournament}: {isTournament: boolean}) {
+function GameLayout({isTournament, isAI}: {isTournament: boolean, isAI?: boolean}) {
 	return (
 		<>
 			{
 				isTournament ?
 					<Outlet />
 				:
-				<PingPongContextProvider isTournament={false}>
+				<PingPongContextProvider isTournament={false} isAI={isAI}>
 					<Outlet />
 				</PingPongContextProvider>
 			}

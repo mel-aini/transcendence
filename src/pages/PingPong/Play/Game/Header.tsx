@@ -77,8 +77,8 @@ const Header = () => {
 						<span className="absolute inline-flex items-center justify-center w-full h-full">{state.score.side}</span>
 					</div>
 					<div className="bg-secondary lg:w-full lg:max-w-[133px] h-[40px] flex md:justify-start justify-center items-center px-2 shrink-0 sm:shrink">
-						<img src={state.opponent?.profile_image} alt="" className="w-[26px] h-[26px] border rounded-full overflow-hidden shrink-0"/>
-						<span className="shrink truncate text-xs hidden sm:block pl-3">{state.isTournament ? state.alias : state.opponent?.username}</span>
+						<img src={state.isAI ? '' : state.opponent?.profile_image} alt="" className="w-[26px] h-[26px] border rounded-full overflow-hidden shrink-0"/>
+						<span className="shrink truncate text-xs hidden sm:block pl-3">{state.isAI ? 'AI' : (state.isTournament ? state.alias : state.opponent?.username)}</span>
 					</div>
 				</div>
 			</div>

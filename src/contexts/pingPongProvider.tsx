@@ -49,6 +49,7 @@ export interface GameData {
 	},
 	timer: number,
 	isTournament: boolean,
+	isAI: boolean,
 	time: number,
 	alias?: string
 }
@@ -90,6 +91,7 @@ const initialState: GameData = {
 	},
 	timer: 9,
 	isTournament: false,
+	isAI: false,
 	time: 0,
 	alias: undefined
 };
@@ -175,6 +177,11 @@ const reducer = (state: GameData, action: any) => {
 					...state, 
 					isTournament: action.isTournament
 				}
+			case 'IS_AI':
+				return { 
+					...state, 
+					isAI: action.isAI
+				}
 			case 'TIME':
 				return { 
 					...state, 
@@ -192,7 +199,7 @@ const reducer = (state: GameData, action: any) => {
 	}
 }
 
-const PingPongContextProvider = ({isTournament, children} : {isTournament: boolean, children: ReactNode}) => {
+const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament: boolean, isAI?: boolean, children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
@@ -204,7 +211,7 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 	// const [ searchParams ] = useSearchParams();
 	// const gameId = searchParams.get('gameId');
 
-	const fullWsUrl: string = stateGlobal.gameId ? GAME_WS_URL + stateGlobal.gameId + "/?token=" : GAME_WS_URL + "random/?token=";
+	const fullWsUrl: string = isAI ? "ws://127.0.0.1:8000/ws/aigame/hard/2/300/?token=" : (stateGlobal.gameId ? GAME_WS_URL + stateGlobal.gameId + "/?token=" : GAME_WS_URL + "random/?token=");
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(fullWsUrl + token.accessToken,
 		{
 			onOpen: () => dispatch({ type: "RESET" }),
@@ -221,6 +228,8 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 	};
 
 	// useEffect(() => {
+	// 	if (isAI)
+	// 		dispatch({type: "IS_AI", isAI: isAI});
 	// }, []);
 
 	useEffect(() => {
@@ -228,14 +237,18 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 
 		if (!isEmptyObject(lastJsonMessage))
 		{
-			// if (lastJsonMessage.type == "ball")
-			// 	console.log(lastJsonMessage);
+			if (lastJsonMessage.type != "ball")
+				console.log(lastJsonMessage);
 			if (lastJsonMessage.type == "opponents")
 			{
+				if (!isAI)
+				{
+					(lastJsonMessage.user1.username == username) ? dispatch({type: "OPPONENT", opponent: lastJsonMessage.user2})
+					:
+					dispatch({type: "OPPONENT", opponent: lastJsonMessage.user1});
+				}
 				dispatch({type: 'IS_Tournament', isTournament: isTournament});
-				(lastJsonMessage.user1.username == username) ? dispatch({type: "OPPONENT", opponent: lastJsonMessage.user2})
-				:
-				dispatch({type: "OPPONENT", opponent: lastJsonMessage.user1});
+				dispatch({type: "IS_AI", isAI: isAI});
 				dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
 			}
 			else if (lastJsonMessage.type == "init_paddle")

@@ -48,7 +48,8 @@ function Index() {
 					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis." 
 					className="lg:col-start-1 lg:col-end-5"/>
 				<PlayChoise 
-					title="Vs Bot" 
+					onClick={() => clickHandler('vs-ai/match-making')}
+					title="Vs AI" 
 					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttito."
 					className="lg:col-start-5 lg:col-end-7" />
 				<PlayChoise 

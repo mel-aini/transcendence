@@ -58,6 +58,10 @@ function App() {
                             <Route path='match-making' element={<MatchMaking />} />
                           </Route>
                           <Route path='vs-friend' element={<VsFriend />} />
+                          <Route path='vs-ai' element={<GameLayout isTournament={false} isAI={true}/>}>
+                              <Route path='match-making' element={<MatchMaking />} />
+                              <Route path='play' element={<Play />} />
+                          </Route>
                           <Route path='*' element={<NotFound />} />
                         </Route>
                         <Route path='/tournament' element={<TournamentLayout />} >

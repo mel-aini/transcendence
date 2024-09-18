@@ -88,7 +88,7 @@ function Result() {
 				<div className={"max-w-[86px] w-full h-[86px] flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px] " + ((state.result.status == "lose") ? "text-primary" : "")}>
 					{state.score.side}
 				</div>
-				<UserBox username={state.isTournament ? state.alias : state.opponent?.username} level={state.opponent?.level.current} userImage={state.opponent?.profile_image} />
+				<UserBox username={state.isAI ? 'AI' : (state.isTournament ? state.alias : state.opponent?.username)} level={state.isAI ? undefined : state.opponent?.level.current} userImage={state.isAI ? '' : state.opponent?.profile_image} />
 			</motion.div>
 			<motion.div
 			initial={{opacity: 0, top: '-5rem'}}

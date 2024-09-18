@@ -90,7 +90,6 @@ function MatchMaking() {
 	const {state: tournState} = useTournamentContext();
 	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
-	const [ searchParams ] = useSearchParams();
 
 	const cancelAction = () => {
 		// if (window.location.pathname == "/ping-pong/match-making")
@@ -121,6 +120,8 @@ function MatchMaking() {
 	}
 
 	useEffect(() => {
+		// if (state.isAI)
+		// 	dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
 		if (state.isTournament && state.level != Levels.OpponentFound)
 			navigate("/tournament");
 	}, []);
@@ -180,10 +181,10 @@ function MatchMaking() {
 							className="flex-1 flex justify-end items-center gap-5"
 							>
 							<div>
-								<h3>{ state.isTournament ? state.alias : state.opponent?.username }</h3>
-								<h4>{ 'Lvl ' + state.opponent?.level.current }</h4>
+								<h3>{ state.isAI ? 'AI' : (state.isTournament ? state.alias : state.opponent?.username) }</h3>
+								{state.isAI && <h4>{ 'Lvl ' + state.opponent?.level.current }</h4>}
 							</div>
-							<User className="size-28 border-primary" border url={state.opponent?.profile_image} />
+							<User className="size-28 border-primary" border url={state.isAI ? '' : state.opponent?.profile_image} />
 						</motion.div>
 					}
 				</div>
