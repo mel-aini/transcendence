@@ -15,14 +15,17 @@ const Index = () => {
 				<div className="w-full flex flex-col gap-9 items-center max-w-[350px]">
 					<div className="relative w-full flex flex-col items-center place-content-center">
 						{!isTwoFA && <SignInForm setIsTwoFA={setIsTwoFA} />}
-						{isTwoFA && <SignIn2FA />}
+						{isTwoFA && <SignIn2FA setIsTwoFA={setIsTwoFA} />}
 					</div>
+					{!isTwoFA && 
+					<>
 					<p>or</p>
 					<OAuthBar type="sign in" />
 					<div className="flex items-center gap-2 text-sm">
 						<p className="text-gray1">Don't have an account?</p>
 						<Link to='/signup'>Sign up</Link>
 					</div>
+					</>}
 				</div>
 			</div>
 		</div>

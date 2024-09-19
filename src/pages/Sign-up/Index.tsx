@@ -24,7 +24,7 @@ const Index = () => {
 		if (shouldEnterUserName) {
 			setRegisterLevel(Level.Username)
 		} else {
-			handleOAuth()
+			handleOAuth();
 		}
 	
 	}, [toggle])

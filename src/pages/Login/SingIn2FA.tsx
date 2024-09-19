@@ -1,11 +1,15 @@
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import callToApi from "../../utils/callToApi";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useGlobalContext } from "../../contexts/store";
 
-const SignIn2FA = () => {
+interface Props {
+    setIsTwoFA: Dispatch<SetStateAction<boolean>>
+}
+
+const SignIn2FA = ({setIsTwoFA}: Props) => {
     const [otpCode, setOtpCode] = useState('');
     const navigate = useNavigate();
     const { dispatch } = useGlobalContext();
@@ -35,13 +39,16 @@ const SignIn2FA = () => {
         }
     }
 
+    const tryAgain = () => {
+        navigate('/login')
+        setIsTwoFA(false);
+    }
+
     return (
-        <div className="flex flex-col gap-[2rem] max-w-[279px]">
-            <h1 className="font-semibold text-2xl leading-9 text-left">Please enter 2FA code</h1>
-            <span className="font-normal text-xs leading-4 break-words ">
-                two-factor authentication is enabled for your account.
-                It has been sent to your email, <br/>
-                please enter it to login
+        <div className="flex flex-col gap-[2rem] max-w-[400px]">
+            <h1 className="font-semibold text-2xl leading-9 text-left italic">two-factor authentication</h1>
+            <span className="font-normal text-sm">
+                enter the verification code that has been sent to your email
             </span>
             <div className="flex flex-col items-end gap-[1rem]">
                 <Input
@@ -50,7 +57,13 @@ const SignIn2FA = () => {
                 </Input>
                 {error != '' && <p className="text-invalid text-sm">{error}</p>}
                 {/* <Link to="/forget-password" className="font-normal text-xs text-gray1">resend?</Link> */}
-                <Button onClick={handleSubmit} className="my-9">Verify</Button>
+                <Button onClick={handleSubmit} className="w-full my-9">Verify</Button>
+            </div>
+            <div className="text-sm flex justify-between">
+                <p className="text-gray1">didn't receive the code?</p>
+                <span 
+                    onClick={tryAgain} 
+                    className="cursor-pointer hover:underline duration-300">try again</span>
             </div>
         </div>
     );

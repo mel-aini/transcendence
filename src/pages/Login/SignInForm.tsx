@@ -80,8 +80,8 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 				
 				const res = await callToApi('api/login/', data);
 				if ('TFA' in res) {
-					console.log('2fa is enabled', res);
-					console.log(res.TFA.token);
+					// console.log('2fa is enabled', res);
+					// console.log(res.TFA.token);
 					localStorage.setItem('tfa', res.TFA.token);
 					setIsTwoFA(true);
 				} else {
