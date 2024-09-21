@@ -4,9 +4,11 @@ import Welcome from "../Sign-up/Welcome";
 import SignInForm from "./SignInForm";
 import SignIn2FA from "./SingIn2FA";
 import { useState } from "react";
+import ForgetPassword from "./ForgetPassword";
 
 const Index = () => {
 	const [isTwoFA, setIsTwoFA] = useState(false);
+	const [isForgetPassword, setIsForgetPassword] = useState(false);
 
 	return (
 		<div className="bg-bg min-h-[100vh] flex">
@@ -14,10 +16,11 @@ const Index = () => {
 			<div className="flex justify-center items-center p-5 sm:p-20 w-full">
 				<div className="w-full flex flex-col gap-9 items-center max-w-[350px]">
 					<div className="relative w-full flex flex-col items-center place-content-center">
-						{!isTwoFA && <SignInForm setIsTwoFA={setIsTwoFA} />}
+						{!isTwoFA && !isForgetPassword && <SignInForm setIsForgetPassword={setIsForgetPassword} setIsTwoFA={setIsTwoFA} />}
 						{isTwoFA && <SignIn2FA setIsTwoFA={setIsTwoFA} />}
+						{isForgetPassword && <ForgetPassword setIsForgetPassword={setIsForgetPassword} />}
 					</div>
-					{!isTwoFA && 
+					{!isTwoFA && !isForgetPassword &&
 					<>
 					<p>or</p>
 					<OAuthBar type="sign in" />
