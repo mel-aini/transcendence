@@ -25,6 +25,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard/Index'));
 const PingPong = lazy(() => import('./pages/PingPong/Index'));
 const Tournament = lazy(() => import('./pages/Tournament/Index'));
 const Play = lazy(() => import('./pages/PingPong/Play/Index'));
+const LocalGame = lazy(() => import('./pages/PingPong/LocalGame/Index'));
 const VsFriend = lazy(() => import('./pages/PingPong/VsFriend/Index'));
 const MatchMaking = lazy(() => import('./pages/PingPong/MatchMaking/Index'));
 const NotFound = lazy(() => import('./pages/NotFound/Index'));
@@ -62,6 +63,7 @@ function App() {
                               <Route path='match-making' element={<MatchMaking />} />
                               <Route path='play' element={<Play />} />
                           </Route>
+                          <Route path='1vs1' element={<LocalGame />} />
                           <Route path='*' element={<NotFound />} />
                         </Route>
                         <Route path='/tournament' element={<TournamentLayout />} >

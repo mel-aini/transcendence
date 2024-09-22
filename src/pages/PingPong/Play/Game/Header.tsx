@@ -12,10 +12,13 @@ const Goal = () => {
 	const [goal, setGoal] = useState<string>('');
 
 	useEffect(() => {
-		setTimeout(() => {
-			setGoal("");
-		}, 1000);
-		setGoal("Goooooooooooal!");
+		if (state.score.my !== 0)
+		{
+			setTimeout(() => {
+				setGoal("");
+			}, 1000);
+			setGoal("Goooooooooooal!");
+		}
 	}, [state.score.my]);
 
 	return (
