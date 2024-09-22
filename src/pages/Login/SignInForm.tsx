@@ -20,7 +20,12 @@ interface IResponse {
 	refer: string
 }
 
-const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>}) => {
+interface Props {
+	setIsTwoFA: Dispatch<SetStateAction<boolean>>
+	setIsForgetPassword: Dispatch<SetStateAction<boolean>>
+}
+
+const SignInForm = ({setIsTwoFA, setIsForgetPassword}: Props) => {
 	const [username, setUsername] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const [isValidUsername, setIsValidUsername] = useState<boolean>(true);
@@ -80,8 +85,8 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 				
 				const res = await callToApi('api/login/', data);
 				if ('TFA' in res) {
-					console.log('2fa is enabled', res);
-					console.log(res.TFA.token);
+					// console.log('2fa is enabled', res);
+					// console.log(res.TFA.token);
 					localStorage.setItem('tfa', res.TFA.token);
 					setIsTwoFA(true);
 				} else {
@@ -123,7 +128,7 @@ const SignInForm = ({setIsTwoFA}: {setIsTwoFA: Dispatch<SetStateAction<boolean>>
 						type="password" 
 						placeholder="password"
 					/>
-					<p className="text-sm self-end text-gray1 hover:underline cursor-pointer">forget password?</p>
+					<p onClick={() => setIsForgetPassword(true)} className="text-sm self-end text-gray1 hover:underline cursor-pointer">forget password?</p>
 					{(!isValidUsername && !invalidLogin && !emptyInput) ? <p className="text-sm self-end text-invalid">Invalid username</p> : ''}
 					{(!isValidPassword && isValidUsername && !invalidLogin && !emptyInput) ? <p className="text-sm self-end text-invalid">Password field should not be blank</p> : ''}
 					{(emptyInput && !invalidLogin) ? <p className="text-sm self-end text-invalid">Please fill the Sign In form</p> : ''}
