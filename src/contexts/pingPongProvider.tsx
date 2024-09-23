@@ -237,7 +237,7 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 
 		if (!isEmptyObject(lastJsonMessage))
 		{
-			if (lastJsonMessage.type != "ball")
+			if (lastJsonMessage.type != "ball" && lastJsonMessage.type != "paddle")
 				console.log(lastJsonMessage);
 			if (lastJsonMessage.type == "opponents")
 			{

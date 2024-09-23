@@ -64,7 +64,7 @@ function Result() {
 				className="relative top-0 text-gray1 text-center text-4xl pb-11 italic font-montserrat">Null</motion.h1>
 			}
 			{
-				!state.isTournament &&
+				(!state.isTournament && !state.isAI) &&
 				<motion.span
 				initial={{opacity: 0, top: '-5rem'}}
 				animate={{opacity: 1, top: '0rem'}}
@@ -81,7 +81,7 @@ function Result() {
 			animate={{opacity: 1, top: '0rem'}}
 			transition={{duration: 0.3, delay: 1.5}}
 			className="relative top-0 flex w-full justify-center items-center gap-4 pb-[53px]">
-				<UserBox username={state.isTournament ? tournState.alias : globalState.userData?.username} level={globalState.userData?.level.current} userImage={globalState.userData?.profile_image} />
+				<UserBox username={state.isTournament ? tournState.alias : globalState.userData?.username} level={state.isAI ? undefined : globalState.userData?.level.current} userImage={globalState.userData?.profile_image} />
 				<div className={"max-w-[86px] w-full h-[86px] flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px] " + ((state.result.status == "win") ? "text-primary" : "")}>
 					{state.score.my}
 				</div>

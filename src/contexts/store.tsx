@@ -19,7 +19,7 @@ export interface GlobalStateProps {
 	gameId: string | null,
 	AIdata: {
 		time: number,
-		goals: string,
+		goals: number,
 		difficulty: string,
 	}
 }
@@ -33,7 +33,7 @@ const initialState: GlobalStateProps = {
 	gameId: null,
 	AIdata: {
 		time: 3,
-		goals: "5",
+		goals: 5,
 		difficulty: "medium",
 	}
 };

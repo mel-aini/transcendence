@@ -41,7 +41,7 @@ function Index() {
 	}
 
 	return (
-		<>
+		<div className="w-full">
 			<LayoutHeader>Ping Pong</LayoutHeader>
 			<VsAiChoice display={display} setDisplay={setDisplay} />
 			<div className="grid gap-5 grid-cols-1 lg:grid-cols-6">
@@ -65,8 +65,9 @@ function Index() {
 					title="Vs Friend" 
 					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis." 
 					className="lg:col-start-3 lg:col-end-7" />
+
 			</div>
-		</>
+		</div>
 	);
 }
 
