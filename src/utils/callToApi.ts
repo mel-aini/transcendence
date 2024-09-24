@@ -1,4 +1,4 @@
-import { BACKEND_END_POINT } from "./global";
+import { API_END_POINT } from "./urls";
 
 type THeaders = HeadersInit | undefined;
 
@@ -8,7 +8,7 @@ const callToApi = async (endPoint: string, data?: Object) => {
 		"Content-Type": "application/json",
 	} : undefined;
 
-	const response: Response = await fetch(BACKEND_END_POINT + endPoint, {
+	const response: Response = await fetch(API_END_POINT + endPoint, {
 		method: method,
 		headers: headers,
 		body: data ? JSON.stringify(data) : null,

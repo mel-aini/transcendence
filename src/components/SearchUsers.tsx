@@ -49,8 +49,6 @@ function Result({users}: {users: FriendsData[]}) {
                 :
                 <div className="flex flex-col gap-3 animate-pulse">
                     <UserSkelton />
-                    <UserSkelton />
-                    <UserSkelton />
                 </div>
             }
         </div>   
@@ -95,7 +93,7 @@ function SearchUsers() {
             </form>
             {<Result users={data} />}
             {isFetched && <InfiniteScrollObserver
-                endPoint={`/api/search/?filter=${input}`}
+                endPoint={`search/?filter=${input}`}
                 whenFetched={whenFetched}
                 searchUsers={true} />}
         </div>

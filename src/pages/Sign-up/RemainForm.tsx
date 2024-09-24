@@ -3,10 +3,10 @@ import Input from "../../components/Input";
 import { Link, useNavigate } from "react-router-dom";
 import useInputChecker from "../../hooks/useInputChecker";
 import { primaryColor, invalidColor, whiteColor } from "../../utils/colors";
-import { BACKEND_END_POINT } from "../../utils/global";
 import { useGlobalContext } from "../../contexts/store";
 import callToApi from "../../utils/callToApi";
 import Button from "../../components/Button";
+import { API_END_POINT } from "../../utils/urls";
 
 interface IBody {
 	username: string,
@@ -33,7 +33,7 @@ const RemainForm = ({email}: Props) => {
 	const [submit, setSubmit] = useState<boolean>(false);
 	const { dispatch } = useGlobalContext();
 	const navigate = useNavigate();
-	const [formState, parseInput, makeRequest] = useInputChecker(BACKEND_END_POINT + 'api/register/');
+	const [formState, parseInput, makeRequest] = useInputChecker(API_END_POINT + 'register/');
 
 	useEffect(() => {
 		if (!submit) return;
@@ -79,7 +79,7 @@ const RemainForm = ({email}: Props) => {
 		}
 		
 		try {
-			await callToApi('api/register/', data);
+			await callToApi('register/', data);
 			navigate('/login');
 		}
 		catch (error: any) {

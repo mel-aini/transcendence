@@ -16,7 +16,7 @@ const useLog = () => {
 			case 'LOGOUT':
 				// code
 				try {
-					const res = await api.post('api/logout/');
+					const res = await api.post('logout/');
 					// gdispatch({type: 'LOADING', state: true})
 					dispatch({type: 'TOKEN', token: null})
 					navigate('/')

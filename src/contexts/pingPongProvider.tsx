@@ -6,6 +6,7 @@ import { UserData } from "../types/profile";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useAuthContext } from "./authProvider";
 import useWebSocket from "react-use-websocket";
+import { WS_END_POINT } from "../utils/urls";
 
 export interface Coordinates {
 	x: number,
@@ -211,8 +212,8 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 	// const [ searchParams ] = useSearchParams();
 	// const gameId = searchParams.get('gameId');
 
-	const fullWsUrl: string = isAI ? "ws://127.0.0.1:8000/ws/aigame/" + profileData.AIdata.difficulty + "/" + profileData.AIdata.goals + "/" + profileData.AIdata.time * 60 + "/?token=" : (stateGlobal.gameId ? GAME_WS_URL + stateGlobal.gameId + "/?token=" : GAME_WS_URL + "random/?token=");
-	const { lastJsonMessage, sendJsonMessage } = useWebSocket(fullWsUrl + token.accessToken,
+	const fullWsUrl: string = isAI ? "aigame/" + profileData.AIdata.difficulty + "/" + profileData.AIdata.goals + "/" + profileData.AIdata.time * 60 + "/?token=" : (stateGlobal.gameId ? "game/" + stateGlobal.gameId + "/?token=" : "game/" + "random/?token=");
+	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_END_POINT + fullWsUrl + token.accessToken,
 		{
 			onOpen: () => dispatch({ type: "RESET" }),
 			share: false,
@@ -387,6 +388,5 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 	)
 }
 
-const GAME_WS_URL = "ws://127.0.0.1:8000/ws/game/";
 export const usePingPongContext = () => useContext(PingPongContext);
 export default PingPongContextProvider;

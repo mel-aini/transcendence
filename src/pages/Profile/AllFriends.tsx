@@ -10,8 +10,8 @@ import { useProfileContext } from "../../contexts/profileStore"
 import api from "../../api/axios"
 import { useQuery } from "@tanstack/react-query"
 
-async function fetchData(uri: string ) {
-	const res = await api.get('api/' + uri);
+async function fetchData(uri: string) {
+	const res = await api.get(uri + "/");
 	return res;
 }
 
@@ -31,7 +31,7 @@ const AllFriends = ({setSeeAllFriends}: {setSeeAllFriends: Dispatch<SetStateActi
 	const countScroll = useRef(10);
 
 	const collectData = async (uri: string, isscroll?: boolean) => {
-		const ProfileRes: FriendsData[] = await api.get('api/' + uri).then((e) => e.data);
+		const ProfileRes: FriendsData[] = await api.get(uri).then((e) => e.data);
 		if (isscroll)
 		{
 			if (ProfileRes.length < 10)
@@ -74,7 +74,7 @@ const AllFriends = ({setSeeAllFriends}: {setSeeAllFriends: Dispatch<SetStateActi
 		countScroll.current = 10;
 		
 		setRelation(newRelation);
-		collectData(uri);
+		collectData(uri + "/");
 	}
 
 	useEffect(() => {
@@ -116,7 +116,7 @@ const AllFriends = ({setSeeAllFriends}: {setSeeAllFriends: Dispatch<SetStateActi
 				name = "pending";
 			else if (relation == "blocker")
 				name = "blocked";
-			collectData(name + "?filter=" + searchData.current + "&start=" + countScroll.current.toString() + "&end=" + (countScroll.current + 10).toString(), true);
+			collectData(name + "/?filter=" + searchData.current + "&start=" + countScroll.current.toString() + "&end=" + (countScroll.current + 10).toString(), true);
 			countScroll.current += 10;
 		}
 	}
@@ -132,7 +132,7 @@ const AllFriends = ({setSeeAllFriends}: {setSeeAllFriends: Dispatch<SetStateActi
 			name = "pending";
 		else if (relation == "blocker")
 			name = "blocked";
-		collectData(name + "?filter=" + searchData.current);
+		collectData(name + "/?filter=" + searchData.current);
 	}
 
 	return (

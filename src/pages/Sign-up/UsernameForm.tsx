@@ -4,9 +4,9 @@ import { invalidColor, primaryColor, whiteColor } from "../../utils/colors";
 import Button from "../../components/Button";
 import { useGlobalContext } from "../../contexts/store";
 import useInputChecker from "../../hooks/useInputChecker";
-import { BACKEND_END_POINT } from "../../utils/global";
 import callToApi from "../../utils/callToApi";
 import { useNavigate } from "react-router-dom";
+import { API_END_POINT } from "../../utils/urls";
 
 interface IBody {
 	username: string,
@@ -27,7 +27,7 @@ interface Props {
 const UsernameForm = ({dispatchLevel}: Props) => {
 	const [formError, setFormError] = useState<string>('');
 	const [username, setUsername] = useState<string>('')
-	const [formState, parseInput] = useInputChecker(BACKEND_END_POINT + 'api/register/');
+	const [formState, parseInput] = useInputChecker(API_END_POINT + 'register/');
 	const { dispatch } = useGlobalContext();
 	const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const UsernameForm = ({dispatchLevel}: Props) => {
 		}
 		
 		try {
-			await callToApi('api/register/', data);
+			await callToApi('register/', data);
 		}
 		catch (error: any) {
 			let errorMsg: string = '';

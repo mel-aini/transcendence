@@ -2,10 +2,10 @@ import { Dispatch, FormEvent, useEffect, useState } from "react";
 import Input from "../../components/Input";
 import useInputChecker from "../../hooks/useInputChecker";
 import { primaryColor, invalidColor, whiteColor } from "../../utils/colors";
-import { BACKEND_END_POINT } from "../../utils/global";
 import { useGlobalContext } from "../../contexts/store";
 import callToApi from "../../utils/callToApi";
 import Button from "../../components/Button";
+import { API_END_POINT } from "../../utils/urls";
 
 interface IBody {
 	username: string,
@@ -32,7 +32,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 	// const [email, setEmail] = useState<string>('');
 	const [submit, setSubmit] = useState<boolean>(false);
 	const { dispatch } = useGlobalContext();
-	const [formState, parseInput] = useInputChecker(BACKEND_END_POINT + 'api/register/');
+	const [formState, parseInput] = useInputChecker(API_END_POINT + 'register/');
 
 	useEffect(() => {
 		if (!submit) return;
@@ -52,7 +52,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 		}
 		
 		try {
-			await callToApi('api/register/', data);
+			await callToApi('register/', data);
 		}
 		catch (error: any) {
 			console.log(error)

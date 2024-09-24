@@ -15,7 +15,7 @@ import { RxValueNone } from "react-icons/rx";
 
 async function fetchData(id: string | undefined) {
 	const uri: string = id ? "matches/" + id : "matches";
-	const res = await api.get('api/' + uri);
+	const res = await api.get(uri + "/");
 	return res;
 }
 

@@ -4,7 +4,7 @@ import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import JoinTournament from "./JoinTournament";
 import Title from "../../components/Title";
-import { Tournament_WS_URL, useTournamentContext } from "../../contexts/TournamentProvider";
+import { useTournamentContext } from "../../contexts/TournamentProvider";
 import { useGlobalContext } from "../../contexts/store";
 import { ReadyState } from "react-use-websocket";
 

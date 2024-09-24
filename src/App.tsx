@@ -15,6 +15,12 @@ import GameLayout from "./pages/PingPong/GameLayout";
 import TournamentLayout from "./guards/TournamentLayout";
 import NotificationsProvider from "./contexts/notificationsProvider";
 
+// const { REACT_APP_API_END_POINT, NODE_ENV } = process.env;
+
+// console.log(`${process.env.NODE_ENV}`);  
+
+// console.log(process.env.REACT_APP_WS_END_POINT);`
+
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
 const Login = lazy(() => import('./pages/Login/Index'));

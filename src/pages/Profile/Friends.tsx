@@ -10,8 +10,8 @@ import api from "../../api/axios";
 import { useQuery } from "@tanstack/react-query";
 
 async function fetchData(id: string | undefined) {
-	const uri: string = id ? "friends/" + id + "/" : "friends";
-	const res = await api.get('api/' + uri + "?start=0&end=23");
+	const uri: string = id ? "friends/" + id : "friends";
+	const res = await api.get(uri + "/?start=0&end=23");
 	return res;
 }
 

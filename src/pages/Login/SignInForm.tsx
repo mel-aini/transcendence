@@ -83,7 +83,7 @@ const SignInForm = ({setIsTwoFA, setIsForgetPassword}: Props) => {
 				}
 				setEmptyInput(false);
 				
-				const res = await callToApi('api/login/', data);
+				const res = await callToApi('login/', data);
 				if ('TFA' in res) {
 					// console.log('2fa is enabled', res);
 					// console.log(res.TFA.token);

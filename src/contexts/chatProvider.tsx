@@ -1,12 +1,13 @@
 import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
 import { useAuthContext } from "./authProvider";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { CHAT_WS_ENDPOINT, dateMeta, getDate } from "../utils/global";
+import { dateMeta, getDate } from "../utils/global";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Modal from "../components/Modal";
 import { useNotificationsContext } from "./notificationsProvider";
 import { useNavigate } from "react-router-dom";
+import { WS_END_POINT } from "../utils/urls";
 
 type Url = string;
 type Username = string;
@@ -215,7 +216,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	}
 
 	const {readyState, lastJsonMessage, sendJsonMessage} = useWebSocket(
-		CHAT_WS_ENDPOINT + authState.accessToken,
+		WS_END_POINT + "chat/?token=" + authState.accessToken,
 		{
 			onOpen: () => {
 				console.log('connection opened')

@@ -9,7 +9,7 @@ import api from "../api/axios";
 import { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
 
 async function getNotifications() {
-    const res = await api.get('api/notifications/?start=0&end=10')
+    const res = await api.get('notifications/?start=0&end=10')
     return res;
 }
 
@@ -91,7 +91,7 @@ function Notifications() {
 						})
 					}
 					<InfiniteScrollObserver
-						endPoint="api/notifications"
+						endPoint="notifications"
 						start={10}
 						chunkSize={10}
 						whenFetched={whenFetched} />

@@ -14,13 +14,13 @@ const ProfileHeader = () => {
 	const { state, dispatchProfile } = useProfileContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	const { id } = useParams();
-	const formRef = useRef();
+	const formRef = useRef<HTMLFormElement>(null);
 
 	const changehandler = async (e: any) => {
 		const newImage = e.currentTarget.files[0];
 		if (!newImage) return ;
 		const formData = new FormData(formRef.current);
-		const res = await api.post("api/upload-avatar/", formData);
+		const res = await api.post("upload-avatar/", formData);
 		if (res.status === 200)
 			dispatchProfile({type: "USER_DATA", userData: {...state.userData, profile_image: res.data.url}});
 	}

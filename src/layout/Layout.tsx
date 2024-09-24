@@ -9,12 +9,11 @@ import { useAuthContext } from '../contexts/authProvider';
 import { useProfileContext } from '../contexts/profileStore';
 
 async function fetchData() {
-	const res = await api.get('api/profile');
+	const res = await api.get('profile/');
 	return res;
 }
 
 const Layout = () => {
-
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
 	const { dispatchProfile } = useProfileContext();

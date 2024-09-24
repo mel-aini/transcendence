@@ -1,7 +1,7 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { BACKEND_END_POINT } from "../utils/global";
 import { useState } from "react";
 import { useGlobalContext } from "../contexts/store";
+import { API_END_POINT } from "../utils/urls";
 
 const useOAuth = (): [() => Promise<void>, boolean] => {
 	const [searchParams] = useSearchParams();
@@ -26,7 +26,7 @@ const useOAuth = (): [() => Promise<void>, boolean] => {
 				}
 			}
 		
-			const response = await fetch(BACKEND_END_POINT + 'api/register/', {
+			const response = await fetch(API_END_POINT + 'register/', {
 				method: 'Post',
 				headers: {
 					"Content-Type": "application/json",

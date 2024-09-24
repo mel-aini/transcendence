@@ -29,7 +29,7 @@ const SignIn2FA = ({setIsTwoFA}: Props) => {
         }
 
         try {
-            const res = await callToApi('api/2fa/', data);
+            const res = await callToApi('2fa/', data);
             setError('');
             dispatch({type: 'LOGIN', jwt: res.jwt});
             navigate('/profile');
