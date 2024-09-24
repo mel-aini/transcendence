@@ -17,7 +17,6 @@
     "framer-motion": "^11.2.4",
     "jwt-decode": "^4.0.0",
     "ldrs": "^1.0.2",
-    "process": "^0.11.10",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-color-palette": "^7.2.2",

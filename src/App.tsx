@@ -54,7 +54,7 @@ function App() {
                         </Route>
                         <Route path='/ping-pong'>
                           <Route index element={<PingPong />} />
-                          <Route element={<GameLayout isTournament={false}/>}>
+                          <Route element={<GameLayout isTournament={false} isAI={false}/>}>
                             <Route path='play' element={<Play />} />
                             <Route path='match-making' element={<MatchMaking />} />
                           </Route>
@@ -68,7 +68,7 @@ function App() {
                         </Route>
                         <Route path='/tournament' element={<TournamentLayout />} >
                           <Route index element={<Tournament />} />
-                          <Route element={<GameLayout isTournament={true}/>}>
+                          <Route element={<GameLayout isTournament={true} isAI={false}/>}>
                             <Route path='play' element={<Play />} />
                             <Route path='match-making' element={<MatchMaking />} />
                           </Route>

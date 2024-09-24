@@ -140,10 +140,6 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		return JSON.stringify(obj) === '{}';
 	};
 
-	// useEffect(() => {
-	// 	dispatch({type: "ROUND_DATA", roundData: initRounds()});
-	// }, []);
-
 	useEffect(() => {
 
 		if (!isEmptyObject(lastJsonMessage))

@@ -200,7 +200,7 @@ const reducer = (state: GameData, action: any) => {
 	}
 }
 
-const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament: boolean, isAI?: boolean, children: ReactNode}) => {
+const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament: boolean, isAI: boolean, children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
@@ -209,8 +209,6 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 
 	const { state: token }  = useAuthContext();
 	const { state: stateGlobal } = useGlobalContext();
-	// const [ searchParams ] = useSearchParams();
-	// const gameId = searchParams.get('gameId');
 
 	const fullWsUrl: string = isAI ? "aigame/" + profileData.AIdata.difficulty + "/" + profileData.AIdata.goals + "/" + profileData.AIdata.time * 60 + "/?token=" : (stateGlobal.gameId ? "game/" + stateGlobal.gameId + "/?token=" : "game/" + "random/?token=");
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_END_POINT + fullWsUrl + token.accessToken,
