@@ -15,16 +15,12 @@ export interface ProfileData {
 	userData: UserData | null,
 	friendsData: FriendsData[] | null,
 	matchesData: MatchesData[] | null,
-	refreshUser: boolean,
-	// user: string,
 }
 
 const initialState: ProfileData = {
 	userData: null,
 	friendsData: null,
 	matchesData: null,
-	refreshUser: false,
-	// user: "profile",
 };
 
 export const ProfileContext = createContext<{state: ProfileData, dispatchProfile: Dispatch<any>}>({
@@ -49,11 +45,6 @@ const reducer = (state: ProfileData, action: any) => {
 			return { 
 				...state, 
 				matchesData: action.matchesData
-			}
-		case 'REFRESH_USER':
-			return { 
-				...state, 
-				refreshUser: !state.refreshUser
 			}
 		default:
 			return state;

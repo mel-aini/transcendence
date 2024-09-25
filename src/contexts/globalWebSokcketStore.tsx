@@ -26,14 +26,14 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 		},
 	);
 
-	const setValue = (relation: string) => {
+	const setValue = (relation: string) : Relation => {
 		if (relation == "add")
 			return "send_req";
 		if (relation == "accept")
 			return "friend";
 		if (relation == "deny" || relation == "unblock" || relation == "unfriend" || relation == "cancel")
 			return "none";
-		if (relation == "block")
+		// if (relation == "block")
 			return "blocker";
 	}
 
@@ -44,7 +44,6 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	const modifyObjectByName = (array : FriendsData[] | null, username: string, newValue: Relation) => {
-		// console.log("array", array);
 		const obj: FriendsData | undefined = (array && array?.length != 0) ? array.find(obj => obj.username === username) : undefined;
 		if (obj) {
 			obj.relation = newValue;
@@ -53,8 +52,6 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	useEffect(() => {
-		// console.log(lastJsonMessage);
-		
 		if (!isEmptyObject(lastJsonMessage) && lastJsonMessage.code === 200)
 		{
 			if (lastJsonMessage.type === "user-action") {
@@ -69,81 +66,24 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 					}
 				}
 			}
-			// else if (lastJsonMessage.type === "invite") {
-			// }
 			else if (lastJsonMessage.type === "update")
 			{
 				if (lastJsonMessage.identifier === "username")
-				{
-					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: lastJsonMessage.data.value}});
 					dispatch({type: "USER_DATA", userData: {...state.userData, username: lastJsonMessage.data.value}});
-				}
 				else if (lastJsonMessage.identifier === "email")
-				{
-					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, email: lastJsonMessage.data.value}});
 					dispatch({type: "USER_DATA", userData: {...state.userData, email: lastJsonMessage.data.value}});
-				}
 				else if (lastJsonMessage.identifier === "tfa-status")
-				{
-					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.value}}});
 					dispatch({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.value}}});
-				}
 				else if (lastJsonMessage.identifier === "tfa-change")
-				{
-					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
 					dispatch({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
-				}
 				else if (lastJsonMessage.identifier === "game_settings")
-				{
-					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings, paddle: lastJsonMessage.data.paddle, ball: lastJsonMessage.data.ball, background: lastJsonMessage.data.background}}});
 					dispatch({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings, paddle: lastJsonMessage.data.paddle, ball: lastJsonMessage.data.ball, background: lastJsonMessage.data.background}}});
-				}
-				// console.log(lastJsonMessage.message);
 				dispatch({type: 'ALERT', content: lastJsonMessage.message})
 			}
 			else if (lastJsonMessage.type === "online")
-			{
 				dispatchProfile({type: "USER_DATA", userData: {...state.userData, online: lastJsonMessage.data.value}});
-			}
-			else if (lastJsonMessage.type == 'notification') {
-				console.log('notification pushed')
+			else if (lastJsonMessage.type == 'notification')
 				notDispatch({type: 'PUSH_NOTIFICATION', notification: lastJsonMessage.data, dispatch: notDispatch})
-			}
-		}
-		else if (!isEmptyObject(lastJsonMessage)) { // lastJsonMessage.code === 404
-			if (lastJsonMessage.type === "user-action")
-			{
-				if (lastJsonMessage.identifier === state.userData?.username)
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: state.userData?.relation}});
-				else
-					dispatchProfile({type: "FRIEND_DATA", friendsData: state.friendsData});
-			}
-			// else if (lastJsonMessage.type === "invite") {
-			// }
-			else if (lastJsonMessage.type === "update")
-			{
-				if (lastJsonMessage.identifier === "tfa-status" || lastJsonMessage.identifier === "tfa-change")
-				{
-					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa}}});
-					dispatch({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa}}});
-				}
-				else if (lastJsonMessage.identifier === "username")
-				{
-					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, username: state.userData?.username}});
-					dispatch({type: "USER_DATA", userData: {...state.userData, username: state.userData?.username}});
-				}
-				else if (lastJsonMessage.identifier === "email")
-				{
-					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, email: state.userData?.email}});
-					dispatch({type: "USER_DATA", userData: {...state.userData, email: state.userData?.email}});
-				}
-				else if (lastJsonMessage.identifier === "game_settings")
-				{
-					// dispatchProfile({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings}}});
-					dispatch({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings}}});
-				}
-				dispatch({type: 'ALERT', content: lastJsonMessage.message})
-			}
 		}
 	}, [lastJsonMessage])
 

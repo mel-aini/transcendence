@@ -16,28 +16,28 @@ const Table = forwardRef((props: Props, ref: any) => {
 	const handleKeyDown = (e: KeyboardEvent) => {
 		
 		if (e.key === 'ArrowUp') {
-			const oldPos: string | undefined = props.leftPaddle.current?.style.top;
+			const oldPos: string | undefined = props.rightPaddle.current?.style.top;
 			let newPos: number = Number(oldPos?.replace('%', '')) - 5;
 			newPos = (newPos < 10) ? 10 : newPos;
-			(props.gameLogic.current.getLeftPaddle) && (props.gameLogic.current.getLeftPaddle.y = newPos);
+			(props.gameLogic.current.getRightPaddle) && (props.gameLogic.current.getRightPaddle.y = newPos);
 		}
 		if (e.key === 'w') {
-			const oldPos: string | undefined = props.rightPaddle.current?.style.top;
+			const oldPos: string | undefined = props.leftPaddle.current?.style.top;
 			let newPos: number = Number(oldPos?.replace('%', '')) - 5;
 			newPos = (newPos < 10) ? 10 : newPos;
-			(props.gameLogic.current.getRightPaddle) && (props.gameLogic.current.getRightPaddle.y = newPos);
+			(props.gameLogic.current.getLeftPaddle) && (props.gameLogic.current.getLeftPaddle.y = newPos);
 		}
 		if (e.key === 'ArrowDown') {
+			const oldPos: string | undefined = props.rightPaddle.current?.style.top;
+			let newPos: number = Number(oldPos?.replace('%', '')) + 5;
+			newPos = (newPos > 90) ? 90 : newPos;
+			(props.gameLogic.current.getRightPaddle) && (props.gameLogic.current.getRightPaddle.y = newPos);
+		}
+		if (e.key === 's') {
 			const oldPos: string | undefined = props.leftPaddle.current?.style.top;
 			let newPos: number = Number(oldPos?.replace('%', '')) + 5;
 			newPos = (newPos > 90) ? 90 : newPos;
 			(props.gameLogic.current.getLeftPaddle) && (props.gameLogic.current.getLeftPaddle.y = newPos);
-		}
-		if (e.key === 's') {
-			const oldPos: string | undefined = props.rightPaddle.current?.style.top;
-			let newPos: number = Number(oldPos?.replace('%', '')) + 5;
-			newPos = (newPos > 90) ? 90 : newPos;
-			(props.gameLogic.current.getRightPaddle) && (props.gameLogic.current.getRightPaddle.y = newPos);
 		}
 	}
 

@@ -55,6 +55,7 @@ function Index() {
 					onClick={() => setDisplay(true)}
 					>Vs AI</SectionHeader>
 				<SectionHeader
+					onClick={() => clickHandler('1vs1')}
 					>1 vs 1</SectionHeader>
 				<SectionHeader
 					onClick={() => clickHandler('vs-friend')}

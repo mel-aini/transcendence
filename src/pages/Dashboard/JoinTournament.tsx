@@ -24,7 +24,7 @@ function PlayersNum() {
 			<div onClick={() => clickHandler(4)} className={"flex items-center justify-center grow h-full px-4 border border-border rounded-md cursor-pointer select-none " + ((state.playersNum === 4) ? "bg-border" : "")}>
 				<span>4 players</span>
 			</div>
-				<GiHumanPyramid className="text-3xl pr-2 grow"/>
+				<GiHumanPyramid className="text-3xl px-1 grow"/>
 			<div onClick={() => clickHandler(8)} className={"flex items-center justify-center grow h-full px-4 border border-border rounded-md cursor-pointer select-none " + ((state.playersNum === 8) ? "bg-border" : "")}>
 				<span>8 players</span>
 			</div>
