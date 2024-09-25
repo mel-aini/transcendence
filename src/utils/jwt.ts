@@ -19,7 +19,7 @@ class Jwt {
 
 	async refresh() {
 		try {
-			const res = await api.post('api/token/refresh/');
+			const res = await api.post('token/refresh/');
 			return res.data.access_token
 		} catch (error) {
 			return null;

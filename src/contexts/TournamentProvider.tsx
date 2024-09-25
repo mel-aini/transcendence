@@ -140,10 +140,6 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		return JSON.stringify(obj) === '{}';
 	};
 
-	// useEffect(() => {
-	// 	dispatch({type: "ROUND_DATA", roundData: initRounds()});
-	// }, []);
-
 	useEffect(() => {
 
 		if (!isEmptyObject(lastJsonMessage))
@@ -188,42 +184,5 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 	)
 }
 
-export const Tournament_WS_URL = "ws://127.0.0.1:8000/ws/game_tournament/";
 export const useTournamentContext = () => useContext(TournamentContext);
 export default TournamentContextProvider;
-
-// send
-
-// {'type':'start'}
-
-// recieve
-
-// {'type':'end', 'status':'im the winner'}
-
-// {'type':'opponents', 'user1':'name', 'user2':'name'} // go to game and send "start"
-
-// {
-// 	'type': 'dashboard', 
-// 	'rounds':
-// 		[
-// 			{
-// 				'username1': 'ggggg', 'username2': 'fdfdfd', 'username3': 'fs','username4': 'qqqqqq'
-// 			},
-// 			{
-// 				'username4': 'qqqqqq', 'username1': 'ggggg'
-// 			}
-// 		] 
-// }
-
-// {'type':'waiting' }
-
-// xjacobs0
-// michael540
-// lclark0
-// christina300
-// andrea440
-// lowens0
-// csmith0
-// samuel980
-
-// Tournament_WS_URL + state.playersNum + "/" + username

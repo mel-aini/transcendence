@@ -72,7 +72,7 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 						return Promise.reject(error)
 					}
 					originRequest.config.headers[NO_RETRY_HEADER] = 'true';
-					const res = await api.post('/api/token/refresh/');
+					const res = await api.post('token/refresh/');
 					console.log('trying to refresh token');
 					console.log(res)
 					return api(originRequest);

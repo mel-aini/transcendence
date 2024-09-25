@@ -1,10 +1,11 @@
-import { ComponentProps } from "react";
+import { ComponentProps, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LayoutHeader from "../../layout/LayoutHeader";
 import { useTournamentContext } from "../../contexts/TournamentProvider";
 import { ReadyState } from "react-use-websocket";
 import { useGlobalContext } from "../../contexts/store";
 import { SectionHeader } from "../Settings/Index";
+import VsAiChoice from "./VsAiChoise";
 
 interface Props extends ComponentProps<'div'> {
 	className?: string,
@@ -30,6 +31,7 @@ function Index() {
 	const navigate = useNavigate();
 	const { readyState } = useTournamentContext();
 	const { dispatch: dispatchGlobal } = useGlobalContext();
+	const [display, setDisplay] = useState<boolean>(false);
 
 	const clickHandler = (route: string) => {
 		if (readyState != ReadyState.OPEN)
@@ -40,8 +42,9 @@ function Index() {
 	}
 
 	return (
-		<>
+		<div className="w-full">
 			<LayoutHeader>Ping Pong</LayoutHeader>
+			<VsAiChoice display={display} setDisplay={setDisplay} />
 			{/* <p>Jump into a fast-paced ping pong match and challenge players or the AI. Play solo or with friends, and refine your skills with every match!</p> */}
 			{/* <p>search for a friend and invite it in game, search for a friend and invite it in game search for a friend and invite it in game search for a friend and invite it in game hello search for a friend and invite it in game</p> */}
 			<div className="space-y-5">
@@ -49,7 +52,7 @@ function Index() {
 					onClick={() => clickHandler('match-making')}
 					>Matchmaking</SectionHeader>
 				<SectionHeader
-					onClick={() => clickHandler('vs-ai/match-making')}
+					onClick={() => setDisplay(true)}
 					>Vs AI</SectionHeader>
 				<SectionHeader
 					>1 vs 1</SectionHeader>
@@ -64,11 +67,12 @@ function Index() {
 					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis." 
 					className="lg:col-start-1 lg:col-end-5"/>
 				<PlayChoise 
-					onClick={() => clickHandler('vs-ai/match-making')}
+					onClick={() => setDisplay(true)}
 					title="Vs AI" 
 					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttito."
 					className="lg:col-start-5 lg:col-end-7" />
 				<PlayChoise 
+					onClick={() => clickHandler('1vs1')}
 					title="1 vs 1" 
 					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttito." 
 					className="lg:col-start-1 lg:col-end-3" />
@@ -78,7 +82,7 @@ function Index() {
 					description="Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis." 
 					className="lg:col-start-3 lg:col-end-7" />
 			</div>  */}
-		</>
+		</div>
 	);
 }
 

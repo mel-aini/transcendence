@@ -4,12 +4,13 @@ import Button from "../../components/Button";
 import { useContext, useDeferredValue, useEffect, useRef, useState } from "react";
 import { displayContext } from "./Tournaments";
 import { GiHumanPyramid } from "react-icons/gi";
-import { Tournament_WS_URL, useTournamentContext } from "../../contexts/TournamentProvider";
+import { useTournamentContext } from "../../contexts/TournamentProvider";
 import { validate } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../contexts/authProvider";
 import Modal from "../../components/Modal";
 import Title from "../../components/Title";
+import { WS_END_POINT } from "../../utils/urls";
 
 function PlayersNum() {
 	const { state, dispatch } = useTournamentContext();
@@ -51,7 +52,7 @@ function TournamentFrom() {
 	const clickHandler = () => {
 		if (!validAlias || state.alias === '') return ;
 		// if (state.socketUrl === null)
-			dispatch({type: "SOCKET_URL", socketUrl: Tournament_WS_URL + state.playersNum + "/" + state.alias + "/?token=" + token.accessToken});
+			dispatch({type: "SOCKET_URL", socketUrl: WS_END_POINT + "game_tournament/" + state.playersNum + "/" + state.alias + "/?token=" + token.accessToken});
 		navigate("/Tournament");
 		// Tournament_WS_URL + state.playersNum + "/" + username
 	}

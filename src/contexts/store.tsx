@@ -17,6 +17,11 @@ export interface GlobalStateProps {
 	search: boolean
 	userData: UserData | null,
 	gameId: string | null,
+	AIdata: {
+		time: number,
+		goals: number,
+		difficulty: string,
+	}
 }
 
 const initialState: GlobalStateProps = {
@@ -26,6 +31,11 @@ const initialState: GlobalStateProps = {
 	search: false,
 	userData: null,
 	gameId: null,
+	AIdata: {
+		time: 3,
+		goals: 5,
+		difficulty: "medium",
+	}
 };
 
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
@@ -68,6 +78,11 @@ const reducer = (state: GlobalStateProps, action: any) => {
 			return { 
 				...state,
 				gameId: action.gameId
+			}
+		case 'AI_DATA':
+			return { 
+				...state,
+				AIdata: action.AIdata
 			}
 		default:
 			return state;

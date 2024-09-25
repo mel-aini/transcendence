@@ -15,7 +15,7 @@ import { useAuthContext } from "../../contexts/authProvider";
 
 async function fetchData(id: string | undefined) {
 	const uri: string = id ? "users/" + id : "profile";
-	const res = await api.get('api/' + uri);
+	const res = await api.get(uri + "/");
 	return res;
 }
 

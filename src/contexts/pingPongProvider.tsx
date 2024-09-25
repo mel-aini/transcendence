@@ -6,6 +6,7 @@ import { UserData } from "../types/profile";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useAuthContext } from "./authProvider";
 import useWebSocket from "react-use-websocket";
+import { WS_END_POINT } from "../utils/urls";
 
 export interface Coordinates {
 	x: number,
@@ -199,7 +200,7 @@ const reducer = (state: GameData, action: any) => {
 	}
 }
 
-const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament: boolean, isAI?: boolean, children: ReactNode}) => {
+const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament: boolean, isAI: boolean, children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
@@ -208,11 +209,9 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 
 	const { state: token }  = useAuthContext();
 	const { state: stateGlobal } = useGlobalContext();
-	// const [ searchParams ] = useSearchParams();
-	// const gameId = searchParams.get('gameId');
 
-	const fullWsUrl: string = isAI ? "ws://127.0.0.1:8000/ws/aigame/hard/2/300/?token=" : (stateGlobal.gameId ? GAME_WS_URL + stateGlobal.gameId + "/?token=" : GAME_WS_URL + "random/?token=");
-	const { lastJsonMessage, sendJsonMessage } = useWebSocket(fullWsUrl + token.accessToken,
+	const fullWsUrl: string = isAI ? "aigame/" + profileData.AIdata.difficulty + "/" + profileData.AIdata.goals + "/" + profileData.AIdata.time * 60 + "/?token=" : (stateGlobal.gameId ? "game/" + stateGlobal.gameId + "/?token=" : "game/" + "random/?token=");
+	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_END_POINT + fullWsUrl + token.accessToken,
 		{
 			onOpen: () => dispatch({ type: "RESET" }),
 			share: false,
@@ -237,7 +236,7 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 
 		if (!isEmptyObject(lastJsonMessage))
 		{
-			if (lastJsonMessage.type != "ball")
+			if (lastJsonMessage.type != "ball" && lastJsonMessage.type != "paddle")
 				console.log(lastJsonMessage);
 			if (lastJsonMessage.type == "opponents")
 			{
@@ -286,7 +285,6 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 			else if (lastJsonMessage.type == "end")
 			{
 				// console.log(lastJsonMessage);
-				
 				dispatch({type: "RESULT", result: {...state.result, status: lastJsonMessage.status, xp: lastJsonMessage.xp, isEndGame: true}});
 			}
 			else if (lastJsonMessage.type == "disconnect")
@@ -388,6 +386,5 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 	)
 }
 
-const GAME_WS_URL = "ws://127.0.0.1:8000/ws/game/";
 export const usePingPongContext = () => useContext(PingPongContext);
 export default PingPongContextProvider;

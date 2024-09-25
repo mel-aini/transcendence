@@ -27,7 +27,7 @@ const bellVariants = {
 }
 
 async function getNotifications() {
-    const res = await api.get('api/notifications/?start=0&end=1')
+    const res = await api.get('notifications/?start=0&end=1')
     return res;
 }
 

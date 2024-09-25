@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import JoinTournament from "./JoinTournament";
 import Title from "../../components/Title";
 import { useTournamentContext } from "../../contexts/TournamentProvider";
+import { useGlobalContext } from "../../contexts/store";
 import { ReadyState } from "react-use-websocket";
 
 export const displayContext = createContext<any>({});

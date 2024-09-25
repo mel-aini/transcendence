@@ -6,6 +6,7 @@ import { FriendsData, Relation } from "../types/profile";
 import { useGlobalContext } from "./store";
 import { useAuthContext } from "./authProvider";
 import { useNotificationsContext } from "./notificationsProvider";
+import { WS_END_POINT } from "../utils/urls";
 
 export const GlobalWebSocketContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
 	lastJsonMessage: '',
@@ -18,7 +19,7 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	const { state, dispatchProfile } = useProfileContext();
 	const { state: token }  = useAuthContext();
 	const { dispatch: notDispatch } = useNotificationsContext();
-	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_URL + token.accessToken,
+	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_END_POINT + "sys/?token=" + token.accessToken,
 		{
 			share: false,
 			shouldReconnect: () => true,
@@ -153,6 +154,5 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	)
 }
 
-export const WS_URL = "ws://localhost:8000/ws/sys/?token=";
 export const useGlobalWebSocketContext = () => useContext(GlobalWebSocketContext);
 export default GlobalWebSocketContextProvider;

@@ -6,16 +6,20 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTimer } from 'react-timer-hook';
 import { useTournamentContext } from "../../../../contexts/TournamentProvider";
+import { useGlobalContext } from "../../../../contexts/store";
 
 const Goal = () => {
 	const {state} = usePingPongContext();
 	const [goal, setGoal] = useState<string>('');
 
 	useEffect(() => {
-		setTimeout(() => {
-			setGoal("");
-		}, 1000);
-		setGoal("Goooooooooooal!");
+		if (state.score.my !== 0)
+		{
+			setTimeout(() => {
+				setGoal("");
+			}, 1000);
+			setGoal("Goooooooooooal!");
+		}
 	}, [state.score.my]);
 
 	return (
@@ -50,6 +54,7 @@ const timeConverter = (time: number) => {
 
 const Header = () => {
 	const {state, dispatch} = usePingPongContext();
+	const {state: globalState} = useGlobalContext();
 	const { finalMinutes, finalSeconds } = timeConverter(state.time);
 
 	const clickHandler = () => {
@@ -59,21 +64,21 @@ const Header = () => {
 		dispatch({type: "COUNTER", counter: 2});
 	}
 
-	useEffect(() => {
+	// useEffect(() => {
 		
 		
-	}, []);
+	// }, []);
 
 	return (
 		<div className="w-full gap-1 items-center grid grid-cols-3 grid-rows-2 lg:grid-rows-1">
 			<div className="flex col-start-1 col-end-2 ">
 				<div className={"flex gap-1 " + ((state.directions.my == "right") ? "flex-row-reverse" : "flex-row")}>
 					<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-						<div className="absolute w-[2px] top-full -translate-y-full bg-primary" style={{height: `${state.score.my * 10}%`}}/>
+						<div className="absolute w-[2px] top-full -translate-y-full bg-primary" style={{height: `${state.score.my * (state.isAI ? 100 / globalState.AIdata.goals : 10)}%`}}/>
 						<span className="absolute inline-flex items-center justify-center text-primary w-full h-full">{state.score.my}</span>
 					</div>
 					<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-						<div className="absolute w-[2px] top-full -translate-y-full bg-white" style={{height: `${state.score.side * 10}%`}}/>
+						<div className="absolute w-[2px] top-full -translate-y-full bg-white" style={{height: `${state.score.side * (state.isAI ? 100 / globalState.AIdata.goals : 10)}%`}}/>
 						<span className="absolute inline-flex items-center justify-center w-full h-full">{state.score.side}</span>
 					</div>
 					<div className="bg-secondary lg:w-full lg:max-w-[133px] h-[40px] flex md:justify-start justify-center items-center px-2 shrink-0 sm:shrink">

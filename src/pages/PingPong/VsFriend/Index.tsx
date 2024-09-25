@@ -64,7 +64,7 @@ function FriendBar({friend} : {friend: FriendsData}) {
 }
 
 async function fetchFriends() {
-	const res = await api.get('api/friends/');
+	const res = await api.get('friends/');
 	return res;
 }
 
@@ -102,7 +102,7 @@ function VsFriend() {
 		const lastPart: number = end.getBoundingClientRect().top - start.getBoundingClientRect().top;
 		if (!stopScroll.current && lastPart <= 135)
 		{
-			fetchOtherFriends("api/friends/?filter=" + searchData.current + "&start=" + countScroll.current.toString() + "&end=" + (countScroll.current + 10).toString(), true);
+			fetchOtherFriends("friends/?filter=" + searchData.current + "&start=" + countScroll.current.toString() + "&end=" + (countScroll.current + 10).toString(), true);
 			countScroll.current += 10;
 		}
 	}
@@ -112,12 +112,12 @@ function VsFriend() {
 		countScroll.current = 10;
 		searchData.current = e.currentTarget.value;
 		if (searchData.current == "")
-			fetchOtherFriends("api/friends/?filter=" + searchData.current, false);
+			fetchOtherFriends("friends/?filter=" + searchData.current, false);
 	}
 	
 	const clickHandler = () => {
 		if (searchData.current != "")
-			fetchOtherFriends("api/friends/?filter=" + searchData.current, false);
+			fetchOtherFriends("friends/?filter=" + searchData.current, false);
 	}
 
 	const handleCancel = () => {
