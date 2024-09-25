@@ -7,7 +7,7 @@ import Container from "../../components/Container";
 const WinsAndLoses = ({total, wins}: {total: number, wins: number}) => {
 
 	return (
-		<div className='flex items-center gap-5'>
+		<div className='flex flex-col sm:flex-row sm:items-center gap-5'>
 			<div className="flex gap-3 text-xl items-center">
 				<span className="w-[20px] h-[20px] bg-primary"></span>
 				<h3>{wins} wins</h3>
@@ -60,10 +60,10 @@ const States = ({data}: Props) => {
 
 	return (
 		<div className="row-span-3 row-start-2 xl:row-span-1 xl:row-start-1 xl:col-start-1 xl:col-end-4">
-			{data && <Container className="h-full" childClassName="flex flex-col justify-between p-10 gap-20">
+			{data && <Container className="h-full" childClassName="flex flex-col justify-between p-5 sm:p-10 gap-20">
 				<div className="">
 					<h1 className="self-start text-2xl font-semibold mb-3">States</h1>
-					<div className="flex justify-between w-full">
+					<div className="flex flex-col sm:flex-row gap-3 sm:justify-between w-full">
 						<h3 className="text-xl">games: {data.matches.total}</h3>
 						<WinsAndLoses total={data.matches.total} wins={data.matches.wins} />
 					</div>
@@ -81,7 +81,7 @@ const States = ({data}: Props) => {
 								duration: 2,
 								ease: 'easeOut'
 							}}
-							className="relative w-[300px] h-[300px] self-center rounded-full sm:shrink-0"
+							className="relative w-full aspect-square max-w-[300px] self-center rounded-full sm:shrink-0"
 							style={{
 								background: `conic-gradient(from -90deg, 
 									${primaryColor} 0%, 
@@ -89,7 +89,7 @@ const States = ({data}: Props) => {
 									${darkColor} ${percentage}, ${darkColor} 100%)`
 								}}
 								>
-					<div className="absolute inset-[60px] rounded-full bg-bg"></div>
+					<div className="absolute inset-[20%] sm:inset-[60px] rounded-full bg-bg"></div>
 					<Nisba className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" percentage={parseFloat(percentage)}/>
 				</motion.div>
 			</Container>}

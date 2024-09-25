@@ -133,13 +133,10 @@ function VsFriend() {
 
 	return (
 		<>
-			<LayoutHeader>Play against a friend</LayoutHeader>
+			<LayoutHeader>VS friend</LayoutHeader>
 			<div className="flex justify-center items-center">
-				<div className="w-full max-w-[770px] flex flex-col bg-secondary border border-border rounded-md p-10 gap-7">
-					<div className="flex flex-col gap-4">
-						<h1 className="text-2xl font-semibold">Play against a friend</h1>
-						<p className="text-base font-normal">search for a friend and invite it in game</p>
-					</div>
+				<div className="w-full flex flex-col gap-7">
+					<p className="text-base font-normal">Invite your friends to a competitive ping pong match! Challenge them to a fun, fast-paced game and see who comes out on top. Ready to play?</p>
 					<div className="flex flex-col gap-5">
 						<div className="flex h-[50px] gap-3">
 							<input onChange={(e) => changeHandler(e)} type="text" className="w-full h-full border border-border focus:border-primary duration-200 rounded-md px-5 py-3 outline-none bg-transparent" placeholder="search" />

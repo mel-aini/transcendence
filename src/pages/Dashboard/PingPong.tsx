@@ -5,16 +5,16 @@ import Title from "../../components/Title";
 
 const PingPong = () => {
 	return (
-		<div className="grid grid-cols-1 sm:grid-cols-2 h-[400px] bg-secondary rounded-md border-white">
-			<div className="flex flex-col justify-between p-10">
+		<div className="grid grid-cols-1 sm:grid-cols-2 sm:h-[400px] bg-secondary rounded-md border-white">
+			<div className="flex flex-col justify-between p-5 sm:p-10 space-y-8">
 				<div className='space-y-8'>
 					<Title 
-						firstCharClassName='text-5xl '
-						restWordClassName="text-4xl"
+						firstCharClassName='text-4xl sm:text-5xl'
+						restWordClassName="text-2xl sm:text-3xl md:text-4xl"
 							>Ping Pong
 					</Title>
 					{/* <h1 className="text-4xl md:text-5xl font-semibold grow shrink-0">Ping Pong</h1> */}
-					<p>Lorem ipsum dolor sit amet consectetur. Interdum maecenas quis porttitor nunc et habitant vestibulum risus facilisis.</p>
+					<p>Jump into a fast-paced ping pong match and challenge players or the AI. Play solo or with friends, and refine your skills with every match!</p>
 				</div>
 				<div>
 					<Link to="/ping-pong">

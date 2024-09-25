@@ -9,7 +9,7 @@ interface Props {
 
 const RelationBar = forwardRef((props: Props, ref: any) => {
 	return (
-		<div ref={ref} onClick={props.onClick} style={{width:`${props.width}px`}} className='relative h-[36px] flex flex-col justify-between items-center overflow-hidden select-none'>
+		<div ref={ref} onClick={props.onClick} style={{width:`${props.width}px`}} className='relative h-[36px] flex flex-col justify-between items-center overflow-hidden select-none cursor-pointer'>
 			{
 				props.active ?
 				<>

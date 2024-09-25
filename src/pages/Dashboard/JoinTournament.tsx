@@ -8,6 +8,8 @@ import { Tournament_WS_URL, useTournamentContext } from "../../contexts/Tourname
 import { validate } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../contexts/authProvider";
+import Modal from "../../components/Modal";
+import Title from "../../components/Title";
 
 function PlayersNum() {
 	const { state, dispatch } = useTournamentContext();
@@ -80,33 +82,26 @@ function JoinTournament() {
 	const display = useContext(displayContext);
 
 	return (
-		<AnimatePresence>
-		{
-			display.display &&
-			<motion.div
+		<Modal isOpen={display.display} onClose={() => display.setDisplay(false)}>
+			<AnimatePresence>
+			{
+				display.display &&
+				<motion.div
 				initial={{opacity: 0}}
 				animate={{opacity: 1}}
 				transition={{duration: 0.3}}
 				exit={{ opacity: 0}}
-				className="absolute z-10">
-				<div className="fixed top-0 start-0 bg-black opacity-70 w-full min-h-[100vh] px-5" onClick={() => display.setDisplay(false)}/>
-				<motion.div
-				initial={{top: 0}}
-				animate={{top: "50%"}}
-				transition={{duration: 0.1}}
-				exit={{ top: 0}}
-				className="z-50 fixed bg-secondary max-h-[600px] min-h-[450px] max-w-[521px] w-[90%] h-[90%] border border-border rounded-[10px] left-[50%] -translate-x-1/2 top-1/2 -translate-y-1/2 flex flex-col justify-center items-center gap-5 duration-300 px-5">
-					<div onClick={() => display.setDisplay(false)} className="absolute w-5 h-5 bg-[#DD1B1B] left-full top-[4.25rem] cursor-pointer">
-						<span className="absolute w-[13px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-[0.5px] rotate-45" />
-						<span className="absolute w-[13px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-[0.5px] rotate-[135deg]" />
-					</div>
+				className="w-[90vw] max-w-[400px] p-5 sm:p-10 bg-secondary flex flex-col items-center gap-5 rounded-md">
 					<img src={trophy} alt="" className="w-[150px] h-[150px]"/>
-					<span className="text-3xl pr-2 text-center">Join Tournament</span>
+					<Title
+						className="mb-5 text-center"
+						firstCharClassName="text-3xl" 
+						restWordClassName="text-2xl">Join Tournament</Title>
 					<TournamentFrom />
 				</motion.div>
-			</motion.div>
-		}
-		</AnimatePresence>
+			}
+			</AnimatePresence>
+		</Modal>
 	);
 }
 

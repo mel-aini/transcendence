@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/authProvider";
 import api from "../api/axios";
-import { useGlobalContext } from "../contexts/store";
 
 const useLog = () => {
 	const {dispatch} = useAuthContext()
-	const {dispatch: gdispatch} = useGlobalContext()
 	const navigate = useNavigate();
 
 	const action = async (type: 'LOGIN' | 'LOGOUT') => {
@@ -16,16 +14,12 @@ const useLog = () => {
 			case 'LOGOUT':
 				// code
 				try {
-					const res = await api.post('api/logout/');
-					// gdispatch({type: 'LOADING', state: true})
+					await api.post('api/logout/');
 					dispatch({type: 'TOKEN', token: null})
 					navigate('/')
 				} catch (error) {
 					
 				}
-				// console.log(res)
-				// dispatch({type: 'TOKEN', token: null})
-				// document.cookie = 'csrftoken' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 				break;
 		}
 	}

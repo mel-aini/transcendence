@@ -24,6 +24,7 @@ const reducer = (state: GlobalStateProps, action: any) => {
 	switch (action.type)
 	{
 		case 'TOKEN':
+			console.log('update token', action.token)
 			return { ...state, accessToken: action.token}
 		case 'USERNAME':
 			return { ...state, username: action.username}

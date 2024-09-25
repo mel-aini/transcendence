@@ -8,6 +8,7 @@ import Container from "../../components/Container";
 import { useProfileContext } from "../../contexts/profileStore";
 import api from "../../api/axios";
 import { useQuery } from "@tanstack/react-query";
+import Modal from "../../components/Modal";
 
 async function fetchData(id: string | undefined) {
 	const uri: string = id ? "friends/" + id + "/" : "friends";
@@ -55,7 +56,10 @@ const Friends = () => {
 				<div className="relative flex justify-between items-center w-full">
 					<h1 className="text-2xl font-semibold">Friends</h1>
 					<span className="cursor-pointer" onClick={() => setSeeAllFriends(true)}>see all</span>
-					{ seeAllFriends && <AllFriends setSeeAllFriends={setSeeAllFriends} /> }
+					{/* { seeAllFriends && <AllFriends setSeeAllFriends={setSeeAllFriends} /> } */}
+					<Modal isOpen={seeAllFriends} onClose={() => setSeeAllFriends(false)}>
+						<AllFriends />
+					</Modal>
 				</div>
 				<div className="flex justify-start items-center gap-3 w-full overflow-hidden">
 					{friends && friends.map((friend: FriendsData, key: number) => {

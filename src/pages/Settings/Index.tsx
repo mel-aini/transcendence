@@ -30,9 +30,10 @@ interface SectionHeaderProps extends ComponentProps<'div'> {
 	children?: string
 	activated?: boolean
 	className?: string
+	dropDown?: boolean
 }
 
-export function SectionHeader({ children, activated, className, ...props }: SectionHeaderProps) {
+export function SectionHeader({ children, activated, className, dropDown, ...props }: SectionHeaderProps) {
 	return (
 		<div 
 			className={
@@ -41,7 +42,7 @@ export function SectionHeader({ children, activated, className, ...props }: Sect
 			{...props}
 			>
 			<h1 className="font-medium">{ children }</h1>
-			<IoIosArrowDown className={activated ? 'text-2xl rotate-90' : "text-2xl"} />
+			{dropDown && <IoIosArrowDown className={activated ? 'text-2xl rotate-90' : "text-2xl"} />}
 		</div>
 	)
 }

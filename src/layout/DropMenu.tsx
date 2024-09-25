@@ -52,7 +52,6 @@ function DropMenu({ setDropMenu, type }: DropMenuProps) {
 				variants={variants}
 				className="flex flex-col absolute z-50 right-0 top-full w-32 rounded-md select-none overflow-hidden ">
 				<div onClick={goToProfile} className={elemCLass}>go to profile</div>
-				<div className={elemCLass}>settings</div>
 				<div onClick={() => action('LOGOUT')} className={elemCLass}>logout</div>
 			</motion.div>
 		)
@@ -66,7 +65,7 @@ function DropMenu({ setDropMenu, type }: DropMenuProps) {
 				animate='visible'
 				exit='hidden'
 				variants={variants}
-				className="scrollClass absolute z-50 right-0 top-full w-[450px] max-h-[400px] p-5 border border-border rounded-md bg-bg overflow-auto space-y-5">
+				className="scrollClass absolute z-50 right-0 top-full w-[90vw] max-w-[450px] max-h-[400px] p-5 border border-border rounded-md bg-bg overflow-auto space-y-5">
 				<Notifications />
 			</motion.div>
 		)

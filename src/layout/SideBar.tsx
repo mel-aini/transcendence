@@ -19,8 +19,8 @@ export function SideBarElem({children, ...props}: SideBarElemProps) {
 				className={'flex justify-start bg-secondary ' + (isActive ? 'text-primary' : 'text-white')}
 				>
 				<Title 
-					firstCharClassName={"duration-300 " + (isActive ? 'font-medium text-primary text-2xl' : 'font-normal text-white text-xl')} 
-					restWordClassName={"duration-300 " + (isActive ? 'font-medium text-primary text-lg' : 'font-normal text-white text-md')} >
+					firstCharClassName={"duration-300 " + (isActive ? 'text-primary text-xl' : 'text-white text-xl')} 
+					restWordClassName={"duration-300 " + (isActive ? 'text-primary text-md' : 'text-white text-md')} >
 						{children}
 				</Title>		
 			</Polygon>
@@ -34,7 +34,7 @@ function SideBar({ className }: { className?: string }) {
 
 	return (
 		<>
-			<div className={twMerge('w-[245px] shadow-right space-y-5 bg-bg', className)}>
+			<div className={twMerge('w-[245px] space-y-5 bg-bg', className)}>
 				<SideBarElem onClick={() => navigate('/dashboard')}>Dashboard</SideBarElem>
 				<SideBarElem onClick={() => navigate('/chat')}>Chat</SideBarElem>
 				<SideBarElem onClick={() => navigate('/settings')}>Settings</SideBarElem>

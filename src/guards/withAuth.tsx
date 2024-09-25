@@ -38,6 +38,7 @@ function withAuth(Component: ComponentType) {
 
 	function UpdatedComponent() {
 		const { state }  = useAuthContext();
+		console.log('token to check:', state);
 		if (!jwt.isValid(state.accessToken)) {
 
 			return (

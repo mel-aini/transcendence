@@ -5,11 +5,11 @@ import User from "../components/User";
 import { twMerge } from "tailwind-merge";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { useChatContext } from "../contexts/chatProvider";
-import Logo from "../components/Logo";
 import Search from "./Search";
 import NotificationsBell from "./NotificationsBell";
 import DropMenu, { DropMenuTypes } from "./DropMenu";
 import NewNotifications from "./NewNotifications";
+import Logo from "../components/Logo";
 
 const NavBar = ({ className }: {className?: string}) => {
 	const { state } = useGlobalContext();
@@ -39,10 +39,10 @@ const NavBar = ({ className }: {className?: string}) => {
 	return (
 		<div
 			ref={container} 
-			className={twMerge('nav-bar sticky top-0 left-0 h-20 z-40 lg:z-50 shadow-bottom flex justify-between px-10 bg-bg', className)}>
+			className={twMerge('nav-bar sticky top-0 left-0 h-20 z-40 lg:z-50 shadow-bottom flex justify-between px-5 sm:px-10 bg-bg', className)}>
 			<div className='h-20 flex items-center'>
 				<Link to={'/'}>
-					<Logo className="font-medium cursor-pointer" />
+					<Logo responsive className="font-medium cursor-pointer" />
 				</Link>
 			</div>
 			<div className="relative flex justify-end items-center gap-5 h-20">

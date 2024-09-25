@@ -28,7 +28,7 @@ const Index = () => {
 				className="avatar absolute -z-20 bottom-0 left-1/2 h-[70%]" />
 			<div className="flex flex-col justify-between items-center gap-16 h-full py-40">
 				 <div>		
-					<Logo animate className="text-7xl" />
+					<Logo animate className="text-3xl sm:text-5xl lg:text-7xl text-center" />
 					<h2 
 						className="max-w-[800px] text-center font-medium text-2xl mt-5"
 						>Lorem ipsum dolor sit amet consectetu

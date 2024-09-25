@@ -1,15 +1,17 @@
+import { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 
-interface Props {
+interface Props extends ComponentProps<'div'> {
 	children: string
 	firstCharClassName?: string
 	restWordClassName?: string
+	className?: string
 }
 
-function Title({ children, firstCharClassName, restWordClassName }: Props) {
+function Title({ children, className, firstCharClassName, restWordClassName }: Props) {
 	const words = children.split(' ');
 	return ( 
-		<div>
+		<div className={className}>
 			{
 				words.map((word, index) => {
 					const firstChar = word.charAt(0);
