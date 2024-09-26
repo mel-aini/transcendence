@@ -6,12 +6,11 @@ import SendingInvitation from "./userActions/SendingInvitation";
 import PendingInvitation from "./userActions/PendingInvitation";
 import Blocked from "./userActions/Blocked";
 import { Actions, useProfileContext } from "../../contexts/profileStore";
-import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
 import WaitingAction from "./userActions/WaitingAction";
 import { FriendsData } from "../../types/profile";
 import GoToProfile from "./userActions/GoToProfile";
 
-export const modifyObjectByName = (array : FriendsData[] | null, username: string) => {
+export const modifyObjectByName = (array : FriendsData[] | null, username?: string) => {
 	const obj: FriendsData | undefined = array ? array.find(obj => obj.username === username) : undefined;
 	if (obj) {
 		obj.relation = undefined;
@@ -53,11 +52,11 @@ const UserActions = ({isProfile}: {isProfile: boolean}) => {
 			{action == null && <WaitingAction />}
 			{action == Actions.EditProfile && <EditProfile />}
 			{action == Actions.GoToProfile && <GoToProfile />}
-			{action == Actions.Friend && <FriendActions username={state.userData.username} origin="user" />}
-			{action == Actions.AddFriend && <AddFriend username={state.userData.username}  origin="user" />}
-			{action == Actions.SendingInvitation && <SendingInvitation username={state.userData.username} origin="user" />}
-			{action == Actions.PendingInvitation && <PendingInvitation username={state.userData.username} origin="user" />}
-			{action == Actions.Blocked && <Blocked username={state.userData.username} origin="user" />}
+			{action == Actions.Friend && <FriendActions username={state.userData?.username} origin="user" />}
+			{action == Actions.AddFriend && <AddFriend username={state.userData?.username}  origin="user" />}
+			{action == Actions.SendingInvitation && <SendingInvitation username={state.userData?.username} origin="user" />}
+			{action == Actions.PendingInvitation && <PendingInvitation username={state.userData?.username} origin="user" />}
+			{action == Actions.Blocked && <Blocked username={state.userData?.username} origin="user" />}
 		</>
 	)
 }

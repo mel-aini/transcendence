@@ -50,9 +50,9 @@ const Table = ({width}: {width: number}) => {
 			<div className="absolute first-table-half w-[68.69%] h-full border rounded-l-[10px] border-border" style={{ backgroundColor: profileState.userData?.game_settings.background + "1a" }} />
 			<div className="absolute second-table-half w-[68.69%] h-full border rounded-l-[10px] rotate-180 left-full -translate-x-full border-border" style={{ backgroundColor: profileState.userData?.game_settings.background + "1a" }} />
 
-			<div onPointerDown={(e) => handlePointerStart(e)} ref={myPaddle} className="h-1/5 absolute -translate-y-1/2" style={{backgroundColor: profileState.userData?.game_settings.paddle, width: `${width * 2 / 100}px`, top: `${state.myPaddleData.y}%`, left: `${state.myPaddleData.x}%`}}/>
+			<div onPointerDown={(e) => handlePointerStart(e)} ref={myPaddle} className="h-1/5 absolute -translate-y-1/2 rounded-full" style={{backgroundColor: profileState.userData?.game_settings.paddle, width: `${width * 2 / 100}px`, top: `${state.myPaddleData.y}%`, left: `${state.myPaddleData.x}%`}}/>
 
-			<div ref={sidePaddle} className="h-1/5 absolute -translate-y-1/2" style={{backgroundColor: profileState.userData?.game_settings.paddle, width: `${width * 2 / 100}px`, top: `${state.sidePaddleData.y}%`, left: `${state.sidePaddleData.x}%`}}/>
+			<div ref={sidePaddle} className="h-1/5 absolute -translate-y-1/2 rounded-full" style={{backgroundColor: profileState.userData?.game_settings.paddle, width: `${width * 2 / 100}px`, top: `${state.sidePaddleData.y}%`, left: `${state.sidePaddleData.x}%`}}/>
 
 			<div className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full" style={{backgroundColor: profileState.userData?.game_settings.ball, width: `${width * 3 / 100}px`, height: `${width * 3 / 100}px`, top: `${state.ballData.y}%`, left: `${state.ballData.x}%`}} />
 

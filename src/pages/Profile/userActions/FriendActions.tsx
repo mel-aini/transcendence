@@ -4,13 +4,8 @@ import more_icon from "/more_icon.svg"
 import block from "/block.svg"
 import unfriend from "/unfriend.svg"
 import deny from "/deny.svg"
-import { Menu, MenuButton, MenuItem, MenuItems, MenuSeparator, Transition } from '@headlessui/react'
-import { FriendsData, ProfileRequest, Relation, UserData } from "../../../types/profile"
-import { profileSocket } from "../../../utils/profileSocket"
-import { profileContext } from "../Index"
-import useWebSocket from "react-use-websocket"
-import { useContext, useEffect, useState } from "react"
-import { WS_URL } from "../../../contexts/store"
+import { ProfileRequest } from "../../../types/profile"
+import {  useState } from "react"
 import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore"
 import { useProfileContext } from "../../../contexts/profileStore"
 import { modifyObjectByName } from "../UserActions"
@@ -18,7 +13,7 @@ import { useChatContext } from "../../../contexts/chatProvider"
 import { useAuthContext } from "../../../contexts/authProvider"
 import { useNavigate } from "react-router-dom"
 
-const FriendActions = ({username, origin}: {username: string, origin: string}) => {
+const FriendActions = ({username, origin}: {username?: string, origin: string}) => {
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	const { sendJsonMessage: sendChatJsonMessage } = useChatContext();
 	const { state: authState } = useAuthContext();

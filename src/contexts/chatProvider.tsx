@@ -245,8 +245,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	  )
 
 	useEffect(() => {
-		console.log('new message')
-		console.log(lastJsonMessage);
+		// console.log('new message')
+		// console.log(lastJsonMessage);
 
 		if (lastJsonMessage) {
 			if (lastJsonMessage.online) {

@@ -1,12 +1,9 @@
 import { useProfileContext } from "../../contexts/profileStore";
-import { UserData } from "../../types/profile";
 import LevelBar from "./LevelBar";
 import UserActions from "./UserActions";
-import { useContext, useEffect, useRef, useState } from "react";
-import { profileContext } from "./Index";
+import {  useEffect, useRef } from "react";
 import api from "../../api/axios";
 import { useParams } from "react-router-dom";
-import Settings from "../Settings/Index";
 import edit_icon from "/edit_icon.svg"
 import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
 

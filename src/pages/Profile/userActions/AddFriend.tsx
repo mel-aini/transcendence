@@ -1,20 +1,16 @@
-import { useContext, useState } from "react"
 import add_icon from "/add_icon.svg"
 import { ProfileRequest } from "../../../types/profile";
-import { WS_URL } from "../../../contexts/store";
-import useWebSocket from "react-use-websocket";
-import { profileContext } from "../Index";
 import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
 import { useProfileContext } from "../../../contexts/profileStore";
 import { modifyObjectByName } from "../UserActions";
+import block from "/block.svg"
 
-const AddFriend = ({username, origin}: {username: string, origin: string}) => {
+const AddFriend = ({username, origin}: {username?: string, origin: string}) => {
 
 	const { sendJsonMessage } = useGlobalWebSocketContext();
-	// const userData = useContext(profileContext);
 	const { state, dispatchProfile } = useProfileContext();
 
-	const clickHandler = () => {
+	const clickHandler = (type: "add" | "block") => {
 		if (origin === "profile") {
 			const updatedArray = modifyObjectByName(state.friendsData, username);
 			if (updatedArray) {
@@ -24,7 +20,7 @@ const AddFriend = ({username, origin}: {username: string, origin: string}) => {
 		else if (origin === "user")
 			dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
 		const request: ProfileRequest = {
-			type: "add",
+			type: type,
 			identifier: username,
 			data: {}
 		};
@@ -32,9 +28,15 @@ const AddFriend = ({username, origin}: {username: string, origin: string}) => {
 	}
 
 	return (
-		<div onClick={clickHandler} className="shrink-0 w-[140px] h-[40px] flex justify-center items-center bg-secondary rounded-md gap-2">
-			<span>add friend</span>
-			<img src={add_icon} alt="" width={20} height={20}/>
+		<div className="flex items-center justify-between h-[40px] w-[180px] select-none gap-2">
+			<div onClick={() => clickHandler("add")} className="w-full h-full flex justify-center items-center bg-secondary rounded-md cursor-pointer gap-2">
+				<span>add</span>
+				<img src={add_icon} alt="" width={20} height={20}/>
+			</div>
+			<div onClick={() => clickHandler("block")} className="bg-secondary flex justify-center items-center w-full h-full rounded-md cursor-pointer gap-2">
+				<span>block</span>
+				<img src={block} alt="" width={20} height={20}/>
+			</div>
 		</div>
 	)
 }

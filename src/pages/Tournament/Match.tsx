@@ -3,9 +3,9 @@ import { Player } from "../../contexts/TournamentProvider";
 import Merge from "./Merge";
 import PlayerBar from "./PlayerBar";
 
-function Match({player1, player2, gap, isRightSide}: {player1: Player | string, player2: Player | string, gap: number, isRightSide?: boolean}) {
-	const ref1 = useRef(null);
-	const ref2 = useRef(null);
+function Match({player1, player2, gap, isRightSide}: {player1: Player | "player", player2: Player | "player", gap: number, isRightSide?: boolean}) {
+	const ref1 = useRef<HTMLDivElement>(null);
+	const ref2 = useRef<HTMLDivElement>(null);
 	const [height, setHeight] = useState<number>(0);
 	
 	const getHeight = () => {
@@ -24,8 +24,6 @@ function Match({player1, player2, gap, isRightSide}: {player1: Player | string, 
 	}
 
 	useEffect(() => {
-		// console.log(gap);
-
 		getHeight();
 		window.addEventListener('resize', getHeight);
 		return () => {

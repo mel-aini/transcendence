@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import trophy from "/trophy.svg"
 import Button from "../../components/Button";
-import { useContext, useDeferredValue, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { displayContext } from "./Tournaments";
 import { GiHumanPyramid } from "react-icons/gi";
 import { useTournamentContext } from "../../contexts/TournamentProvider";
@@ -42,24 +42,22 @@ function TournamentFrom() {
 
 	const changeHandler = () => {
 		// const input = inputRef.current;
-		(validate("username", inputRef.current.value)) ?
+		(validate("username", inputRef.current ? inputRef.current.value : undefined)) ?
 		setValidAlias(true)
 		:
 		setValidAlias(false);
-		dispatch({type: "ALIAS", alias: inputRef.current.value});
+		dispatch({type: "ALIAS", alias: inputRef.current ? inputRef.current.value : ''});
 	}
 
 	const clickHandler = () => {
 		if (!validAlias || state.alias === '') return ;
-		// if (state.socketUrl === null)
-			dispatch({type: "SOCKET_URL", socketUrl: WS_END_POINT + "game_tournament/" + state.playersNum + "/" + state.alias + "/?token=" + token.accessToken});
+		dispatch({type: "SOCKET_URL", socketUrl: WS_END_POINT + "game_tournament/" + state.playersNum + "/" + state.alias + "/?token=" + token.accessToken});
 		navigate("/Tournament");
-		// Tournament_WS_URL + state.playersNum + "/" + username
 	}
 
 	useEffect(() => {
 		if (inputRef)
-			inputRef.current.value = state.alias;
+			(inputRef.current) && (inputRef.current.value = state.alias);
 	}, []);
 
 	return (

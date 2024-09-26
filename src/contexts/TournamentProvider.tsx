@@ -1,10 +1,6 @@
-import { Dispatch, ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
+import { Dispatch, ReactNode, createContext, useCallback, useContext, useEffect, useReducer } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
-import profilePic from "/profilePic.svg";
-import { useGlobalContext } from "./store";
-import { Coordinates, Levels, usePingPongContext } from "./pingPongProvider";
-import { useNavigate } from "react-router-dom";
 
 export interface Player {
 	username: string,
@@ -14,7 +10,7 @@ export interface Player {
 
 export interface RoundData {
 	round: number,
-	players: Player[] | string[],
+	players: Player[] | "player"[],
 }
 
 interface TournamentData {
@@ -29,11 +25,6 @@ const initialState: TournamentData = {
 	alias: '',
 	playersNum: 4,
 	roundData: [],
-	// winner: {
-	// 	username: "winner",
-	// 	image: "",
-	// 	isConnected: true
-	// },
 	winner: "player",
 	socketUrl: null,
 };
@@ -81,8 +72,6 @@ const reducer = (state: TournamentData, action: any) => {
 }
 
 const TournamentContextProvider = ({children} : {children: ReactNode}) => {
-	// const {state: gameState, dispatch: gameDispatch} = usePingPongContext();
-	const navigate = useNavigate();
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const initRounds = useCallback((): RoundData[] => {
@@ -125,8 +114,6 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 			},
 			onClose: () => {
 				console.log('WebSocket disconnected');
-				// dispatch({type: "ROUND_DATA", roundData: initRounds()});
-				// dispatch({type: "WINNER", winner: "player"});
 			},
 			share: false,
 			shouldReconnect: () => false,
@@ -151,7 +138,7 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 			{
 				const isCompleted: boolean = (lastJsonMessage.rounds.length > state.roundData.length);
 				const roundData: RoundData[] = state.roundData;
-				lastJsonMessage.rounds.map((round, index: number) => {
+				lastJsonMessage.rounds.map((round: any, index: number) => {
 					let i = 0;
 					for (var player in round) {
 						const tmp: Player = {

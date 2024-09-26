@@ -1,9 +1,8 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import edit_icon from "/edit_icon.svg"
 import accept from "/accept.svg"
-import { useProfileContext } from "../../contexts/profileStore";
 import { validate } from "../../utils/validation";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ring } from 'ldrs'
 import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
 import { UpdateReq } from "../../types/profile";
@@ -39,14 +38,14 @@ function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 		}
 		sendJsonMessage(req);
 		// setEditStatus("edit");
-		inputRef.current.disabled = true;
+		(inputRef.current && (inputRef.current.disabled = true));
 	}
 
 	const clickHandler = () => {
 		if (editStatus === "edit" && !Error)
 		{
 			setEditStatus("save");
-			inputRef.current.disabled = false;
+			(inputRef.current && (inputRef.current.disabled = false));
 		}
 		else if (editStatus === "save" && !Error)
 		{
@@ -59,7 +58,7 @@ function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 			else
 			{
 				setEditStatus("edit");
-				inputRef.current.disabled = true;
+				(inputRef.current && (inputRef.current.disabled = true));
 			}
 		}
 	}
@@ -68,7 +67,7 @@ function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 		if (editStatus === "wait")
 			setEditStatus("edit");
 		
-		inputRef.current.value = newValue;
+		(inputRef.current && (inputRef.current.value = newValue ? newValue : ''));
 	}, [state.userData?.username ,state.userData?.email , state.userData?.tfa.content])
 
 	return (

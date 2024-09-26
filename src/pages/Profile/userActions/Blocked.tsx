@@ -1,17 +1,12 @@
-import useWebSocket from "react-use-websocket";
-import { WS_URL } from "../../../contexts/store";
-import { profileContext } from "../Index";
-import { useContext } from "react";
 import { ProfileRequest } from "../../../types/profile";
 import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
 import { useProfileContext } from "../../../contexts/profileStore";
 import unblock from "/unblock.svg"
 import { modifyObjectByName } from "../UserActions";
 
-const Blocked = ({username, origin}: {username: string, origin: string}) => {
+const Blocked = ({username, origin}: {username?: string, origin: string}) => {
 
 	const {sendJsonMessage} = useGlobalWebSocketContext();
-	// const userData = useContext(profileContext);
 	const { state, dispatchProfile } = useProfileContext();
 
 	const clickHandler = () => {

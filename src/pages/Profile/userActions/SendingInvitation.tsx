@@ -1,12 +1,10 @@
-import { useContext } from "react";
 import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
-import { profileContext } from "../Index";
 import { ProfileRequest } from "../../../types/profile";
 import { useProfileContext } from "../../../contexts/profileStore";
 import deny from "/deny.svg"
 import { modifyObjectByName } from "../UserActions";
 
-const SendingInvitation = ({username, origin}: {username: string, origin: string}) => {
+const SendingInvitation = ({username, origin}: {username?: string, origin: string}) => {
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	// const userData = useContext(profileContext);
 	const { state, dispatchProfile } = useProfileContext();

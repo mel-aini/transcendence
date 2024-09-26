@@ -1,10 +1,7 @@
-import { ComponentProps, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
-import { usePingPongContext } from "../../contexts/pingPongProvider";
+import { ComponentProps, Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
 import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
-import { useProfileContext } from "../../contexts/profileStore";
-import { ColorPicker,Saturation, Hue,  useColor } from "react-color-palette";
 import "react-color-palette/css";
 import { useGlobalContext } from "../../contexts/store";
 
@@ -17,9 +14,9 @@ function CustomizeTab() {
 	// const { state } = useProfileContext();
 	const { state } = useGlobalContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
-	const [ ballColor, setBallColor ] = useState<string>(state.userData?.game_settings.ball);
-	const [ paddleColor, setPaddleColor ] = useState<string>(state.userData?.game_settings.paddle);
-	const [ tableColor, setTableColor ] = useState<string>(state.userData?.game_settings.background);
+	const [ ballColor, setBallColor ] = useState<string | undefined>(state.userData?.game_settings.ball);
+	const [ paddleColor, setPaddleColor ] = useState<string | undefined>(state.userData?.game_settings.paddle);
+	const [ tableColor, setTableColor ] = useState<string | undefined>(state.userData?.game_settings.background);
 	const saveChanges = () => {
 		if ((ballColor == state.userData?.game_settings.ball)
 			&& (paddleColor == state.userData?.game_settings.paddle)
@@ -38,8 +35,6 @@ function CustomizeTab() {
 			}
 		);
 	}
-
-	// useEffect(() => {}, [state.userData?.game_settings.ball, state.userData?.game_settings.paddle, state.userData?.game_settings.background]);
 
 	return (
 		<div className="flex flex-col justify-between gap-5">
@@ -74,8 +69,8 @@ function DropMenu({ children, className, isOpen = false }: DropMenuProps) {
 }
 
 interface BallCustomizationProps { 
-	ballColor: string, 
-	setBallColor: Dispatch<SetStateAction<string>> 
+	ballColor?: string, 
+	setBallColor: Dispatch<SetStateAction<string | undefined>> 
 }
 
 function BallCustomization({ ballColor, setBallColor }: BallCustomizationProps) {
@@ -86,14 +81,7 @@ function BallCustomization({ ballColor, setBallColor }: BallCustomizationProps) 
 		<div className="flex items-center gap-5">
 			<span>ball:</span>
 			<button className="relative size-10 border border-border hover:border-white duration-300 rounded-md grid place-items-center">
-				<span onClick={() => setDropMenu(prev => !prev)} className="size-5 rounded-full" style={{backgroundColor: ballColor}}/>
-				{/* {
-					dropMenu &&
-					<div className="absolute top-full left-0 mt-3">
-						<ColorPicker hideAlpha hideInput={["rgb", "hsv"]} color={color} onChange={setColor} onChangeComplete={() => setBallColor(color.hex)} height={100} />
-					</div>
-				} */}
-
+				<span onClick={() => setDropMenu(prev => !prev)} className="size-5 rounded-full" style={{backgroundColor: (ballColor ? ballColor : "#FFFFFF")}}/>
 				<DropMenu isOpen={dropMenu} className="w-[200%] grid grid-cols-2">
 					{
 						ballColors.map((color, index) => {
@@ -113,8 +101,8 @@ function BallCustomization({ ballColor, setBallColor }: BallCustomizationProps) 
 }
 
 interface PaddleCustomizationProps { 
-	paddleColor: string, 
-	setPaddleColor: Dispatch<SetStateAction<string>> 
+	paddleColor?: string, 
+	setPaddleColor: Dispatch<SetStateAction<string | undefined>> 
 }
 
 function PaddleCustomization({ paddleColor, setPaddleColor }: PaddleCustomizationProps) {
@@ -124,7 +112,7 @@ function PaddleCustomization({ paddleColor, setPaddleColor }: PaddleCustomizatio
 		<div className="flex items-center gap-5">
 			<span>paddle:</span>
 			<button className="relative h-10 w-36 border border-border hover:border-white duration-300 rounded-md grid place-items-center px-3">
-				<span onClick={() => setDropMenu(prev => !prev)} className="w-full h-5 rounded-2xl" style={{backgroundColor: paddleColor}}/>
+				<span onClick={() => setDropMenu(prev => !prev)} className="w-full h-5 rounded-2xl" style={{backgroundColor: (paddleColor ? paddleColor : "#FFFFFF")}}/>
 				<DropMenu isOpen={dropMenu} className="w-full">
 					{
 						paddleColors.map((color, index) => {
@@ -144,14 +132,13 @@ function PaddleCustomization({ paddleColor, setPaddleColor }: PaddleCustomizatio
 }
 
 interface TableProps { 
-	tableColor: string, 
-	setTableColor: Dispatch<SetStateAction<string>> 
-	ballColor: string, 
-	paddleColor: string, 
+	tableColor?: string, 
+	setTableColor: Dispatch<SetStateAction<string | undefined>> 
+	ballColor?: string, 
+	paddleColor?: string, 
 }
 
 function Table({ tableColor, setTableColor, ballColor, paddleColor }: TableProps) {
-	// const { state } = usePingPongContext();
 
 	return (
 		<>
@@ -164,16 +151,16 @@ function Table({ tableColor, setTableColor, ballColor, paddleColor }: TableProps
 				style={{backgroundColor: tableColor + "1a"}} 
 				className="relative flex-1 aspect-video border border-border rounded-md max-w-[1080px]">
 					<span
-						style={{backgroundColor: paddleColor}} 
+						style={{backgroundColor: (paddleColor ? paddleColor : "#FFFFFF")}} 
 						className="absolute top-[10%] left-3 w-[2.5%] max-w-4 aspect-[0.2/1]" />
 					<svg className="absolute w-[37.38%] h-full left-1/2 -translate-x-1/2">
 					<line x1={'100%'} x2={'0%'} y1={'0%'} y2={'100%'} className="stroke-1 stroke-border" />
 					</svg>
 					<span
-						style={{backgroundColor: paddleColor}} 
+						style={{backgroundColor: (paddleColor ? paddleColor : "#FFFFFF")}} 
 						className="absolute top-[60%] right-3 w-[2.5%] max-w-4 aspect-[0.2/1]" />
 					<span
-						style={{backgroundColor: ballColor}}  
+						style={{backgroundColor: (ballColor ? ballColor : "#FFFFFF")}}  
 						className="absolute top-[40%] right-[30%] w-[3%] max-w-6 aspect-square rounded-full"></span>
 			</div>
 			<button 

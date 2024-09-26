@@ -5,7 +5,7 @@ import { GiCrownOfThorns } from "react-icons/gi";
 import { GiCrenelCrown } from "react-icons/gi";
 
 interface playerProp {
-	player: Player | string,
+	player: Player | "player",
 	isRightSide?: boolean,
 	isWinner?: boolean,
 }
@@ -17,7 +17,7 @@ const PlayerBar = forwardRef((props: playerProp, ref) => {
 		<div ref={ref} className={"h-[61px] w-[163px] " + (props.isRightSide ? "rotate-180" : "")}>
 			<div className="h-full w-full bg-secondary rounded-[8px] border flex gap-3 items-center px-4 border-border">
 				{
-					(props.player != "player") ?
+					(props.player !== "player") ?
 					<>
 						<div className="relative shrink-0">
 							{ props.isWinner && <GiCrenelCrown className="absolute w-[41px] h-[41px] -translate-x-1/2 -translate-y-1/2 top-[-10%] left-1/2" fill="#14ffec"/> }
