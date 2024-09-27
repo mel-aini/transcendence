@@ -15,77 +15,77 @@ import { useTournamentContext } from "../../../contexts/TournamentProvider";
 
 export const customizeContext = createContext<any>({});
 
-interface PlayerBarProps {
-	username?: string,
-	avatar?: string,
-	level?: number,
-	unknown?: boolean,
-	state: Levels
-}
+// interface PlayerBarProps {
+// 	username?: string,
+// 	avatar?: string,
+// 	level?: number,
+// 	unknown?: boolean,
+// 	state: Levels
+// }
 
-function PlayerBar({username, avatar, level, unknown, state}: PlayerBarProps) {
-	const styleClass = !unknown ? ' ' : ' animate-pulse flex justify-center';
-	let readyClass = state > Levels.FindingOpponent ? 'opacity-100' : 'opacity-0';
-	readyClass += state == Levels.WaitingForOpponent ? ' fill-primary' : '';
-	return (
-		<div className="grow">
-			<div className={"flex justify-center sm:justify-between items-center bg-secondary border border-border rounded-md px-3 sm:px-8 h-[80px] select-none" + styleClass}>
-				{
-					unknown ?
-					<span className="w-full text-center">?</span>
-					:
-					<>
-						<div className="flex items-center gap-3 overflow-hidden">
-							<User border className="border-primary" url={avatar} />
-							<div className="truncate">{username}</div>
-						</div>
-						<span className="hidden sm:block">Lvl {level}</span>
-					</>
-				}
-			</div>
-		</div>
-	 );
-}
+// function PlayerBar({username, avatar, level, unknown, state}: PlayerBarProps) {
+// 	const styleClass = !unknown ? ' ' : ' animate-pulse flex justify-center';
+// 	let readyClass = state > Levels.FindingOpponent ? 'opacity-100' : 'opacity-0';
+// 	readyClass += state == Levels.WaitingForOpponent ? ' fill-primary' : '';
+// 	return (
+// 		<div className="grow">
+// 			<div className={"flex justify-center sm:justify-between items-center bg-secondary border border-border rounded-md px-3 sm:px-8 h-[80px] select-none" + styleClass}>
+// 				{
+// 					unknown ?
+// 					<span className="w-full text-center">?</span>
+// 					:
+// 					<>
+// 						<div className="flex items-center gap-3 overflow-hidden">
+// 							<User border className="border-primary" url={avatar} />
+// 							<div className="truncate">{username}</div>
+// 						</div>
+// 						<span className="hidden sm:block">Lvl {level}</span>
+// 					</>
+// 				}
+// 			</div>
+// 		</div>
+// 	 );
+// }
 
-const TitleVariants = {
-	visible: { y: 0, opacity: 1},
-	hidden: {y: -10, opacity: 0}
-  }
+// const TitleVariants = {
+// 	visible: { y: 0, opacity: 1},
+// 	hidden: {y: -10, opacity: 0}
+//   }
 
-function Title({level}: {level: Levels}) {
+// function Title({level}: {level: Levels}) {
 
-	return ( 
-		<div
-			>
-			{level == Levels.FindingOpponent && <motion.h1 
-				initial="hidden"
-				animate="visible"
-				variants={TitleVariants}
-				transition={{duration: 0.3}}
-				className="font-light animate-pulse">Finding opponent...</motion.h1>}
-			{level == Levels.OpponentFound && <motion.h1
-				initial="hidden"
-				animate="visible"
-				variants={TitleVariants}
-				transition={{duration: 0.3}}
-				className="font-light">your game is scheduled, please confirm to start</motion.h1>}
-			{level == Levels.OpponentIsReady && <motion.h1
-				initial="hidden"
-				animate="visible"
-				variants={TitleVariants}
-				transition={{duration: 0.3}}
-				className="font-light">your opponent is <span className="text-primary">ready</span>, confirm to start</motion.h1>}
-			{level == Levels.WaitingForOpponent && <motion.h1 
-				initial="hidden"
-				animate="visible"
-				variants={TitleVariants}
-				transition={{duration: 0.3}}
-				className="font-light animate-pulse">waiting for your opponent to confirm...</motion.h1>}
-		</div>
-	);
-}
+// 	return ( 
+// 		<div
+// 			>
+// 			{level == Levels.FindingOpponent && <motion.h1 
+// 				initial="hidden"
+// 				animate="visible"
+// 				variants={TitleVariants}
+// 				transition={{duration: 0.3}}
+// 				className="font-light animate-pulse">Finding opponent...</motion.h1>}
+// 			{level == Levels.OpponentFound && <motion.h1
+// 				initial="hidden"
+// 				animate="visible"
+// 				variants={TitleVariants}
+// 				transition={{duration: 0.3}}
+// 				className="font-light">your game is scheduled, please confirm to start</motion.h1>}
+// 			{level == Levels.OpponentIsReady && <motion.h1
+// 				initial="hidden"
+// 				animate="visible"
+// 				variants={TitleVariants}
+// 				transition={{duration: 0.3}}
+// 				className="font-light">your opponent is <span className="text-primary">ready</span>, confirm to start</motion.h1>}
+// 			{level == Levels.WaitingForOpponent && <motion.h1 
+// 				initial="hidden"
+// 				animate="visible"
+// 				variants={TitleVariants}
+// 				transition={{duration: 0.3}}
+// 				className="font-light animate-pulse">waiting for your opponent to confirm...</motion.h1>}
+// 		</div>
+// 	);
+// }
 
-function MatchMaking() {
+function MatchMaking({isTournament, isAI}: {isTournament: boolean, isAI: boolean}) {
 	const {state, dispatch} = usePingPongContext();
 	const {state: tournState} = useTournamentContext();
 	const {state: profileData} = useGlobalContext();
@@ -102,7 +102,7 @@ function MatchMaking() {
 		// 	dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
 		// 	navigate("/Tournament");
 		// }
-		if (state.isTournament)
+		if (isTournament)
 		{
 			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
 			navigate("/tournament");
@@ -120,10 +120,14 @@ function MatchMaking() {
 	}
 
 	useEffect(() => {
-		// if (state.isAI)
+		// if (isAI)
 		// 	dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
-		if (state.isTournament && state.level != Levels.OpponentFound)
+		console.log(isTournament);
+		
+		if (isTournament && state.level != Levels.OpponentFound)
 			navigate("/tournament");
+		else if (isTournament && state.level == Levels.FindingOpponent)
+			navigate("/dashboard", { replace: true });
 	}, []);
 
 	useEffect(() => {
@@ -150,15 +154,19 @@ function MatchMaking() {
 			<LayoutHeader>Matchmaking</LayoutHeader>
 			<div className="space-y-5">
 			<div className="w-full flex justify-end mb-5">
-				<span onClick={cancelAction} className="cursor-pointer hover:underline duration-300 select-none">cancel</span>
-				{ state.level >= Levels.OpponentFound && <Loader /> }
+				{
+					state.level >= Levels.OpponentFound ?
+					<Loader />
+					:
+					<span onClick={cancelAction} className="cursor-pointer hover:underline duration-300 select-none">cancel</span>
+				}
 			</div>
 			<div>
 				<div className="flex justify-between items-center gap-5 select-none h-44 border border-border rounded-lg px-10">
 					<div className="flex items-center gap-5 flex-1 justify-start">
 						<User className="size-28 border-primary" border url={profileData.userData?.profile_image} />
 						<div>
-							<h3>{state.isTournament ? tournState.alias : profileData.userData?.username}</h3>
+							<h3>{isTournament ? tournState.alias : profileData.userData?.username}</h3>
 							<h4>{'Lvl ' + profileData.userData?.level.current}</h4>
 						</div>
 					</div>
@@ -181,10 +189,10 @@ function MatchMaking() {
 							className="flex-1 flex justify-end items-center gap-5"
 							>
 							<div>
-								<h3>{ state.isAI ? 'AI' : (state.isTournament ? state.alias : state.opponent?.username) }</h3>
-								{state.isAI && <h4>{ 'Lvl ' + state.opponent?.level.current }</h4>}
+								<h3>{ isAI ? 'AI' : (isTournament ? state.alias : state.opponent?.username) }</h3>
+								{!isAI && <h4>{ 'Lvl ' + state.opponent?.level.current }</h4>}
 							</div>
-							<User className="size-28 border-primary" border url={state.isAI ? '' : state.opponent?.profile_image} />
+							<User className="size-28 border-primary" border url={isAI ? '' : state.opponent?.profile_image} />
 						</motion.div>
 					}
 				</div>

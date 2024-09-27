@@ -9,7 +9,7 @@ import { useGlobalContext } from "../../../../contexts/store";
 import LayoutHeader from "../../../../layout/LayoutHeader";
 import Title from "../../../../components/Title";
 
-function Result() {
+function Result({isTournament, isAI}: {isTournament: boolean, isAI: boolean}) {
 	const { state, dispatch } = usePingPongContext();
 	const { state: globalState, dispatch: dispatchGlobal } = useGlobalContext();
 	const navigate = useNavigate();
@@ -18,7 +18,7 @@ function Result() {
 
 	const clickHandler = () => {
 		// if (window.location.pathname == "/ping-pong/play")
-		if (state.isTournament)
+		if (isTournament)
 		{
 			if (state.result.status != "lose" && state.result.status != "eliminated")
 				sendJsonMessage({ type: 'qualifyboard' });
@@ -101,7 +101,7 @@ function Result() {
 				<span
 					className="relative top-0 text-center text-[20px]">Final score:</span>
 				{
-					!state.isTournament &&
+					!isTournament &&
 					<span
 					className="text-[#FFD214] text-center text-[20px]">+{xp} XP</span>
 				}
@@ -112,7 +112,7 @@ function Result() {
 				animate={{opacity: 1, top: '0rem'}}
 				transition={{duration: 0.3, delay: 1.5}}
 				className="border border-border shrink-0 flex w-full justify-between items-center gap-4 p-5 rounded-md">
-				<UserBox username={state.isTournament ? tournState.alias : globalState.userData?.username} level={globalState.userData?.level.current} userImage={globalState.userData?.profile_image} />
+				<UserBox username={isTournament ? tournState.alias : globalState.userData?.username} level={globalState.userData?.level.current} userImage={globalState.userData?.profile_image} />
 				<div className="flex gap-3 shrink-0">
 					<div className={"size-10 sm:size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary sm:text-[32px] " + ((state.result.status == "win") ? "text-primary" : "")}>
 						{state.score.my}
@@ -121,15 +121,14 @@ function Result() {
 						{state.score.side}
 					</div>
 				</div>
-				<UserBox direction="right" username={state.isAI ? 'AI' : (state.isTournament ? state.alias : state.opponent?.username)} level={state.isAI ? undefined : state.opponent?.level.current} userImage={state.isAI ? '' : state.opponent?.profile_image} />
+				<UserBox direction="right" username={isAI ? 'AI' : (isTournament ? state.alias : state.opponent?.username)} level={isAI ? undefined : state.opponent?.level.current} userImage={isAI ? '' : state.opponent?.profile_image} />
 			</motion.div>
-			{/* Button */}
 			<motion.div
 			initial={{opacity: 0, top: '-5rem'}}
 			animate={{opacity: 1, top: '0rem'}}
 			transition={{duration: 0.3, delay: 2}}
 			onClick={clickHandler}
-			className="relative top-0 max-w-[344px] h-full w-full">
+			className="relative top-0 max-w-[344px] h-full w-4/5 sm:w-full">
 				<Button className="h-full w-full">continue</Button>
 			</motion.div>
 		</motion.div>

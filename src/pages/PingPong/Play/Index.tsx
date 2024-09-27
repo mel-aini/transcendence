@@ -4,7 +4,7 @@ import Game from "./Game/Game";
 import Result from "./Result/Result";
 import { useNavigate } from "react-router-dom";
 
-function Index() {
+function Index({isTournament, isAI}: {isTournament: boolean, isAI: boolean}) {
 	const { state } = usePingPongContext();
 	const navigate = useNavigate();
 
@@ -15,13 +15,13 @@ function Index() {
 
 	return (
 			<div className="flex justify-center items-center duration-300">
-				{
-					state.result.isEndGame
-					?
-					<Result />
-					:
-					<Game />
-				}
+			{
+				state.result.isEndGame
+				?
+				<Result isTournament={isTournament} isAI={isAI} />
+				:
+				<Game isTournament={isTournament} isAI={isAI} />
+			}
 			</div>
 	);
 }

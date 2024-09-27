@@ -1,17 +1,22 @@
+import { twMerge } from "tailwind-merge";
+import User from "../../../../components/User";
+
 interface Props {
 	username?: string,
 	level?: number,
 	userImage?: string
+	className?:string
+	direction?: "left" | "right"
 }
 
-function UserBox({username, level, userImage}: Props) {
+function UserBox({username, level, userImage, className, direction = 'left'}: Props) {
 	return (
-		<div className="max-w-[286px] w-full h-[86px] flex md:justify-between justify-center items-center lg:px-8 px-3 rounded-[5px] border border-border bg-secondary">
-			<div className="flex gap-3 items-center">
-				<img src={userImage} alt="img" className="max-w-[41px] w-full h-[41px] rounded-full border border-primary overflow-hidden" />
+		<div className={twMerge('flex items-center gap-5', className)}>
+			<User url={userImage} border className={"size-10 sm:size-20 " + (direction == 'right' ? 'order-2' : 'order-1')} />
+			<div className={"flex flex-col gap-2 " + (direction == 'right' ? 'order-1' : 'order-2')}>
 				<span className="text-base hidden md:block">{username}</span>
+				{level !== undefined && <span className="hidden md:block font-light">lvl {level}</span>}
 			</div>
-			{level && <span className="hidden md:block">lvl {level}</span>}
 		</div>
 	);
 }

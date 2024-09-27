@@ -52,7 +52,7 @@ const timeConverter = (time: number) => {
 	return { finalMinutes, finalSeconds }
 }
 
-const Header = () => {
+const Header = ({isTournament, isAI}: {isTournament: boolean, isAI: boolean}) => {
 	const {state, dispatch} = usePingPongContext();
 	const {state: globalState} = useGlobalContext();
 	const { finalMinutes, finalSeconds } = timeConverter(state.time);
@@ -74,16 +74,16 @@ const Header = () => {
 			<div className="flex col-start-1 col-end-2 ">
 				<div className={"flex gap-1 " + ((state.directions.my == "right") ? "flex-row-reverse" : "flex-row")}>
 					<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-						<div className="absolute w-[2px] top-full -translate-y-full bg-primary" style={{height: `${state.score.my * (state.isAI ? 100 / globalState.AIdata.goals : 10)}%`}}/>
+						<div className="absolute w-[2px] top-full -translate-y-full bg-primary" style={{height: `${state.score.my * (isAI ? 100 / globalState.AIdata.goals : 10)}%`}}/>
 						<span className="absolute inline-flex items-center justify-center text-primary w-full h-full">{state.score.my}</span>
 					</div>
 					<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-						<div className="absolute w-[2px] top-full -translate-y-full bg-white" style={{height: `${state.score.side * (state.isAI ? 100 / globalState.AIdata.goals : 10)}%`}}/>
+						<div className="absolute w-[2px] top-full -translate-y-full bg-white" style={{height: `${state.score.side * (isAI ? 100 / globalState.AIdata.goals : 10)}%`}}/>
 						<span className="absolute inline-flex items-center justify-center w-full h-full">{state.score.side}</span>
 					</div>
 					<div className="bg-secondary lg:w-full lg:max-w-[133px] h-[40px] flex md:justify-start justify-center items-center px-2 shrink-0 sm:shrink">
-						<img src={state.isAI ? '' : state.opponent?.profile_image} alt="" className="w-[26px] h-[26px] border rounded-full overflow-hidden shrink-0"/>
-						<span className="shrink truncate text-xs hidden sm:block pl-3">{state.isAI ? 'AI' : (state.isTournament ? state.alias : state.opponent?.username)}</span>
+						<img src={isAI ? '' : state.opponent?.profile_image} alt="" className="w-[26px] h-[26px] border rounded-full overflow-hidden shrink-0"/>
+						<span className="shrink truncate text-xs hidden sm:block pl-3">{isAI ? 'AI' : (isTournament ? state.alias : state.opponent?.username)}</span>
 					</div>
 				</div>
 			</div>
@@ -93,9 +93,9 @@ const Header = () => {
 					<img src={pause} alt="pause" />
 				</div> */}
 				{
-					!state.isTournament &&
+					!isTournament &&
 					<div className="bg-secondary px-1 h-[40px] w-[61px] flex justify-center items-center">
-						<span className="w-[44px]">
+						<span className="w-[44px] text-center">
 							{finalMinutes}
 							:
 							{finalSeconds}

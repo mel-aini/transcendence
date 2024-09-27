@@ -49,8 +49,6 @@ export interface GameData {
 		table: string,
 	},
 	timer: number,
-	isTournament: boolean,
-	isAI: boolean,
 	time: number,
 	alias?: string
 }
@@ -91,8 +89,6 @@ const initialState: GameData = {
 		table: "rgba(255, 255, 255, 0.1)",
 	},
 	timer: 9,
-	isTournament: false,
-	isAI: false,
 	time: 0,
 	alias: undefined
 };
@@ -173,16 +169,6 @@ const reducer = (state: GameData, action: any) => {
 					...state, 
 					timer: action.timer
 				}
-			case 'IS_Tournament':
-				return { 
-					...state, 
-					isTournament: action.isTournament
-				}
-			case 'IS_AI':
-				return { 
-					...state, 
-					isAI: action.isAI
-				}
 			case 'TIME':
 				return { 
 					...state, 
@@ -204,7 +190,7 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
-	const { lastJsonMessage: tournMessage, sendJsonMessage: sendTournMessage, state: tournState } = useTournamentContext();
+	const { lastJsonMessage: tournMessage, sendJsonMessage: sendTournMessage } = useTournamentContext();
 	const navigate = useNavigate();
 
 	const { state: token }  = useAuthContext();
@@ -226,156 +212,90 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 		return JSON.stringify(obj) === '{}';
 	};
 
-	// useEffect(() => {
-	// 	if (isAI)
-	// 		dispatch({type: "IS_AI", isAI: isAI});
-	// }, []);
+	const messageHandler = (message: any) => {
+		if (message.type != "ball" && message.type != "paddle")
+			console.log(message);
+		if (message.type == "opponents")
+		{
+			if (!isAI)
+			{
+				if (message.user1.username == username)
+				{
+					dispatch({type: "OPPONENT", opponent: message.user2});
+					isTournament && dispatch({type: "ALIAS", alias: tournMessage.user2.alias});
+				}
+				else
+				{
+					dispatch({type: "OPPONENT", opponent: message.user1});
+					isTournament && dispatch({type: "ALIAS", alias: tournMessage.user1.alias});
+				}
+			}
+
+			dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
+			isTournament && sendTournMessage( { type: 'handshake' } );
+		}
+		else if (isTournament && message.type == "ready")
+		{
+			navigate('match-making');
+		}
+		else if (message.type == "init_paddle")
+		{
+			(message.my == 1) ?
+			dispatch({type: "DIRECTIONS", directions: {...state.directions, my: "left", side: "right"}})
+			:
+			dispatch({type: "DIRECTIONS", directions: {...state.directions, my: "right", side: "left"}});
+
+			dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, x: message.my}});
+			dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, x: message.side}});
+
+		}
+		else if (message.type == "ball")
+		{
+			const ballData: Coordinates = {
+				x: message.x,
+				y: message.y
+			}
+			dispatch({type: "ball_Data", ballData: ballData});
+			!isTournament && dispatch({type: "TIME", time: message.time});
+		}
+		else if (message.type == "paddle")
+		{
+			dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, y: message.pos}});
+		}
+		else if (message.type == "score")
+		{
+			// console.log(message);
+			(state.directions.my == "right") ?
+			dispatch({type: "SCORE", score: {...state.score, my: message.right, side: message.left}})
+			:
+			dispatch({type: "SCORE", score: {...state.score, my: message.left, side: message.right}});
+		}
+		else if (message.type == "end")
+		{
+			// console.log(message);
+			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: (isTournament ? 0 : message.xp), isEndGame: true}});
+		}
+		else if (message.type == "disconnect")
+		{
+			// console.log(message);
+			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: (isTournament ? 0 : message.xp), isEndGame: true}});
+			message.status == "win"
+			?
+			dispatch({type: "SCORE", score: {...state.score, my: 3, side: 0}})
+			:
+			dispatch({type: "SCORE", score: {...state.score, my: 0, side: 3}});
+		}
+	}
 
 	useEffect(() => {
-		// console.log(lastJsonMessage);
-
 		if (!isEmptyObject(lastJsonMessage))
-		{
-			if (lastJsonMessage.type != "ball" && lastJsonMessage.type != "paddle")
-				console.log(lastJsonMessage);
-			if (lastJsonMessage.type == "opponents")
-			{
-				if (!isAI)
-				{
-					(lastJsonMessage.user1.username == username) ? dispatch({type: "OPPONENT", opponent: lastJsonMessage.user2})
-					:
-					dispatch({type: "OPPONENT", opponent: lastJsonMessage.user1});
-				}
-				dispatch({type: 'IS_Tournament', isTournament: isTournament});
-				dispatch({type: "IS_AI", isAI: isAI});
-				dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
-			}
-			else if (lastJsonMessage.type == "init_paddle")
-			{
-				(lastJsonMessage.my == 1) ?
-				dispatch({type: "DIRECTIONS", directions: {...state.directions, my: "left", side: "right"}})
-				:
-				dispatch({type: "DIRECTIONS", directions: {...state.directions, my: "right", side: "left"}});
-
-				dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, x: lastJsonMessage.my}});
-				dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, x: lastJsonMessage.side}});
-
-			}
-			else if (lastJsonMessage.type == "ball")
-			{
-				const ballData: Coordinates = {
-					x: lastJsonMessage.x,
-					y: lastJsonMessage.y
-				}
-				dispatch({type: "ball_Data", ballData: ballData});
-				dispatch({type: "TIME", time: lastJsonMessage.time});
-			}
-			else if (lastJsonMessage.type == "paddle")
-			{
-				dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, y: lastJsonMessage.pos}});
-			}
-			else if (lastJsonMessage.type == "score")
-			{
-				// console.log(lastJsonMessage);
-				(state.directions.my == "right") ?
-				dispatch({type: "SCORE", score: {...state.score, my: lastJsonMessage.right, side: lastJsonMessage.left}})
-				:
-				dispatch({type: "SCORE", score: {...state.score, my: lastJsonMessage.left, side: lastJsonMessage.right}});
-			}
-			else if (lastJsonMessage.type == "end")
-			{
-				// console.log(lastJsonMessage);
-				dispatch({type: "RESULT", result: {...state.result, status: lastJsonMessage.status, xp: lastJsonMessage.xp, isEndGame: true}});
-			}
-			else if (lastJsonMessage.type == "disconnect")
-			{
-				// console.log(lastJsonMessage);
-				dispatch({type: "RESULT", result: {...state.result, status: lastJsonMessage.status, xp: lastJsonMessage.xp, isEndGame: true}});
-				lastJsonMessage.status == "win"
-				?
-				dispatch({type: "SCORE", score: {...state.score, my: 3, side: 0}})
-				:
-				dispatch({type: "SCORE", score: {...state.score, my: 0, side: 3}});
-			}
-		}
+			messageHandler(lastJsonMessage);
 		
 	}, [lastJsonMessage]);
 
 	useEffect(() => {
-
 		if (!isEmptyObject(tournMessage))
-		{
-			if (tournMessage.type != "ball")
-				console.log("tournMessage", tournMessage);
-
-			if (tournMessage.type == "opponents")
-			{
-				dispatch({type: 'IS_Tournament', isTournament: isTournament});
-				if (tournMessage.user1.alias == tournState.alias)
-				{
-					dispatch({type: "OPPONENT", opponent: tournMessage.user2});
-					dispatch({type: "ALIAS", alias: tournMessage.user2.alias});
-				}
-				else
-				{
-					dispatch({type: "OPPONENT", opponent: tournMessage.user1});
-					dispatch({type: "ALIAS", alias: tournMessage.user1.alias});
-				}
-				dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
-				sendTournMessage( { type: 'handshake' } );
-			}
-			else if (tournMessage.type == "ready")
-			{
-				navigate('match-making');
-			}
-			else if (tournMessage.type == "init_paddle")
-			{
-				(tournMessage.my == 1) ?
-				dispatch({type: "DIRECTIONS", directions: {...state.directions, my: "left", side: "right"}})
-				:
-				dispatch({type: "DIRECTIONS", directions: {...state.directions, my: "right", side: "left"}});
-
-				dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, x: tournMessage.my}});
-				dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, x: tournMessage.side}});
-
-			}
-			else if (tournMessage.type == "ball")
-			{
-				const ballData: Coordinates = {
-					x: tournMessage.x,
-					y: tournMessage.y
-				}
-				dispatch({type: "ball_Data", ballData: ballData});
-				dispatch({type: "TIME", time: tournMessage.time});
-			}
-			else if (tournMessage.type == "paddle")
-			{
-				dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, y: tournMessage.pos}});
-			}
-			else if (tournMessage.type == "score")
-			{
-				// console.log(tournMessage);
-				(state.directions.my == "right") ?
-				dispatch({type: "SCORE", score: {...state.score, my: tournMessage.right, side: tournMessage.left}})
-				:
-				dispatch({type: "SCORE", score: {...state.score, my: tournMessage.left, side: tournMessage.right}});
-			}
-			else if (tournMessage.type == "end")
-			{
-				// console.log(tournMessage);
-				dispatch({type: "RESULT", result: {...state.result, status: tournMessage.status, isEndGame: true}})
-			}
-			else if (tournMessage.type == "disconnect")
-			{
-				// console.log(tournMessage);
-				dispatch({type: "RESULT", result: {...state.result, status: tournMessage.status, isEndGame: true}});
-				tournMessage.status == "win"
-				?
-				dispatch({type: "SCORE", score: {...state.score, my: 3, side: 0}})
-				:
-				dispatch({type: "SCORE", score: {...state.score, my: 0, side: 3}});
-			}
-		}
+			messageHandler(tournMessage);
 		
 	}, [tournMessage]);
 	

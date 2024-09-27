@@ -1,6 +1,7 @@
 import { Dispatch, forwardRef, SetStateAction, useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import Table from "./Table";
+import LayoutHeader from "../../../../layout/LayoutHeader";
 
 interface Props {
 	rightPaddle: any,
@@ -34,9 +35,12 @@ const Game = forwardRef((props: Props, ref: any) => {
 	}, [])
 
 	return (
-		<div ref={refParent} className="flex flex-col h-full max-w-[1200px] w-4/5 justify-between items-center gap-[26px]">
-			<Header counter={props.counter} setCounter={props.setCounter} status={props.status} setStatus={props.setStatus} leftScore={props.leftScore} rightScore={props.rightScore} minutes={props.minutes} seconds={props.seconds} />
-			<Table ref={ref} status={props.status} counter={props.counter} setCounter={props.setCounter} gameLogic={props.gameLogic} width={width} leftPaddle={props.leftPaddle} rightPaddle={props.rightPaddle} />
+		<div className="flex flex-col items-center w-full">
+			<LayoutHeader>Playing...</LayoutHeader>
+			<div ref={refParent} className="flex flex-col h-full max-w-[1200px] w-full justify-between items-center gap-[26px]">
+				<Header counter={props.counter} setCounter={props.setCounter} status={props.status} setStatus={props.setStatus} leftScore={props.leftScore} rightScore={props.rightScore} minutes={props.minutes} seconds={props.seconds} />
+				<Table ref={ref} status={props.status} counter={props.counter} setCounter={props.setCounter} gameLogic={props.gameLogic} width={width} leftPaddle={props.leftPaddle} rightPaddle={props.rightPaddle} />
+			</div>
 		</div>
 	);
 })

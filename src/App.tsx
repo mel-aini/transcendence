@@ -55,13 +55,13 @@ function App() {
                         <Route path='/ping-pong'>
                           <Route index element={<PingPong />} />
                           <Route element={<GameLayout isTournament={false} isAI={false}/>}>
-                            <Route path='play' element={<Play />} />
-                            <Route path='match-making' element={<MatchMaking />} />
+                            <Route path='play' element={<Play isTournament={false} isAI={false} />} />
+                            <Route path='match-making' element={<MatchMaking isTournament={false} isAI={false} />} />
                           </Route>
                           <Route path='vs-friend' element={<VsFriend />} />
                           <Route path='vs-ai' element={<GameLayout isTournament={false} isAI={true}/>}>
-                              <Route path='match-making' element={<MatchMaking />} />
-                              <Route path='play' element={<Play />} />
+                              <Route path='match-making' element={<MatchMaking isTournament={false} isAI={true} />} />
+                              <Route path='play' element={<Play isTournament={false} isAI={true} />} />
                           </Route>
                           <Route path='1vs1' element={<LocalGame />} />
                           <Route path='*' element={<NotFound />} />
@@ -69,8 +69,8 @@ function App() {
                         <Route path='/tournament' element={<TournamentLayout />} >
                           <Route index element={<Tournament />} />
                           <Route element={<GameLayout isTournament={true} isAI={false}/>}>
-                            <Route path='play' element={<Play />} />
-                            <Route path='match-making' element={<MatchMaking />} />
+                            <Route path='play' element={<Play isTournament={true} isAI={false} />} />
+                            <Route path='match-making' element={<MatchMaking isTournament={true} isAI={false} />} />
                           </Route>
                           <Route path='*' element={<NotFound />} />
                         </Route>

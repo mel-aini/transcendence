@@ -8,7 +8,7 @@ import { useGlobalContext } from "../../../../contexts/store";
 
 // width = 1.6 * height
 
-const Table = ({width}: {width: number}) => {
+const Table = ({width, isTournament}: {width: number, isTournament: boolean}) => {
 	const myPaddle = useRef<HTMLDivElement>(null);
 	const sidePaddle = useRef<HTMLDivElement>(null);
 	const table = useRef<HTMLDivElement>(null);
@@ -23,7 +23,7 @@ const Table = ({width}: {width: number}) => {
 		newPos = (newPos < 10) ? 10 : newPos;
 		newPos = (newPos > 90) ? 90 : newPos;
 		(myPaddle.current) && (myPaddle.current.style.top = `${newPos}%`);
-		state.isTournament ?
+		isTournament ?
 		sendInTournament({
 			type: "update",
 			y: newPos,
@@ -46,7 +46,7 @@ const Table = ({width}: {width: number}) => {
 	}
 
 	return (
-		<div ref={table} className="touch-none relative w-full max-h-[750px]" style={{height: `${width / 1.6}px`}}>
+		<div ref={table} className="touch-none relative w-full max-h-[750px] select-none" style={{height: `${width / 1.6}px`}}>
 			<div className="absolute first-table-half w-[68.69%] h-full border rounded-l-[10px] border-border" style={{ backgroundColor: profileState.userData?.game_settings.background + "1a" }} />
 			<div className="absolute second-table-half w-[68.69%] h-full border rounded-l-[10px] rotate-180 left-full -translate-x-full border-border" style={{ backgroundColor: profileState.userData?.game_settings.background + "1a" }} />
 

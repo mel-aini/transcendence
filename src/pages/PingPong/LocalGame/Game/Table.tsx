@@ -54,9 +54,9 @@ const Table = forwardRef((props: Props, ref: any) => {
 			<div className="absolute first-table-half w-[68.69%] h-full border rounded-l-[10px] border-border bg-secondary" />
 			<div className="absolute second-table-half w-[68.69%] h-full border rounded-l-[10px] rotate-180 left-full -translate-x-full border-border bg-secondary" />
 
-			<div ref={props.leftPaddle} className="h-1/5 absolute -translate-x-1/2 -translate-y-1/2 bg-white top-1/2 left-[2%]" style={{width: `${props.width * 2 / 100}px`}}/>
+			<div ref={props.leftPaddle} className="h-1/5 absolute -translate-x-1/2 -translate-y-1/2 bg-white top-1/2 left-[2%] rounded-full" style={{width: `${props.width * 2 / 100}px`}}/>
 
-			<div ref={props.rightPaddle} className="h-1/5 absolute -translate-x-1/2 -translate-y-1/2 bg-white top-1/2 left-[98%]" style={{width: `${props.width * 2 / 100}px`}}/>
+			<div ref={props.rightPaddle} className="h-1/5 absolute -translate-x-1/2 -translate-y-1/2 bg-white top-1/2 left-[98%] rounded-full" style={{width: `${props.width * 2 / 100}px`}}/>
 
 			<div ref={ref} className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white top-1/2 left-1/2" style={{width: `${props.width * 3 / 100}px`, height: `${props.width * 3 / 100}px`}} />
 

@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../../../components/Button";
 import UserBox from "./UserBox";
 import { motion } from "framer-motion";
+import LayoutHeader from "../../../../layout/LayoutHeader";
+import Title from "../../../../components/Title";
 
 const Result = ({rightScore, leftScore}: {rightScore: number, leftScore: number}) => {
 	const navigate = useNavigate();
@@ -11,40 +13,46 @@ const Result = ({rightScore, leftScore}: {rightScore: number, leftScore: number}
 	}
 
 	return (
-		<motion.div className="w-full flex flex-col justify-between items-center"
-		initial="hidden"
-		animate="visible"
-		>
-			<motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}
-				className="relative top-0 text-third text-center text-4xl pb-11 italic font-montserrat">End Game</motion.h1>
-			<motion.span
-			initial={{opacity: 0, top: '-5rem'}}
-			animate={{opacity: 1, top: '0rem'}}
-			transition={{duration: 0.3, delay: 1}}
-			className="relative top-0 text-center text-2xl pb-[53px]">Final score:</motion.span>
-			<motion.div
-			initial={{opacity: 0, top: '-5rem'}}
-			animate={{opacity: 1, top: '0rem'}}
-			transition={{duration: 0.3, delay: 1.5}}
-			className="relative top-0 flex w-full justify-center items-center gap-4 pb-[53px]">
-				<UserBox username={'player 1'} userImage={''} />
-				<div className={"max-w-[86px] w-full h-[86px] flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px]"}>
-					{rightScore}
-				</div>
-				<div className={"max-w-[86px] w-full h-[86px] flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px]"}>
-					{leftScore}
-				</div>
-				<UserBox username={'player 2'} userImage={''} />
+		<div className="w-full">
+			<LayoutHeader>Game Over</LayoutHeader>
+			<motion.div className="w-full flex flex-col justify-between items-center space-y-5"
+			initial="hidden"
+			animate="visible"
+			>
+				<motion.h1 initial={{opacity: 0, top: '-5rem'}} animate={{opacity: 1, top: '0rem'}} transition={{duration: 0.3}}>
+					<Title firstCharClassName="text-2xl sm:text-4xl text-[#14FF67]" restWordClassName="text-lg sm:text-3xl text-[#14FF67]">End Game</Title>
+				</motion.h1>
+				<motion.span
+				initial={{opacity: 0, top: '-5rem'}}
+				animate={{opacity: 1, top: '0rem'}}
+				transition={{duration: 0.3, delay: 1}}
+				className="relative top-0 text-center text-[20px]">Final score:</motion.span>
+				<motion.div
+				initial={{opacity: 0, top: '-5rem'}}
+				animate={{opacity: 1, top: '0rem'}}
+				transition={{duration: 0.3, delay: 1.5}}
+				className="border border-border shrink-0 flex w-full justify-between items-center gap-4 p-5 rounded-md">
+					<UserBox username={'player 1'} userImage={''} />
+					<div className="flex gap-3 shrink-0">
+						<div className="size-10 sm:size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary sm:text-[32px] ">
+							{rightScore}
+						</div>
+						<div className="size-10 sm:size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary sm:text-[32px] ">
+							{leftScore}
+						</div>
+					</div>
+					<UserBox direction="right" username={'player 2'} userImage={''} />
+				</motion.div>
+				<motion.div
+				initial={{opacity: 0, top: '-5rem'}}
+				animate={{opacity: 1, top: '0rem'}}
+				transition={{duration: 0.3, delay: 2}}
+				onClick={clickHandler}
+				className="relative top-0 max-w-[344px] h-full w-4/5 sm:w-full">
+					<Button className="h-full w-full">continue</Button>
+				</motion.div>
 			</motion.div>
-			<motion.div
-			initial={{opacity: 0, top: '-5rem'}}
-			animate={{opacity: 1, top: '0rem'}}
-			transition={{duration: 0.3, delay: 2}}
-			onClick={clickHandler}
-			className="relative top-0 max-w-[344px] h-full w-full">
-				<Button className="h-full w-full">continue</Button>
-			</motion.div>
-		</motion.div>
+		</div>
 	);
 }
 
