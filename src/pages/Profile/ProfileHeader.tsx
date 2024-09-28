@@ -6,8 +6,10 @@ import api from "../../api/axios";
 import { useParams } from "react-router-dom";
 import edit_icon from "/edit_icon.svg"
 import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
+import { useGlobalContext } from "../../contexts/store";
 
 const ProfileHeader = () => {
+	const { dispatch } = useGlobalContext();
 	const { state, dispatchProfile } = useProfileContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	const { id } = useParams();
@@ -16,10 +18,17 @@ const ProfileHeader = () => {
 	const changehandler = async (e: any) => {
 		const newImage = e.currentTarget.files[0];
 		if (!newImage) return ;
+		else if (newImage.size > 1048576) {
+			dispatch({type: 'ALERT', content: "failed: Maximum file size is 1MB."});
+			return ;
+		}
 		const formData = new FormData(formRef.current);
 		const res = await api.post("upload-avatar/", formData);
 		if (res.status === 200)
+		{
+			dispatch({type: 'ALERT', content: "Profile image changed successfuly."});
 			dispatchProfile({type: "USER_DATA", userData: {...state.userData, profile_image: res.data.url}});
+		}
 	}
 
 	useEffect(() => {
@@ -38,7 +47,7 @@ const ProfileHeader = () => {
 			<>
 				<div className="relative mb-[200px] xl:mb-[50px] flex flex-col w-full">
 					<div
-						style={{backgroundImage: `url(${state.userData.bg_image})`}}
+						style={{backgroundImage: `url(${state.userData.level.image})`}}
 						className="w-full h-[209px] rounded-md bg-cover bg-center">
 					</div>
 					<div className="absolute left-1/2 xl:left-[15%] top-full translate-y-[-60px] -translate-x-1/2 flex flex-col justify-center items-center">
