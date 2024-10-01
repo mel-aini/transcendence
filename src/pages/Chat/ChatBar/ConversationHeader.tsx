@@ -20,7 +20,7 @@ function ConversationHeader() {
 				{state.conversation.state == 'ok' &&
 					<>
 						<Link to={'/users/' + state.conversation_header.username}>
-							<User className="size-[30px] cursor-pointer" url={state.conversation_header.avatar} />
+							<User border className="size-[30px] cursor-pointer" url={state.conversation_header.avatar} />
 						</Link>
 						<div className="flex gap-2 items-end">
 							<Link to={'/users/' + state.conversation_header.username}>

@@ -41,7 +41,7 @@ const FriendActions = ({username, origin}: {username?: string, origin: string}) 
 
 	const sendMessageHandler = () => {
 		sendChatJsonMessage({
-			type: 'getConversation', 
+			type: 'getConversation',
 			user1: authState.username, 
 			user2: username
 		})

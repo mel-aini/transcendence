@@ -2,6 +2,7 @@ import { Dispatch, ReactNode, createContext, useContext, useEffect, useLayoutEff
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import jwt from "../utils/jwt";
 
 export interface GlobalStateProps {
 	accessToken: string | null
@@ -35,8 +36,6 @@ const reducer = (state: GlobalStateProps, action: any) => {
 	}
 }
 
-const NO_RETRY_HEADER = 'x-no-retry'
-
 const AuthContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const navigate = useNavigate();
@@ -59,30 +58,45 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 		}
 	}, [state.accessToken])
 
-
 	useLayoutEffect(() => {
 		// intercept responses
-		const id = api.interceptors.response.use(resConfig => resConfig, async (error) => {
-			const originRequest = error.config;
-			
-				if (error.response.status == 401) {
-					if (!error.config.headers[NO_RETRY_HEADER]) {
-						dispatch({type: 'TOKEN', token: null});
-						navigate('/login')
-						return Promise.reject(error)
-					}
-					originRequest.config.headers[NO_RETRY_HEADER] = 'true';
-					const res = await api.post('token/refresh/');
-					console.log('trying to refresh token');
-					console.log(res)
-					return api(originRequest);
+		const id = api.interceptors.response.use(
+		response => response, // Directly return successful responses.
+		async error => {
+			const originalRequest = error.config;
+			if (error.response.status === 401 && !originalRequest._retry) {
+			originalRequest._retry = true; // Mark the request as retried to avoid infinite loops.
+			try {
+				console.log('trying...')
+				// const refreshToken = localStorage.getItem('refreshToken'); // Retrieve the stored refresh token.
+				// Make a request to your auth server to refresh the token.
+				const token = await jwt.refresh(state.accessToken);
+				console.log('token after', token)
+				if (!token) {
+					console.log('token is null')
+					throw error;
 				}
-		})
+				dispatch({type: 'TOKEN', token: token})
+				// Update the authorization header with the new access token.
+				api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+				return api(originalRequest); // Retry the original request with the new access token.
+			} catch (refreshError) {
+				// Handle refresh token errors by clearing stored tokens and redirecting to the login page.
+				console.error('Token refresh failed:');
+				console.error(refreshError);
+				dispatch({type: 'TOKEN', token: null})
+				navigate('/login')
+				return Promise.reject(refreshError);
+			}
+			}
+			return Promise.reject(error); // For all other errors, return the error as is.
+		}
+		);
 
 		return () => {
 			api.interceptors.request.eject(id)
 		}
-	}, [state.accessToken])
+	}, [])
 
 	return (
 		<AuthContext.Provider value={{state, dispatch}}>

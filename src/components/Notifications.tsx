@@ -40,7 +40,7 @@ function Notifications() {
 		dispatch({type: 'MARK_IS_READ', payload: true});
 		sendJsonMessage({
 			type: "noti_read",
-			identifier: null,
+			identifier: '--',
 			data: {}
 		})
 		if (data) {

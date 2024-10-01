@@ -14,7 +14,7 @@ const useLog = () => {
 			case 'LOGOUT':
 				// code
 				try {
-					await api.post('api/logout/');
+					await api.post('logout/');
 					dispatch({type: 'TOKEN', token: null})
 					navigate('/')
 				} catch (error) {

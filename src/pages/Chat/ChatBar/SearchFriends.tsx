@@ -1,79 +1,84 @@
-import { AnimatePresence, Variants, motion } from "framer-motion";
 import Input from "../../../components/Input";
-import { IoClose } from "react-icons/io5";
 import { FiSearch } from "react-icons/fi";
 import { useChatContext } from "../../../contexts/chatProvider";
 import { useAuthContext } from "../../../contexts/authProvider";
-import { ChangeEvent, FormEvent, useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { isEmpty } from "../../../utils/validation";
+import api from "../../../api/axios";
+import User from "../../../components/User";
+import { useNavigate } from "react-router-dom";
+import send_icon from "/send_icon.svg"
 
-const transition = {
-	duration: 0.3
-}
-
-const variants: Variants = {
-	hidden: {
-		opacity: 1,
-		y: '100%',
-		transition: transition
-	},
-	visible: {
-		opacity: 1,
-		y: 0,
-		transition: transition
-	}
+interface Friend {
+	profile_image: string
+	username: string
 }
 
 interface Props {
-	isOpen: boolean
 	onClose: () => void
 }
 
-function SearchFriends({isOpen, onClose}: Props) {
-	const { sendJsonMessage } = useChatContext();
+function SearchFriends({onClose}: Props) {
 	const { state } = useAuthContext();
+	const { sendJsonMessage: sendChatJsonMessage} = useChatContext();
 	const inputRef = useRef('');
+	const [friends, setFriends] = useState<Friend[]>([]);
+	const navigate = useNavigate();
 
-	const onSubmit = (e: FormEvent) => {
+	const onSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		if (isEmpty(inputRef.current)) return;
-		sendJsonMessage({
-			user_id: state.user_id,
-			type: 'search_friend',
-			search: inputRef.current,
-			offset: 0,
-			limit: 10
-		})
+		const res = await api.get('friends/?filter=' + inputRef.current);
+		setFriends(res.data);
 		inputRef.current = '';
 	}
+
+	const sendMessageHandler = (username: string) => {
+		sendChatJsonMessage({
+			type: 'getConversation',
+			user1: state.username, 
+			user2: username
+		})
+		navigate('/chat');
+		onClose();
+	}
+
 	return (
-		<>
-			{isOpen && <div 
-				onClick={onClose}
-				className="absolute z-10 bottom-0 left-0 right-0 top-0">
-			</div>}
-			<AnimatePresence>
-				{isOpen && <motion.div 
-					initial="hidden"
-					animate="visible"
-					exit="hidden"
-					variants={variants}
-					className="absolute z-10 bottom-0 left-0 space-y-3 w-full h-[400px] bg-bg border-t border-t-border rounded-xl p-5">
-					<div className="flex justify-between items-center">
-						<h1 className="text-xl font-medium">Friends</h1>
-						<button onClick={onClose} className="size-10 flex justify-center items-center rounded-md self-end">
-							<IoClose className="text-3xl fill-border" />
-						</button>
-					</div>
-					<form onSubmit={onSubmit} className="flex justify-between gap-2">
-						<Input onChange={(e) => inputRef.current = e.target.value} type="text" placeholder="search for a friend" className="bg-bg border border-border w-full" />
-						<button type="submit" className="shrink-0 size-[48px] flex justify-center items-center border border-border rounded-md">
-							<FiSearch />
-						</button>
-					</form>
-				</motion.div>}
-			</AnimatePresence>
-		</>
+		<div 
+			className="w-[90vw] max-w-[500px] h-[300px] overflow-y-hidden bg-secondary rounded-md p-10 space-y-5">
+			<form onSubmit={onSubmit} className="flex justify-between gap-2">
+				<Input onChange={(e) => inputRef.current = e.target.value} type="text" placeholder="search for a friend" className="border border-border w-full" />
+				<button type="submit" className="shrink-0 size-[48px] flex justify-center items-center border border-border rounded-md">
+					<FiSearch />
+				</button>
+			</form>
+			{/* {<FriendsResults users={data} />} */}
+            {/* {isFetched && <InfiniteScrollObserver
+                endPoint={`search/?filter=${input}`}
+                whenFetched={whenFetched}
+                searchUsers={true} />} */}
+			<div className="space-y-3 h-[150px] overflow-auto">
+				{
+					friends.map((friend, index) => {
+						return (
+							<div 
+								key={index}
+								className="flex justify-between items-center">
+								<div className="flex items-center gap-3">
+									<User border url={friend.profile_image} />
+									<h3>{friend.username}</h3>
+								</div>
+								<div 
+									onClick={() => sendMessageHandler(friend.username)}
+									className="bg-secondary border border-border size-[40px] flex justify-center items-center rounded-md cursor-pointer select-none">
+									<img src={send_icon} alt="" width={20} height={20}/>
+								</div>
+							</div>
+						)
+					})
+				}
+			</div>
+		</div>
 	);
 }
 

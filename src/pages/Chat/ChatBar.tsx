@@ -12,10 +12,10 @@ import { useAuthContext } from "../../contexts/authProvider";
 import { isEmpty } from "../../utils/validation";
 import Input from "../../components/Input";
 import SearchConversationsList from "./ChatBar/SearchConversationsList";
+import Modal from "../../components/Modal";
 
 function ChatBar() {
 	const [toggleSearch, setToggleSearch] = useState(false);
-	const [toggleMore, setToggleMore] = useState(false);
 	const [searchFriends, setSearchFriends] = useState(false);
 	const action = useLog();
 	const { state: chatState, dispatch, sendJsonMessage } = useChatContext();
@@ -57,10 +57,6 @@ function ChatBar() {
 					<h1></h1>
 					<div className="relative flex gap-3 items-center">
 						<IoAddCircle onClick={() => setSearchFriends(true)} className="fill-primary text-3xl cursor-pointer" />
-						<BsThreeDots onClick={() => setToggleMore(prev => !prev)} className="fill-white text-2xl cursor-pointer" />
-						{toggleMore && <div className="absolute top-full right-0 py-2 rounded-md border border-dark bg-bg flex flex-col gap-2">
-							<h2 onClick={() => action('LOGOUT')} className="px-10">logout</h2>
-						</div>}
 					</div>
 				</div>
 				{/* online friends */}
@@ -93,7 +89,9 @@ function ChatBar() {
 					{toggleSearch && <SearchConversationsList input={input} className="shrink-0" />}
 				</div>
 				{/* search friends */}
-				<SearchFriends isOpen={searchFriends} onClose={() => setSearchFriends(false)} />
+				<Modal isOpen={searchFriends} onClose={() => setSearchFriends(false)}>
+					<SearchFriends onClose={() => setSearchFriends(false)} />
+				</Modal>
 			</div>
 			{/* <NavBar className="lg:hidden w-full py-5 bg-bg border-t border-dark flex items-center justify-between shrink-0" /> */}
 		</motion.div>
