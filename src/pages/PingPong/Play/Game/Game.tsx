@@ -3,7 +3,7 @@ import Header from "./Header";
 import Table from "./Table";
 import LayoutHeader from "../../../../layout/LayoutHeader";
 
-function Game({isTournament, isAI}: {isTournament: boolean, isAI: boolean}) {
+function Game({isTournament}: {isTournament: boolean}) {
 	const refParent = useRef<HTMLDivElement>(null);
 	const [width, setWidth] = useState<number>(0);
 
@@ -24,7 +24,7 @@ function Game({isTournament, isAI}: {isTournament: boolean, isAI: boolean}) {
 		<div className="flex flex-col items-center w-full">
 			<LayoutHeader className="w-full">Playing...</LayoutHeader>
 			<div ref={refParent} className="flex flex-col h-full max-w-[1200px] w-full justify-between items-center gap-[26px]">
-				<Header isTournament={isTournament} isAI={isAI} />
+				<Header isTournament={isTournament} />
 				<Table width={width} isTournament={isTournament} />
 			</div>
 		</div>

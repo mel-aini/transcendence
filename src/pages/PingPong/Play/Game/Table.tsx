@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Box from "./Box";
-import { Levels, usePingPongContext } from "../../../../contexts/pingPongProvider";
-import { useNavigate } from "react-router-dom";
+import { usePingPongContext } from "../../../../contexts/pingPongProvider";
 import { useTournamentContext } from "../../../../contexts/TournamentProvider";
-import { useProfileContext } from "../../../../contexts/profileStore";
 import { useGlobalContext } from "../../../../contexts/store";
 
 // width = 1.6 * height
@@ -11,46 +9,56 @@ import { useGlobalContext } from "../../../../contexts/store";
 const Table = ({width, isTournament}: {width: number, isTournament: boolean}) => {
 	const myPaddle = useRef<HTMLDivElement>(null);
 	const sidePaddle = useRef<HTMLDivElement>(null);
+	const move = useRef<-1 | 0 | 1>(0);
 	const table = useRef<HTMLDivElement>(null);
 	const { state, sendJsonMessage } = usePingPongContext();
 	const { state: profileState } = useGlobalContext();
 	const {sendJsonMessage: sendInTournament} = useTournamentContext();
 
-	const movePaddle = (e: any) => {
-		const tableDim: any = table.current;
-		let newPos: number = ((e.clientY - tableDim.getBoundingClientRect().top) / tableDim.getBoundingClientRect().height) * 100;
-
-		newPos = (newPos < 10) ? 10 : newPos;
-		newPos = (newPos > 90) ? 90 : newPos;
-		(myPaddle.current) && (myPaddle.current.style.top = `${newPos}%`);
-		isTournament ?
-		sendInTournament({
-			type: "update",
-			y: newPos,
-		})
-		:
-		sendJsonMessage({
-			type: "update",
-			y: newPos,
-		});
+	const handleKeyDown = (e: KeyboardEvent) => {
+		if (e.key === 'ArrowUp' || e.key === 'w') {
+			move.current = -1;
+		}
+		if (e.key === 'ArrowDown' || e.key === 's') {
+			move.current = 1;
+		}
 	}
 
-	const handlePointerStart = (e: any) => {
-		
-		myPaddle.current?.setPointerCapture(e.pointerId);
-		movePaddle(e);
-		myPaddle.current?.addEventListener("pointermove", movePaddle);
-		myPaddle.current?.addEventListener("pointerup", () => {
-			myPaddle.current?.removeEventListener("pointermove", movePaddle);
-		}, { once: true });
+	const handleKeyUp = (e: KeyboardEvent) => {
+		if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'ArrowDown' || e.key === 's')
+			move.current = 0;
 	}
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			if (move.current === 0) return ;
+			isTournament ?
+			sendInTournament({
+				type: "update",
+				y: move.current,
+			})
+			:
+			sendJsonMessage({
+				type: "update",
+				y: move.current,
+			});
+		}, 50);
+
+		window.addEventListener('keydown', handleKeyDown);
+		window.addEventListener('keyup', handleKeyUp);
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+			window.removeEventListener('keyup', handleKeyUp);
+			clearInterval(interval);
+		}
+	}, [])
 
 	return (
-		<div ref={table} className="touch-none relative w-full max-h-[750px] select-none" style={{height: `${width / 1.6}px`}}>
+		<div ref={table} className="relative w-full max-h-[750px] select-none" style={{height: `${width / 1.6}px`}}>
 			<div className="absolute first-table-half w-[68.69%] h-full border rounded-l-[10px] border-border" style={{ backgroundColor: profileState.userData?.game_settings.background + "1a" }} />
 			<div className="absolute second-table-half w-[68.69%] h-full border rounded-l-[10px] rotate-180 left-full -translate-x-full border-border" style={{ backgroundColor: profileState.userData?.game_settings.background + "1a" }} />
 
-			<div onPointerDown={(e) => handlePointerStart(e)} ref={myPaddle} className="h-1/5 absolute -translate-y-1/2 rounded-full" style={{backgroundColor: profileState.userData?.game_settings.paddle, width: `${width * 2 / 100}px`, top: `${state.myPaddleData.y}%`, left: `${state.myPaddleData.x}%`}}/>
+			<div ref={myPaddle} className="h-1/5 absolute -translate-y-1/2 rounded-full" style={{backgroundColor: profileState.userData?.game_settings.paddle, width: `${width * 2 / 100}px`, top: `${state.myPaddleData.y}%`, left: `${state.myPaddleData.x}%`}}/>
 
 			<div ref={sidePaddle} className="h-1/5 absolute -translate-y-1/2 rounded-full" style={{backgroundColor: profileState.userData?.game_settings.paddle, width: `${width * 2 / 100}px`, top: `${state.sidePaddleData.y}%`, left: `${state.sidePaddleData.x}%`}}/>
 

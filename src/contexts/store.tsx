@@ -20,7 +20,7 @@ export interface GlobalStateProps {
 	AIdata: {
 		time: number,
 		goals: number,
-		difficulty: string,
+		difficulty: "easy" | "medium" | "hard",
 	}
 }
 

@@ -23,7 +23,7 @@ function Chose({type, data}: {type: "min" | "goals" | "difficulty", data: string
         else if (type === "difficulty")
             dispatch({type: "AI_DATA", AIdata: {...state.AIdata, difficulty: difficultyData[value]}});
 	}
-// input range
+
 	return (
             <div className="flex flex-col items-center max-w-[344px] w-full h-[50px] bg-transparent gap-2">
 				<input className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-border" type="range" min="0" max="2" defaultValue={index} onInput={(e) => clickHandler(e)} />
@@ -43,7 +43,7 @@ function AIFrom() {
 	const navigate = useNavigate();
 
 	const clickHandler = () => {
-		navigate("vs-ai/match-making");
+		navigate("vs-ai");
 	}
 
 	return (

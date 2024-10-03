@@ -9,7 +9,7 @@ import { useGlobalContext } from "../../../../contexts/store";
 import LayoutHeader from "../../../../layout/LayoutHeader";
 import Title from "../../../../components/Title";
 
-function Result({isTournament, isAI}: {isTournament: boolean, isAI: boolean}) {
+function Result({isTournament}: {isTournament: boolean}) {
 	const { state, dispatch } = usePingPongContext();
 	const { state: globalState, dispatch: dispatchGlobal } = useGlobalContext();
 	const navigate = useNavigate();
@@ -121,7 +121,7 @@ function Result({isTournament, isAI}: {isTournament: boolean, isAI: boolean}) {
 						{state.score.side}
 					</div>
 				</div>
-				<UserBox direction="right" username={isAI ? 'AI' : (isTournament ? state.alias : state.opponent?.username)} level={isAI ? undefined : state.opponent?.level.current} userImage={isAI ? '' : state.opponent?.profile_image} />
+				<UserBox direction="right" username={isTournament ? state.alias : state.opponent?.username} level={state.opponent?.level.current} userImage={state.opponent?.profile_image} />
 			</motion.div>
 			<motion.div
 			initial={{opacity: 0, top: '-5rem'}}

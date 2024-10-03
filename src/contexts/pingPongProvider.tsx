@@ -186,7 +186,7 @@ const reducer = (state: GameData, action: any) => {
 	}
 }
 
-const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament: boolean, isAI: boolean, children: ReactNode}) => {
+const PingPongContextProvider = ({isTournament, children} : {isTournament: boolean, children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
@@ -196,7 +196,7 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 	const { state: token }  = useAuthContext();
 	const { state: stateGlobal } = useGlobalContext();
 
-	const fullWsUrl: string = isAI ? "aigame/" + profileData.AIdata.difficulty + "/" + profileData.AIdata.goals + "/" + profileData.AIdata.time * 60 + "/?token=" : (stateGlobal.gameId ? "game/" + stateGlobal.gameId + "/?token=" : "game/" + "random/?token=");
+	const fullWsUrl: string = stateGlobal.gameId ? "game/" + stateGlobal.gameId + "/?token=" : "game/" + "random/?token=";
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_END_POINT + fullWsUrl + token.accessToken,
 		{
 			onOpen: () => dispatch({ type: "RESET" }),
@@ -217,20 +217,16 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 			console.log(message);
 		if (message.type == "opponents")
 		{
-			if (!isAI)
+			if (message.user1.username == username)
 			{
-				if (message.user1.username == username)
-				{
-					dispatch({type: "OPPONENT", opponent: message.user2});
-					isTournament && dispatch({type: "ALIAS", alias: tournMessage.user2.alias});
-				}
-				else
-				{
-					dispatch({type: "OPPONENT", opponent: message.user1});
-					isTournament && dispatch({type: "ALIAS", alias: tournMessage.user1.alias});
-				}
+				dispatch({type: "OPPONENT", opponent: message.user2});
+				isTournament && dispatch({type: "ALIAS", alias: tournMessage.user2.alias});
 			}
-
+			else
+			{
+				dispatch({type: "OPPONENT", opponent: message.user1});
+				isTournament && dispatch({type: "ALIAS", alias: tournMessage.user1.alias});
+			}
 			dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
 			isTournament && sendTournMessage( { type: 'handshake' } );
 		}
@@ -247,7 +243,6 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 
 			dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, x: message.my}});
 			dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, x: message.side}});
-
 		}
 		else if (message.type == "ball")
 		{
@@ -258,7 +253,11 @@ const PingPongContextProvider = ({isTournament, isAI, children} : {isTournament:
 			dispatch({type: "ball_Data", ballData: ballData});
 			!isTournament && dispatch({type: "TIME", time: message.time});
 		}
-		else if (message.type == "paddle")
+		else if (message.type == "myPaddle")
+		{
+			dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, y: message.pos}});
+		}
+		else if (message.type == "sidePaddle")
 		{
 			dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, y: message.pos}});
 		}

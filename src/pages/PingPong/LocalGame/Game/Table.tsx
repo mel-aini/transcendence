@@ -7,8 +7,11 @@ interface Props {
 	leftPaddle: any,
 	gameLogic: any,
 	counter: number,
+	rightMoves: any,
+	leftMoves: any,
 	setCounter: Dispatch<SetStateAction<number>>
 	status: "ready" | "help",
+	isAI: boolean,
 }
 
 const Table = forwardRef((props: Props, ref: any) => {
@@ -16,36 +19,35 @@ const Table = forwardRef((props: Props, ref: any) => {
 	const handleKeyDown = (e: KeyboardEvent) => {
 		
 		if (e.key === 'ArrowUp') {
-			const oldPos: string | undefined = props.rightPaddle.current?.style.top;
-			let newPos: number = Number(oldPos?.replace('%', '')) - 5;
-			newPos = (newPos < 10) ? 10 : newPos;
-			(props.gameLogic.current.getRightPaddle) && (props.gameLogic.current.getRightPaddle.y = newPos);
+			props.rightMoves.current = -1;
 		}
-		if (e.key === 'w') {
-			const oldPos: string | undefined = props.leftPaddle.current?.style.top;
-			let newPos: number = Number(oldPos?.replace('%', '')) - 5;
-			newPos = (newPos < 10) ? 10 : newPos;
-			(props.gameLogic.current.getLeftPaddle) && (props.gameLogic.current.getLeftPaddle.y = newPos);
+		if (!props.isAI && e.key === 'w') {
+			props.leftMoves.current = -1;
 		}
 		if (e.key === 'ArrowDown') {
-			const oldPos: string | undefined = props.rightPaddle.current?.style.top;
-			let newPos: number = Number(oldPos?.replace('%', '')) + 5;
-			newPos = (newPos > 90) ? 90 : newPos;
-			(props.gameLogic.current.getRightPaddle) && (props.gameLogic.current.getRightPaddle.y = newPos);
+			props.rightMoves.current = 1;
 		}
-		if (e.key === 's') {
-			const oldPos: string | undefined = props.leftPaddle.current?.style.top;
-			let newPos: number = Number(oldPos?.replace('%', '')) + 5;
-			newPos = (newPos > 90) ? 90 : newPos;
-			(props.gameLogic.current.getLeftPaddle) && (props.gameLogic.current.getLeftPaddle.y = newPos);
+		if (!props.isAI && e.key === 's') {
+			props.leftMoves.current = 1;
+		}
+	}
+
+	const handleKeyUp = (e: KeyboardEvent) => {
+		
+		if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+			props.rightMoves.current = 0;
+		}
+		if (!props.isAI && (e.key === 'w' || e.key === 's')) {
+			props.leftMoves.current = 0;
 		}
 	}
 
 	useEffect(() => {
 		window.addEventListener('keydown', handleKeyDown);
-		console.log(ref);
+		window.addEventListener('keyup', handleKeyUp);
 		return () => {
 			window.removeEventListener('keydown', handleKeyDown);
+			window.removeEventListener('keyup', handleKeyUp);
 		}
 	}, [])
 

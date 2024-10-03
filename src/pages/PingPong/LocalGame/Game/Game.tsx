@@ -12,9 +12,12 @@ interface Props {
 	minutes: number,
 	seconds: number,
 	counter: number,
+	rightMoves: any,
+	leftMoves: any,
 	setCounter: Dispatch<SetStateAction<number>>,
 	status: "ready" | "help",
 	setStatus: Dispatch<SetStateAction<"ready" | "help">>,
+	isAI: boolean,
 }
 
 const Game = forwardRef((props: Props, ref: any) => {
@@ -35,11 +38,11 @@ const Game = forwardRef((props: Props, ref: any) => {
 	}, [])
 
 	return (
-		<div className="flex flex-col items-center w-full">
+		<div className="w-full">
 			<LayoutHeader>Playing...</LayoutHeader>
 			<div ref={refParent} className="flex flex-col h-full max-w-[1200px] w-full justify-between items-center gap-[26px]">
 				<Header counter={props.counter} setCounter={props.setCounter} status={props.status} setStatus={props.setStatus} leftScore={props.leftScore} rightScore={props.rightScore} minutes={props.minutes} seconds={props.seconds} />
-				<Table ref={ref} status={props.status} counter={props.counter} setCounter={props.setCounter} gameLogic={props.gameLogic} width={width} leftPaddle={props.leftPaddle} rightPaddle={props.rightPaddle} />
+				<Table ref={ref} isAI={props.isAI} rightMoves={props.rightMoves} leftMoves={props.leftMoves} status={props.status} counter={props.counter} setCounter={props.setCounter} gameLogic={props.gameLogic} width={width} leftPaddle={props.leftPaddle} rightPaddle={props.rightPaddle} />
 			</div>
 		</div>
 	);

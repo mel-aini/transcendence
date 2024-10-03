@@ -85,23 +85,13 @@ export const customizeContext = createContext<any>({});
 // 	);
 // }
 
-function MatchMaking({isTournament, isAI}: {isTournament: boolean, isAI: boolean}) {
+function MatchMaking({isTournament}: {isTournament: boolean}) {
 	const {state, dispatch} = usePingPongContext();
 	const {state: tournState} = useTournamentContext();
 	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
 
 	const cancelAction = () => {
-		// if (window.location.pathname == "/ping-pong/match-making")
-		// {
-		// 	dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-		// 	navigate("/ping-pong");
-		// }
-		// else if (window.location.pathname == "/Tournament/match-making")
-		// {
-		// 	dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-		// 	navigate("/Tournament");
-		// }
 		if (isTournament)
 		{
 			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
@@ -109,7 +99,6 @@ function MatchMaking({isTournament, isAI}: {isTournament: boolean, isAI: boolean
 		}
 		else
 		{
-			// dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
 			navigate("/ping-pong");
 		}
 	}
@@ -189,10 +178,10 @@ function MatchMaking({isTournament, isAI}: {isTournament: boolean, isAI: boolean
 							className="flex-1 flex justify-end items-center gap-5"
 							>
 							<div>
-								<h3>{ isAI ? 'AI' : (isTournament ? state.alias : state.opponent?.username) }</h3>
-								{!isAI && <h4>{ 'Lvl ' + state.opponent?.level.current }</h4>}
+								<h3>{ isTournament ? state.alias : state.opponent?.username }</h3>
+								<h4>{ 'Lvl ' + state.opponent?.level.current }</h4>
 							</div>
-							<User className="size-28 border-primary" border url={isAI ? '' : state.opponent?.profile_image} />
+							<User className="size-28 border-primary" border url={state.opponent?.profile_image} />
 						</motion.div>
 					}
 				</div>

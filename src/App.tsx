@@ -54,23 +54,21 @@ function App() {
                         </Route>
                         <Route path='/ping-pong'>
                           <Route index element={<PingPong />} />
-                          <Route element={<GameLayout isTournament={false} isAI={false}/>}>
-                            <Route path='play' element={<Play isTournament={false} isAI={false} />} />
-                            <Route path='match-making' element={<MatchMaking isTournament={false} isAI={false} />} />
+                          <Route element={<GameLayout isTournament={false}/>}>
+                            <Route path='play' element={<Play isTournament={false} />} />
+                            <Route path='match-making' element={<MatchMaking isTournament={false} />} />
                           </Route>
                           <Route path='vs-friend' element={<VsFriend />} />
-                          <Route path='vs-ai' element={<GameLayout isTournament={false} isAI={true}/>}>
-                              <Route path='match-making' element={<MatchMaking isTournament={false} isAI={true} />} />
-                              <Route path='play' element={<Play isTournament={false} isAI={true} />} />
+                          <Route path='vs-ai' element={<LocalGame isAI={true} />}>
                           </Route>
-                          <Route path='1vs1' element={<LocalGame />} />
+                          <Route path='1vs1' element={<LocalGame isAI={false} />} />
                           <Route path='*' element={<NotFound />} />
                         </Route>
                         <Route path='/tournament' element={<TournamentLayout />} >
                           <Route index element={<Tournament />} />
-                          <Route element={<GameLayout isTournament={true} isAI={false}/>}>
-                            <Route path='play' element={<Play isTournament={true} isAI={false} />} />
-                            <Route path='match-making' element={<MatchMaking isTournament={true} isAI={false} />} />
+                          <Route element={<GameLayout isTournament={true}/>}>
+                            <Route path='play' element={<Play isTournament={true} />} />
+                            <Route path='match-making' element={<MatchMaking isTournament={true} />} />
                           </Route>
                           <Route path='*' element={<NotFound />} />
                         </Route>
