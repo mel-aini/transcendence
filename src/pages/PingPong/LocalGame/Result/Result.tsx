@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import LayoutHeader from "../../../../layout/LayoutHeader";
 import Title from "../../../../components/Title";
 
-const Result = ({rightScore, leftScore}: {rightScore: number, leftScore: number}) => {
+const Result = ({isAI, rightScore, leftScore}: {isAI: boolean, rightScore: number, leftScore: number}) => {
 	const navigate = useNavigate();
 
 	const clickHandler = () => {
@@ -32,16 +32,16 @@ const Result = ({rightScore, leftScore}: {rightScore: number, leftScore: number}
 				animate={{opacity: 1, top: '0rem'}}
 				transition={{duration: 0.3, delay: 1.5}}
 				className="border border-border shrink-0 flex w-full justify-between items-center gap-4 p-5 rounded-md">
-					<UserBox username={'player 1'} userImage={''} />
+					<UserBox username={isAI ? 'AI' : 'player 1'} userImage={''} />
 					<div className="flex gap-3 shrink-0">
-						<div className="size-10 sm:size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary sm:text-[32px] ">
-							{rightScore}
-						</div>
 						<div className="size-10 sm:size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary sm:text-[32px] ">
 							{leftScore}
 						</div>
+						<div className={"size-10 sm:size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary sm:text-[32px] " + (isAI ? 'text-primary' : '')}>
+							{rightScore}
+						</div>
 					</div>
-					<UserBox direction="right" username={'player 2'} userImage={''} />
+					<UserBox direction="right" username={isAI ? 'you' : 'player 2'} userImage={''} />
 				</motion.div>
 				<motion.div
 				initial={{opacity: 0, top: '-5rem'}}

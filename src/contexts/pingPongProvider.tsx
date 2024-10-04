@@ -188,7 +188,7 @@ const reducer = (state: GameData, action: any) => {
 
 const PingPongContextProvider = ({isTournament, children} : {isTournament: boolean, children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const { state: profileData } = useGlobalContext();
+	const { state: profileData, dispatch: dispatchGlobal } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
 	const { lastJsonMessage: tournMessage, sendJsonMessage: sendTournMessage } = useTournamentContext();
 	const navigate = useNavigate();
@@ -233,6 +233,11 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 		else if (isTournament && message.type == "ready")
 		{
 			navigate('match-making');
+		}
+		else if (!isTournament && message.type == "ingame")
+		{
+			dispatchGlobal({type: 'ALERT', content: "you are already in game!!"});
+			navigate('/ping-pong');
 		}
 		else if (message.type == "init_paddle")
 		{

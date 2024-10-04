@@ -17,7 +17,7 @@ export interface GlobalStateProps {
 	search: boolean
 	userData: UserData | null,
 	gameId: string | null,
-	AIdata: {
+	localGameData: {
 		time: number,
 		goals: number,
 		difficulty: "easy" | "medium" | "hard",
@@ -31,7 +31,7 @@ const initialState: GlobalStateProps = {
 	search: false,
 	userData: null,
 	gameId: null,
-	AIdata: {
+	localGameData: {
 		time: 3,
 		goals: 5,
 		difficulty: "medium",
@@ -79,10 +79,10 @@ const reducer = (state: GlobalStateProps, action: any) => {
 				...state,
 				gameId: action.gameId
 			}
-		case 'AI_DATA':
+		case 'LOCAL_GAME_DATA':
 			return { 
 				...state,
-				AIdata: action.AIdata
+				localGameData: action.localGameData
 			}
 		default:
 			return state;

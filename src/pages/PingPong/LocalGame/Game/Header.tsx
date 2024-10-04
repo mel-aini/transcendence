@@ -1,6 +1,7 @@
 import help from "/Help_icon.svg"
 import { AnimatePresence, motion } from "framer-motion";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useGlobalContext } from "../../../../contexts/store";
 
 interface Props {
 	rightScore: number,
@@ -11,6 +12,7 @@ interface Props {
 	setCounter: Dispatch<SetStateAction<number>>,
 	status: "ready" | "help",
 	setStatus: Dispatch<SetStateAction<"ready" | "help">>,
+	isAI: boolean,
 }
 
 const Goal = ({rightScore, leftScore}: {rightScore: number, leftScore: number}) => {
@@ -48,6 +50,7 @@ const Goal = ({rightScore, leftScore}: {rightScore: number, leftScore: number}) 
 }
 
 const Header = (props: Props) => {
+	const { state } = useGlobalContext();
 
 	const clickHandler = () => {
 		if (props.counter > 0)
@@ -61,12 +64,12 @@ const Header = (props: Props) => {
 			<div className="flex col-start-1 col-end-2 ">
 				<div className={"flex gap-1"}>
 					<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-						<div className="absolute w-[2px] top-full -translate-y-full bg-primary" style={{height: `${props.leftScore * 10}%`}}/>
-						<span className="absolute inline-flex items-center justify-center text-primary w-full h-full">{props.leftScore}</span>
+						<div className="absolute w-[2px] top-full -translate-y-full bg-white" style={{height: `${props.leftScore * 100 / state.localGameData.goals}%`}}/>
+						<span className="absolute inline-flex items-center justify-center w-full h-full">{props.leftScore}</span>
 					</div>
 					<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-						<div className="absolute w-[2px] top-full -translate-y-full bg-white" style={{height: `${props.rightScore * 10}%`}}/>
-						<span className="absolute inline-flex items-center justify-center w-full h-full">{props.rightScore}</span>
+						<div className={"absolute w-[2px] top-full -translate-y-full " + (props.isAI ? 'bg-primary' : 'bg-white')} style={{height: `${props.rightScore * 100 / state.localGameData.goals}%`}}/>
+						<span className={"absolute inline-flex items-center justify-center w-full h-full " + (props.isAI ? 'text-primary' : '')}>{props.rightScore}</span>
 					</div>
 				</div>
 			</div>

@@ -20,10 +20,10 @@ function Index({isAI}: {isAI: boolean}) {
 	const rightMoves = useRef< -1 | 0 | 1 >(0);
 	const leftMoves = useRef< -1 | 0 | 1 >(0);
 	const { state } = useGlobalContext();
-	const difficulty: Enum = state.AIdata.difficulty === "easy" ? Enum.EASY : (state.AIdata.difficulty === "medium" ? Enum.MEDIUM : Enum.HARD)
+	const difficulty: Enum = state.localGameData.difficulty === "easy" ? Enum.EASY : (state.localGameData.difficulty === "medium" ? Enum.MEDIUM : Enum.HARD)
 
 	const time = new Date();
-	time.setSeconds(time.getSeconds() + 300);
+	time.setSeconds(time.getSeconds() + (state.localGameData.time * 60));
 	const { seconds, minutes, isRunning, start } = useTimer({ expiryTimestamp: time, autoStart: false });
 
 	const loop_hook = (time: number) => {
@@ -36,7 +36,7 @@ function Index({isAI}: {isAI: boolean}) {
 			isAI ? game.current.updateAIGame(delta) : game.current.updateGame(delta);
 			(rightScore != game.current.rightScore) && setRightScore(game.current.rightScore);
 			(leftScore != game.current.leftScore) && setLeftScore(game.current.leftScore);
-            if (game.current.rightScore >= 10 || game.current.leftScore >= 10)
+            if (game.current.rightScore >= state.localGameData.goals || game.current.leftScore >= state.localGameData.goals)
 			{
 				cancelAnimationFrame(animationRef.current);
 				setIsEndGame(true);
@@ -72,7 +72,7 @@ function Index({isAI}: {isAI: boolean}) {
 				{
 					isEndGame
 					?
-					<Result leftScore={leftScore} rightScore={rightScore} />
+					<Result isAI={isAI} leftScore={leftScore} rightScore={rightScore} />
 					:
 					<Game isAI={isAI} rightMoves={rightMoves} leftMoves={leftMoves} ref={ball} status={status} setStatus={setStatus} counter={counter} setCounter={setCounter} gameLogic={game} leftPaddle={leftPaddle} leftScore={leftScore} rightPaddle={rightPaddle} rightScore={rightScore} minutes={minutes} seconds={seconds} />
 				}

@@ -12,16 +12,16 @@ const difficultyData: string[] = ["easy", "medium", "hard"];
 
 function Chose({type, data}: {type: "min" | "goals" | "difficulty", data: string[] | number[]}) {
 	const { state, dispatch } = useGlobalContext();
-	const index: number = data.indexOf((type === "min") ? state.AIdata.time : ((type === "goals") ? state.AIdata.goals : state.AIdata.difficulty));
+	const index: number = data.indexOf((type === "min") ? state.localGameData.time : ((type === "goals") ? state.localGameData.goals : state.localGameData.difficulty));
 
 	const clickHandler = (e: any) => {
 		const value = e.target.value;
         if (type === "min")
-            dispatch({type: "AI_DATA", AIdata: {...state.AIdata, time: timeData[value]}});
+            dispatch({type: "LOCAL_GAME_DATA", localGameData: {...state.localGameData, time: timeData[value]}});
         else if (type === "goals")
-            dispatch({type: "AI_DATA", AIdata: {...state.AIdata, goals: goalsData[value]}});
+            dispatch({type: "LOCAL_GAME_DATA", localGameData: {...state.localGameData, goals: goalsData[value]}});
         else if (type === "difficulty")
-            dispatch({type: "AI_DATA", AIdata: {...state.AIdata, difficulty: difficultyData[value]}});
+            dispatch({type: "LOCAL_GAME_DATA", localGameData: {...state.localGameData, difficulty: difficultyData[value]}});
 	}
 
 	return (
@@ -39,11 +39,11 @@ function Chose({type, data}: {type: "min" | "goals" | "difficulty", data: string
 	);
 }
 
-function AIFrom() {
+function AIForm({isAI}: {isAI: boolean}) {
 	const navigate = useNavigate();
 
 	const clickHandler = () => {
-		navigate("vs-ai");
+		navigate(isAI ? "vs-ai" : "1vs1");
 	}
 
 	return (
@@ -51,7 +51,7 @@ function AIFrom() {
 			<div className="relative flex flex-col gap-4 items-center w-full">
 				<Chose type="min" data={timeData} />
 				<Chose type="goals" data={goalsData} />
-				<Chose type="difficulty" data={difficultyData} />
+				{ isAI && <Chose type="difficulty" data={difficultyData} /> }
 			</div>
 			<div onClick={clickHandler} className="w-full flex justify-center">
 				<Button className="w-full max-w-[344px]">Start</Button>
@@ -60,7 +60,7 @@ function AIFrom() {
 	);
 }
 
-const VsAiChoice = ({display, setDisplay}: {display: boolean, setDisplay: Dispatch<SetStateAction<boolean>>}) => {
+const LocalGameChoise = ({display, setDisplay, isAI}: {display: boolean, setDisplay: Dispatch<SetStateAction<boolean>>, isAI: boolean}) => {
 
 	return (
 		<Modal isOpen={display} onClose={() => setDisplay(false)}>
@@ -73,9 +73,9 @@ const VsAiChoice = ({display, setDisplay}: {display: boolean, setDisplay: Dispat
 					transition={{duration: 0.3}}
 					exit={{ opacity: 0}}
 					className="bg-secondary max-w-[521px] w-[90vw] rounded-md flex flex-col justify-center items-center gap-5 p-10">
-						<span className="text-3xl text-center">Vs AI</span>
-						<img src={AI} alt="" className="w-[150px] h-[150px]"/>
-						<AIFrom />
+						<span className="text-3xl text-center">{isAI ? 'Vs AI' : '1 vs 1'}</span>
+						<img src={isAI ? AI : ''} alt="" className="w-[150px] h-[150px]"/>
+						<AIForm isAI={isAI} />
 					</motion.div>
 			}
 			</AnimatePresence>
@@ -83,4 +83,4 @@ const VsAiChoice = ({display, setDisplay}: {display: boolean, setDisplay: Dispat
 	);
 }
 
-export default VsAiChoice;
+export default LocalGameChoise;
