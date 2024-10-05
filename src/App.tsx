@@ -26,6 +26,7 @@ const PingPong = lazy(() => import('./pages/PingPong/Index'));
 const Tournament = lazy(() => import('./pages/Tournament/Index'));
 const Play = lazy(() => import('./pages/PingPong/Play/Index'));
 const LocalGame = lazy(() => import('./pages/PingPong/LocalGame/Index'));
+const LocalMatchMaking = lazy(() => import('./pages/PingPong/LocalGame/MatchMaking'));
 const VsFriend = lazy(() => import('./pages/PingPong/VsFriend/Index'));
 const MatchMaking = lazy(() => import('./pages/PingPong/MatchMaking/Index'));
 const NotFound = lazy(() => import('./pages/NotFound/Index'));
@@ -59,9 +60,14 @@ function App() {
                             <Route path='match-making' element={<MatchMaking isTournament={false} />} />
                           </Route>
                           <Route path='vs-friend' element={<VsFriend />} />
-                          <Route path='vs-ai' element={<LocalGame isAI={true} />}>
+                          <Route path='vs-ai'>
+                            <Route index element={<LocalMatchMaking isAI={true} />} />
+                            <Route path='play' element={<LocalGame isAI={true} />} />
                           </Route>
-                          <Route path='1vs1' element={<LocalGame isAI={false} />} />
+                          <Route path='1vs1'>
+                            <Route index element={<LocalMatchMaking isAI={false} />} />
+                            <Route path='play' element={<LocalGame isAI={false} />} />
+                          </Route>
                           <Route path='*' element={<NotFound />} />
                         </Route>
                         <Route path='/tournament' element={<TournamentLayout />} >

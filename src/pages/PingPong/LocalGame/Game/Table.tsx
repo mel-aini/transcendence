@@ -54,9 +54,9 @@ const Table = forwardRef((props: Props, ref: any) => {
 	}, [])
 
 	return (
-		<div className="touch-none relative w-full max-h-[750px]" style={{height: `${props.width / 1.6}px`}}>
-			<div className="absolute first-table-half w-[68.69%] h-full border rounded-l-[10px] border-border"  style={{backgroundColor: state.userData?.game_settings.background}} />
-			<div className="absolute second-table-half w-[68.69%] h-full border rounded-l-[10px] rotate-180 left-full -translate-x-full border-border"  style={{backgroundColor: state.userData?.game_settings.background}} />
+		<div className="select-none relative w-full max-h-[750px]" style={{height: `${props.width / 1.6}px`}}>
+			<div className="absolute first-table-half w-[68.69%] h-full border rounded-l-[10px] border-border"  style={{backgroundColor: state.userData?.game_settings.background + "1a"}} />
+			<div className="absolute second-table-half w-[68.69%] h-full border rounded-l-[10px] rotate-180 left-full -translate-x-full border-border"  style={{backgroundColor: state.userData?.game_settings.background + "1a"}} />
 
 			<div ref={props.leftPaddle} className="h-1/5 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-[2%] rounded-full" style={{width: `${props.width * 2 / 100}px`, backgroundColor: state.userData?.game_settings.paddle}}/>
 

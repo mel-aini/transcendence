@@ -4,9 +4,11 @@ import UserBox from "./UserBox";
 import { motion } from "framer-motion";
 import LayoutHeader from "../../../../layout/LayoutHeader";
 import Title from "../../../../components/Title";
+import { useGlobalContext } from "../../../../contexts/store";
 
 const Result = ({isAI, rightScore, leftScore}: {isAI: boolean, rightScore: number, leftScore: number}) => {
 	const navigate = useNavigate();
+	const { state } =  useGlobalContext();
 
 	const clickHandler = () => {
 		navigate("/ping-pong");
@@ -41,7 +43,7 @@ const Result = ({isAI, rightScore, leftScore}: {isAI: boolean, rightScore: numbe
 							{rightScore}
 						</div>
 					</div>
-					<UserBox direction="right" username={isAI ? 'you' : 'player 2'} userImage={''} />
+					<UserBox direction="right" username={isAI ? 'you' : 'player 2'} userImage={ isAI ? state.userData?.profile_image : '' } />
 				</motion.div>
 				<motion.div
 				initial={{opacity: 0, top: '-5rem'}}

@@ -38,8 +38,8 @@ const Game = forwardRef((props: Props, ref: any) => {
 	}, [])
 
 	return (
-		<div className="w-full">
-			<LayoutHeader>Playing...</LayoutHeader>
+		<div className="flex flex-col items-center w-full">
+			<LayoutHeader className="w-full">Playing...</LayoutHeader>
 			<div ref={refParent} className="flex flex-col h-full max-w-[1200px] w-full justify-between items-center gap-[26px]">
 				<Header isAI={props.isAI} counter={props.counter} setCounter={props.setCounter} status={props.status} setStatus={props.setStatus} leftScore={props.leftScore} rightScore={props.rightScore} minutes={props.minutes} seconds={props.seconds} />
 				<Table ref={ref} isAI={props.isAI} rightMoves={props.rightMoves} leftMoves={props.leftMoves} status={props.status} counter={props.counter} setCounter={props.setCounter} gameLogic={props.gameLogic} width={width} leftPaddle={props.leftPaddle} rightPaddle={props.rightPaddle} />
