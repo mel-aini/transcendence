@@ -9,6 +9,7 @@ import useIsOnline from "../hooks/useIsOnline";
 import { useNavigate } from "react-router-dom";
 import { LuMessagesSquare } from "react-icons/lu";
 import { usePingPongContext } from "../contexts/pingPongProvider";
+import { useAuthContext } from "../contexts/authProvider";
 
 interface Props {
 	notData: INotification
@@ -16,7 +17,8 @@ interface Props {
 
 const Notification = ({ notData }: Props) => {
 	const { lastJsonMessage, sendJsonMessage } = useGlobalWebSocketContext()
-	const { dispatch: chatDispatch } = useChatContext();
+	const { dispatch: chatDispatch, sendJsonMessage: sendChatJsonMessage } = useChatContext();
+	const { state: authState } = useAuthContext();
 	const [data, setData] = useState(notData);
 	const navigate = useNavigate();
 	const isOnline = useIsOnline();
@@ -77,12 +79,12 @@ const Notification = ({ notData }: Props) => {
 
 	const goToChat = async () => {
 		if (data.type != 'message') return;
-		navigate('/chat')
-		chatDispatch({type: 'CONVERSATION', conversation: {
-			id: notData.id,
-			state: 'loading'
-		}});
-	
+		sendChatJsonMessage({
+			type: 'getConversation',
+			user1: authState.username, 
+			user2: notData.sender
+		})
+		navigate('/chat');
 		const userData = await api.get('users/' + notData.sender);
 		chatDispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: userData.data.username,

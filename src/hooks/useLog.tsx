@@ -8,15 +8,13 @@ const useLog = () => {
 
 	const action = async (type: 'LOGIN' | 'LOGOUT') => {
 		switch (type) {
-			case 'LOGIN':
-				// code
-				break;
 			case 'LOGOUT':
 				// code
 				try {
 					await api.post('logout/');
 					dispatch({type: 'TOKEN', token: null})
-					navigate('/')
+					navigate('/');
+					window.location.reload();
 				} catch (error) {
 					
 				}

@@ -11,7 +11,6 @@ import { WS_END_POINT } from "../utils/urls";
 
 type Url = string;
 type Username = string;
-type State = 'read' | 'unread' | 'sent'
 
 interface Header {
 	username: Username
@@ -29,7 +28,7 @@ export interface Conversation {
 	last_date: string
 	last_message: string
 	sender: Username
-	status: State
+	status: boolean
 }
 
 interface OnlineFriend {
@@ -167,7 +166,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	const { state: authState } = useAuthContext();
 	const [isReconnect, setIsReconnect] = useState(false);
 	const { dispatch: notDispatch } = useNotificationsContext();
-	const navigate = useNavigate();
 
 	function setErrorInLastMessage() {
 		if (state.lastMessage != null) {
@@ -245,14 +243,15 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	  )
 
 	useEffect(() => {
-		// console.log('new message')
-		// console.log(lastJsonMessage);
+		console.log('new message')
+		console.log(lastJsonMessage);
 
 		if (lastJsonMessage) {
 			if (lastJsonMessage.online) {
 				dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})
 			}
 			if (lastJsonMessage.conversations) {
+				console.table(lastJsonMessage);
 				dispatch({type: 'CONVERSATIONS', conversations: lastJsonMessage.conversations})
 			}
 			if (lastJsonMessage.messages) {
@@ -338,12 +337,17 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				dispatch({type: 'ONLINE', onlineFriends: newList})
 			}
 			if (lastJsonMessage.type == 'getConversation') {
-				// console.log('trying to open chat with this friend');
+				console.log('trying to open chat with this friend');
 				dispatch({type: 'FOCUS', state: true})
 				dispatch({type: 'CONVERSATION', conversation: {
 					id: lastJsonMessage.id,
 					state: 'loading'
 				}});
+				sendJsonMessage({
+					type: 'messages',
+					conversation_id: lastJsonMessage.id,
+					user_id: authState.user_id
+				})
 			}
 		}
 	}, [lastJsonMessage])

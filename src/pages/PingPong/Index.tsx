@@ -7,26 +7,6 @@ import { useGlobalContext } from "../../contexts/store";
 import { SectionHeader } from "../Settings/Index";
 import LocalGameChoise from "./LocalGameChoise";
 
-interface Props extends ComponentProps<'div'> {
-	className?: string,
-	title: string,
-	description: string
-}
-
-function PlayChoise({className, title, description, ...props}: Props) {
-	return ( 
-		<div 
-			className={"bg-secondary h-[370px] rounded-md cursor-pointer" + (className ? ` ${className}` : '')}
-			{...props}
-			>
-			<div className="rounded-md border border-border w-full h-full bg-gradient flex flex-col justify-between p-5">
-				<h1 className="text-3xl font-medium">{title}</h1>
-				<p className="font-extralight">{description}</p>
-			</div>
-		</div>
-	);
-}
-
 function Index() {
 	const navigate = useNavigate();
 	const { readyState } = useTournamentContext();

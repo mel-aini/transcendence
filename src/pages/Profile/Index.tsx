@@ -24,6 +24,10 @@ const Index = () => {
 	const { dispatch: authDispatch } = useAuthContext();
 
 	useEffect(() => {
+		authDispatch({type: 'TOKEN', token: null})
+	}, [])
+	
+	useEffect(() => {
 		if (!isLoading)
 		{
 			dispatchProfile({type: "USER_DATA", userData: data?.data});
