@@ -187,6 +187,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 		const newArr = state.conversations.filter((conv: Conversation) => {
 			const condition = conv.id != id;
 			if (!condition) {
+				console.log('conv to update');
+				console.log(conv);
 				OldConv = {...conv};
 			}
 			return condition;

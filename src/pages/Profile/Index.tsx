@@ -22,10 +22,6 @@ const Index = () => {
 	const { state, dispatchProfile } = useProfileContext();
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
-
-	useEffect(() => {
-		authDispatch({type: 'TOKEN', token: null})
-	}, [])
 	
 	useEffect(() => {
 		if (!isLoading)
