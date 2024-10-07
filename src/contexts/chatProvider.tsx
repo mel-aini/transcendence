@@ -8,6 +8,7 @@ import Modal from "../components/Modal";
 import { useNotificationsContext } from "./notificationsProvider";
 import { useNavigate } from "react-router-dom";
 import { WS_END_POINT } from "../utils/urls";
+import api from "../api/axios";
 
 type Url = string;
 type Username = string;
@@ -182,24 +183,40 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 		}
 	}
 
-	const updateConversations = (id: string | number, data: updatedConv) => {
+	const updateConversations = async (id: string | number, data: updatedConv) => {
 		let OldConv: Conversation | any = {};
 		const newArr = state.conversations.filter((conv: Conversation) => {
 			const condition = conv.id != id;
 			if (!condition) {
-				console.log('conv to update');
 				console.log(conv);
 				OldConv = {...conv};
 			}
 			return condition;
 		})
 
-		if (newArr.length != state.conversation.length) {
-			OldConv.last_date = data.last_date
-			OldConv.last_message = data.last_message
-			OldConv.sender = data.sender
-			OldConv.status = data.status
+		OldConv.last_date = data.last_date
+		OldConv.last_message = data.last_message
+		OldConv.sender = data.sender
+		OldConv.status = data.status
+		console.log(newArr.length, state.conversations.length)
+		if (newArr.length == state.conversations.length) {
+			console.log('equal')
+			console.log(data.sender, authState.username)
+			// new conversation
+			if (data.sender != authState.username) {
+				console.log('conv not found')
+				const userData = await api.get('users/' + data.sender);
+				OldConv.id = id;
+				OldConv.friend = {
+					avatar: userData.data.profile_image,
+					online: userData.data.online,
+					username: userData.data.username
+				}
+			}
 		}
+		
+		console.log('new conv');
+		console.table(OldConv)
 		newArr.unshift(OldConv);
 		// console.log(OldConv.username != state.conversation_header.username)
 		if (OldConv.username != state.conversation_header.username && OldConv.sender != authState.username) {

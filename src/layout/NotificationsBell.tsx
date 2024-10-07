@@ -48,7 +48,11 @@ function NotificationBell({dropMenuType, setDropMenu}: Props) {
 
 	useEffect(() => {
 		if (state.newNotifications.length > 0) {
-			dispatch({type: 'MARK_IS_READ', payload: false});
+			state.newNotifications.forEach(not => {
+				if (not.type != 'message') {
+					dispatch({type: 'MARK_IS_READ', payload: false});
+				}
+			})
 		}
 	}, [state.newNotifications])
 
