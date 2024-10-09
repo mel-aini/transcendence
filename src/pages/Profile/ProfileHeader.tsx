@@ -14,30 +14,41 @@ const ProfileHeader = () => {
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	const { id } = useParams();
 	const formRef = useRef<HTMLFormElement>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const changehandler = async (e: any) => {
-		const newImage = e.currentTarget.files[0];
-		if (!newImage) return ;
-		else if (newImage.size > 1048576) {
-			dispatch({type: 'ALERT', content: "failed: Maximum file size is 1MB."});
-			return ;
-		}
-		const formData = new FormData(formRef.current);
-		const res = await api.post("upload-avatar/", formData);
-		if (res.status === 200)
-		{
-			dispatch({type: 'ALERT', content: "Profile image changed successfuly."});
-			dispatchProfile({type: "USER_DATA", userData: {...state.userData, profile_image: res.data.url}});
+		try {
+			console.log("here image");
+			
+			const newImage = e.currentTarget.files[0];
+			if (!newImage) return ;
+			else if (newImage.size > 1048576) {
+				dispatch({type: 'ALERT', content: "failed: Maximum file size is 1MB."});
+				return ;
+			}
+			const formData = new FormData(formRef.current);
+			const res = await api.post("upload-avatar/", formData);
+			console.log(res);
+			
+			if (res.status === 200)
+			{
+				dispatch({type: 'ALERT', content: "Profile image changed successfuly."});
+				dispatchProfile({type: "USER_DATA", userData: {...state.userData, profile_image: res.data.url}});
+			}
+		} catch (err: any) {
+			dispatch({type: 'ALERT', content: err.response.data.error});
+		} finally {
+			inputRef.current && (inputRef.current.value = '');
 		}
 	}
 
-	useEffect(() => {
-		if (id)
-		{
-			const checkOnline = setInterval(() => sendJsonMessage( { type: "online", identifier: state.userData?.username } ), 10000);
-			return () => clearInterval(checkOnline);
-		}
-	}, [state.userData]);
+	// useEffect(() => {
+	// 	if (id)
+	// 	{
+	// 		const checkOnline = setInterval(() => sendJsonMessage( { type: "online", identifier: state.userData?.username } ), 10000);
+	// 		return () => clearInterval(checkOnline);
+	// 	}
+	// }, [state.userData]);
 
 	return (
 		<>
@@ -56,7 +67,7 @@ const ProfileHeader = () => {
 								(!id) &&
 								<form ref={formRef} className="duration-300 hover:opacity-100 opacity-0 w-full h-full bg-[#000000CC]">
 									<label htmlFor="avatar_link" className="absolute -translate-y-1/2 top-1/2 -translate-x-1/2 left-1/2 cursor-pointer"><img src={edit_icon} alt="" width={32} height={32} /></label>
-									<input onChange={(e) => changehandler(e)} type="file" name="avatar_link" accept="image/*" id="avatar_link" className="hidden" />
+									<input ref={inputRef} onChange={(e) => changehandler(e)} type="file" name="avatar_link" accept="image/*" id="avatar_link" className="hidden" />
 								</form>
 							}
 						</div>
