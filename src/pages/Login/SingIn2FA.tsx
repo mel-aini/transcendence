@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import callToApi from "../../utils/callToApi";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useGlobalContext } from "../../contexts/store";
+import { useAuthContext } from "../../contexts/authProvider";
 
 interface Props {
     setIsTwoFA: Dispatch<SetStateAction<boolean>>
@@ -13,6 +14,7 @@ const SignIn2FA = ({setIsTwoFA}: Props) => {
     const [otpCode, setOtpCode] = useState('');
     const navigate = useNavigate();
     const { dispatch } = useGlobalContext();
+    const { dispatch: authDispatch } = useAuthContext();
     const [error, setError] = useState('');
     // const
     const handleSubmit = async () => {
@@ -31,8 +33,8 @@ const SignIn2FA = ({setIsTwoFA}: Props) => {
         try {
             const res = await callToApi('2fa/', data);
             setError('');
-            dispatch({type: 'LOGIN', jwt: res.jwt});
-            navigate('/profile');
+            authDispatch({type: 'TOKEN', token: res.access_token});
+            navigate('/dashboard');
         
         } catch (error) {
             setError('invalid code')

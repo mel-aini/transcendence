@@ -368,6 +368,22 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					user_id: authState.user_id
 				})
 			}
+			if (lastJsonMessage.type == 'update_after_accept_request') {
+				// add to online friends
+				const friend: OnlineFriend = {
+					username: lastJsonMessage.online.username,
+					avatar_link: lastJsonMessage.online.avatar_link,
+					id: lastJsonMessage.online.id,
+					isOnline: lastJsonMessage.online.is_online,
+					conversation_id: lastJsonMessage.conversation.id
+				}
+				const newList = [...state.onlineFriends, friend]
+				dispatch({type: 'ONLINE', onlineFriends: newList})
+				// add to conversation list
+			}
+			if (lastJsonMessage.type == 'delete_data') {
+				// delete friend from online friends when unfriend
+			}
 		}
 	}, [lastJsonMessage])
 

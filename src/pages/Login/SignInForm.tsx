@@ -90,7 +90,7 @@ const SignInForm = ({setIsTwoFA, setIsForgetPassword}: Props) => {
 					localStorage.setItem('tfa', res.TFA.token);
 					setIsTwoFA(true);
 				} else {
-					authDispatch({type: 'TOKEN', token: res.access_token});
+					authDispatch({type: 'TOKEN', token: res.access_token})
 					setInvalidLogin(false);
 					navigate(location.state?.refer || '/dashboard', { 
 						replace: true, 
