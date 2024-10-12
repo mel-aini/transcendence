@@ -6,6 +6,7 @@ import { useGlobalContext } from "../../contexts/store";
 import callToApi from "../../utils/callToApi";
 import Button from "../../components/Button";
 import { API_END_POINT } from "../../utils/urls";
+import Loading from "../../components/Loading";
 
 interface IBody {
 	username: string,
@@ -31,7 +32,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 	const [formError, setFormError] = useState<string>('');
 	// const [email, setEmail] = useState<string>('');
 	const [submit, setSubmit] = useState<boolean>(false);
-	const { dispatch } = useGlobalContext();
+	const { state, dispatch } = useGlobalContext();
 	const [formState, parseInput] = useInputChecker(API_END_POINT + 'register/');
 
 	useEffect(() => {
@@ -41,6 +42,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 	}, [submit])
 
 	const submitForm = async () => {
+		dispatch({type: 'LOADING', state: true})
 		const data: IResponse = {
 			type: "normal",
 			data : {
@@ -86,7 +88,6 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 		if (email.value == '') return;
 		
 		setSubmit(true);
-		dispatch({type: 'LOADING', state: true});
 	}
 
 	return (
@@ -103,13 +104,14 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 					/>
 					{formState[1].isError && <p className="text-sm self-end text-invalid">{formState[1].error}</p>}
 				</div>
-				<Button 
-					type="submit" 
-					onClick={submitHandler}
+				<Button
+					disabled={state.isLoading}
+					type="submit"
 					>
 						continue with email
 				</Button>
 			</form>
+			{/* <Loading /> */}
 		</>
 	)
 }

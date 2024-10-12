@@ -1,12 +1,11 @@
 import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
 import { useAuthContext } from "./authProvider";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { dateMeta, getDate } from "../utils/global";
+import { dateMeta } from "../utils/global";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Modal from "../components/Modal";
 import { useNotificationsContext } from "./notificationsProvider";
-import { useNavigate } from "react-router-dom";
 import { WS_END_POINT } from "../utils/urls";
 import api from "../api/axios";
 
@@ -194,30 +193,30 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			return condition;
 		})
 
-		OldConv.last_date = data.last_date
-		OldConv.last_message = data.last_message
-		OldConv.sender = data.sender
-		OldConv.status = data.status
-		console.log(newArr.length, state.conversations.length)
-		if (newArr.length == state.conversations.length) {
-			console.log('equal')
-			console.log(data.sender, authState.username)
-			// new conversation
-			if (data.sender != authState.username) {
-				console.log('conv not found')
-				const userData = await api.get('users/' + data.sender);
-				OldConv.id = id;
-				OldConv.friend = {
-					avatar: userData.data.profile_image,
-					online: userData.data.online,
-					username: userData.data.username
-				}
-			}
-		}
+		// OldConv.last_date = data.last_date
+		// OldConv.last_message = data.last_message
+		// OldConv.sender = data.sender
+		// OldConv.status = data.status
+		// OldConv.friend = data.friend
+		// console.log(newArr.length, state.conversations.length)
+		// if (newArr.length == state.conversations.length) {
+		// 	console.log('equal')
+		// 	console.log(data.sender, authState.username)
+		// 	// new conversation
+		// 	if (data.sender != authState.username) {
+		// 		console.log('conv not found')
+		// 		const userData = await api.get('users/' + data.sender);
+		// 		OldConv.id = id;
+		// 		OldConv.friend = {
+		// 			avatar: userData.data.profile_image,
+		// 			online: userData.data.online,
+		// 			username: userData.data.username
+		// 		}
+		// 	}
+		// }
 		
-		console.log('new conv');
-		console.table(OldConv)
-		newArr.unshift(OldConv);
+		console.log('new conv', data);
+		newArr.unshift(data);
 		// console.log(OldConv.username != state.conversation_header.username)
 		if (OldConv.username != state.conversation_header.username && OldConv.sender != authState.username) {
 			notDispatch({type: 'PUSH_NOTIFICATION', notification: {
@@ -321,12 +320,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			if (lastJsonMessage.type == 'conversation_update') {
 				// const newArr = state.conversations.filter
-				updateConversations(lastJsonMessage.data.id, {
-					last_date: lastJsonMessage.data.last_date,
-					last_message: lastJsonMessage.data.last_message,
-					sender: lastJsonMessage.data.sender,
-					status: lastJsonMessage.data.status
-				});
+				updateConversations(lastJsonMessage.data.id, lastJsonMessage.data);
 			}
 			if (lastJsonMessage.type == 'update_data') {
 				// for update online users status
@@ -382,7 +376,27 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				// add to conversation list
 			}
 			if (lastJsonMessage.type == 'delete_data') {
-				// delete friend from online friends when unfriend
+				const newConvs = state.conversations.filter((conv: Conversation) => {
+					return conv.id != lastJsonMessage.conversation
+				})
+				dispatch({type: 'CONVERSATIONS', conversations: [...newConvs]})
+				// filter online friends based on lastJsonMessage.user.id
+				const newFriends = state.onlineFriends.filter((friend: OnlineFriend) => {
+					return friend.username != lastJsonMessage.user.username
+				})
+				dispatch({type: 'ONLINE', onlineFriends: newFriends})
+			}
+			if (lastJsonMessage.error) {
+				// trying to send message after unfriend
+				dispatch({type: 'MESSAGE', message: {
+					content: state.lastMessage.content,
+					date: "2024-06-27 12:58:51",
+					sender: authState.username,
+					receiver: state.conversation_header.username,
+					id: null,
+					state: 'error'
+				}});
+				dispatch({type: 'LAST_MESSAGE', message: null});
 			}
 		}
 	}, [lastJsonMessage])

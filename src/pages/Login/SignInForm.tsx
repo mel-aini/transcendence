@@ -1,12 +1,13 @@
 import Input from "../../components/Input";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { invalidColor } from "../../utils/colors";
 import { useGlobalContext } from "../../contexts/store";
 import callToApi from "../../utils/callToApi";
 import OAuthBar from "../Sign-up/OAuthBar";
 import Button from "../../components/Button";
 import { useAuthContext } from "../../contexts/authProvider";
+import Loading from "../../components/Loading";
 
 interface IResponse {
 	type: string,
@@ -22,17 +23,16 @@ interface IResponse {
 
 interface Props {
 	setIsTwoFA: Dispatch<SetStateAction<boolean>>
-	setIsForgetPassword: Dispatch<SetStateAction<boolean>>
 }
 
-const SignInForm = ({setIsTwoFA, setIsForgetPassword}: Props) => {
+const SignInForm = ({ setIsTwoFA }: Props) => {
 	const [username, setUsername] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const [isValidUsername, setIsValidUsername] = useState<boolean>(true);
 	const [isValidPassword, setIsValidPassword] = useState<boolean>(true);
 	const [invalidLogin, setInvalidLogin] = useState<boolean>(false);
 	const [emptyInput, setEmptyInput] = useState<boolean>(false);
-	const { dispatch } = useGlobalContext();
+	const { state, dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -61,6 +61,7 @@ const SignInForm = ({setIsTwoFA, setIsForgetPassword}: Props) => {
 
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
+		dispatch({type: 'LOADING', state: true});
 
 		const data: IResponse = {
 			type: "normal",
@@ -74,7 +75,6 @@ const SignInForm = ({setIsTwoFA, setIsForgetPassword}: Props) => {
 			refer: "/game/101123542145"
 		}
 		
-		dispatch({type: 'LOADING', state: true});
 		try {
 				if (username == '' || password == '')
 				{
@@ -105,7 +105,6 @@ const SignInForm = ({setIsTwoFA, setIsForgetPassword}: Props) => {
 			setInvalidLogin(true);
 		}
 		dispatch({type: 'LOADING', state: false});
-
 	}
     return (
         <>
@@ -128,15 +127,20 @@ const SignInForm = ({setIsTwoFA, setIsForgetPassword}: Props) => {
 						type="password" 
 						placeholder="password"
 					/>
-					<p onClick={() => setIsForgetPassword(true)} className="text-sm self-end text-gray1 hover:underline cursor-pointer">forget password?</p>
+					<Link to='/forget-password' className="self-end">
+						<p className="text-sm text-gray1 hover:underline cursor-pointer">forget password?</p>
+					</Link>
 					{(!isValidUsername && !invalidLogin && !emptyInput) ? <p className="text-sm self-end text-invalid">Invalid username</p> : ''}
 					{(!isValidPassword && isValidUsername && !invalidLogin && !emptyInput) ? <p className="text-sm self-end text-invalid">Password field should not be blank</p> : ''}
 					{(emptyInput && !invalidLogin) ? <p className="text-sm self-end text-invalid">Please fill the Sign In form</p> : ''}
 					{(invalidLogin) ? <p className="text-sm self-end text-invalid">invalid Username or Password</p> : ''}
 				</div>
-				<Button 
+				<Button
+					onClick={(e) => submitHandler(e)}
+					disabled={state.isLoading}
 					type="submit">Sign In
 				</Button>
+				<Loading />
 			</form>
 		</>
     );

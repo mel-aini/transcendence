@@ -7,6 +7,7 @@ import { useGlobalContext } from "../../contexts/store";
 import callToApi from "../../utils/callToApi";
 import Button from "../../components/Button";
 import { API_END_POINT } from "../../utils/urls";
+import Loading from "../../components/Loading";
 
 interface IBody {
 	username: string,
@@ -31,7 +32,7 @@ const RemainForm = ({email}: Props) => {
 	const [password, setPassword] = useState<string>('');
 	const [retypePassword, setRetypePassword] = useState<string>('');
 	const [submit, setSubmit] = useState<boolean>(false);
-	const { dispatch } = useGlobalContext();
+	const { state, dispatch } = useGlobalContext();
 	const navigate = useNavigate();
 	const [formState, parseInput, makeRequest] = useInputChecker(API_END_POINT + 'register/');
 
@@ -68,6 +69,7 @@ const RemainForm = ({email}: Props) => {
 	}, [formState])
 
 	const submitForm = async () => {
+		dispatch({type: 'LOADING', state: true})
 		const data: IResponse = {
 			type: "normal",
 			data : {
@@ -148,12 +150,13 @@ const RemainForm = ({email}: Props) => {
 				{formError != '' && <p className="text-sm self-end text-invalid">{formError}</p>}
 				</div>
 				<Button 
-					type="submit" 
-					onClick={submitHandler}
+					type="submit"
+					disabled={state.isLoading}
 					>
 						complete Sign up
 				</Button>
 			</form>
+			{/* <Loading /> */}
 		</>
 	)
 }

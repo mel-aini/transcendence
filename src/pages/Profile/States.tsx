@@ -1,4 +1,4 @@
-import { darkColor, primaryColor, secondaryColor, thirdColor } from "../../utils/colors";
+import { darkColor, primaryColor } from "../../utils/colors";
 import { UserData } from "../../types/profile";
 import { motion } from "framer-motion";
 import { ComponentProps, useEffect, useState } from "react";

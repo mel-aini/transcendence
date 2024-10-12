@@ -19,6 +19,7 @@ const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
 const Login = lazy(() => import('./pages/Login/Index'));
 const SignUp = lazy(() => import('./pages/Sign-up/Index'));
+const ForgetPassword = lazy(() => import('./pages/ForgetPassword/Index'));
 const Profile = lazy(() => import('./pages/Profile/Index'));
 const Settings = lazy(() => import('./pages/Settings/Index'));
 const Dashboard = lazy(() => import('./pages/Dashboard/Index'));
@@ -43,6 +44,7 @@ function App() {
                       <Route index element={<Home />} />
                       <Route path="/signup" element={withoutAuth(SignUp)} />
                       <Route path="/login" element={withoutAuth(Login)} />
+                      <Route path="/forget-password" element={withoutAuth(ForgetPassword)} />
                       {/* <Route path="/chat" element={withAuth(Chat)} /> */}
                       <Route element={withAuth(Layout)}>
                         <Route path="/chat" element={<Chat />} />
