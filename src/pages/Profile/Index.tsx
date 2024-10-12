@@ -47,11 +47,6 @@ const Index = () => {
 		}
 	} ,[isRefetching])
 
-	if (isLoading) {
-		return (
-			<h1>loading...</h1>
-		)
-	}
 
 	if (isError) {
 		return (
@@ -60,25 +55,19 @@ const Index = () => {
 	}
 
 	return (
-			<div className="flex flex-col justify-center items-center relative">
-				<ProfileHeader />
-				{
-					state.userData?.relation !== 'you' &&
-					<div className="w-full 2xl:px-0 ">
-						<div className="xl:h-[800px] grid grid-cols-1 pt-20 xl:grid-cols-7 xl:mt-[75px] gap-5 pb-7">
-								<States data={state.userData} />
-								<Friends />
-							{
-								state.userData
-								?
-								<History />
-								:
-								<div>Loading...</div>
-							}
-						</div>
+		<div className="flex flex-col justify-center items-center relative">
+			<ProfileHeader isLoading={isLoading} />
+			{
+				state.userData?.relation !== 'you' &&
+				<div className="w-full 2xl:px-0 ">
+					<div className="xl:h-[800px] grid grid-cols-1 pt-20 xl:grid-cols-7 xl:mt-[75px] gap-5 pb-7">
+						<States isLoading={isLoading} />
+						<Friends />
+						<History />
 					</div>
-				}
-			</div>
+				</div>
+			}
+		</div>
 	);
 }
 

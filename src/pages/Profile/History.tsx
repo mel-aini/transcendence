@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import HistoryChart from "./HistoryChart";
 import { delay, motion } from "framer-motion";
 import { MatchesData, ProfileRes } from "../../types/profile";
-import fetchProfile from "./fetchProfile";
 import { useGlobalContext } from "../../contexts/store";
 import { useNavigate, useParams } from "react-router-dom";
 import Container from "../../components/Container";
@@ -53,7 +52,17 @@ const History = () => {
 
 	if (isLoading) {
 		return (
-			<h1>Loading...</h1>
+			<div ref={parentRef} className="row-start-5 xl:row-start-1 xl:row-span-2 xl:col-start-4 xl:col-end-8 animate-pulse">
+				<Container className="h-full" childClassName="flex flex-col justify-around pt-12 sm:pt-8 pb-9 items-center">
+					<h1 className="text-2xl font-semibold">last 10 matches</h1>
+					<span style={{width: `${width * 80 / 100}px`}} className="px-4 sm:px-10 md:px-12 lg:px-16 my-24 md:my-28 bg-[#2F2F2F] rounded-lg h-[200px]" />
+						<div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col justify-between items-center gap-3">
+						{
+							[1, 2, 3].map((key: number) => <div key={key} className="flex justify-between items-center min-h-[40px] w-full select-none gap-1 h-[24px] bg-[#2F2F2F] rounded-lg" />)
+						}
+						</div>
+				</Container>
+			</div>
 		)
 	}
 
@@ -71,12 +80,7 @@ const History = () => {
 		<div ref={parentRef} className="row-start-5 xl:row-start-1 xl:row-span-2 xl:col-start-4 xl:col-end-8">
 			<Container className="h-full" childClassName="flex flex-col justify-around pt-12 sm:pt-8 pb-9 items-center">
 					<h1 className="text-2xl font-semibold">last 10 matches</h1>
-					{
-						state.matchesData ?
-						<HistoryChart width={(width) * 80 / 100} height={200} data={state.matchesData}/>
-						:
-						<div>Loading...</div>
-					}
+					<HistoryChart width={(width) * 80 / 100} height={200} data={state.matchesData}/>
 					<motion.div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col justify-between items-center gap-3 overflow-auto scrollClass"
 						initial="hidden"
 						animate="visible"
@@ -104,12 +108,9 @@ const History = () => {
 								variants={variant}
 								>
 									<div className="grid grid-cols-3 place-items-center h-full w-1/5">
-										{/* <div > */}
 											{(status == "win") && <img className="w-[24px] h-[24px]" src={win}/>}
 											{(status == "lose") && <img className="w-[25px] h-[25px]" src={loss}/>}
 											{(status == "draw") && <RxValueNone className="text-2xl " />}
-										{/* </div> */}
-										{/* <div className={`flex justify-between ` + (status == "lose" ? "flex-row-reverse" : "")}> */}
 										{
 											status == "lose"
 											?
@@ -123,7 +124,6 @@ const History = () => {
 												<span className="">{match.opponent.goals}</span>
 											</>
 										}
-										{/* </div> */}
 									</div>
 									<div className="flex justify-between items-center px-4 rounded-md border border-border w-4/5 h-full">
 										<div onClick={() =>userClick(match.opponent.profile)} className="flex justify-between items-center cursor-pointer gap-3">

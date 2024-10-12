@@ -1,16 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import Loading from "./components/Loading";
 import GlobalContextProvider from "./contexts/store";
 import Layout from "./layout/Layout";
 import MainLayout from "./MainLayout";
-import PingPongContextProvider from "./contexts/pingPongProvider";
 import { Suspense, lazy } from "react";
 import LoadingPage from "./components/LoadingPage";
 import withAuth from  './guards/withAuth'
 import withoutAuth from  './guards/withoutAuth'
 import AuthContextProvider from "./contexts/authProvider";
-import GlobalWebSocketContextProvider, { GlobalWebSocketContext } from "./contexts/globalWebSokcketStore";
-// import withProfile from "./guards/withProfile";
 import GameLayout from "./pages/PingPong/GameLayout";
 import TournamentLayout from "./guards/TournamentLayout";
 import NotificationsProvider from "./contexts/notificationsProvider";
@@ -36,7 +32,6 @@ function App() {
   return (
 		<NotificationsProvider>
       <AuthContextProvider>
-                {/* <GlobalWebSocketContextProvider> */}
             <GlobalContextProvider>
                 <Suspense fallback={<LoadingPage />}>
                   <Routes>
@@ -86,7 +81,6 @@ function App() {
                   </Routes>
                 </Suspense>
           </GlobalContextProvider>
-                {/* </GlobalWebSocketContextProvider> */}
         </AuthContextProvider>
     </NotificationsProvider>
   )

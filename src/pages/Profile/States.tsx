@@ -3,8 +3,39 @@ import { UserData } from "../../types/profile";
 import { motion } from "framer-motion";
 import { ComponentProps, useEffect, useState } from "react";
 import Container from "../../components/Container";
+import { useProfileContext } from "../../contexts/profileStore";
 
-const WinsAndLoses = ({total, wins}: {total: number, wins: number}) => {
+const Skeleton = () => {
+	return (
+		<div className="row-span-3 row-start-2 xl:row-span-1 xl:row-start-1 xl:col-start-1 xl:col-end-4 animate-pulse">
+			<Container className="h-full" childClassName="flex flex-col justify-between p-5 sm:p-10 gap-20">
+				<div className="">
+					<h1 className="self-start text-2xl font-semibold mb-3">States</h1>
+					<div className="flex flex-col sm:flex-row gap-3 sm:justify-between w-full">
+						<span className="w-[90px] h-[28px] rounded-full bg-[#2F2F2F]" />
+						<div className='flex flex-col sm:flex-row sm:items-center gap-5'>
+							<div className="flex gap-3 text-xl items-center">
+								<span className="w-[20px] h-[20px] bg-primary"></span>
+								<span className="w-[66px] h-[28px] bg-[#2F2F2F] rounded-full" />
+							</div>
+							<div className="flex gap-3 text-xl items-center">
+								<span className="w-[20px] h-[20px] bg-dark"></span>
+								<span className="w-[66px] h-[28px] bg-[#2F2F2F] rounded-full" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className="relative w-full aspect-square max-w-[300px] self-center rounded-full sm:shrink-0"
+					style={{ background: `conic-gradient(from -90deg, #2F2F2F 0%, #2F2F2F 100%)` }}>
+					<div className="absolute inset-[20%] sm:inset-[60px] rounded-full bg-bg"></div>
+				</div>
+			</Container>
+		</div>
+	)
+}
+
+const WinsAndLoses = ({total, wins}: {total?: number, wins?: number}) => {
+	const loss: number = (total ? total : 0) - (wins ? wins : 0);
 
 	return (
 		<div className='flex flex-col sm:flex-row sm:items-center gap-5'>
@@ -14,7 +45,7 @@ const WinsAndLoses = ({total, wins}: {total: number, wins: number}) => {
 			</div>
 			<div className="flex gap-3 text-xl items-center">
 				<span className="w-[20px] h-[20px] bg-dark"></span>
-				<h3>{total - wins} losses</h3>
+				<h3>{loss} losses</h3>
 			</div>
 		</div>
 	)
@@ -46,26 +77,25 @@ const Nisba = ({percentage, className, ...props}: NisbaProps) => {
 	)
 }
 
-interface Props {
-	data: UserData | null
-}
+const States = ({isLoading}: {isLoading: boolean}) => {
+	const { state } = useProfileContext();
 
-const States = ({data}: Props) => {
-
-	if (!data) return (
-		<p>loading...</p>
+	
+	if (isLoading) return (
+		<Skeleton />
 	);
 
-	const percentage = (data.matches.total != 0 ? parseFloat(((data.matches.wins / data.matches.total) * 100).toString()).toFixed(2) : 0) + '%';
+	
+	const percentage: string = state.userData ? (state.userData.matches.total != 0 ? parseFloat(((state.userData.matches.wins / state.userData.matches.total) * 100).toString()).toFixed(0) : 0) + '%' : '0%';
 
 	return (
 		<div className="row-span-3 row-start-2 xl:row-span-1 xl:row-start-1 xl:col-start-1 xl:col-end-4">
-			{data && <Container className="h-full" childClassName="flex flex-col justify-between p-5 sm:p-10 gap-20">
+			<Container className="h-full" childClassName="flex flex-col justify-between p-5 sm:p-10 gap-20">
 				<div className="">
 					<h1 className="self-start text-2xl font-semibold mb-3">States</h1>
 					<div className="flex flex-col sm:flex-row gap-3 sm:justify-between w-full">
-						<h3 className="text-xl">games: {data.matches.total}</h3>
-						<WinsAndLoses total={data.matches.total} wins={data.matches.wins} />
+						<h3 className="text-xl">games: {state.userData?.matches.total}</h3>
+						<WinsAndLoses total={state.userData?.matches.total} wins={state.userData?.matches.wins} />
 					</div>
 				</div>
 				<motion.div
@@ -92,7 +122,7 @@ const States = ({data}: Props) => {
 					<div className="absolute inset-[20%] sm:inset-[60px] rounded-full bg-bg"></div>
 					<Nisba className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" percentage={parseFloat(percentage)}/>
 				</motion.div>
-			</Container>}
+			</Container>
 		</div>
 	)
 }

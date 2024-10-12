@@ -32,13 +32,13 @@ function MatchMaking({isAI}: {isAI: boolean}) {
 				<span onClick={cancelAction} className="cursor-pointer hover:underline duration-300 select-none">cancel</span>
 			</div>
 			<div>
-				<div className="flex justify-between items-center gap-5 select-none h-44 border border-border rounded-lg px-10">
-					<div className="flex items-center gap-5 flex-1 justify-start">
+				<div className="flex justify-between items-center sm:flex-row flex-col gap-5 select-none py-4 border border-border rounded-lg px-10">
+					<div className="flex items-center gap-5 flex-1 justify-start self-start">
 						<User className="size-28 border-primary" border url={isAI ? '' : ''} />
 						<h3>{isAI ? 'AI' : 'player 2'}</h3>
 					</div>
 					<span>vs</span>
-					<div className="flex-1 flex justify-end items-center gap-5">
+					<div className="flex-1 flex justify-end items-center gap-5 self-end">
 						<h3>{ isAI ? 'you' : 'player 1' }</h3>
 						<User className="size-28 border-primary" border url={isAI ? state.userData?.profile_image : ''} />
 					</div>

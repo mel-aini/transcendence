@@ -12,7 +12,7 @@ const difficultyData: string[] = ["easy", "medium", "hard"];
 
 function Chose({type, data}: {type: "min" | "goals" | "difficulty", data: string[] | number[]}) {
 	const { state, dispatch } = useGlobalContext();
-	const index: number = data.indexOf((type === "min") ? state.localGameData.time : ((type === "goals") ? state.localGameData.goals : state.localGameData.difficulty));
+	const index: number = data.indexOf(((type === "min") ? state.localGameData.time : ((type === "goals") ? state.localGameData.goals : state.localGameData.difficulty)) as never);
 
 	const clickHandler = (e: any) => {
 		const value = e.target.value;
