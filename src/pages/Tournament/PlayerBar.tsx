@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from "react";
+import { LegacyRef, forwardRef, useEffect } from "react";
 import { Player, useTournamentContext } from "../../contexts/TournamentProvider";
 import { useGlobalContext } from "../../contexts/store";
 import { GiCrownOfThorns } from "react-icons/gi";
@@ -10,7 +10,7 @@ interface playerProp {
 	isWinner?: boolean,
 }
 
-const PlayerBar = forwardRef((props: playerProp, ref) => {
+const PlayerBar = forwardRef((props: playerProp, ref: LegacyRef<HTMLDivElement>) => {
 	const {state} = useTournamentContext();
 
 	return (

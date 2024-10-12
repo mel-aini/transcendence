@@ -67,7 +67,7 @@ const Table = ({width, isTournament}: {width: number, isTournament: boolean}) =>
 			<svg className="absolute w-[37.38%] h-full left-1/2 -translate-x-1/2">
 				<line x1={'100%'} x2={'0%'} y1={'0%'} y2={'100%'} className="stroke-1 stroke-border2" />
 			</svg>
-			<Box />
+			<Box isTournament={isTournament} />
 		</div>
 	)
 }

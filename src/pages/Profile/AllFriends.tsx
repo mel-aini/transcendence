@@ -4,11 +4,24 @@ import FriendBar from "./FriendBar"
 import { AnimatePresence, motion } from "framer-motion"
 import { useGlobalContext } from "../../contexts/store"
 import { useNavigate, useParams } from "react-router-dom"
-import fetchProfile from "./fetchProfile"
 import RelationBar from "./RelationBar"
 import { useProfileContext } from "../../contexts/profileStore"
 import api from "../../api/axios"
 import { useQuery } from "@tanstack/react-query"
+
+const Skeleton = () => {
+	return (
+		<div className="w-[600px] overflow-hidden bg-secondary p-5 sm:p-10 rounded-md space-y-5">
+			<div className="flex justify-between max-w-[268px] w-full gap-2 animate-pulse">
+			{
+				[1, 2, 3].map((key: number) => <div key={key} className='h-[36px] w-[60px] flex flex-col justify-between items-center bg-[#2F2F2F] rounded-lg' />)
+			}
+			</div>
+			<div className="w-full h-[40px] bg-[#2F2F2F] rounded-lg animate-pulse" />
+			<div className="h-[226px] pr-2 space-y-2 bg-[#2F2F2F] rounded-lg animate-pulse" />
+		</div>
+	)
+}
 
 async function fetchData(uri: string) {
 	const res = await api.get(uri + "/");
@@ -89,7 +102,7 @@ const AllFriends = () => {
 
 	if (isLoading) {
 		return (
-			<h1>loading...</h1>
+			<Skeleton />
 		)
 	}
 
@@ -154,7 +167,7 @@ const AllFriends = () => {
 						</>
 					}
 				</div>
-				<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="outline-none focus:border-[0.5px] w-full bg-transparent border-b-[0.5px] px-3 py-[9px] font-thin" />
+				<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="outline-none w-full bg-transparent border-b-[0.5px] px-3 py-[9px] font-thin" />
 				<div ref={refScroll} onScroll={scrollHandler} className="h-[226px] overflow-auto overscroll-none scrollClass pr-2 space-y-2">
 				{
 					state.friendsData && state.friendsData.length == 0 && <div className="text-center">empty list</div>

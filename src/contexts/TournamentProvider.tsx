@@ -1,4 +1,5 @@
 import { Dispatch, ReactNode, createContext, useCallback, useContext, useEffect, useReducer } from "react";
+import { useNavigate } from "react-router-dom";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 
@@ -73,6 +74,7 @@ const reducer = (state: TournamentData, action: any) => {
 
 const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	const navigate = useNavigate();
 
 	const initRounds = useCallback((): RoundData[] => {
 		const resetRoundData: RoundData[] = [];
@@ -111,9 +113,13 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 				console.log('WebSocket connected')
 				dispatch({type: "ROUND_DATA", roundData: initRounds()});
 				dispatch({type: "WINNER", winner: "player"});
+				navigate("/Tournament");
 			},
 			onClose: () => {
 				console.log('WebSocket disconnected');
+			},
+			onError: () => {
+				navigate("/dashboard");
 			},
 			share: false,
 			shouldReconnect: () => false,

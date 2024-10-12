@@ -1,14 +1,11 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Help from "./Help";
 import Ready from "./Ready";
 import { useEffect } from "react";
 import { usePingPongContext } from "../../../../contexts/pingPongProvider";
 import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 
-import { PiMouseLeftClickFill } from "react-icons/pi";
-import { MdTouchApp } from "react-icons/md";
-
-function Box() {
+function Box({isTournament}: {isTournament: boolean}) {
 	const { state, dispatch, sendJsonMessage } = usePingPongContext();
 	const {sendJsonMessage: sendInTournament} = useTournamentContext();
 
@@ -19,7 +16,7 @@ function Box() {
 		}, 1000);
 		if ((state.counter == 0) && (state.status == "ready"))
 		{
-			state.isTournament ?
+			isTournament ?
 			sendInTournament({
 				type: "start",
 			})
@@ -44,13 +41,7 @@ function Box() {
 					animate={{opacity: 1}}
 					transition={{duration: 0.3}}
 					className={`flex flex-col justify-between items-center absolute duration-150 bg-gray3 rounded-[10px] left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[42%] h-[50%]`}>
-					{/* {
-						(state.status == "ready") ?
-						<Ready counter={state.counter}/>
-						:
-						<Help />
-					} */}
-						<Ready counter={state.counter}/>
+					<Ready counter={state.counter}/>
 					<motion.div
 					initial={{width: '100%'}}
 					animate={{width: '0%'}}

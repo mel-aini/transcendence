@@ -1,11 +1,8 @@
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AllFriends from "./AllFriends";
-import { FriendsData, ProfileRes } from "../../types/profile";
-import { useGlobalContext } from "../../contexts/store";
+import { FriendsData } from "../../types/profile";
 import { useNavigate, useParams } from "react-router-dom";
-import fetchProfile from "./fetchProfile";
 import Container from "../../components/Container";
-import { useProfileContext } from "../../contexts/profileStore";
 import api from "../../api/axios";
 import { useQuery } from "@tanstack/react-query";
 import Modal from "../../components/Modal";
@@ -39,7 +36,17 @@ const Friends = () => {
 
 	if (isLoading) {
 		return (
-			<h1>loading...</h1>
+			<div className="row-start-1 xl:row-start-2 xl:col-start-1 xl:col-end-4 min-h-[134px] animate-pulse">
+				<Container className="h-full select-none" childClassName="relative flex flex-col justify-between items-center px-7 py-5">
+					<div className="relative flex justify-between items-center w-full">
+						<h1 className="text-2xl font-semibold">Friends</h1>
+						<span className="w-[49px] h-[24px] bg-[#2F2F2F] rounded-full"/>
+					</div>
+					<div className="flex justify-start items-center gap-3 w-full overflow-hidden">
+						{ [1,2,3,4,5].map((key: number) => <span key={key} className="min-w-[40px] h-[40px] bg-[#2F2F2F] rounded-full" /> ) }
+					</div>
+				</Container>
+			</div>
 		)
 	}
 
@@ -50,13 +57,11 @@ const Friends = () => {
 	}
 
 	return (
-		<Suspense fallback={<h1>loading...</h1>}>
 		<div className="row-start-1 xl:row-start-2 xl:col-start-1 xl:col-end-4 min-h-[134px]">
 			<Container className="h-full select-none" childClassName="relative flex flex-col justify-between items-center px-7 py-5">
 				<div className="relative flex justify-between items-center w-full">
 					<h1 className="text-2xl font-semibold">Friends</h1>
 					<span className="cursor-pointer" onClick={() => setSeeAllFriends(true)}>see all</span>
-					{/* { seeAllFriends && <AllFriends setSeeAllFriends={setSeeAllFriends} /> } */}
 					<Modal isOpen={seeAllFriends} onClose={() => setSeeAllFriends(false)}>
 						<AllFriends />
 					</Modal>
@@ -70,7 +75,6 @@ const Friends = () => {
 				</div>
 			</Container>
 		</div>
-		</Suspense>
 	)
 }
 

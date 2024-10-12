@@ -15,76 +15,6 @@ import { useTournamentContext } from "../../../contexts/TournamentProvider";
 
 export const customizeContext = createContext<any>({});
 
-// interface PlayerBarProps {
-// 	username?: string,
-// 	avatar?: string,
-// 	level?: number,
-// 	unknown?: boolean,
-// 	state: Levels
-// }
-
-// function PlayerBar({username, avatar, level, unknown, state}: PlayerBarProps) {
-// 	const styleClass = !unknown ? ' ' : ' animate-pulse flex justify-center';
-// 	let readyClass = state > Levels.FindingOpponent ? 'opacity-100' : 'opacity-0';
-// 	readyClass += state == Levels.WaitingForOpponent ? ' fill-primary' : '';
-// 	return (
-// 		<div className="grow">
-// 			<div className={"flex justify-center sm:justify-between items-center bg-secondary border border-border rounded-md px-3 sm:px-8 h-[80px] select-none" + styleClass}>
-// 				{
-// 					unknown ?
-// 					<span className="w-full text-center">?</span>
-// 					:
-// 					<>
-// 						<div className="flex items-center gap-3 overflow-hidden">
-// 							<User border className="border-primary" url={avatar} />
-// 							<div className="truncate">{username}</div>
-// 						</div>
-// 						<span className="hidden sm:block">Lvl {level}</span>
-// 					</>
-// 				}
-// 			</div>
-// 		</div>
-// 	 );
-// }
-
-// const TitleVariants = {
-// 	visible: { y: 0, opacity: 1},
-// 	hidden: {y: -10, opacity: 0}
-//   }
-
-// function Title({level}: {level: Levels}) {
-
-// 	return ( 
-// 		<div
-// 			>
-// 			{level == Levels.FindingOpponent && <motion.h1 
-// 				initial="hidden"
-// 				animate="visible"
-// 				variants={TitleVariants}
-// 				transition={{duration: 0.3}}
-// 				className="font-light animate-pulse">Finding opponent...</motion.h1>}
-// 			{level == Levels.OpponentFound && <motion.h1
-// 				initial="hidden"
-// 				animate="visible"
-// 				variants={TitleVariants}
-// 				transition={{duration: 0.3}}
-// 				className="font-light">your game is scheduled, please confirm to start</motion.h1>}
-// 			{level == Levels.OpponentIsReady && <motion.h1
-// 				initial="hidden"
-// 				animate="visible"
-// 				variants={TitleVariants}
-// 				transition={{duration: 0.3}}
-// 				className="font-light">your opponent is <span className="text-primary">ready</span>, confirm to start</motion.h1>}
-// 			{level == Levels.WaitingForOpponent && <motion.h1 
-// 				initial="hidden"
-// 				animate="visible"
-// 				variants={TitleVariants}
-// 				transition={{duration: 0.3}}
-// 				className="font-light animate-pulse">waiting for your opponent to confirm...</motion.h1>}
-// 		</div>
-// 	);
-// }
-
 function MatchMaking({isTournament}: {isTournament: boolean}) {
 	const {state, dispatch} = usePingPongContext();
 	const {state: tournState} = useTournamentContext();
@@ -109,8 +39,6 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 	}
 
 	useEffect(() => {
-		// if (isAI)
-		// 	dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
 		console.log(isTournament);
 		
 		if (isTournament && state.level != Levels.OpponentFound)
@@ -125,12 +53,8 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 			const id = setInterval(handler, 1000)
 			if (state.timer == 0)
 			{
-				// dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent})
-				// const gameId = searchParams.get('gameId')
 				dispatch({ type: "TIMER", timer: 9 });
 				navigate('../play', { replace: true });
-				// const gameId = searchParams.get('gameId')
-				// navigate('../play' + (gameId ? ('?gameId=' + gameId) : ''), { replace: true });
 			}
 			return () => {
 				clearInterval(id)
@@ -151,18 +75,17 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 				}
 			</div>
 			<div>
-				<div className="flex justify-between items-center gap-5 select-none h-44 border border-border rounded-lg px-10">
-					<div className="flex items-center gap-5 flex-1 justify-start">
+				<div className="flex justify-between items-center sm:flex-row flex-col gap-5 select-none py-4 border border-border rounded-lg px-10">
+					<div className="flex items-center gap-5 flex-1 justify-start self-start">
 						<User className="size-28 border-primary" border url={profileData.userData?.profile_image} />
 						<div>
 							<h3>{isTournament ? tournState.alias : profileData.userData?.username}</h3>
 							<h4>{'Lvl ' + profileData.userData?.level.current}</h4>
 						</div>
 					</div>
-					{/* <PlayerBar username={profileData.userData?.username} state={state.level} level={profileData.userData?.level.current} avatar={profileData.userData?.profile_image} /> */}
 					<span>vs</span>
 					{state.level == Levels.FindingOpponent &&
-						<div className="flex-1 flex justify-end items-center gap-5">
+						<div className="flex-1 flex justify-end items-center gap-5 self-end">
 							<div className="flex flex-col gap-2 items-end">
 								<div className="w-20 h-4 bg-gray2 animate-pulse rounded-lg"></div>
 								<div className="w-12 h-4 bg-gray2 animate-pulse rounded-lg"></div>
@@ -175,7 +98,7 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 							initial={{x: 10, opacity: 0}}
 							animate={{x: 0, opacity: 1}}
 							transition={{duration: 0.3}}
-							className="flex-1 flex justify-end items-center gap-5"
+							className="flex-1 flex justify-end items-center gap-5 self-end"
 							>
 							<div>
 								<h3>{ isTournament ? state.alias : state.opponent?.username }</h3>

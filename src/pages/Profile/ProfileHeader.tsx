@@ -8,7 +8,33 @@ import edit_icon from "/edit_icon.svg"
 import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
 import { useGlobalContext } from "../../contexts/store";
 
-const ProfileHeader = () => {
+const Skeleton = () => {
+	return (
+		<>
+			<div className="relative mb-[200px] xl:mb-[50px] flex flex-col w-full animate-pulse">
+				<div
+					className="w-full h-[209px] rounded-md bg-[#2F2F2F]">
+				</div>
+				<div className="absolute left-1/2 xl:left-[15%] top-full translate-y-[-60px] -translate-x-1/2 flex flex-col justify-center items-center">
+					<div className="relative rounded-full border-2 border-primary w-[120px] h-[120px] mb-3 bg-[#2F2F2F] overflow-hidden" />
+					<div className="flex flex-col mb-5">
+						<span className="h-[24px] w-[80px] bg-[#2F2F2F] rounded-full" />
+					</div>
+					<div className="w-[142px] h-[40px] bg-[#2F2F2F] rounded-md" />
+				</div>
+			</div>
+			<div className="w-full flex flex-col justify-between xl:w-[585px] 2xl:w-[685px] animate-pulse">
+				<div className="flex justify-between mb-2">
+					<span className="w-[38px] h-[24px] bg-[#2F2F2F] rounded-full" />
+					<span className="w-[38px] h-[24px] bg-[#2F2F2F] rounded-full" />
+				</div>
+				<div className="level-bar w-full bg-[#2F2F2F] h-[10px]" />
+			</div>
+		</>
+	)
+}
+
+const ProfileHeader = ({isLoading}: {isLoading: boolean}) => {
 	const { dispatch } = useGlobalContext();
 	const { state, dispatchProfile } = useProfileContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
@@ -26,7 +52,7 @@ const ProfileHeader = () => {
 				dispatch({type: 'ALERT', content: "failed: Maximum file size is 1MB."});
 				return ;
 			}
-			const formData = new FormData(formRef.current);
+			const formData = new FormData(formRef.current as HTMLFormElement | undefined);
 			const res = await api.post("upload-avatar/", formData);
 			console.log(res);
 			
@@ -50,48 +76,49 @@ const ProfileHeader = () => {
 	// 	}
 	// }, [state.userData]);
 
+	if (isLoading)
+	{
+		return (
+			<Skeleton />
+		)
+	}
+
 	return (
 		<>
-			{!state.userData && <div>Loading...</div>}
-			{
-			state.userData &&
-			<>
-				<div className="relative mb-[200px] xl:mb-[50px] flex flex-col w-full">
-					<div
-						style={{backgroundImage: `url(${state.userData.level.image})`}}
-						className="w-full h-[209px] rounded-md bg-cover bg-center">
-					</div>
-					<div className="absolute left-1/2 xl:left-[15%] top-full translate-y-[-60px] -translate-x-1/2 flex flex-col justify-center items-center">
-						<div style={{backgroundImage: `url(${state.userData?.profile_image})`}} className="relative rounded-full border-2 border-primary w-[120px] h-[120px] mb-3 bg-cover overflow-hidden">
-							{
-								(!id) &&
-								<form ref={formRef} className="duration-300 hover:opacity-100 opacity-0 w-full h-full bg-[#000000CC]">
-									<label htmlFor="avatar_link" className="absolute -translate-y-1/2 top-1/2 -translate-x-1/2 left-1/2 cursor-pointer"><img src={edit_icon} alt="" width={32} height={32} /></label>
-									<input ref={inputRef} onChange={(e) => changehandler(e)} type="file" name="avatar_link" accept="image/*" id="avatar_link" className="hidden" />
-								</form>
-							}
-						</div>
-						<div className="flex flex-col mb-5">
-							<span className="text-center">{state.userData.username}</span>
-							{
-								(id && state.userData.relation !== 'you') &&
-								<div className="flex justify-center items-center gap-1">
-									{
-										state.userData.online &&
-										<>
-											<span className="font-thin text-[12px]">online</span>
-											<span className="w-[8px] h-[8px] rounded-full bg-[#1ED947]"></span>
-										</>
-									}
-								</div>
-							}
-						</div>
-						<UserActions isProfile={id === undefined} />
-					</div>
+			<div className="relative mb-[200px] xl:mb-[50px] flex flex-col w-full">
+				<div
+					style={{backgroundImage: `url(${state.userData?.level.image})`}}
+					className="w-full h-[209px] rounded-md bg-cover bg-center">
 				</div>
-				<LevelBar data={state.userData.level} />
-			</>
-			}
+				<div className="absolute left-1/2 xl:left-[15%] top-full translate-y-[-60px] -translate-x-1/2 flex flex-col justify-center items-center">
+					<div style={{backgroundImage: `url(${state.userData?.profile_image})`}} className="relative rounded-full border-2 border-primary w-[120px] h-[120px] mb-3 bg-cover overflow-hidden">
+						{
+							(!id) &&
+							<form ref={formRef} className="duration-300 hover:opacity-100 opacity-0 w-full h-full bg-[#000000CC]">
+								<label htmlFor="avatar_link" className="absolute -translate-y-1/2 top-1/2 -translate-x-1/2 left-1/2 cursor-pointer"><img src={edit_icon} alt="" width={32} height={32} /></label>
+								<input ref={inputRef} onChange={(e) => changehandler(e)} type="file" name="avatar_link" accept="image/*" id="avatar_link" className="hidden" />
+							</form>
+						}
+					</div>
+					<div className="flex flex-col mb-5">
+						<span className="text-center">{state.userData?.username}</span>
+						{
+							(id && state.userData?.relation !== 'you') &&
+							<div className="flex justify-center items-center gap-1">
+								{
+									state.userData?.online &&
+									<>
+										<span className="font-thin text-[12px]">online</span>
+										<span className="w-[8px] h-[8px] rounded-full bg-[#1ED947]"></span>
+									</>
+								}
+							</div>
+						}
+					</div>
+					<UserActions isProfile={id === undefined} />
+				</div>
+			</div>
+			<LevelBar current={state.userData ? state.userData.level.current : 0} progress={state.userData ? state.userData.level.progress : 0} />
 		</>
 	)
 }

@@ -52,7 +52,7 @@ function TournamentFrom() {
 	const clickHandler = () => {
 		if (!validAlias || state.alias === '') return ;
 		dispatch({type: "SOCKET_URL", socketUrl: WS_END_POINT + "game_tournament/" + state.playersNum + "/" + state.alias + "/?token=" + token.accessToken});
-		navigate("/Tournament");
+		// navigate("/Tournament");
 	}
 
 	useEffect(() => {

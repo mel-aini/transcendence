@@ -21,11 +21,3 @@ const Help = () => {
 }
 
 export default Help;
-{/* <div className="w-full h-full p-3 flex flex-col justify-center items-center gap-1 sm:gap-3">
-	<span className="text-primary font-semibold text-center text-base">How to play?</span>
-	<div className="w-full flex justify-center items-center duration-150">
-		<MdTouchApp className="text-4xl" />
-		<span>or</span>
-		<PiMouseLeftClickFill className="text-4xl" />
-	</div>
-</div> */}
