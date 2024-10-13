@@ -71,13 +71,11 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 			if (error.response.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true; // Mark the request as retried to avoid infinite loops.
 			try {
-				console.log('trying...')
 				// const refreshToken = localStorage.getItem('refreshToken'); // Retrieve the stored refresh token.
 				// Make a request to your auth server to refresh the token.
-				const token = await jwt.refresh(state.accessToken);
-				console.log('token after', token)
+				const token = await jwt.refresh('access_expired');
+
 				if (!token) {
-					console.log('token is null')
 					throw error;
 				}
 				dispatch({type: 'TOKEN', token: token})
@@ -86,8 +84,6 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 				return api(originalRequest); // Retry the original request with the new access token.
 			} catch (refreshError) {
 				// Handle refresh token errors by clearing stored tokens and redirecting to the login page.
-				console.error('Token refresh failed:');
-				console.error(refreshError);
 				dispatch({type: 'TOKEN', token: null})
 				navigate('/login')
 				return Promise.reject(refreshError);
