@@ -10,6 +10,8 @@ const Index = () => {
 	const [ step, setStep ] = useState<'initial' | 'email-sent' | 'update-password'>('initial');
 	const [ searchParams ] = useSearchParams();
 	const acessToken = useRef('');
+	const email = useRef<string>('');
+
 	
 	useEffect(() => {
 		const token = searchParams.get('token');
@@ -25,11 +27,11 @@ const Index = () => {
 			<div className="bg-bg min-h-[100vh] flex">
 				<Welcome />
 				<div className="flex justify-center items-center p-5 sm:p-20 w-full">
-					<div className="w-full flex flex-col gap-9 items-center max-w-[400px]">
+					<div className={"w-full flex flex-col gap-9 items-center " + (step != 'email-sent' ? 'max-w-[350px]': 'max-w-[400px]')}>
 						<div className="relative w-full flex flex-col items-center place-content-center">
 						<div className="w-full">
-							{step == 'initial' && <EnterEmail setStep={setStep} /> }
-							{step == 'email-sent' && <EmailSent /> }
+							{step == 'initial' && <EnterEmail setStep={setStep} email={email} /> }
+							{step == 'email-sent' && <EmailSent email={email.current} /> }
 							{step == 'update-password' && <UpdatePassword token={acessToken.current} /> }
 						</div>
 						</div>

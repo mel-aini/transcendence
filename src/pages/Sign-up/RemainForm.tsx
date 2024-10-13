@@ -156,7 +156,7 @@ const RemainForm = ({email}: Props) => {
 						complete Sign up
 				</Button>
 			</form>
-			{/* <Loading /> */}
+			<Loading />
 		</>
 	)
 }
