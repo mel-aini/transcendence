@@ -12,10 +12,10 @@ interface Props {
 function UserBox({username, level, userImage, className, direction = 'left'}: Props) {
 	return (
 		<div className={twMerge('flex items-center gap-5', className)}>
-			<User url={userImage} border className={"size-10 sm:size-20 " + (direction == 'right' ? 'order-2' : 'order-1')} />
+			<User url={userImage} border className={"size-20 " + (direction == 'right' ? 'order-2' : 'order-1')} />
 			<div className={"flex flex-col gap-2 " + (direction == 'right' ? 'order-1' : 'order-2')}>
-				<span className="text-base hidden md:block">{username}</span>
-				<span className="hidden md:block font-light">lvl {level}</span>
+				<span className="text-base">{username}</span>
+				<span className="font-light">lvl {level}</span>
 			</div>
 		</div>
 	);

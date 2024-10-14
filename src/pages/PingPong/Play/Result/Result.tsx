@@ -17,7 +17,6 @@ function Result({isTournament}: {isTournament: boolean}) {
 	const { state: tournState, sendJsonMessage } = useTournamentContext();
 
 	const clickHandler = () => {
-		// if (window.location.pathname == "/ping-pong/play")
 		if (isTournament)
 		{
 			if (state.result.status != "lose" && state.result.status != "eliminated")
@@ -111,17 +110,17 @@ function Result({isTournament}: {isTournament: boolean}) {
 				initial={{opacity: 0, top: '-5rem'}}
 				animate={{opacity: 1, top: '0rem'}}
 				transition={{duration: 0.3, delay: 1.5}}
-				className="border border-border shrink-0 flex w-full justify-between items-center gap-4 p-5 rounded-md">
-				<UserBox username={isTournament ? tournState.alias : globalState.userData?.username} level={globalState.userData?.level.current} userImage={globalState.userData?.profile_image} />
+				className="border border-border shrink-0 flex sm:flex-row flex-col w-full justify-between items-center gap-4 p-5 rounded-md">
+				<UserBox username={isTournament ? tournState.alias : globalState.userData?.username} level={globalState.userData?.level.current} userImage={globalState.userData?.profile_image} className="self-start" />
 				<div className="flex gap-3 shrink-0">
-					<div className={"size-10 sm:size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary sm:text-[32px] " + ((state.result.status == "win") ? "text-primary" : "")}>
+					<div className={"size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px] " + ((state.result.status == "win") ? "text-primary" : "")}>
 						{state.score.my}
 					</div>
-					<div className={"size-10 sm:size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary sm:text-[32px] " + ((state.result.status == "lose") ? "text-primary" : "")}>
+					<div className={"size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px] " + ((state.result.status == "lose") ? "text-primary" : "")}>
 						{state.score.side}
 					</div>
 				</div>
-				<UserBox direction="right" username={isTournament ? state.alias : state.opponent?.username} level={state.opponent?.level.current} userImage={state.opponent?.profile_image} />
+				<UserBox direction="right" username={isTournament ? state.alias : state.opponent?.username} level={state.opponent?.level.current} userImage={state.opponent?.profile_image} className="self-end" />
 			</motion.div>
 			<motion.div
 			initial={{opacity: 0, top: '-5rem'}}
