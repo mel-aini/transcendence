@@ -78,7 +78,7 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 					dispatch({type: "USER_DATA", userData: {...state.userData, tfa: {...state.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
 				else if (lastJsonMessage.identifier === "game_settings")
 					dispatch({type: "USER_DATA", userData: {...state.userData, game_settings: {...state.userData?.game_settings, paddle: lastJsonMessage.data.paddle, ball: lastJsonMessage.data.ball, background: lastJsonMessage.data.background}}});
-				dispatch({type: 'ALERT', content: lastJsonMessage.message})
+				dispatch({type: 'ALERT', message: lastJsonMessage.message, dispatch})
 			}
 			else if (lastJsonMessage.type === "online")
 				dispatchProfile({type: "USER_DATA", userData: {...state.userData, online: lastJsonMessage.data.value}});

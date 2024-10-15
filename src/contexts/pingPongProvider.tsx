@@ -236,7 +236,7 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 		}
 		else if (!isTournament && message.type == "ingame")
 		{
-			dispatchGlobal({type: 'ALERT', content: "you are already in game!!"});
+			dispatchGlobal({type: 'ALERT', message: "you are already in game!!", isError: true, dispatch: dispatchGlobal})
 			navigate('/ping-pong');
 		}
 		else if (message.type == "init_paddle")

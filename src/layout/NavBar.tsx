@@ -10,6 +10,8 @@ import NotificationsBell from "./NotificationsBell";
 import DropMenu, { DropMenuTypes } from "./DropMenu";
 import NewNotifications from "./NewNotifications";
 import Logo from "../components/Logo";
+import { variants } from "./SideBar";
+import { AnimatePresence, motion } from "framer-motion";
 
 const NavBar = ({ className }: {className?: string}) => {
 	const { state } = useGlobalContext();
@@ -59,12 +61,25 @@ const NavBar = ({ className }: {className?: string}) => {
 				</User>
 				{dropMenu && <DropMenu setDropMenu={setDropMenu} type={dropMenuType.current} />}
 				<NewNotifications />
-				<HiOutlineMenuAlt3
-					onClick={() => {
-						dropMenuType.current = 'navbar';
-						setDropMenu(prev => !prev)}
-					}
-					className="text-2xl lg:hidden cursor-pointer" />
+				<div className="relative">
+					<HiOutlineMenuAlt3
+						onClick={() => {
+							dropMenuType.current = 'navbar';
+							setDropMenu(prev => !prev)}
+						}
+						className="text-2xl lg:hidden cursor-pointer relative" />
+					<AnimatePresence>
+						{chatState.unreadConv && 
+							<motion.div
+								initial='hidden'
+								animate='visible'
+								exit='hidden'
+								variants={variants}
+								className="absolute bottom-0 left-0 bg-red-500 size-[10px] rounded-full" />
+						}
+					</AnimatePresence>
+
+				</div>
 				{/* Overlay */}
 				{dropMenu && <div
 					onClick={() => setDropMenu(false)}

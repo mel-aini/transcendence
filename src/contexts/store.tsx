@@ -12,8 +12,12 @@ export interface INotification {
 
 export interface GlobalStateProps {
 	isLoading: boolean
-	alert: boolean
-	alertMessage: string
+	alert: {
+		state: boolean,
+		message: string,
+		timer: number | null,
+		isError: boolean
+	}
 	search: boolean
 	userData: UserData | null,
 	gameId: string | null,
@@ -26,8 +30,12 @@ export interface GlobalStateProps {
 
 const initialState: GlobalStateProps = {
 	isLoading: false,
-	alert: false,
-	alertMessage: '',
+	alert: {
+		state: false,
+		message: '',
+		timer: null,
+		isError: false
+	},
 	search: false,
 	userData: null,
 	gameId: null,
@@ -52,17 +60,28 @@ const reducer = (state: GlobalStateProps, action: any) => {
 			}
 			return { ...state, isLoading: false }
 		case 'ALERT':
-			if (action.display == false) {
-				return { 
-					...state, 
-					alert: false, 
-					alertMessage: ''
-				}
-			}
+		
+			setTimeout(() => {
+                action.dispatch({ type: 'ALERT_OFF' });
+            }, action.timer || 1300);
 			return { 
 				...state, 
-				alert: true, 
-				alertMessage: action.content 
+				alert: {
+					state: true,
+					message: action.message,
+					timer: action.timer || 1300,
+					isError: action.isError
+				}
+			}
+		case 'ALERT_OFF':
+			return { 
+				...state, 
+				alert: {
+					state: false,
+					message: '',
+					timer: null,
+					isError: false
+				}
 			}
 		case 'SEARCH':
 			return { 

@@ -62,9 +62,9 @@ function ChangePassword() {
 		if (!isErrorObject(lastJsonMessage))
 		{
 			lastJsonMessage.code == 200 ?
-			dispatch({type: 'ALERT', content: "password changed successfuly"})
+			dispatch({type: 'ALERT', message: "password changed successfuly", dispatch})
 			:
-			dispatch({type: 'ALERT', content: "invalid password"});
+			dispatch({type: 'ALERT', message: "invalid password", isError: true, dispatch});
 			current.current && (current.current.value = '');
 			newPass.current && (newPass.current.value = '');
 			reTypeNew.current && (reTypeNew.current.value = '');

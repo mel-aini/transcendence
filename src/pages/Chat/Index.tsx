@@ -5,7 +5,7 @@ import Conversation from "./ChatBar/Conversation";
 import { AnimatePresence } from 'framer-motion'
 
 function Index() {
-	const { dispatch } = useChatContext();
+	const { state, dispatch } = useChatContext();
 
 	useEffect(() => {
 
@@ -22,6 +22,10 @@ function Index() {
 		}
 
 	}, [])
+
+	useEffect(() => {
+		dispatch({type: 'UNREAD_CONVERSATION', status: false})
+	}, [state.unreadConv])
 
 	return (
 		<div className="relative w-full h-[calc(100vh-10rem)] lg:flex shrink">

@@ -1,6 +1,6 @@
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import callToApi from "../../utils/callToApi";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useGlobalContext } from "../../contexts/store";

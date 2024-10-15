@@ -6,6 +6,7 @@ import { useChatContext } from '../../../contexts/chatProvider';
 import { useAuthContext } from '../../../contexts/authProvider';
 import { ReadyState } from 'react-use-websocket';
 import { isEmpty } from '../../../utils/validation';
+import { dateMeta } from '../../../utils/global';
 
 function Conversation() {
 	const { state, dispatch, sendJsonMessage, readyState } = useChatContext();
@@ -16,6 +17,10 @@ function Conversation() {
 	const sendMessage = async (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		if (isEmpty(message)) {
+			return;
+		}
+
+		if (message.length > 500) {
 			return;
 		}
 		const message_content = message;
@@ -37,7 +42,7 @@ function Conversation() {
 
 		dispatch({type: 'LAST_MESSAGE', message: {
 			content: message_content,
-			date: "2024-06-27 12:58:51",
+			date: dateMeta.getDate(),
 			sender: authState.username,
 			receiver: state.conversation_header.username,
 			id: null,
@@ -54,7 +59,7 @@ function Conversation() {
 				// if error
 				dispatch({type: 'MESSAGE', message: {
 					content: message_content,
-					date: "2024-06-27 12:58:51",
+					date: dateMeta.getDate(),
 					sender: authState.username,
 					receiver: state.conversation_header.username,
 					id: null,
@@ -123,14 +128,14 @@ function Conversation() {
 					<div className="messages-container grow flex flex-col bg-secondary overflow-auto p-5">
 						<ConversationMessages />
 					</div>
-					<form onSubmit={(e) => sendMessage(e)} className="w-full flex justify-between items-center pl-5 h-[50px] border-t border-t-dark bg-bg shrink-0">
+					<form onSubmit={(e) => sendMessage(e)} className="w-full flex gap-3 items-center px-5 h-[70px] bg-secondary shrink-0">
 						<input
 							disabled={state.lastMessage?.state == 'processing'} 
-							className="h-full grow bg-bg focus:outline-none" 
+							className="h-[45px] px-3 grow border rounded-tr-none rounded-md bg-bg border-border focus:outline-none" 
 							placeholder={state.lastMessage == null ? "try/silent...🤫" : 'sending...'} 
 							onChange={(e) => setMessage(e.target.value)} 
 							type="text" name="" id="" />
-						<button className="shrink-0 px-5 border-l h-full border-l-dark text-primary" type="submit">send</button>
+						<button className="shrink-0 px-5 bg-bg border rounded-md rounded-tl-none h-[45px] border-primary text-primary" type="submit">send</button>
 					</form>
 				</>}
 			</motion.div>}

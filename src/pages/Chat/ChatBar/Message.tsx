@@ -38,7 +38,7 @@ const Message = ({type = "arrive", children, date, className, state, lastDate, .
 					<span>{second[0] + ':' + second[1]}</span>
 				</div>
 				<div
-					className={`font-normal border border-border bg-bg rounded-xl p-5 ${type == 'arrive' ? ' text-white text-left rounded-tl-none' : 'text-primary text-right rounded-tr-none'}`}
+					className={`font-normal break-words border border-border bg-bg rounded-xl px-5 py-2 ${type == 'arrive' ? ' text-white text-left rounded-tl-none' : 'text-black text-right bg-primary rounded-tr-none'}`}
 					>{children}</div>
 			</div>
 		</>

@@ -8,6 +8,7 @@ import Modal from "../components/Modal";
 import { useNotificationsContext } from "./notificationsProvider";
 import { WS_END_POINT } from "../utils/urls";
 import api from "../api/axios";
+import { useLocation } from "react-router-dom";
 
 type Url = string;
 type Username = string;
@@ -63,6 +64,8 @@ export interface ChatStateProps {
 	conversation: ConversationState
 	conversation_header: Header
 	lastMessage: Message | null
+	newMessageTriggered: boolean
+	unreadConv: boolean
 }
 
 const initialState: ChatStateProps = {
@@ -81,6 +84,8 @@ const initialState: ChatStateProps = {
 		isOnline: false
 	},
 	lastMessage: null,
+	newMessageTriggered: false,
+	unreadConv: false
 };
 
 export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispatch<any>, lastJsonMessage: any, sendJsonMessage: SendJsonMessage, readyState: ReadyState}>({
@@ -112,7 +117,8 @@ const reducer = (state: ChatStateProps, action: any) => {
 		case 'MESSAGE':
 			return { 
 				...state,
-				messages: [...state.messages, action.message] 
+				messages: [...state.messages, action.message],
+				newMessageTriggered: !state.newMessageTriggered
 			}
 		case 'LAST_MESSAGE':
 			return { 
@@ -149,6 +155,11 @@ const reducer = (state: ChatStateProps, action: any) => {
 				...state, 
 				searchConversations: action.conversations
 			}
+		case 'UNREAD_CONVERSATION':
+			return { 
+				...state, 
+				unreadConv: action.status
+			}
 		default:
 			return state;
 	}
@@ -166,6 +177,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	const { state: authState } = useAuthContext();
 	const [isReconnect, setIsReconnect] = useState(false);
 	const { dispatch: notDispatch } = useNotificationsContext();
+	const location = useLocation();
 
 	function setErrorInLastMessage() {
 		if (state.lastMessage != null) {
@@ -173,7 +185,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			dispatch({type: 'LAST_MESSAGE', message: null});
 			dispatch({type: 'MESSAGE', message: {
 				content: content,
-				date: "2024-06-27 12:58:51",
+				date: dateMeta.getDate(),
 				sender: authState.username,
 				receiver: state.conversation_header.username,
 				id: null,
@@ -182,53 +194,48 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 		}
 	}
 
-	const updateConversations = async (id: string | number, data: updatedConv) => {
-		let OldConv: Conversation | any = {};
-		const newArr = state.conversations.filter((conv: Conversation) => {
-			const condition = conv.id != id;
-			if (!condition) {
-				console.log(conv);
-				OldConv = {...conv};
+	const updateConversations = async (id: string | number | null, data: updatedConv | null, type?: 'read') => {
+		if (type == 'read') {
+			for (let i = 0; i < state.conversations.length; i++) {
+				const conv: Conversation = state.conversations[i];
+				if (conv.id == state.conversation.id) {
+					conv.status = true;
+					break;
+				}
+				
 			}
-			return condition;
-		})
-
-		// OldConv.last_date = data.last_date
-		// OldConv.last_message = data.last_message
-		// OldConv.sender = data.sender
-		// OldConv.status = data.status
-		// OldConv.friend = data.friend
-		// console.log(newArr.length, state.conversations.length)
-		// if (newArr.length == state.conversations.length) {
-		// 	console.log('equal')
-		// 	console.log(data.sender, authState.username)
-		// 	// new conversation
-		// 	if (data.sender != authState.username) {
-		// 		console.log('conv not found')
-		// 		const userData = await api.get('users/' + data.sender);
-		// 		OldConv.id = id;
-		// 		OldConv.friend = {
-		// 			avatar: userData.data.profile_image,
-		// 			online: userData.data.online,
-		// 			username: userData.data.username
-		// 		}
-		// 	}
-		// }
-		
-		console.log('new conv', data);
-		newArr.unshift(data);
-		// console.log(OldConv.username != state.conversation_header.username)
-		if (OldConv.username != state.conversation_header.username && OldConv.sender != authState.username) {
-			notDispatch({type: 'PUSH_NOTIFICATION', notification: {
-				notification_id: undefined,
-				type: "message",
-				content: `new message from ${OldConv.sender}`,
-				read: false, 
-				id: OldConv.id,
-				sender: OldConv.sender
-			}, dispatch: notDispatch})
+			dispatch({type: 'CONVERSATIONS', conversations: [...state.conversations]})
 		}
-		dispatch({type: 'CONVERSATIONS', conversations: [...newArr]})
+		else {
+			let OldConv: Conversation | any = {};
+			const newArr = state.conversations.filter((conv: Conversation) => {
+				const condition = conv.id != id;
+				if (!condition) {
+					console.log(conv);
+					OldConv = {...conv};
+				}
+				return condition;
+			})
+			
+			newArr.unshift(data);
+			// console.log(OldConv.username != state.conversation_header.username)
+			if (OldConv.username != state.conversation_header.username && OldConv.sender != authState.username) {
+				// in case of new message comes
+				notDispatch({type: 'PUSH_NOTIFICATION', notification: {
+					notification_id: undefined,
+					type: "message",
+					content: `new message from ${OldConv.sender}`,
+					read: false, 
+					id: OldConv.id,
+					sender: OldConv.sender
+				}, dispatch: notDispatch})
+
+				if (location.pathname != '/chat') {
+					dispatch({type: 'UNREAD_CONVERSATION', status: true})
+				}
+			}
+			dispatch({type: 'CONVERSATIONS', conversations: [...newArr]})
+		}
 	}
 
 	const {readyState, lastJsonMessage, sendJsonMessage} = useWebSocket(
@@ -269,8 +276,11 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})
 			}
 			if (lastJsonMessage.conversations) {
-				console.table(lastJsonMessage);
+				const conv = lastJsonMessage.conversations.find((conv: Conversation) => conv.status == true);
+				console.log('lastJsonMessage.conversations', lastJsonMessage.conversations)
+				console.log('conv', conv)
 				dispatch({type: 'CONVERSATIONS', conversations: lastJsonMessage.conversations})
+				dispatch({type: 'UNREAD_CONVERSATION', status: conv ? true : false})
 			}
 			if (lastJsonMessage.messages) {
 				dispatch({type: 'MESSAGES', messages: [ ...lastJsonMessage.messages, ...state.messages ]})
@@ -279,6 +289,10 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					state: 'ok',
 					limitReached: lastJsonMessage.messages.length != 10
 				}})
+				if (!lastJsonMessage.conversations) {
+					// so it's not first time
+					updateConversations(null, null, 'read')
+				}
 			}
 			// if (lastJsonMessage.search_conversation) {
 			// 	dispatch({type: 'SEARCH_CONVERSATIONS', conversations: lastJsonMessage.search_conversation});
@@ -293,12 +307,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 						receiver: authState.username,
 						state: 'ok'
 					}});
-					// updateConversations(state.conversation.id, {
-					// 	last_date: dateMeta.getDate(),
-					// 	last_message: lastJsonMessage.message,
-					// 	sender: state.conversation_header.username,
-					// 	status: 'True'
-					// });
 					
 				} else {
 					// I'm the sender
@@ -310,12 +318,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 						receiver: state.conversation_header.username,
 						state: 'ok'
 					}});
-					// updateConversations(state.conversation.id, {
-					// 	last_date: dateMeta.getDate(),
-					// 	last_message: lastJsonMessage.message,
-					// 	sender: authState.username || '',
-					// 	status: 'False'
-					// });
 				}
 			}
 			if (lastJsonMessage.type == 'conversation_update') {
@@ -390,7 +392,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				// trying to send message after unfriend
 				dispatch({type: 'MESSAGE', message: {
 					content: state.lastMessage.content,
-					date: "2024-06-27 12:58:51",
+					date: dateMeta.getDate(),
 					sender: authState.username,
 					receiver: state.conversation_header.username,
 					id: null,

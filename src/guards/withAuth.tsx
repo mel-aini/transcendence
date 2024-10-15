@@ -17,7 +17,7 @@ export function Nested({ Component }: { Component: ComponentType }) {
 	useEffect(() => {
 		if (state?.message) {
 			console.log(state?.message)
-			dispatch({type: 'ALERT', content: state.message})
+			dispatch({type: 'ALERT', message: state.message, dispatch})
 		}
 	}, [])
 

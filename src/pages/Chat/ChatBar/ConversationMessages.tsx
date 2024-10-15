@@ -23,6 +23,13 @@ function ConversationMessages() {
 		}
 	}, [state.conversation.state])
 
+	useEffect(() => {
+		const parent = document.querySelector('.messages-container');
+		if (parent) {
+			scrollToBottom(parent)
+		}
+	}, [state.newMessageTriggered])
+
 	return ( 
 		<div className="conv-msgs flex flex-col gap-8">
 			{

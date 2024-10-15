@@ -49,7 +49,7 @@ const ProfileHeader = ({isLoading}: {isLoading: boolean}) => {
 			const newImage = e.currentTarget.files[0];
 			if (!newImage) return ;
 			else if (newImage.size > 1048576) {
-				dispatch({type: 'ALERT', content: "failed: Maximum file size is 1MB."});
+				dispatch({type: 'ALERT', message: "failed: Maximum file size is 1MB.", isError: true, dispatch});
 				return ;
 			}
 			const formData = new FormData(formRef.current as HTMLFormElement | undefined);
@@ -58,11 +58,11 @@ const ProfileHeader = ({isLoading}: {isLoading: boolean}) => {
 			
 			if (res.status === 200)
 			{
-				dispatch({type: 'ALERT', content: "Profile image changed successfuly."});
+				dispatch({type: 'ALERT', message: "Profile image changed successfuly.", dispatch});
 				dispatchProfile({type: "USER_DATA", userData: {...state.userData, profile_image: res.data.url}});
 			}
 		} catch (err: any) {
-			dispatch({type: 'ALERT', content: err.response.data.error});
+			dispatch({type: 'ALERT', message: err.response.data.error, isError: true, dispatch});
 		} finally {
 			inputRef.current && (inputRef.current.value = '');
 		}
