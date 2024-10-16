@@ -33,11 +33,6 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 		}
 	}
 
-	const handler = () => {
-		if (state.timer > 0)
-			dispatch({type: "TIMER", timer: state.timer - 1});
-	}
-
 	useEffect(() => {
 		console.log(isTournament);
 		
@@ -50,14 +45,10 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 	useEffect(() => {
 		if (state.level >= Levels.OpponentFound)
 		{
-			const id = setInterval(handler, 1000)
-			if (state.timer == 0)
+			if (state.timer == 3)
 			{
-				dispatch({ type: "TIMER", timer: 9 });
+				// dispatch({ type: "TIMER", timer: 9 });
 				navigate('../play', { replace: true });
-			}
-			return () => {
-				clearInterval(id)
 			}
 		}
 	}, [state.level, state.timer]);
@@ -136,7 +127,7 @@ function Loader() {
 				${primaryColor} ${'100%'}, 
 				${secondaryColor} ${'100%'}, ${secondaryColor} 100%)`}}
 			transition={{
-				duration: state.timer,
+				duration: state.timer - 3,
 				ease: 'easeOut'
 			}}
 			className="relative size-[40px] self-center rounded-full sm:shrink-0 flex justify-center items-center"
@@ -148,7 +139,7 @@ function Loader() {
 				}}
 			>
 			<div className="size-[30px] text-sm bg-secondary rounded-full flex justify-center items-center">
-				{state.timer}
+				{state.timer - 3}
 			</div>
 		</motion.div>
 	)

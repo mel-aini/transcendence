@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import JoinTournament from "./JoinTournament";
 import Title from "../../components/Title";
 import { useTournamentContext } from "../../contexts/TournamentProvider";
-import { useGlobalContext } from "../../contexts/store";
 import { ReadyState } from "react-use-websocket";
 
 export const displayContext = createContext<any>({});
@@ -15,7 +14,7 @@ const Tournaments = () => {
 	const navigate = useNavigate();
 
 	const clickHandler = () => {
-		(readyState != ReadyState.OPEN) ? setDisplay(true) : navigate("/Tournament");
+		(readyState != ReadyState.OPEN) ? setDisplay(true) : navigate("/tournament");
 	}
 
 	return (

@@ -7,6 +7,7 @@ import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useAuthContext } from "./authProvider";
 import useWebSocket from "react-use-websocket";
 import { WS_END_POINT } from "../utils/urls";
+import { useNotificationsContext } from "./notificationsProvider";
 
 export interface Coordinates {
 	x: number,
@@ -88,7 +89,7 @@ const initialState: GameData = {
 		paddle: "white",
 		table: "rgba(255, 255, 255, 0.1)",
 	},
-	timer: 9,
+	timer: 15,
 	time: 0,
 	alias: undefined
 };
@@ -228,11 +229,12 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 				isTournament && dispatch({type: "ALIAS", alias: tournMessage.user1.alias});
 			}
 			dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
-			isTournament && sendTournMessage( { type: 'handshake' } );
+			// isTournament && sendTournMessage( { type: 'handshake' } );
 		}
-		else if (isTournament && message.type == "ready")
+		else if (message.type == "timing2")
 		{
-			navigate('match-making');
+			dispatch({type: "TIMER", timer: message.time});
+			(isTournament && message.time == 15) && navigate('match-making');
 		}
 		else if (!isTournament && message.type == "ingame")
 		{
@@ -248,6 +250,7 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 
 			dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, x: message.my}});
 			dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, x: message.side}});
+			dispatch({type: "TIMER", timer: message.time - 1});
 		}
 		else if (message.type == "ball")
 		{

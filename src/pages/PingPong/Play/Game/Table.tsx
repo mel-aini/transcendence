@@ -32,6 +32,7 @@ const Table = ({width, isTournament}: {width: number, isTournament: boolean}) =>
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if (move.current === 0) return ;
+			
 			isTournament ?
 			sendInTournament({
 				type: "update",
@@ -67,7 +68,7 @@ const Table = ({width, isTournament}: {width: number, isTournament: boolean}) =>
 			<svg className="absolute w-[37.38%] h-full left-1/2 -translate-x-1/2">
 				<line x1={'100%'} x2={'0%'} y1={'0%'} y2={'100%'} className="stroke-1 stroke-border2" />
 			</svg>
-			<Box isTournament={isTournament} />
+			<Box />
 		</div>
 	)
 }

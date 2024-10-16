@@ -21,7 +21,7 @@ const Index = () => {
 
 	const handleLeave = () => {
 		dispatch({type: "SOCKET_URL", socketUrl: null});
-		navigate("/dashboard");
+		// navigate("/dashboard");
 	}
 
 	return (

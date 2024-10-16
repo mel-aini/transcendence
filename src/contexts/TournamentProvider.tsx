@@ -2,6 +2,7 @@ import { Dispatch, ReactNode, createContext, useCallback, useContext, useEffect,
 import { useNavigate } from "react-router-dom";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
+import { useNotificationsContext } from "./notificationsProvider";
 
 export interface Player {
 	username: string,
@@ -75,6 +76,7 @@ const reducer = (state: TournamentData, action: any) => {
 const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const navigate = useNavigate();
+	const { dispatch: notDispatch } = useNotificationsContext();
 
 	const initRounds = useCallback((): RoundData[] => {
 		const resetRoundData: RoundData[] = [];
@@ -113,10 +115,11 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 				console.log('WebSocket connected')
 				dispatch({type: "ROUND_DATA", roundData: initRounds()});
 				dispatch({type: "WINNER", winner: "player"});
-				navigate("/Tournament");
+				navigate("/tournament");
 			},
 			onClose: () => {
 				console.log('WebSocket disconnected');
+				navigate("/dashboard");
 			},
 			onError: () => {
 				navigate("/dashboard");
@@ -165,6 +168,11 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 					}
 				});
 				dispatch({type: "ROUND_DATA", roundData: roundData});
+			}
+			else if (lastJsonMessage.type == "timing1")
+			{
+				lastJsonMessage.time > 0 && notDispatch({type: 'PUSH_NOTIFICATION', notification: { type: 'text', content: "your next match in tournament will starts in a few seconds..." }, dispatch: notDispatch});
+				lastJsonMessage.time == 0 && navigate('/tournament');
 			}
 		}
 		
