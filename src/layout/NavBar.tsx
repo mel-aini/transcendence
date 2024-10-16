@@ -43,9 +43,7 @@ const NavBar = ({ className }: {className?: string}) => {
 			ref={container} 
 			className={twMerge('nav-bar sticky top-0 left-0 h-20 z-40 lg:z-50 shadow-bottom flex justify-between px-5 sm:px-10 bg-bg', className)}>
 			<div className='h-20 flex items-center'>
-				<Link to={'/'}>
-					<Logo responsive className="font-medium cursor-pointer" />
-				</Link>
+				<Logo responsive className="font-medium" />
 			</div>
 			<div className="relative flex justify-end items-center gap-5 h-20">
 				<Search />
@@ -61,13 +59,13 @@ const NavBar = ({ className }: {className?: string}) => {
 				</User>
 				{dropMenu && <DropMenu setDropMenu={setDropMenu} type={dropMenuType.current} />}
 				<NewNotifications />
-				<div className="relative">
+				<div className="relative lg:hidden">
 					<HiOutlineMenuAlt3
 						onClick={() => {
 							dropMenuType.current = 'navbar';
 							setDropMenu(prev => !prev)}
 						}
-						className="text-2xl lg:hidden cursor-pointer relative" />
+						className="text-2xl cursor-pointer relative" />
 					<AnimatePresence>
 						{chatState.unreadConv && 
 							<motion.div

@@ -6,9 +6,7 @@ import { FormEvent, useRef, useState } from "react";
 import { isEmpty } from "../../../utils/validation";
 import api from "../../../api/axios";
 import User from "../../../components/User";
-import { useNavigate } from "react-router-dom";
 import send_icon from "/send_icon.svg"
-import useIsOnline from "../../../hooks/useIsOnline";
 
 interface Friend {
 	profile_image: string
@@ -24,8 +22,6 @@ function SearchFriends({onClose}: Props) {
 	const { dispatch, sendJsonMessage: sendChatJsonMessage} = useChatContext();
 	const inputRef = useRef('');
 	const [friends, setFriends] = useState<Friend[]>([]);
-	const navigate = useNavigate();
-	const isOnline = useIsOnline();
 
 	const onSubmit = async (e: FormEvent) => {
 		e.preventDefault();
@@ -43,8 +39,7 @@ function SearchFriends({onClose}: Props) {
 		})
 		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: friend.username,
-			avatar: friend.profile_image,
-			isOnline: isOnline(friend.username)
+			avatar: friend.profile_image
 		}})
 		onClose();
 	}

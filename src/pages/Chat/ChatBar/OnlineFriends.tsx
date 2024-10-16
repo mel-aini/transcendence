@@ -1,10 +1,8 @@
 import User from "../../../components/User";
 import { useChatContext } from "../../../contexts/chatProvider";
-import useIsOnline from "../../../hooks/useIsOnline";
 
 function OnlineFriends() {
 	const { state, dispatch } = useChatContext()
-	const isOnline = useIsOnline();
 
 	const clickHandler = (friend: Object & { username: string, avatar_link: string, conversation_id: string | number }) => {
 		dispatch({type: 'FOCUS', state: true})
@@ -14,8 +12,7 @@ function OnlineFriends() {
 		}});
 		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: friend.username,
-			avatar: friend.avatar_link,
-			isOnline: isOnline(friend.username)
+			avatar: friend.avatar_link
 		}})
 	}
 

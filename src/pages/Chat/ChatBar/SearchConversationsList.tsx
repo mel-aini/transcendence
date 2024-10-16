@@ -1,7 +1,6 @@
-import { ComponentProps, useEffect } from "react";
+import { ComponentProps } from "react";
 import { Conversation, useChatContext } from "../../../contexts/chatProvider";
 import ConversationBar from "./ConversationBar";
-import useIsOnline from "../../../hooks/useIsOnline";
 
 interface Props extends ComponentProps<'div'> {
 	input: string
@@ -9,7 +8,6 @@ interface Props extends ComponentProps<'div'> {
 
 function SearchConversationsList({input, ...props}: Props) {
 	const { state, dispatch } = useChatContext();
-	const isOnline = useIsOnline();
 	
 	const handler = (conversation: Conversation) => {
 		dispatch({type: 'FOCUS', state: true})
@@ -19,8 +17,7 @@ function SearchConversationsList({input, ...props}: Props) {
 		}});
 		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: conversation.friend.username,
-			avatar: conversation.friend.avatar,
-			isOnline: isOnline(conversation.friend.username)
+			avatar: conversation.friend.avatar
 		}})
 	}
 	

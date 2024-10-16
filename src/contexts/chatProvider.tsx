@@ -276,9 +276,9 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})
 			}
 			if (lastJsonMessage.conversations) {
-				const conv = lastJsonMessage.conversations.find((conv: Conversation) => conv.status == true);
-				console.log('lastJsonMessage.conversations', lastJsonMessage.conversations)
-				console.log('conv', conv)
+				const conv = lastJsonMessage.conversations.find((conv: Conversation) => conv.status == false && conv.sender != authState.username);
+				// console.log('lastJsonMessage.conversations', lastJsonMessage.conversations)
+				// console.log('conv', conv)
 				dispatch({type: 'CONVERSATIONS', conversations: lastJsonMessage.conversations})
 				dispatch({type: 'UNREAD_CONVERSATION', status: conv ? true : false})
 			}

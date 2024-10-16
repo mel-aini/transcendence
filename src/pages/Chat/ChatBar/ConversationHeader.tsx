@@ -2,12 +2,12 @@ import User from "../../../components/User";
 import { useChatContext } from "../../../contexts/chatProvider";
 import { IoIosArrowBack } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
-import useIsOnline from "../../../hooks/useIsOnline";
 import { Link } from "react-router-dom";
+import useIsOnline from "../../../hooks/useIsOnline";
 
 function ConversationHeader() {
 	const { state, dispatch } = useChatContext();
-	const isOnline = useIsOnline();
+	const isOnline = useIsOnline(state.conversation_header.username);
 
 	const handler = () => {
 		dispatch({type: 'FOCUS', state: false})
@@ -26,7 +26,7 @@ function ConversationHeader() {
 							<Link to={'/users/' + state.conversation_header.username}>
 								<h2>{state.conversation_header.username}</h2>
 							</Link>
-							{isOnline(state.conversation_header.username) && <h3 className="text-sm font-light text-green-500">online</h3>}
+							{isOnline && <h3 className="text-sm font-light text-green-500">online</h3>}
 						</div>
 					</>
 				}

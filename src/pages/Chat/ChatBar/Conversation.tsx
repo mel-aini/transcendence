@@ -7,12 +7,15 @@ import { useAuthContext } from '../../../contexts/authProvider';
 import { ReadyState } from 'react-use-websocket';
 import { isEmpty } from '../../../utils/validation';
 import { dateMeta } from '../../../utils/global';
+import { useGlobalContext } from '../../../contexts/store';
 
 function Conversation() {
 	const { state, dispatch, sendJsonMessage, readyState } = useChatContext();
 	const [message, setMessage] = useState('');
 	const { state: authState } = useAuthContext();
+	const { dispatch: gDispatch } = useGlobalContext();
 	const [isVisible, setIsVisible] = useState(() => window.innerWidth >= 1024);
+	const messageInput = useRef<HTMLInputElement>(null);
 
 	const sendMessage = async (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -21,6 +24,7 @@ function Conversation() {
 		}
 
 		if (message.length > 500) {
+			gDispatch({type: 'ALERT', isError: true, message: "Can't send more than 500 characters", dispatch: gDispatch})
 			return;
 		}
 		const message_content = message;
@@ -98,6 +102,8 @@ function Conversation() {
 	}, [state.isFocus])
 
 	useEffect(() => {
+		console.log('update')
+		console.table(state.lastMessage)
 		if (state.lastMessage) {
 			const msgsContainer = document.querySelector('.messages-container');
 			if (msgsContainer) {
@@ -105,6 +111,11 @@ function Conversation() {
 				msgsContainer.scrollTo(0, msgsContainer.scrollHeight);
 				(msgsContainer as HTMLDivElement).style.scrollBehavior = '';
 			}
+			if (state.lastMessage.state != 'processing') {
+				messageInput.current && messageInput.current.focus();
+			}
+		} else {
+			messageInput.current && messageInput.current.focus();
 		}
 	}, [state.lastMessage])
 
@@ -130,12 +141,16 @@ function Conversation() {
 					</div>
 					<form onSubmit={(e) => sendMessage(e)} className="w-full flex gap-3 items-center px-5 h-[70px] bg-secondary shrink-0">
 						<input
+							ref={messageInput}
 							disabled={state.lastMessage?.state == 'processing'} 
 							className="h-[45px] px-3 grow border rounded-tr-none rounded-md bg-bg border-border focus:outline-none" 
 							placeholder={state.lastMessage == null ? "try/silent...🤫" : 'sending...'} 
 							onChange={(e) => setMessage(e.target.value)} 
 							type="text" name="" id="" />
-						<button className="shrink-0 px-5 bg-bg border rounded-md rounded-tl-none h-[45px] border-primary text-primary" type="submit">send</button>
+						<button
+							disabled={state.lastMessage?.state == 'processing'}
+							className={"shrink-0 px-5 bg-bg border rounded-md rounded-tl-none h-[45px] " + (state.lastMessage?.state == 'processing' ? 'border-gray2 text-gray2' : 'border-primary text-primary')} 
+							type="submit">send</button>
 					</form>
 				</>}
 			</motion.div>}

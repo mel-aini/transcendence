@@ -3,12 +3,14 @@ import { INotification } from "./store";
 
 export interface GlobalStateProps {
 	newNotifications: INotification[],
-	isRead: boolean
+	isRead: boolean,
+	isLastPopAuto: boolean
 }
 
 const initialState: GlobalStateProps = {
 	newNotifications: [],
-	isRead: true
+	isRead: true,
+	isLastPopAuto: true
 };
 
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
@@ -22,12 +24,16 @@ const reducer = (state: GlobalStateProps, action: any) => {
 		case 'PUSH_NOTIFICATION':
 			const updated = [...state.newNotifications, action.notification];
 			setTimeout(() => {
-                action.dispatch({ type: 'POP_NOTIFICATION' });
+                action.dispatch({ type: 'POP_NOTIFICATION', auto: true });
             }, 3000);
-			return { ...state, newNotifications: updated, bell: true }
+			return { ...state, newNotifications: updated, bell: true, isLastPopAuto: true }
 		case 'POP_NOTIFICATION':
-			const newNotifications = state.newNotifications.slice(1);
-			return { ...state, newNotifications };
+			const upObj = { ...state, isLastPopAuto: action.auto }
+			if (state.isLastPopAuto) {
+				const newNotifications = state.newNotifications.slice(1);
+				upObj.newNotifications = newNotifications;
+			};
+			return upObj
 		case 'MARK_IS_READ':
 			return { ...state, isRead: action.payload };
 		case 'CLEAR':

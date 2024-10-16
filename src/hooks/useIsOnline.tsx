@@ -1,22 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useChatContext } from "../contexts/chatProvider";
 
-type Username = string
-
-function useIsOnline() {
+function useIsOnline2(username: string) {
 	const { state } = useChatContext();
-
-	const isOnline = (user: Username) => {
-		return state.onlineFriends.some((friend) => {
-			return friend.username = user
-		})
-	}
+    const [isOnline, setIsOnline] = useState(false);
 
 	useEffect(() => {
-
-	}, [state.onlineFriends])
+        const is = state.onlineFriends.some((friend) => {
+			return friend.username = username
+		})
+        setIsOnline(is)
+    }, [state.onlineFriends, username])
 
 	return isOnline
 }
 
-export default useIsOnline;
+export default useIsOnline2;
