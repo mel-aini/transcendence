@@ -9,7 +9,6 @@ interface Props {
 
 function ConversationsList({className, ...props}: Props) {
 	const {state, dispatch} = useChatContext();
-	const isOnline = useIsOnline();
 
 	const handler = (conversation: Conversation) => {
 		dispatch({type: 'FOCUS', state: true})
@@ -19,8 +18,7 @@ function ConversationsList({className, ...props}: Props) {
 		}});
 		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: conversation.friend.username,
-			avatar: conversation.friend.avatar,
-			isOnline: isOnline(conversation.friend.username)
+			avatar: conversation.friend.avatar
 		}})
 	}
 

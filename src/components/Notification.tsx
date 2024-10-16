@@ -5,11 +5,10 @@ import { ProfileRequest } from "../types/profile";
 import { useEffect, useState } from "react";
 import { useChatContext } from "../contexts/chatProvider";
 import api from "../api/axios";
-import useIsOnline from "../hooks/useIsOnline";
 import { useNavigate } from "react-router-dom";
 import { LuMessagesSquare } from "react-icons/lu";
-import { usePingPongContext } from "../contexts/pingPongProvider";
 import { useAuthContext } from "../contexts/authProvider";
+import { useNotificationsContext } from "../contexts/notificationsProvider";
 
 interface Props {
 	notData: INotification
@@ -19,9 +18,9 @@ const Notification = ({ notData }: Props) => {
 	const { lastJsonMessage, sendJsonMessage } = useGlobalWebSocketContext()
 	const { dispatch: chatDispatch, sendJsonMessage: sendChatJsonMessage } = useChatContext();
 	const { state: authState } = useAuthContext();
+	const { dispatch: notDispatch } = useNotificationsContext()
 	const [data, setData] = useState(notData);
 	const navigate = useNavigate();
-	const isOnline = useIsOnline();
 	const { dispatch: dispatchGlobal } = useGlobalContext();
 
 	const acceptDenyFriend = (type: "accept" | "deny") => {
@@ -88,9 +87,9 @@ const Notification = ({ notData }: Props) => {
 		const userData = await api.get('users/' + notData.sender);
 		chatDispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: userData.data.username,
-			avatar: userData.data.profile_image,
-			isOnline: isOnline(userData.data.username)
+			avatar: userData.data.profile_image
 		}})
+		notDispatch({ type: 'POP_NOTIFICATION', auto: false })
 	}
 
 	useEffect(() => {

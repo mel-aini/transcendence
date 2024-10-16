@@ -13,7 +13,6 @@ import { useChatContext } from "../../../contexts/chatProvider"
 import { useAuthContext } from "../../../contexts/authProvider"
 import { useNavigate } from "react-router-dom"
 import api from "../../../api/axios"
-import useIsOnline from "../../../hooks/useIsOnline"
 
 const FriendActions = ({username, origin}: {username?: string, origin: string}) => {
 	const { sendJsonMessage } = useGlobalWebSocketContext();
@@ -23,7 +22,6 @@ const FriendActions = ({username, origin}: {username?: string, origin: string}) 
 	const { state, dispatchProfile } = useProfileContext();
 	const [seeMore, setSeeMore] = useState<boolean>(false);
 	const navigate = useNavigate();
-	const isOnline = useIsOnline();
 
 	const clickHandler = (type: "unfriend" | "block" | "invite") => {
 		if (origin === "profile") {
@@ -52,8 +50,7 @@ const FriendActions = ({username, origin}: {username?: string, origin: string}) 
 		const userData = await api.get('users/' + username);
 		chatDispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: userData.data.username,
-			avatar: userData.data.profile_image,
-			isOnline: isOnline(userData.data.username)
+			avatar: userData.data.profile_image
 		}})
 	}
 

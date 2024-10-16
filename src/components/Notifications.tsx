@@ -7,6 +7,7 @@ import { MdOutlineClearAll } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import api from "../api/axios";
 import { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 async function getNotifications() {
     const res = await api.get('notifications/?start=0&end=10')
@@ -23,12 +24,14 @@ function Notifications() {
 		staleTime: 0,
 		gcTime: 0
     });
+	const [isClearing, setIsClearing] = useState(false);
 
 	const whenFetched = (data: any) => {
 		setNotifications(prev => [...prev, ...data]);
 	}
 
 	const clearNotifications = () => {
+		setIsClearing(true);
 		sendJsonMessage({
 			type: "noti_clear",
 			identifier: '-',
@@ -50,16 +53,21 @@ function Notifications() {
 
 	useEffect(() => {
 		if (lastJsonMessage) {
-			if (lastJsonMessage.type == 'notification') {
-				if (lastJsonMessage.identifier == 'noti_clear' && lastJsonMessage.code == 200) {
+			if (lastJsonMessage.type == 'noti_delete') {
+				if (lastJsonMessage.code == 200) {
 					setNotifications([]);
 				}
+				setIsClearing(false);
 			}
 		}
 	}, [lastJsonMessage])
 
 	if (isLoading) {
-		return <h1>loading...</h1>
+		return (
+			<div className="absolute z-50 left-0 top-0 w-full h-full bg-[rgba(0,0,0,0.5)] flex justify-center items-center">
+				<AiOutlineLoading3Quarters className='animate-spin' />
+			</div>
+		)
 	}
 
 	if (isError) {
@@ -68,6 +76,12 @@ function Notifications() {
 
 	return ( 
 		<>
+			{
+				isClearing && 
+				<div className="absolute z-50 left-0 top-0 w-full h-full bg-[rgba(0,0,0,0.5)] flex justify-center items-center">
+					<AiOutlineLoading3Quarters className='animate-spin' />
+				</div>
+			}
 			{
 				notifications.length == 0 && 
 				<div>you have no notifications</div>

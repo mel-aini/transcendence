@@ -14,6 +14,18 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 const ConversationBar = ({className, data, ...props}: Props) => {
+
+	const isRead = (): boolean => {
+		if (!data.status) {
+			if (data.sender == data.friend.username) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		return true
+	}
+
 	return (
 		<div 
 			className={"w-full flex justify-between items-center duration-300 cursor-pointer " + (className ? ` ${className}` : '')} 
@@ -24,7 +36,7 @@ const ConversationBar = ({className, data, ...props}: Props) => {
 				<h3 className="shrink-0 overflow-hidden whitespace-nowrap text-ellipsi font-medium">{data.friend.username}</h3>
 				<span className="shrink-0 mr-2">:</span>
 				<p 
-					className={"shrink overflow-hidden whitespace-nowrap text-ellipsis" + ((!data.status && data.sender == data.friend.username) ? ' font-normal text-primary' : ' font-thin')}>
+					className={"shrink overflow-hidden whitespace-nowrap text-ellipsis" + (!isRead() ? ' font-normal text-primary' : ' font-thin')}>
 					{data.last_message}
 				</p>
 			</div>

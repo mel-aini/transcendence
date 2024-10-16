@@ -3,7 +3,7 @@ import { UserData } from "../types/profile";
 
 export interface INotification {
 	notification_id: string, 
-	type: "friend-request" | "game-request" | "text" | "join-game" | "join-tournament" | "message"
+	type: "friend-request" | "game-request" | "text" | "join-game" | "join-tournament" | "message" | "none"
 	content: string
 	read: boolean, 
 	id: string,
