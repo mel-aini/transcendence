@@ -55,7 +55,7 @@ const initialState: TournamentData = {
 	socketUrl: null,
 	level: Levels.UNINSTANTIATED,
 	opponent: null,
-	counter: 3,
+	counter: 0,
 	status: "ready",
 	ballData: {
 		x: 50,
@@ -312,12 +312,12 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 			if (message.user1.username == username)
 			{
 				dispatch({type: "OPPONENT", opponent: message.user2});
-				dispatch({type: "OPPONENT_ALIAS", opponentAlias: message.user2.opponentAlias});
+				dispatch({type: "OPPONENT_ALIAS", opponentAlias: message.user2.alias});
 			}
 			else
 			{
 				dispatch({type: "OPPONENT", opponent: message.user1});
-				dispatch({type: "OPPONENT_ALIAS", opponentAlias: message.user1.opponentAlias});
+				dispatch({type: "OPPONENT_ALIAS", opponentAlias: message.user1.alias});
 			}
 			dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
 		}
@@ -340,7 +340,7 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 
 			dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, x: message.my}});
 			dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, x: message.side}});
-			// dispatch({type: "TIMER", timer: message.time - 1});
+			dispatch({type: "TIMER", timer: -1});
 		}
 		else if (message.type == "ball")
 		{

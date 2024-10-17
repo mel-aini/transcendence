@@ -54,7 +54,7 @@ const initialState: GameData = {
 	opponentAlias: '',
 	level: Levels.FindingOpponent,
 	opponent: null,
-	counter: 3,
+	counter: 0,
 	status: "ready",
 	ballData: {
 		x: 50,
@@ -240,7 +240,7 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 
 			dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, x: message.my}});
 			dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, x: message.side}});
-			dispatch({type: "TIMER", timer: message.time - 1});
+			dispatch({type: "TIMER", timer: -1});
 		}
 		else if (message.type == "ball")
 		{

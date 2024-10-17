@@ -57,9 +57,8 @@ const Header = ({isTournament}: {isTournament: boolean}) => {
 	const { finalMinutes, finalSeconds } = timeConverter(state.time);
 
 	const clickHandler = () => {
-		if (state.counter > 0)
+		if (state.counter > 0 || state.timer > 0)
 			return ;
-		dispatch({type: "STATUS", status: "help"});
 		dispatch({type: "COUNTER", counter: 2});
 	}
 

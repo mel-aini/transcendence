@@ -35,9 +35,7 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 
 	useEffect(() => {
 		if (state.level === Levels.OpponentFound)
-		{
-			console.log(state.timer, isTournament);
-			
+		{	
 			if (state.timer <= 3)
 			{
 				navigate('../play', { replace: true });
