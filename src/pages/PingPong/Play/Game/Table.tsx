@@ -11,9 +11,10 @@ const Table = ({width, isTournament}: {width: number, isTournament: boolean}) =>
 	const sidePaddle = useRef<HTMLDivElement>(null);
 	const move = useRef<-1 | 0 | 1>(0);
 	const table = useRef<HTMLDivElement>(null);
-	const { state, sendJsonMessage } = usePingPongContext();
 	const { state: profileState } = useGlobalContext();
-	const {sendJsonMessage: sendInTournament} = useTournamentContext();
+	// const { state, sendJsonMessage } = usePingPongContext();
+	// const {sendJsonMessage: sendInTournament} = useTournamentContext();
+	const { state, sendJsonMessage } = isTournament ? useTournamentContext() : usePingPongContext();
 
 	const handleKeyDown = (e: KeyboardEvent) => {
 		if (e.key === 'ArrowUp' || e.key === 'w') {
@@ -32,13 +33,6 @@ const Table = ({width, isTournament}: {width: number, isTournament: boolean}) =>
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if (move.current === 0) return ;
-			
-			isTournament ?
-			sendInTournament({
-				type: "update",
-				y: move.current,
-			})
-			:
 			sendJsonMessage({
 				type: "update",
 				y: move.current,
@@ -68,7 +62,7 @@ const Table = ({width, isTournament}: {width: number, isTournament: boolean}) =>
 			<svg className="absolute w-[37.38%] h-full left-1/2 -translate-x-1/2">
 				<line x1={'100%'} x2={'0%'} y1={'0%'} y2={'100%'} className="stroke-1 stroke-border2" />
 			</svg>
-			<Box />
+			<Box isTournament={isTournament}/>
 		</div>
 	)
 }

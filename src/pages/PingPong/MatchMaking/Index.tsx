@@ -16,38 +16,30 @@ import { useTournamentContext } from "../../../contexts/TournamentProvider";
 export const customizeContext = createContext<any>({});
 
 function MatchMaking({isTournament}: {isTournament: boolean}) {
-	const {state, dispatch} = usePingPongContext();
-	const {state: tournState} = useTournamentContext();
+	const {state, dispatch} = isTournament ? useTournamentContext() : usePingPongContext();
+	// const {state: tournState} = 
 	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
 
 	const cancelAction = () => {
-		if (isTournament)
-		{
-			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
-			navigate("/tournament");
-		}
-		else
-		{
-			navigate("/ping-pong");
-		}
+		!isTournament && navigate("/ping-pong");
 	}
 
 	useEffect(() => {
-		console.log(isTournament);
-		
-		if (isTournament && state.level != Levels.OpponentFound)
-			navigate("/tournament");
-		else if (isTournament && state.level == Levels.FindingOpponent)
+		if (isTournament && state.level !== Levels.OpponentFound)
+			navigate("/tournament", { replace: true });
+		else if (isTournament && state.level === Levels.UNINSTANTIATED) {
 			navigate("/dashboard", { replace: true });
+		}
 	}, []);
 
 	useEffect(() => {
-		if (state.level >= Levels.OpponentFound)
+		if (state.level === Levels.OpponentFound)
 		{
-			if (state.timer == 3)
+			console.log(state.timer, isTournament);
+			
+			if (state.timer <= 3)
 			{
-				// dispatch({ type: "TIMER", timer: 9 });
 				navigate('../play', { replace: true });
 			}
 		}
@@ -59,10 +51,10 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 			<div className="space-y-5">
 			<div className="w-full flex justify-end mb-5">
 				{
-					state.level >= Levels.OpponentFound ?
-					<Loader />
+					state.level === Levels.OpponentFound ?
+					<Loader isTournament={isTournament} />
 					:
-					<span onClick={cancelAction} className="cursor-pointer hover:underline duration-300 select-none">cancel</span>
+					( isTournament ? <></> : <span onClick={cancelAction} className="cursor-pointer hover:underline duration-300 select-none">cancel</span> )
 				}
 			</div>
 			<div>
@@ -70,12 +62,12 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 					<div className="flex items-center gap-5 flex-1 justify-start self-start">
 						<User className="size-28 border-primary" border url={profileData.userData?.profile_image} />
 						<div>
-							<h3>{isTournament ? tournState.alias : profileData.userData?.username}</h3>
-							<h4>{'Lvl ' + profileData.userData?.level.current}</h4>
+							<h3>{ isTournament ? state.alias : profileData.userData?.username }</h3>
+							<h4>{ 'Lvl ' + profileData.userData?.level.current }</h4>
 						</div>
 					</div>
 					<span>vs</span>
-					{state.level == Levels.FindingOpponent &&
+					{state.level === Levels.FindingOpponent &&
 						<div className="flex-1 flex justify-end items-center gap-5 self-end">
 							<div className="flex flex-col gap-2 items-end">
 								<div className="w-20 h-4 bg-gray2 animate-pulse rounded-lg"></div>
@@ -84,7 +76,7 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 							<div className="size-28 rounded-full bg-gray2 animate-pulse"></div>
 						</div>
 					}
-					{state.level >= Levels.OpponentFound && 
+					{state.level === Levels.OpponentFound && 
 						<motion.div
 							initial={{x: 10, opacity: 0}}
 							animate={{x: 0, opacity: 1}}
@@ -92,7 +84,7 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 							className="flex-1 flex justify-end items-center gap-5 self-end"
 							>
 							<div>
-								<h3>{ isTournament ? state.alias : state.opponent?.username }</h3>
+								<h3>{ isTournament ? state.opponentAlias : state.opponent?.username }</h3>
 								<h4>{ 'Lvl ' + state.opponent?.level.current }</h4>
 							</div>
 							<User className="size-28 border-primary" border url={state.opponent?.profile_image} />
@@ -113,8 +105,8 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 }
 
 
-function Loader() {
-	const { state } = usePingPongContext();
+function Loader({isTournament}: {isTournament: boolean}) {
+	const { state } = isTournament ? useTournamentContext() : usePingPongContext();
 
 	return (
 		<motion.div

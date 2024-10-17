@@ -2,12 +2,13 @@ import { motion } from "framer-motion";
 import Help from "./Help";
 import Ready from "./Ready";
 import { usePingPongContext } from "../../../../contexts/pingPongProvider";
+import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 
-function Box() {
-	const { state } = usePingPongContext();
+function Box({isTournament} : {isTournament: boolean}) {
+	const { state } = isTournament ? useTournamentContext() : usePingPongContext();
 
 	return (
-			(state.timer >= 0)
+			(state.timer > 0)
 			?
 			<>
 			{

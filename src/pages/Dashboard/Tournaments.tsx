@@ -14,7 +14,7 @@ const Tournaments = () => {
 	const navigate = useNavigate();
 
 	const clickHandler = () => {
-		(readyState != ReadyState.OPEN) ? setDisplay(true) : navigate("/tournament");
+		(readyState !== ReadyState.OPEN) ? setDisplay(true) : navigate("/tournament");
 	}
 
 	return (

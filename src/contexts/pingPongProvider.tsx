@@ -20,13 +20,14 @@ export interface score {
 }
 
 export enum Levels {
+	UNINSTANTIATED,
 	FindingOpponent,
 	OpponentFound,
-	OpponentIsReady,
-	WaitingForOpponent
 }
 
 export interface GameData {
+	alias: string,
+	opponentAlias: string,
 	level: Levels,
 	opponent: UserData | null,
 	counter: number,
@@ -44,17 +45,13 @@ export interface GameData {
 		status: string,
 		xp: number,
 	},
-	custom: {
-		ball: string,
-		paddle: string,
-		table: string,
-	},
 	timer: number,
 	time: number,
-	alias?: string
 }
 
 const initialState: GameData = {
+	alias: '',
+	opponentAlias: '',
 	level: Levels.FindingOpponent,
 	opponent: null,
 	counter: 3,
@@ -84,14 +81,8 @@ const initialState: GameData = {
 		status: '',
 		xp: 0,
 	},
-	custom: {
-		ball: "white",
-		paddle: "white",
-		table: "rgba(255, 255, 255, 0.1)",
-	},
 	timer: 15,
 	time: 0,
-	alias: undefined
 };
 
 export const PingPongContext = createContext<{ state: GameData, dispatch: Dispatch<any>, lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
@@ -187,11 +178,11 @@ const reducer = (state: GameData, action: any) => {
 	}
 }
 
-const PingPongContextProvider = ({isTournament, children} : {isTournament: boolean, children: ReactNode}) => {
+const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData, dispatch: dispatchGlobal } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
-	const { lastJsonMessage: tournMessage, sendJsonMessage: sendTournMessage } = useTournamentContext();
+	// const { lastJsonMessage: tournMessage, sendJsonMessage: sendTournMessage } = useTournamentContext();
 	const navigate = useNavigate();
 
 	const { state: token }  = useAuthContext();
@@ -203,8 +194,7 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 			onOpen: () => dispatch({ type: "RESET" }),
 			share: false,
 			shouldReconnect: () => false,
-		},
-		!isTournament
+		}
 	);
 
 	const isEmptyObject = (obj: any) => {
@@ -221,12 +211,12 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 			if (message.user1.username == username)
 			{
 				dispatch({type: "OPPONENT", opponent: message.user2});
-				isTournament && dispatch({type: "ALIAS", alias: tournMessage.user2.alias});
+				// isTournament && dispatch({type: "ALIAS", alias: tournMessage.user2.alias});
 			}
 			else
 			{
 				dispatch({type: "OPPONENT", opponent: message.user1});
-				isTournament && dispatch({type: "ALIAS", alias: tournMessage.user1.alias});
+				// isTournament && dispatch({type: "ALIAS", alias: tournMessage.user1.alias});
 			}
 			dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
 			// isTournament && sendTournMessage( { type: 'handshake' } );
@@ -234,9 +224,9 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 		else if (message.type == "timing2")
 		{
 			dispatch({type: "TIMER", timer: message.time});
-			(isTournament && message.time == 15) && navigate('match-making');
+			// (isTournament && message.time == 15) && navigate('match-making');
 		}
-		else if (!isTournament && message.type == "ingame")
+		else if (message.type == "ingame")
 		{
 			dispatchGlobal({type: 'ALERT', message: "you are already in game!!", isError: true, dispatch: dispatchGlobal})
 			navigate('/ping-pong');
@@ -259,7 +249,7 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 				y: message.y
 			}
 			dispatch({type: "ball_Data", ballData: ballData});
-			!isTournament && dispatch({type: "TIME", time: message.time});
+			dispatch({type: "TIME", time: message.time});
 		}
 		else if (message.type == "myPaddle")
 		{
@@ -280,12 +270,12 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 		else if (message.type == "end")
 		{
 			// console.log(message);
-			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: (isTournament ? 0 : message.xp), isEndGame: true}});
+			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: message.xp, isEndGame: true}});
 		}
 		else if (message.type == "disconnect")
 		{
 			// console.log(message);
-			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: (isTournament ? 0 : message.xp), isEndGame: true}});
+			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp:  message.xp, isEndGame: true}});
 			message.status == "win"
 			?
 			dispatch({type: "SCORE", score: {...state.score, my: 3, side: 0}})
@@ -300,11 +290,11 @@ const PingPongContextProvider = ({isTournament, children} : {isTournament: boole
 		
 	}, [lastJsonMessage]);
 
-	useEffect(() => {
-		if (!isEmptyObject(tournMessage))
-			messageHandler(tournMessage);
+	// useEffect(() => {
+	// 	if (!isEmptyObject(tournMessage))
+	// 		messageHandler(tournMessage);
 		
-	}, [tournMessage]);
+	// }, [tournMessage]);
 	
 	return (
 		<PingPongContext.Provider value={{state, dispatch, lastJsonMessage, sendJsonMessage}}>

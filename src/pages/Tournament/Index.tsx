@@ -4,6 +4,7 @@ import Match from "./Match";
 import PlayerBar from "./PlayerBar";
 import { useNavigate } from "react-router-dom";
 import LayoutHeader from "../../layout/LayoutHeader";
+import { Levels } from "../../contexts/pingPongProvider";
 
 interface MatchData {
 	player1: Player | "player",
@@ -17,11 +18,14 @@ const Index = () => {
 	useEffect(() => {
 		if (state.socketUrl === null)
 			navigate("/dashboard");
+		if (state.level === Levels.OpponentFound)
+			navigate("match-making");
 	}, []);
+
 
 	const handleLeave = () => {
 		dispatch({type: "SOCKET_URL", socketUrl: null});
-		// navigate("/dashboard");
+		navigate("/dashboard");
 	}
 
 	return (

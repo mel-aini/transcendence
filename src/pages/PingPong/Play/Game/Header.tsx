@@ -8,8 +8,8 @@ import { useTimer } from 'react-timer-hook';
 import { useTournamentContext } from "../../../../contexts/TournamentProvider";
 import { useGlobalContext } from "../../../../contexts/store";
 
-const Goal = () => {
-	const {state} = usePingPongContext();
+const Goal = ({isTournament}: {isTournament: boolean}) => {
+	const { state } = isTournament ? useTournamentContext() : usePingPongContext();
 	const [goal, setGoal] = useState<string>('');
 
 	useEffect(() => {
@@ -53,8 +53,7 @@ const timeConverter = (time: number) => {
 }
 
 const Header = ({isTournament}: {isTournament: boolean}) => {
-	const {state, dispatch} = usePingPongContext();
-	const {state: globalState} = useGlobalContext();
+	const {state, dispatch} = isTournament ? useTournamentContext() : usePingPongContext();
 	const { finalMinutes, finalSeconds } = timeConverter(state.time);
 
 	const clickHandler = () => {
@@ -78,11 +77,11 @@ const Header = ({isTournament}: {isTournament: boolean}) => {
 					</div>
 					<div className="bg-secondary lg:w-full lg:max-w-[133px] h-[40px] flex md:justify-start justify-center items-center px-2 shrink-0 sm:shrink">
 						<img src={state.opponent?.profile_image} alt="" className="w-[26px] h-[26px] border rounded-full overflow-hidden shrink-0"/>
-						<span className="shrink truncate text-xs hidden sm:block pl-3">{isTournament ? state.alias : state.opponent?.username}</span>
+						<span className="shrink truncate text-xs hidden sm:block pl-3">{isTournament ? state.opponentAlias : state.opponent?.username}</span>
 					</div>
 				</div>
 			</div>
-			<Goal />
+			<Goal isTournament={isTournament}/>
 			<div className="flex gap-1 shrink-0 justify-self-end col-start-3 col-end-4">
 				{/* <div className="bg-secondary w-[40px] h-[40px] flex justify-center items-center">
 					<img src={pause} alt="pause" />

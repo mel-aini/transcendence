@@ -3,9 +3,9 @@ import PingPongContextProvider from "../contexts/pingPongProvider";
 
 function TournamentLayout() {
 	return (
-		<PingPongContextProvider isTournament={true}>
+		// <PingPongContextProvider isTournament={true}>
 			<Outlet />
-		</PingPongContextProvider>
+		// {/* </PingPongContextProvider> */}
 	);
 }
 
