@@ -10,20 +10,13 @@ import LayoutHeader from "../../../../layout/LayoutHeader";
 import Title from "../../../../components/Title";
 
 function Result({isTournament}: {isTournament: boolean}) {
-	const {state, dispatch, sendJsonMessage} = isTournament ? useTournamentContext() : usePingPongContext();
+	const {state, dispatch} = isTournament ? useTournamentContext() : usePingPongContext();
 	const { state: globalState, dispatch: dispatchGlobal } = useGlobalContext();
 	const navigate = useNavigate();
 	const [xp, setXp] = useState<number>(0);
 
 	const clickHandler = () => {
-		if (isTournament)
-		{
-			if (state.result.status != "lose" && state.result.status != "eliminated")
-				sendJsonMessage({ type: 'qualifyboard' });
-			dispatch({ type: 'RESET_BETA' });
-			navigate("/tournament");
-		}
-		else
+		if (!isTournament)
 		{
 			dispatchGlobal({ type: 'GAME_ID', gameId: null });
 			navigate("/ping-pong");
@@ -37,6 +30,13 @@ function Result({isTournament}: {isTournament: boolean}) {
 		}, 10);
 		return () => clearTimeout(id);
 	}, [xp]);
+
+	useEffect(() => {
+		if (state.timeResult === 0) {
+			dispatch({ type: 'RESET_BETA' });
+			navigate("/tournament");
+		}
+	}, [state.timeResult]);
 
 	return (
 		<div className="w-full">
@@ -121,14 +121,23 @@ function Result({isTournament}: {isTournament: boolean}) {
 				</div>
 				<UserBox direction="right" username={isTournament ? state.opponentAlias : state.opponent?.username} level={state.opponent?.level.current} userImage={state.opponent?.profile_image} className="self-end" />
 			</motion.div>
-			<motion.div
-			initial={{opacity: 0, top: '-5rem'}}
-			animate={{opacity: 1, top: '0rem'}}
-			transition={{duration: 0.3, delay: 2}}
-			onClick={clickHandler}
-			className="relative top-0 max-w-[344px] h-full w-4/5 sm:w-full">
-				<Button className="h-full w-full">continue</Button>
-			</motion.div>
+			{
+				isTournament ?
+				<motion.span 
+					initial={{width: '100%'}}
+					animate={{width: '0%'}}
+					transition={{duration: state.timeResult, ease: 'easeOut'}}
+					className="self-start bg-primary h-[2px]" />
+					:
+				<motion.div
+				initial={{opacity: 0, top: '-5rem'}}
+				animate={{opacity: 1, top: '0rem'}}
+				transition={{duration: 0.3, delay: 2}}
+				onClick={clickHandler}
+				className="relative top-0 max-w-[344px] h-full w-4/5 sm:w-full">
+					<Button className="h-full w-full">continue</Button>
+				</motion.div>
+			}
 		</motion.div>
 		</div>
 	);

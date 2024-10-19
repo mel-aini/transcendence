@@ -54,7 +54,7 @@ const Index = () => {
 									}
 									else
 										matches.push({player1: round.players[0]});
-									console.log(index);
+									// console.log(index);
 									return (
 										<div key={index} className={"flex flex-col justify-center " + ((index != state.roundData.length - 1) ? "w-full" : "w-auto")} style={(index == 0) ? {gap: "64px"} : {gap: `${64 * index}px`}}>
 										{

@@ -47,6 +47,7 @@ export interface GameData {
 	},
 	timer: number,
 	time: number,
+	timeResult: number,
 }
 
 const initialState: GameData = {
@@ -83,6 +84,7 @@ const initialState: GameData = {
 	},
 	timer: 15,
 	time: 0,
+	timeResult: 5,
 };
 
 export const PingPongContext = createContext<{ state: GameData, dispatch: Dispatch<any>, lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({

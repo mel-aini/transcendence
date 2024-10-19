@@ -44,6 +44,7 @@ interface TournamentData {
 	},
 	timer: number,
 	time: number,
+	timeResult: number,
 }
 
 const initialState: TournamentData = {
@@ -84,6 +85,7 @@ const initialState: TournamentData = {
 	},
 	timer: 15,
 	time: 0,
+	timeResult: 5,
 };
 
 export const TournamentContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage, readyState: ReadyState, state: TournamentData, dispatch: Dispatch<any>}>({
@@ -193,10 +195,10 @@ const reducer = (state: TournamentData, action: any) => {
 				...state, 
 				timer: action.timer
 			}
-		case 'ALIAS':
+		case 'TIME_RESULT':
 			return { 
 				...state, 
-				alias: action.alias
+				timeResult: action.timeResult
 			}
 		case 'RESET_BETA':
 			return {
@@ -230,6 +232,7 @@ const reducer = (state: TournamentData, action: any) => {
 					xp: 0,
 				},
 				timer: 15,
+				timeResult: 5,
 		}
 		case 'RESET':
 			return initialState
@@ -331,6 +334,10 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 			dispatch({type: "TIMER", timer: message.time});
 			(message.time == 14) && navigate('/tournament/match-making');
 		}
+		else if (message.type == "timingend")
+		{
+			dispatch({type: "TIME_RESULT", timeResult: message.time});
+		}
 		else if (message.type == "init_paddle")
 		{
 			(message.my == 1) ?
@@ -392,6 +399,7 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 
 			if (lastJsonMessage.type == "dashboard")
 			{
+				// console.log(lastJsonMessage);
 				const isCompleted: boolean = (lastJsonMessage.rounds.length > state.roundData.length);
 				const roundData: RoundData[] = state.roundData;
 				lastJsonMessage.rounds.map((round: any, index: number) => {
@@ -417,9 +425,7 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 				dispatch({type: "ROUND_DATA", roundData: roundData});
 			}
 			else
-			{
 				messageHandler(lastJsonMessage);
-			}
 		}
 		
 	}, [lastJsonMessage]);
