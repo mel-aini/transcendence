@@ -8,7 +8,7 @@ import edit_icon from "/edit_icon.svg"
 import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
 import { useGlobalContext } from "../../contexts/store";
 
-const Skeleton = () => {
+export const ProfileHeaderSkeleton = () => {
 	return (
 		<>
 			<div className="relative mb-[200px] xl:mb-[50px] flex flex-col w-full animate-pulse">
@@ -34,7 +34,7 @@ const Skeleton = () => {
 	)
 }
 
-const ProfileHeader = ({isLoading}: {isLoading: boolean}) => {
+const ProfileHeader = () => {
 	const { dispatch } = useGlobalContext();
 	const { state, dispatchProfile } = useProfileContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
@@ -44,8 +44,6 @@ const ProfileHeader = ({isLoading}: {isLoading: boolean}) => {
 
 	const changehandler = async (e: any) => {
 		try {
-			console.log("here image");
-			
 			const newImage = e.currentTarget.files[0];
 			if (!newImage) return ;
 			else if (newImage.size > 1048576) {
@@ -75,13 +73,6 @@ const ProfileHeader = ({isLoading}: {isLoading: boolean}) => {
 	// 		return () => clearInterval(checkOnline);
 	// 	}
 	// }, [state.userData]);
-
-	if (isLoading)
-	{
-		return (
-			<Skeleton />
-		)
-	}
 
 	return (
 		<>

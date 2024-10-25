@@ -5,7 +5,7 @@ import { ComponentProps, useEffect, useState } from "react";
 import Container from "../../components/Container";
 import { useProfileContext } from "../../contexts/profileStore";
 
-const Skeleton = () => {
+export const StatesSkeleton = () => {
 	return (
 		<div className="row-span-3 row-start-2 xl:row-span-1 xl:row-start-1 xl:col-start-1 xl:col-end-4 animate-pulse">
 			<Container className="h-full" childClassName="flex flex-col justify-between p-5 sm:p-10 gap-20">
@@ -56,36 +56,24 @@ interface NisbaProps extends ComponentProps<'span'> {
 }
 
 const Nisba = ({percentage, className, ...props}: NisbaProps) => {
-	const [nisba, setNisba] = useState(0)
+	const [nisba, setNisba] = useState<number>(0)
 
 	useEffect(() => {
-		
 		if (nisba < percentage) {
-			setTimeout(() => {
-				setNisba(nisba + 1.00)
-			}, 40)
-		} else {
-			setTimeout(() => {
-				setNisba(percentage)
-			}, 100)
+			const timeout = setTimeout(() => {
+				setNisba((prev) => prev + 1.00);
+			}, 40);
+			return () => clearTimeout(timeout);
 		}
-
-	}, [nisba])
+	}, [nisba, percentage])
 
 	return (
 		<span {...props} className={"text-primary text-3xl " + className}>{nisba + '%'}</span>
 	)
 }
 
-const States = ({isLoading}: {isLoading: boolean}) => {
+const States = () => {
 	const { state } = useProfileContext();
-
-	
-	if (isLoading) return (
-		<Skeleton />
-	);
-
-	
 	const percentage: string = state.userData ? (state.userData.matches.total != 0 ? parseFloat(((state.userData.matches.wins / state.userData.matches.total) * 100).toString()).toFixed(0) : 0) + '%' : '0%';
 
 	return (

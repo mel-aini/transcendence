@@ -1,7 +1,7 @@
-import States from "./States";
-import History from "./History";
-import Friends from "./Friends";
-import ProfileHeader from "./ProfileHeader";
+import States, { StatesSkeleton } from "./States";
+import History, { HistorySkeleton } from "./History";
+import Friends, { FriendsSkeleton } from "./Friends";
+import ProfileHeader, { ProfileHeaderSkeleton } from "./ProfileHeader";
 import { useEffect } from "react";
 import { useGlobalContext } from "../../contexts/store";
 import {  useParams } from "react-router-dom";
@@ -9,6 +9,7 @@ import { useProfileContext } from "../../contexts/profileStore";
 import api from "../../api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useAuthContext } from "../../contexts/authProvider";
+import { PiSmileySad } from "react-icons/pi";
 
 async function fetchData(id: string | undefined) {
 	const uri: string = id ? "users/" + id : "profile";
@@ -48,20 +49,38 @@ const Index = () => {
 	} ,[isRefetching])
 
 
+	if (isLoading) {
+		return (
+			<div className="flex flex-col justify-center items-center relative">
+				<ProfileHeaderSkeleton />
+					<div className="w-full 2xl:px-0 ">
+						<div className="xl:h-[800px] grid grid-cols-1 pt-20 xl:grid-cols-7 xl:mt-[75px] gap-5 pb-7">
+							<StatesSkeleton />
+							<FriendsSkeleton />
+							<HistorySkeleton />
+						</div>
+					</div>
+			</div>
+		)
+	}
+
 	if (isError) {
 		return (
-			<h1>Error</h1>
+			<div className="flex flex-col gap-5 mt-20 items-center">
+				<PiSmileySad className="text-8xl fill-primary" />
+				<h1 className="text-4xl font-semibold">User Not Found</h1>
+			</div>
 		)
 	}
 
 	return (
 		<div className="flex flex-col justify-center items-center relative">
-			<ProfileHeader isLoading={isLoading} />
+			<ProfileHeader />
 			{
 				state.userData?.relation !== 'you' &&
 				<div className="w-full 2xl:px-0 ">
 					<div className="xl:h-[800px] grid grid-cols-1 pt-20 xl:grid-cols-7 xl:mt-[75px] gap-5 pb-7">
-						<States isLoading={isLoading} />
+						<States />
 						<Friends />
 						<History />
 					</div>
