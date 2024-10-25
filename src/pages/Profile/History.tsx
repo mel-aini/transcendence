@@ -42,8 +42,11 @@ const History = () => {
 	}
 
 	useEffect(() => {
-		if (!isLoading)
-			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data});
+		
+		if (!isLoading) {
+			// console.log(data?.data.data);
+			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
+		}
 
 		if (!parentRef.current) return;
 		setWidth((parentRef.current as HTMLElement).offsetWidth);
@@ -57,7 +60,7 @@ const History = () => {
 
 	useEffect(() => {
 		if (!isRefetching)
-			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data});
+			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
 	}, [isRefetching])
 	
 	if (isError) {
@@ -93,6 +96,7 @@ const History = () => {
 						isLoading ?
 						[1, 2, 3].map((key: number) => <div key={key} className="flex justify-between items-center min-h-[40px] w-full select-none gap-1 h-[24px] bg-[#2F2F2F] rounded-lg" />)
 						:
+						(
 						(state.matchesData && state.matchesData.length !== 0) ? state.matchesData.map((match: MatchesData, key: number) => {
 							const variant = {
 								hidden: { opacity: 0, },
@@ -144,6 +148,7 @@ const History = () => {
 						})
 						:
 						<div>No Matches Yet !!!</div>
+						)
 					}
 					</motion.div>
 			</Container>
