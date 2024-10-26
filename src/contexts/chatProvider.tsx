@@ -170,6 +170,12 @@ type updatedConv = {
 	last_message: string
 	sender: string
 	status: string
+	friend: {
+		avatar_link: string
+		id: string | number
+		is_online: boolean
+		username: string
+	}
 }
 
 const ChatContextProvider = ({children} : {children: ReactNode}) => {
@@ -191,50 +197,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				id: null,
 				state: 'error'
 			}});
-		}
-	}
-
-	const updateConversations = async (id: string | number | null, data: updatedConv | null, type?: 'read') => {
-		if (type == 'read') {
-			for (let i = 0; i < state.conversations.length; i++) {
-				const conv: Conversation = state.conversations[i];
-				if (conv.id == state.conversation.id) {
-					conv.status = true;
-					break;
-				}
-				
-			}
-			dispatch({type: 'CONVERSATIONS', conversations: [...state.conversations]})
-		}
-		else {
-			let OldConv: Conversation | any = {};
-			const newArr = state.conversations.filter((conv: Conversation) => {
-				const condition = conv.id != id;
-				if (!condition) {
-					console.log(conv);
-					OldConv = {...conv};
-				}
-				return condition;
-			})
-			
-			newArr.unshift(data);
-			// console.log(OldConv.username != state.conversation_header.username)
-			if (OldConv.username != state.conversation_header.username && OldConv.sender != authState.username) {
-				// in case of new message comes
-				notDispatch({type: 'PUSH_NOTIFICATION', notification: {
-					notification_id: undefined,
-					type: "message",
-					content: `new message from ${OldConv.sender}`,
-					read: false, 
-					id: OldConv.id,
-					sender: OldConv.sender
-				}, dispatch: notDispatch})
-
-				if (location.pathname != '/chat') {
-					dispatch({type: 'UNREAD_CONVERSATION', status: true})
-				}
-			}
-			dispatch({type: 'CONVERSATIONS', conversations: [...newArr]})
 		}
 	}
 
@@ -266,6 +228,47 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 		}
 	  )
+
+	  const updateConversations = async (id: string | number | null, data: updatedConv | null, type?: 'read') => {
+	
+		if (type == 'read') {
+			console.log('read event occured')
+			for (let i = 0; i < state.conversations.length; i++) {
+				const conv: Conversation = state.conversations[i];
+				if (conv.id == state.conversation.id) {
+					console.log('in conv', conv)
+					conv.status = true;
+					break;
+				}
+				
+			}
+			dispatch({type: 'CONVERSATIONS', conversations: [...state.conversations]})
+		}
+		else {
+			if (!data) return;
+			const newArr = state.conversations.filter((conv: Conversation) => {
+				return conv.id != id;
+			})
+			
+			newArr.unshift(data);
+			if (data.friend.username != state.conversation_header.username && data.sender != authState.username) {
+				// in case of new message comes
+				notDispatch({type: 'PUSH_NOTIFICATION', notification: {
+					notification_id: undefined,
+					type: "message",
+					content: `new message from ${data.sender}`,
+					read: false, 
+					id: null,
+					sender: data.sender
+				}, dispatch: notDispatch})
+
+				if (location.pathname != '/chat') {
+					dispatch({type: 'UNREAD_CONVERSATION', status: true})
+				}
+			}
+			dispatch({type: 'CONVERSATIONS', conversations: [...newArr]})
+		}
+	}
 
 	useEffect(() => {
 		console.log('new message')
@@ -307,6 +310,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 						receiver: authState.username,
 						state: 'ok'
 					}});
+					updateConversations(null, null, 'read')
 					
 				} else {
 					// I'm the sender
@@ -335,13 +339,22 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					conversation_id: number | string
 				}
 				const data: responseData = lastJsonMessage.data
+				console.log('state.onlineFriends before update')
+				console.log(state.onlineFriends)
+				console.log('data')
+				console.log(data)
 				const isFound = state.onlineFriends.find((friend: OnlineFriend) => friend.username == data.username);
+				console.log('isfound: ')
+				console.log(isFound)
 				if (!isFound) {
-					console.log('user offline');
-					newList = [...state.onlineFriends, data]
+					console.log('user was offline');
+					newList = [...state.onlineFriends]
+					if (data.is_online) {
+						newList.push(data);
+					}
 				}
 				else {
-					console.log('user online');
+					console.log('user was online');
 					newList = state.onlineFriends.filter((friend: OnlineFriend) => {
 						if (friend.username == data.username) {
 							return data.is_online
@@ -415,6 +428,15 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			})
 		}
 	}, [state.conversation])
+
+	useEffect(() => {
+		if (location.pathname != '/chat' || !state.isFocus) {
+			dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
+				username: '',
+				avatar: ''
+			}})
+		}
+	}, [state.isFocus, location.pathname])
 
 	return (
 		<ChatContext.Provider value={{state, dispatch, lastJsonMessage, sendJsonMessage, readyState}}>
