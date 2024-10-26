@@ -39,7 +39,8 @@ function SearchFriends({onClose}: Props) {
 		})
 		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: friend.username,
-			avatar: friend.profile_image
+			avatar: friend.profile_image,
+			id: friend.id
 		}})
 		onClose();
 	}

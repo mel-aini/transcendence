@@ -17,10 +17,12 @@ interface Header {
 	username: Username
 	avatar: Url
 	isOnline: boolean
+	id: string | number
 }
 
 export interface Conversation {
 	friend: {
+		id: string | number
 		username: Username
 		avatar: Url
 		online: boolean
@@ -33,11 +35,11 @@ export interface Conversation {
 }
 
 interface OnlineFriend {
-	id?: string | number
+	id: string | number
 	avatar_link: Url
 	conversation_id: string | number
 	username: Username
-	isOnline?: boolean
+	is_online?: boolean
 }
 
 interface Message {
@@ -81,7 +83,8 @@ const initialState: ChatStateProps = {
 	conversation_header: {
 		username: '',
 		avatar: '',
-		isOnline: false
+		isOnline: false,
+		id: ''
 	},
 	lastMessage: null,
 	newMessageTriggered: false,
@@ -335,19 +338,37 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					conversation_id: number | string
 				}
 				const data: responseData = lastJsonMessage.data
-				const isFound = state.onlineFriends.find((friend: OnlineFriend) => friend.username == data.username);
+				const isFound = state.onlineFriends.find((friend: OnlineFriend) => friend.id == data.id);
 				if (!isFound) {
 					console.log('user offline');
 					newList = [...state.onlineFriends, data]
 				}
 				else {
-					console.log('user online');
+					// User already online
+					// update online users
 					newList = state.onlineFriends.filter((friend: OnlineFriend) => {
-						if (friend.username == data.username) {
+						if (friend.id == data.id) {
+							friend = data;
 							return data.is_online
 						}
 						return true
 					})
+					// update conversations
+					const conversations_update = state.conversations.map((conv: Conversation) => {
+						if (conv.friend.id == data.id) {
+							return { 
+								...conv, 
+								friend: {
+									avatar_link: data.avatar_link,
+									is_online: data.is_online,
+									username: data.username
+								}
+							};
+						}
+						return conv;
+					});
+					dispatch({type: 'CONVERSATIONS', conversations: conversations_update});
+					// update conversation header
 				}
 				dispatch({type: 'ONLINE', onlineFriends: newList})
 			}
@@ -370,7 +391,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					username: lastJsonMessage.online.username,
 					avatar_link: lastJsonMessage.online.avatar_link,
 					id: lastJsonMessage.online.id,
-					isOnline: lastJsonMessage.online.is_online,
+					is_online: lastJsonMessage.online.is_online,
 					conversation_id: lastJsonMessage.conversation.id
 				}
 				const newList = [...state.onlineFriends, friend]
@@ -404,7 +425,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	}, [lastJsonMessage])
 
 	useEffect(() => {
-		// console.log('trying to make new call to the web socket...', state.conversation_id)
 		if (state.conversation.state == 'loading') {
 			dispatch({type: 'MESSAGES', messages: []})
 			console.log(authState)
@@ -433,3 +453,12 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 export const useChatContext = () => useContext(ChatContext);
 export default ChatContextProvider;
+
+// cases where I should have friend id
+// [
+// 	api/users/username
+// 	conversations first time
+// 	api/friends/?filter=user
+// ]
+
+// when change the username, he will be offline

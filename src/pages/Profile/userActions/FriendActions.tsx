@@ -50,7 +50,8 @@ const FriendActions = ({username, origin}: {username?: string, origin: string}) 
 		const userData = await api.get('users/' + username);
 		chatDispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: userData.data.username,
-			avatar: userData.data.profile_image
+			avatar: userData.data.profile_image,
+			id: userData.data.id
 		}})
 	}
 

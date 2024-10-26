@@ -18,7 +18,8 @@ function ConversationsList({className, ...props}: Props) {
 		}});
 		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: conversation.friend.username,
-			avatar: conversation.friend.avatar
+			avatar: conversation.friend.avatar,
+			id: conversation.friend.id
 		}})
 	}
 

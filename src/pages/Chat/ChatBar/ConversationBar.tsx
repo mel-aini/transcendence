@@ -1,6 +1,7 @@
 import { HTMLAttributes } from "react";
 import User from "../../../components/User";
 import { Conversation } from "../../../contexts/chatProvider";
+import { useAuthContext } from "../../../contexts/authProvider";
 
 function getDate(last_date: string) {
 	const parsedDate = last_date.split(' ');
@@ -14,7 +15,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 const ConversationBar = ({className, data, ...props}: Props) => {
-
+	const { state: authState } = useAuthContext();
 	const isRead = (): boolean => {
 		if (!data.status) {
 			if (data.sender == data.friend.username) {
@@ -32,7 +33,7 @@ const ConversationBar = ({className, data, ...props}: Props) => {
 			{...props}>
 			<div className="overflow-hidden shrink flex items-center text-[14px]">
 				<User border className="shrink-0 mr-2" url={data?.friend?.avatar || ''} />
-				{data.sender != data.friend.username && <h1 className=" font-light pr-1">to</h1>}
+				{data.sender == authState.username && <h1 className=" font-light pr-1">to</h1>}
 				<h3 className="shrink-0 overflow-hidden whitespace-nowrap text-ellipsi font-medium">{data.friend.username}</h3>
 				<span className="shrink-0 mr-2">:</span>
 				<p 
