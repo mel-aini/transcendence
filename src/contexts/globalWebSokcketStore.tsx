@@ -17,7 +17,7 @@ export const GlobalWebSocketContext = createContext<{lastJsonMessage: any, sendJ
 const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	const { dispatch } = useGlobalContext();
 	const { state, dispatchProfile } = useProfileContext();
-	const { state: token }  = useAuthContext();
+	const { state: token, dispatch: authDispatch }  = useAuthContext();
 	const { dispatch: notDispatch } = useNotificationsContext();
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_END_POINT + "sys/?token=" + token.accessToken,
 		{
@@ -68,8 +68,10 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			else if (lastJsonMessage.type === "update")
 			{
-				if (lastJsonMessage.identifier === "username")
+				if (lastJsonMessage.identifier === "username") {
 					dispatch({type: "USER_DATA", userData: {...state.userData, username: lastJsonMessage.data.value}});
+					authDispatch({type: 'USERNAME', username: lastJsonMessage.data.value});
+				}
 				else if (lastJsonMessage.identifier === "email")
 					dispatch({type: "USER_DATA", userData: {...state.userData, email: lastJsonMessage.data.value}});
 				else if (lastJsonMessage.identifier === "tfa-status")

@@ -181,6 +181,14 @@ type updatedConv = {
 	}
 }
 
+type responseData = {
+	id:	number | string
+	username: string
+	avatar_link: string
+	is_online:	boolean
+	conversation_id: number | string
+}
+
 const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	const [ state, dispatch ] = useReducer(reducer, initialState);
 	const { state: authState } = useAuthContext();
@@ -273,6 +281,37 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 		}
 	}
 
+	const updateFriendData = (data: responseData) => {
+		// update conversations
+		console.log("data is:", data);
+		const conversations_update = state.conversations.map((conv: Conversation) => {
+			console.log(conv.friend.id, data.id)
+			if (conv.friend.id == data.id) {
+				console.log('it should changed in conversations');
+				return { 
+					...conv, 
+					friend: {
+						avatar_link: data.avatar_link,
+						is_online: data.is_online,
+						username: data.username,
+						id: data.id
+					}
+				};
+			}
+			return conv;
+		});
+		dispatch({type: 'CONVERSATIONS', conversations: conversations_update});
+		// update conversation header
+		// console.log(data.id, state.conversation_header.id);
+		if (data.id == state.conversation_header.id) {
+			dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
+				username: data.username,
+				avatar: data.avatar_link,
+				id: data.id
+			}})
+		}
+	}
+
 	useEffect(() => {
 		console.log('new message')
 		console.log(lastJsonMessage);
@@ -283,8 +322,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			if (lastJsonMessage.conversations) {
 				const conv = lastJsonMessage.conversations.find((conv: Conversation) => conv.status == false && conv.sender != authState.username);
-				// console.log('lastJsonMessage.conversations', lastJsonMessage.conversations)
-				// console.log('conv', conv)
 				dispatch({type: 'CONVERSATIONS', conversations: lastJsonMessage.conversations})
 				dispatch({type: 'UNREAD_CONVERSATION', status: conv ? true : false})
 			}
@@ -334,13 +371,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			if (lastJsonMessage.type == 'update_data') {
 				// for update online users status
 				let newList: OnlineFriend[] = [];
-				type responseData = {
-					id:	number | string
-					username: string
-					avatar_link: string
-					is_online:	boolean
-					conversation_id: number | string
-				}
 				const data: responseData = lastJsonMessage.data
 				const isFound = state.onlineFriends.find((friend: OnlineFriend) => friend.id == data.id);
 				if (!isFound) {
@@ -360,23 +390,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 						}
 						return true
 					})
-					// update conversations
-					const conversations_update = state.conversations.map((conv: Conversation) => {
-						if (conv.friend.id == data.id) {
-							return { 
-								...conv, 
-								friend: {
-									avatar_link: data.avatar_link,
-									is_online: data.is_online,
-									username: data.username
-								}
-							};
-						}
-						return conv;
-					});
-					dispatch({type: 'CONVERSATIONS', conversations: conversations_update});
-					// update conversation header
 				}
+				updateFriendData(data);
 				dispatch({type: 'ONLINE', onlineFriends: newList})
 			}
 			if (lastJsonMessage.type == 'getConversation') {
@@ -469,12 +484,5 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 export const useChatContext = () => useContext(ChatContext);
 export default ChatContextProvider;
-
-// cases where I should have friend id
-// [
-// 	api/users/username
-// 	conversations first time
-// 	api/friends/?filter=user
-// ]
 
 // when change the username, he will be offline
