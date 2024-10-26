@@ -34,13 +34,8 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 	}, []);
 
 	useEffect(() => {
-		if (state.level === Levels.OpponentFound)
-		{	
-			if (state.timer <= 3)
-			{
-				navigate('../play', { replace: true });
-			}
-		}
+		if (state.level === Levels.OpponentFound && state.timer <= 3)
+			navigate('../play', { replace: true });
 	}, [state.level, state.timer]);
 
 	return (
@@ -118,7 +113,7 @@ function Loader({isTournament}: {isTournament: boolean}) {
 				${secondaryColor} ${'100%'}, ${secondaryColor} 100%)`}}
 			transition={{
 				duration: state.timer - 3,
-				ease: 'easeOut'
+				ease: 'easeIn'
 			}}
 			className="relative size-[40px] self-center rounded-full sm:shrink-0 flex justify-center items-center"
 			style={{
