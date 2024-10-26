@@ -46,7 +46,6 @@ const Goal = ({isTournament}: {isTournament: boolean}) => {
 const timeConverter = (time: number) => {
 	const minutes = Math.floor(time / 60);
 	const seconds = Math.floor(time % 60);
-	// console.log(minutes, seconds);
 	const finalSeconds = seconds < 10 ? `0${seconds}` : seconds.toString();
 	const finalMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
 	return { finalMinutes, finalSeconds }

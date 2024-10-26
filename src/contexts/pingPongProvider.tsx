@@ -184,7 +184,6 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { state: profileData, dispatch: dispatchGlobal } = useGlobalContext();
 	const username: string | undefined = profileData.userData?.username;
-	// const { lastJsonMessage: tournMessage, sendJsonMessage: sendTournMessage } = useTournamentContext();
 	const navigate = useNavigate();
 
 	const { state: token }  = useAuthContext();
@@ -193,7 +192,7 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 	const fullWsUrl: string = stateGlobal.gameId ? "game/" + stateGlobal.gameId + "/?token=" : "game/" + "random/?token=";
 	const { lastJsonMessage, sendJsonMessage } = useWebSocket(WS_END_POINT + fullWsUrl + token.accessToken,
 		{
-			onOpen: () => dispatch({ type: "RESET" }),
+			onClose: () => dispatch({ type: "RESET" }),
 			share: false,
 			shouldReconnect: () => false,
 		}
@@ -206,8 +205,8 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	const messageHandler = (message: any) => {
-		if (message.type != "ball" && message.type != "paddle")
-			console.log(message);
+		// if (message.type != "ball" && message.type != "paddle")
+		// 	console.log(message);
 		if (message.type == "opponents")
 		{
 			if (message.user1.username == username)
@@ -226,6 +225,7 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 		else if (message.type == "timing2")
 		{
 			dispatch({type: "TIMER", timer: message.time});
+			// message.time == 0 && dispatch({type: "TIMER", timer: 15});
 			// (isTournament && message.time == 15) && navigate('match-making');
 		}
 		else if (message.type == "ingame")
@@ -243,6 +243,7 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 			dispatch({type: "my_Paddle_Data", myPaddleData: {...state.myPaddleData, x: message.my}});
 			dispatch({type: "side_Paddle_Data", sidePaddleData: {...state.sidePaddleData, x: message.side}});
 			dispatch({type: "TIMER", timer: -1});
+			dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
 		}
 		else if (message.type == "ball")
 		{

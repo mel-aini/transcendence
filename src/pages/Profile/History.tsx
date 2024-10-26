@@ -44,7 +44,7 @@ const History = () => {
 	useEffect(() => {
 		
 		if (!isLoading) {
-			// console.log(data?.data.data);
+			console.log(data?.data.data, data?.data);
 			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
 		}
 
@@ -88,7 +88,7 @@ const History = () => {
 						:
 						<HistoryChart width={(width) * 80 / 100} height={200} data={state.matchesData}/>
 					}
-					<motion.div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col justify-between items-center gap-3 overflow-auto scrollClass"
+					<motion.div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col items-center gap-3 overflow-auto scrollClass"
 						initial="hidden"
 						animate="visible"
 						>
