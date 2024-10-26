@@ -7,6 +7,19 @@ import api from "../../api/axios";
 import { useQuery } from "@tanstack/react-query";
 import Modal from "../../components/Modal";
 
+export const FriendsSkeleton = () => {
+	return (
+		<div className="row-start-1 xl:row-start-2 xl:col-start-1 xl:col-end-4 min-h-[134px] animate-pulse">
+			<Container className="h-full select-none" childClassName="relative flex flex-col justify-between items-center px-7 py-5">
+				<div className="relative flex justify-between items-center w-full">
+					<h1 className="text-2xl font-semibold">Friends</h1>
+					<span className="w-[49px] h-[24px] bg-[#2F2F2F] rounded-full"/>
+				</div>
+			</Container>
+		</div>
+	)
+}
+
 async function fetchData(id: string | undefined) {
 	const uri: string = id ? "friends/" + id : "friends";
 	const res = await api.get(uri + "/?start=0&end=23");
@@ -34,25 +47,19 @@ const Friends = () => {
 			setFriends(data?.data);
 	}, [isRefetching]);
 
-	if (isLoading) {
+	if (isError) {
 		return (
-			<div className="row-start-1 xl:row-start-2 xl:col-start-1 xl:col-end-4 min-h-[134px] animate-pulse">
+			<div className="row-start-1 xl:row-start-2 xl:col-start-1 xl:col-end-4 min-h-[134px]">
 				<Container className="h-full select-none" childClassName="relative flex flex-col justify-between items-center px-7 py-5">
 					<div className="relative flex justify-between items-center w-full">
 						<h1 className="text-2xl font-semibold">Friends</h1>
-						<span className="w-[49px] h-[24px] bg-[#2F2F2F] rounded-full"/>
+						<span className="cursor-pointer select-none">see all</span>
 					</div>
-					<div className="flex justify-start items-center gap-3 w-full overflow-hidden">
-						{ [1,2,3,4,5].map((key: number) => <span key={key} className="min-w-[40px] h-[40px] bg-[#2F2F2F] rounded-full" /> ) }
-					</div>
+					<span className="self-center">
+						Error
+					</span>
 				</Container>
 			</div>
-		)
-	}
-
-	if (isError) {
-		return (
-			<h1>Error</h1>
 		)
 	}
 
@@ -61,17 +68,22 @@ const Friends = () => {
 			<Container className="h-full select-none" childClassName="relative flex flex-col justify-between items-center px-7 py-5">
 				<div className="relative flex justify-between items-center w-full">
 					<h1 className="text-2xl font-semibold">Friends</h1>
-					<span className="cursor-pointer" onClick={() => setSeeAllFriends(true)}>see all</span>
+					<span className="cursor-pointer select-none" onClick={() => setSeeAllFriends(true)}>see all</span>
 					<Modal isOpen={seeAllFriends} onClose={() => setSeeAllFriends(false)}>
 						<AllFriends />
 					</Modal>
 				</div>
 				<div className="flex justify-start items-center gap-3 w-full overflow-hidden">
-					{friends && friends.map((friend: FriendsData, key: number) => {
-						return (
-							<img onClick={() => userClick(friend.profile)} key={key} className="min-w-[40px] h-[40px] cursor-pointer rounded-full" src={friend.profile_image}/>
-						)
-					})}
+					{
+						isLoading ?
+						[1,2,3,4,5].map((key: number) => <span key={key} className="min-w-[40px] h-[40px] bg-[#2F2F2F] rounded-full" /> )
+						:
+						friends && friends.map((friend: FriendsData, key: number) => {
+							return (
+								<img onClick={() => userClick(friend.profile)} key={key} className="min-w-[40px] h-[40px] cursor-pointer rounded-full" src={friend.profile_image}/>
+							)
+						})
+					}
 				</div>
 			</Container>
 		</div>

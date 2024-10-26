@@ -87,7 +87,8 @@ const Notification = ({ notData }: Props) => {
 		const userData = await api.get('users/' + notData.sender);
 		chatDispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 			username: userData.data.username,
-			avatar: userData.data.profile_image
+			avatar: userData.data.profile_image,
+			id: userData.data.id
 		}})
 		notDispatch({ type: 'POP_NOTIFICATION', auto: false })
 	}

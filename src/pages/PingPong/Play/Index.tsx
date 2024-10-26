@@ -6,12 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { useTournamentContext } from "../../../contexts/TournamentProvider";
 
 function Index({isTournament}: {isTournament: boolean}) {
-	const {state, dispatch} = isTournament ? useTournamentContext() : usePingPongContext();
+	const {state} = isTournament ? useTournamentContext() : usePingPongContext();
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (state.level !== Levels.OpponentFound)
-			navigate('/tournament');
+			navigate(isTournament ? '/tournament' : '/dashboard');
 	}, []);
 
 	return (

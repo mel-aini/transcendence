@@ -12,6 +12,16 @@ import { useProfileContext } from "../../contexts/profileStore";
 import { useQuery } from "@tanstack/react-query";
 import { RxValueNone } from "react-icons/rx";
 
+export const HistorySkeleton = () => {
+	return (
+		<div className="row-start-5 xl:row-start-1 xl:row-span-2 xl:col-start-4 xl:col-end-8 animate-pulse">
+			<Container className="h-full" childClassName="flex flex-col justify-around pt-12 sm:pt-8 pb-9 items-center">
+				<h1 className="text-2xl font-semibold">last 10 matches</h1>
+			</Container>
+		</div>
+	)
+}
+
 async function fetchData(id: string | undefined) {
 	const uri: string = id ? "matches/" + id : "matches";
 	const res = await api.get(uri + "/");
@@ -32,8 +42,11 @@ const History = () => {
 	}
 
 	useEffect(() => {
-		if (!isLoading)
+		
+		if (!isLoading) {
+			console.log(data?.data.data, data?.data);
 			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
+		}
 
 		if (!parentRef.current) return;
 		setWidth((parentRef.current as HTMLElement).offsetWidth);
@@ -49,29 +62,18 @@ const History = () => {
 		if (!isRefetching)
 			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
 	}, [isRefetching])
-
-	if (isLoading) {
+	
+	if (isError) {
 		return (
-			<div ref={parentRef} className="row-start-5 xl:row-start-1 xl:row-span-2 xl:col-start-4 xl:col-end-8 animate-pulse">
+			<div className="row-start-5 xl:row-start-1 xl:row-span-2 xl:col-start-4 xl:col-end-8">
 				<Container className="h-full" childClassName="flex flex-col justify-around pt-12 sm:pt-8 pb-9 items-center">
 					<h1 className="text-2xl font-semibold">last 10 matches</h1>
-					<span style={{width: `${width * 80 / 100}px`}} className="px-4 sm:px-10 md:px-12 lg:px-16 my-24 md:my-28 bg-[#2F2F2F] rounded-lg h-[200px]" />
-						<div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col justify-between items-center gap-3">
-						{
-							[1, 2, 3].map((key: number) => <div key={key} className="flex justify-between items-center min-h-[40px] w-full select-none gap-1 h-[24px] bg-[#2F2F2F] rounded-lg" />)
-						}
-						</div>
+					<span className="text-2xl">Error</span>
 				</Container>
 			</div>
 		)
 	}
-
-	if (isError) {
-		return (
-			<h1>Error</h1>
-		)
-	}
-
+	
 	const userClick = (path:string) => {
 		navigate(path);
 	}
@@ -80,12 +82,21 @@ const History = () => {
 		<div ref={parentRef} className="row-start-5 xl:row-start-1 xl:row-span-2 xl:col-start-4 xl:col-end-8">
 			<Container className="h-full" childClassName="flex flex-col justify-around pt-12 sm:pt-8 pb-9 items-center">
 					<h1 className="text-2xl font-semibold">last 10 matches</h1>
-					<HistoryChart width={(width) * 80 / 100} height={200} data={state.matchesData}/>
-					<motion.div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col justify-between items-center gap-3 overflow-auto scrollClass"
+					{
+						isLoading ?
+						<span style={{width: `${width * 80 / 100}px`}} className="px-4 sm:px-10 md:px-12 lg:px-16 my-24 md:my-28 bg-[#2F2F2F] rounded-lg h-[200px]" />
+						:
+						<HistoryChart width={(width) * 80 / 100} height={200} data={state.matchesData}/>
+					}
+					<motion.div className="w-11/12 sm:w-4/5 px-2 h-[144px] flex flex-col items-center gap-3 overflow-auto scrollClass"
 						initial="hidden"
 						animate="visible"
 						>
 					{
+						isLoading ?
+						[1, 2, 3].map((key: number) => <div key={key} className="flex justify-between items-center min-h-[40px] w-full select-none gap-1 h-[24px] bg-[#2F2F2F] rounded-lg" />)
+						:
+						(
 						(state.matchesData && state.matchesData.length !== 0) ? state.matchesData.map((match: MatchesData, key: number) => {
 							const variant = {
 								hidden: { opacity: 0, },
@@ -137,6 +148,7 @@ const History = () => {
 						})
 						:
 						<div>No Matches Yet !!!</div>
+						)
 					}
 					</motion.div>
 			</Container>
