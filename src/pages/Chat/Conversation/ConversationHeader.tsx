@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import useIsOnline from "../../../hooks/useIsOnline";
 import FriendActions from "./FriendActions";
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 
 function ConversationHeader() {
 	const { state, dispatch } = useChatContext();
@@ -43,11 +44,13 @@ function ConversationHeader() {
 			</div>
 			<BsThreeDots onClick={() => setMoreOptions(prev => !prev)} className="relative text-white cursor-pointer text-xl" />
 			{moreOptions && <div onClick={() => setMoreOptions(false)} className='absolute top-0 left-0 w-full h-full bg-black opacity-0' />}
-			{moreOptions && <FriendActions 
-				onClick={() => setMoreOptions(false)} 
-				className='absolute top-[55px] right-3'
-				close={() => setMoreOptions(false)}
-			/>}
+			<AnimatePresence>
+				{moreOptions && <FriendActions 
+					onClick={() => setMoreOptions(false)} 
+					className='absolute top-[50px] right-3'
+					close={() => setMoreOptions(false)}
+				/>}
+			</AnimatePresence>
 		</div>
 	);
 }

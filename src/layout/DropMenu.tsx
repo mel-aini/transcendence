@@ -4,6 +4,8 @@ import { useGlobalContext } from "../contexts/store";
 import { SideBarElem } from "./SideBar";
 import useLog from "../hooks/useLog";
 import { Variants, motion } from "framer-motion";
+import { MdOutlineLogout } from "react-icons/md";
+import { BiUser } from "react-icons/bi";
 
 export type DropMenuTypes = null | 'profile' | 'notification' | 'navbar';
 
@@ -12,7 +14,7 @@ interface DropMenuProps {
 	type: DropMenuTypes
 }
 
-const variants: Variants = {
+export const dropDownVariants: Variants = {
 	hidden: {
 		opacity: 0,
 		y: -10,
@@ -40,8 +42,6 @@ function DropMenu({ setDropMenu, type }: DropMenuProps) {
 		navigate('/profile')
 	}
 
-	const elemCLass = 'cursor-pointer bg-secondary hover:bg-slate-800 duration-300 p-3'
-
 	{/* profile actions */}
 	if (type == 'profile') {
 		return (
@@ -49,10 +49,21 @@ function DropMenu({ setDropMenu, type }: DropMenuProps) {
 				initial='hidden'
 				animate='visible'
 				exit='hidden'
-				variants={variants}
-				className="flex flex-col absolute z-50 right-0 top-full w-32 rounded-md select-none overflow-hidden ">
-				<div onClick={goToProfile} className={elemCLass}>go to profile</div>
-				<div onClick={() => action('LOGOUT')} className={elemCLass}>logout</div>
+				variants={dropDownVariants}
+				className="absolute z-50 right-0 top-full flex flex-col px-1 py-1 border border-border bg-bg rounded-md select-none overflow-hidden ">
+				<button
+					onClick={goToProfile}
+					className='flex gap-2 items-center px-2 py-2 min-w-48 rounded-sm hover:bg-gray3 duration-300'
+					>
+					<BiUser />
+					Profile
+				</button>
+				<button 
+					onClick={() => action('LOGOUT')} 
+					className='flex gap-2 items-center px-2 py-2 min-w-48 rounded-sm hover:bg-gray3 duration-300'>
+					<MdOutlineLogout />
+					Log out
+				</button>
 			</motion.div>
 		)
 	}
@@ -64,7 +75,7 @@ function DropMenu({ setDropMenu, type }: DropMenuProps) {
 				initial='hidden'
 				animate='visible'
 				exit='hidden'
-				variants={variants}
+				variants={dropDownVariants}
 				className="scrollClass absolute z-50 right-0 top-full w-[90vw] max-w-[450px] max-h-[400px] p-5 border border-border rounded-md bg-bg overflow-auto space-y-5">
 				<Notifications />
 			</motion.div>
@@ -78,7 +89,7 @@ function DropMenu({ setDropMenu, type }: DropMenuProps) {
 				initial='hidden'
 				animate='visible'
 				exit='hidden'
-				variants={variants}
+				variants={dropDownVariants}
 				className="space-y-5 w-[250px] absolute z-50 right-0 top-full p-5 bg-bg rounded-lg">
 				<SideBarElem onClick={() => navigate('/dashboard')}>Dashboard</SideBarElem>
 				<SideBarElem onClick={() => navigate('/chat')}>Chat</SideBarElem>

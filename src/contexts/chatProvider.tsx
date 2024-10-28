@@ -430,6 +430,14 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					return friend.username != lastJsonMessage.user.username
 				})
 				dispatch({type: 'ONLINE', onlineFriends: newFriends})
+
+				if (lastJsonMessage?.user?.username == state.conversation_header.username) {
+					dispatch({type: 'FOCUS', state: false});
+					dispatch({type: 'CONVERSATION', conversation: {
+						id: null,
+						state: null
+					}})
+				}
 			}
 			if (lastJsonMessage.error) {
 				// trying to send message after unfriend

@@ -3,6 +3,13 @@ import { useChatContext } from "../../../contexts/chatProvider";
 import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore"
 import { useGlobalContext } from "../../../contexts/store";
 import { twMerge } from "tailwind-merge";
+import play_icon from "/play_icon.svg"
+import blockIcon from "/block.svg"
+import { MdBlock } from "react-icons/md";
+import { TbPingPong } from "react-icons/tb";
+import { motion } from "framer-motion";
+import { dropDownVariants } from "../../../layout/DropMenu";
+import { ImSpinner8 } from "react-icons/im";
 
 interface Props extends ComponentProps<'div'> {
 	className?: string
@@ -33,7 +40,8 @@ function FriendActions({className, close}: Props) {
 	}
 
 	useEffect(() => {
-		if (!isInviting || !isBlocking) return;
+		if (!isInviting && !isBlocking) return;
+	
 		if (lastJsonMessage?.type == 'invite') {
 			if (lastJsonMessage?.code == 200) {
 				gDispatch({type: 'ALERT', message: "Invitation sent successfully", dispatch: gDispatch});
@@ -55,17 +63,36 @@ function FriendActions({className, close}: Props) {
 				gDispatch({type: 'ALERT', message: "Error happens while blocking.", isError: true, dispatch: gDispatch});
 			}
 		}
-		setIsInviting(false)
+		setIsInviting(false);
 		setIsBlocking(false);
 		close()
 	}, [lastJsonMessage])
 
 	return ( 
-		<div className={twMerge("flex flex-col py-5 border border-border px-5 gap-2 bg-bg rounded-md", className)}>
-			<button onClick={play}>play</button>
-			<hr />
-			<button onClick={block}>block</button>
-		</div>
+		<motion.div
+			initial='hidden'
+			animate='visible'
+			exit='hidden'
+			variants={dropDownVariants} 
+			className={twMerge("flex flex-col px-1 py-1 border border-border bg-bg rounded-md", className)}>
+			<button
+				className="flex gap-2 items-center px-2 py-2 min-w-48 rounded-sm hover:bg-gray3 duration-300" 
+				onClick={play}>
+				{isInviting && <div className="w-full flex justify-center py-1 items-center">
+					<ImSpinner8 className="animate-spin" />
+				</div>}
+				{!isInviting && <>
+					<TbPingPong className="stroke-primary" />
+					Request a game
+				</>}
+			</button>
+			<button
+				className="flex gap-2 items-center px-2 py-2 min-w-48 text-gray1 rounded-sm hover:bg-gray3 duration-300" 
+				onClick={block}>
+				<MdBlock className="fill-gray1" />
+				Block
+			</button>
+		</motion.div>
 	 );
 }
 

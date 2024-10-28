@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
 import User from "../components/User";
 import { twMerge } from "tailwind-merge";
@@ -57,7 +57,9 @@ const NavBar = ({ className }: {className?: string}) => {
 					className="border-white cursor-pointer size-[30px]" 
 					url={state.userData?.profile_image || ''}>
 				</User>
-				{dropMenu && <DropMenu setDropMenu={setDropMenu} type={dropMenuType.current} />}
+				<AnimatePresence>
+					{dropMenu && <DropMenu setDropMenu={setDropMenu} type={dropMenuType.current} />}
+				</AnimatePresence>
 				<NewNotifications />
 				<div className="relative lg:hidden">
 					<HiOutlineMenuAlt3
