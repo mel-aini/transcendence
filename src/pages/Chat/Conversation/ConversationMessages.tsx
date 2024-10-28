@@ -3,7 +3,7 @@ import { useChatContext } from "../../../contexts/chatProvider";
 import Message from "./Message";
 import { IoIosArrowDown } from "react-icons/io";
 import { useAuthContext } from "../../../contexts/authProvider";
-import Observer from "./Observer";
+import Observer from "../Dashboard/Observer";
 
 function ConversationMessages() {
 	const { state } = useChatContext();

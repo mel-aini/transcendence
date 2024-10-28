@@ -1,20 +1,19 @@
-import ConversationsList from "./ChatBar/ConversationsList";
+import ConversationsList from "./ConversationsList";
 import { AnimatePresence, motion } from 'framer-motion'
 import { IoAddCircle } from "react-icons/io5";
-import { BsThreeDots } from "react-icons/bs";
-import OnlineFriends from "./ChatBar/OnlineFriends";
+import OnlineFriends from "./OnlineFriends";
 import { FiSearch } from "react-icons/fi";
 import { FormEvent, useEffect, useState } from "react";
-import useLog from "../../hooks/useLog";
-import SearchFriends from "./ChatBar/SearchFriends";
-import { useChatContext } from "../../contexts/chatProvider";
-import { useAuthContext } from "../../contexts/authProvider";
-import { isEmpty } from "../../utils/validation";
-import Input from "../../components/Input";
-import SearchConversationsList from "./ChatBar/SearchConversationsList";
-import Modal from "../../components/Modal";
+import useLog from "../../../hooks/useLog";
+import SearchFriends from "./SearchFriends";
+import { useChatContext } from "../../../contexts/chatProvider";
+import { useAuthContext } from "../../../contexts/authProvider";
+import { isEmpty } from "../../../utils/validation";
+import Input from "../../../components/Input";
+import SearchConversationsList from "./SearchConversationsList";
+import Modal from "../../../components/Modal";
 
-function ChatBar() {
+function Dashboard() {
 	const [toggleSearch, setToggleSearch] = useState(false);
 	const [searchFriends, setSearchFriends] = useState(false);
 	const action = useLog();
@@ -98,4 +97,4 @@ function ChatBar() {
 	);
 }
 
-export default ChatBar;
+export default Dashboard;

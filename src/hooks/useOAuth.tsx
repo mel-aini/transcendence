@@ -1,15 +1,14 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { useGlobalContext } from "../contexts/store";
 import { API_END_POINT } from "../utils/urls";
 import axios from "axios";
 import { useAuthContext } from "../contexts/authProvider";
 
-const useOAuth = (): [() => Promise<void>, boolean] => {
+const useOAuth = (): [() => Promise<void>] => {
 	const [searchParams] = useSearchParams();
-	const [toggle, setToggle] = useState<boolean>(false)
-	const {dispatch} = useGlobalContext();
-	const { state: authState, dispatch: authDispatch } = useAuthContext();
+	// const [toggle, setToggle] = useState<boolean>(false)
+	const { dispatch } = useGlobalContext();
+	const { dispatch: authDispatch } = useAuthContext();
 	const navigate = useNavigate();
 
 	const handleOAuth = async () => {
@@ -28,28 +27,22 @@ const useOAuth = (): [() => Promise<void>, boolean] => {
 					state: state
 				}
 			}
-			type OAuthResponse = {
-				access_token: string
-				redirection: string
-			}
 
 			try {
 				
-				const response: OAuthResponse = await axios.post(API_END_POINT + 'register/', data, {
+				const response = await axios.post(API_END_POINT + 'register/', data, {
 					withCredentials: true,
 					headers: {
 						"Content-Type": "application/json",
 					}
 				})
-				authDispatch({type: 'TOKEN', token: response.access_token});
+				// console.log('response: ', response)
+				authDispatch({type: 'TOKEN', token: response.data.access_token});
+				navigate('/dashboard')
 
 			} catch (error) {
-				
+				console.log('error in response', error)
 			}
-
-			setToggle(prev => !prev) // just for re render
-
-			// console.log(asdasd)
 
 		} catch (error) {
 			console.log(error);
@@ -57,13 +50,7 @@ const useOAuth = (): [() => Promise<void>, boolean] => {
 		dispatch({type: 'LOADING', state: false});
 	}
 
-	// useEffect(() => {
-	// 	if (authState.accessToken) {
-	// 		navigate('/dashboard')
-	// 	}
-	// }, [authState.accessToken])
-
-	return [ handleOAuth, toggle ]
+	return [ handleOAuth ]
 }
 
 export default useOAuth;

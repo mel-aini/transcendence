@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useOAuth from "../../hooks/useOAuth";
 import Welcome from "./Welcome";
 import { useEffect, useState } from "react";
@@ -16,18 +16,11 @@ enum Level {
 const Index = () => {
 	const [registerLevel, setRegisterLevel] = useState<number>(Level.Email);
 	const [email, setEmail] = useState('');
-	const [searchParams] = useSearchParams();
-	const [handleOAuth, toggle] = useOAuth();
+	const [handleOAuth] = useOAuth();
 
 	useEffect(() => {
-		const shouldEnterUserName = searchParams.get('isUser');
-		if (shouldEnterUserName) {
-			setRegisterLevel(Level.Username)
-		} else {
-			handleOAuth();
-		}
-	
-	}, [toggle])
+		handleOAuth();
+	}, [])
 
 	return (
 		<div className="bg-bg min-h-[100vh] flex">
