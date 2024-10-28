@@ -147,13 +147,26 @@ function VsFriend() {
 						<div ref={scrollRef} onScroll={(e) => scrollHandler(e)} className="flex flex-col gap-3 max-h-[180px] overflow-auto scrollClass pr-2">
 							{
 								isLoading ?
-								<div>loading...</div>
+								<div className="flex justify-between items-center h-[50px] gap-4 shrink-0 animate-pulse">
+									<div className="h-full w-full flex mobile:justify-between justify-center items-center border border-border rounded-md mobile:px-5 px-3 gap-2">
+										<div className="flex items-center gap-4 select-none">
+											<div className="size-[31px] rounded-full bg-border shrink-0" />
+											<span className="h-[15px] bg-border rounded-md w-10" />
+										</div>
+										<span className="mobile:block hidden shrink-0 h-[15px] w-8 bg-border rounded-md" />
+									</div>
+									<div className="border border-border bg-secondary rounded-md h-full sm:px-10 px-6" />
+								</div>
 								:
-								friends && friends.map((friend: FriendsData, key: number) => {
-									return (
-										<FriendBar friend={friend} key={key} />
-									)
-								})
+								(
+									friends.length !== 0 ? friends.map((friend: FriendsData, key: number) => {
+										return (
+											<FriendBar friend={friend} key={key} />
+										)
+									})
+									:
+									<div className="text-center">No Result !!!</div>
+								)
 							}
 						</div>
 					</div>

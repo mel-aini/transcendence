@@ -30,8 +30,8 @@ async function fetchData(uri: string) {
 
 const AllFriends = () => {
 	const { id } = useParams();
-	const newUri: string = id ? "friends/" + id : "friends";
-	const {data, isLoading, isError, isRefetching} = useQuery({queryKey: ['allFriends', id], queryFn: () => fetchData(newUri), refetchInterval: 5000});
+	const newUri = useRef<string>(id ? "friends/" + id : "friends");
+	const {data, isLoading, isError, isRefetching} = useQuery({queryKey: ['allFriends', id], queryFn: () => fetchData(newUri.current), refetchInterval: 5000});
 	const { state, dispatchProfile } = useProfileContext();
 	const [relation, setRelation] = useState<string>("friend");
 	const refScroll = useRef(null);
@@ -44,19 +44,21 @@ const AllFriends = () => {
 	const countScroll = useRef(10);
 
 	const collectData = async (uri: string, isscroll?: boolean) => {
-		const ProfileRes: FriendsData[] = await api.get(uri).then((e) => e.data);
-		if (isscroll)
-		{
-			if (ProfileRes.length < 10)
-				stopScroll.current = true;
-			if (state.friendsData)
-				dispatchProfile({type: "FRIEND_DATA", friendsData: state.friendsData.concat(ProfileRes)});
+		try {
+			const ProfileRes: FriendsData[] = await api.get(uri).then((e) => e.data);
+			if (isscroll)
+			{
+				(ProfileRes.length < 10) && (stopScroll.current = true);
+				state.friendsData ?
+				dispatchProfile({type: "FRIEND_DATA", friendsData: state.friendsData.concat(ProfileRes)})
+				:
+				dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes});
+			}
 			else
 				dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes});
 		}
-		else
-		{
-			dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes});
+		catch (err: any) {
+			dispatchProfile({type: "FRIEND_DATA", friendsData: null});
 		}
 	}
 
@@ -87,6 +89,7 @@ const AllFriends = () => {
 		countScroll.current = 10;
 		
 		setRelation(newRelation);
+		newUri.current = uri;
 		collectData(uri + "/");
 	}
 
@@ -120,11 +123,9 @@ const AllFriends = () => {
 		const lastPart: number = end.getBoundingClientRect().top - start.getBoundingClientRect().top;
 		if (!stopScroll.current && lastPart <= 520)
 		{
-			console.log("heree");
-			
 			let name;
 			if (relation == "friend")
-				name = newUri;
+				name = newUri.current;
 			else if (relation == "rec_req")
 				name = "pending";
 			else if (relation == "blocker")
@@ -158,7 +159,7 @@ const AllFriends = () => {
 				exit={{ opacity: 0}}
 				className="w-[600px] overflow-hidden bg-secondary p-5 sm:p-10 rounded-md space-y-5">
 				<div className="flex justify-between max-w-[268px] w-full gap-2">
-					<RelationBar ref={refFriend} onClick={() => HandleClick(refFriend, "friend", newUri)} width={59} name={"Friends"} active={true} />
+					<RelationBar ref={refFriend} onClick={() => HandleClick(refFriend, "friend", id ? "friends/" + id : "friends")} width={59} name={"Friends"} active={true} />
 					{
 						!(id) &&
 						<>

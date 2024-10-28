@@ -28,7 +28,7 @@ export const ProfileHeaderSkeleton = () => {
 					<span className="w-[38px] h-[24px] bg-[#2F2F2F] rounded-full" />
 					<span className="w-[38px] h-[24px] bg-[#2F2F2F] rounded-full" />
 				</div>
-				<div className="level-bar w-full bg-[#2F2F2F] h-[10px]" />
+				<div className="level-bar w-full bg-[#2F2F2F] h-[18px]" />
 			</div>
 		</>
 	)
@@ -79,7 +79,7 @@ const ProfileHeader = () => {
 			<div className="relative mb-[200px] xl:mb-[50px] flex flex-col w-full">
 				<div
 					style={{backgroundImage: `url(${state.userData?.level.image})`}}
-					className="w-full h-[209px] rounded-md bg-cover bg-center">
+					className="w-full h-[209px] rounded-md bg-cover bg-center border border-border">
 				</div>
 				<div className="absolute left-1/2 xl:left-[15%] top-full translate-y-[-60px] -translate-x-1/2 flex flex-col justify-center items-center">
 					<div style={{backgroundImage: `url(${state.userData?.profile_image})`}} className="relative rounded-full border-2 border-primary w-[120px] h-[120px] mb-3 bg-cover overflow-hidden">

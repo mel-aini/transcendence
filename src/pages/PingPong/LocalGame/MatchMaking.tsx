@@ -37,7 +37,10 @@ function MatchMaking({isAI}: {isAI: boolean}) {
 						<User className="size-28 border-primary" border url={isAI ? '' : ''} />
 						<h3>{isAI ? 'AI' : 'player 2'}</h3>
 					</div>
-					<span>vs</span>
+					<div className="relative w-[51px] h-[60px]">
+						<span className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-[43%] w-full border-b -rotate-[57deg]"/>
+						<span className="absolute -translate-x-1/2 -translate-y-1/2 top-[44%] left-1/2 text-4xl italic">vs</span>
+					</div>
 					<div className="flex-1 flex justify-end items-center gap-5 self-end">
 						<h3>{ isAI ? 'you' : 'player 1' }</h3>
 						<User className="size-28 border-primary" border url={isAI ? state.userData?.profile_image : ''} />

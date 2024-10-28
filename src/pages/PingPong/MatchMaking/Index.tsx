@@ -59,7 +59,10 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 							<h4>{ 'Lvl ' + profileData.userData?.level.current }</h4>
 						</div>
 					</div>
-					<span>vs</span>
+					<div className="relative w-[51px] h-[60px]">
+						<span className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-[43%] w-full border-b -rotate-[57deg]"/>
+						<span className="absolute -translate-x-1/2 -translate-y-1/2 top-[44%] left-1/2 text-4xl italic">vs</span>
+					</div>
 					{state.level === Levels.FindingOpponent &&
 						<div className="flex-1 flex justify-end items-center gap-5 self-end">
 							<div className="flex flex-col gap-2 items-end">
