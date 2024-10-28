@@ -1,19 +1,9 @@
 import { Link } from "react-router-dom";
-import useOAuth from "../../hooks/useOAuth";
-import { useEffect } from "react";
 import Button from "../../components/Button";
-import { useGlobalContext } from "../../contexts/store";
 import Logo from "../../components/Logo";
 import '../../assets/homeAnimation.css'
 
 const Index = () => {
-	const { dispatch} = useGlobalContext();
-	const [ handleOAuth ] = useOAuth();
-
-	useEffect(() => {
-		dispatch({type: 'LOADING', state: false})
-		handleOAuth()
-	}, [])
 
 	return (
 		<div
