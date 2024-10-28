@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useChatContext } from "../../contexts/chatProvider";
-import ChatBar from "./ChatBar";
-import Conversation from "./ChatBar/Conversation";
+import Dashboard from "./Dashboard/Dashboard";
+import Conversation from "./Conversation/Conversation";
 import { AnimatePresence } from 'framer-motion'
 
 function Index() {
@@ -29,7 +29,7 @@ function Index() {
 
 	return (
 		<div className="relative w-full h-[calc(100vh-10rem)] lg:flex shrink">
-			<ChatBar />
+			<Dashboard />
 			<AnimatePresence>
 				<Conversation />
 			</AnimatePresence>
