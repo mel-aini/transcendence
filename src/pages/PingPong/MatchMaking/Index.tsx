@@ -16,8 +16,7 @@ import { useTournamentContext } from "../../../contexts/TournamentProvider";
 export const customizeContext = createContext<any>({});
 
 function MatchMaking({isTournament}: {isTournament: boolean}) {
-	const {state, dispatch} = isTournament ? useTournamentContext() : usePingPongContext();
-	// const {state: tournState} = 
+	const {state} = isTournament ? useTournamentContext() : usePingPongContext();
 	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
 
@@ -34,9 +33,9 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 	}, []);
 
 	useEffect(() => {
-		if (state.level === Levels.OpponentFound && state.timer <= 3)
+		if ((state.level === Levels.OpponentFound && state.timer <= 3) || state.result.isEndGame)
 			navigate('../play', { replace: true });
-	}, [state.level, state.timer]);
+	}, [state.level, state.timer, state.result.isEndGame]);
 
 	return (
 		<>

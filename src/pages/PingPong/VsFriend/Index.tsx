@@ -159,7 +159,7 @@ function VsFriend() {
 								</div>
 								:
 								(
-									friends.length !== 0 ? friends.map((friend: FriendsData, key: number) => {
+									(friends && friends.length !== 0) ? friends.map((friend: FriendsData, key: number) => {
 										return (
 											<FriendBar friend={friend} key={key} />
 										)
