@@ -16,6 +16,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const ConversationBar = ({className, data, ...props}: Props) => {
 	const { state: authState } = useAuthContext();
+
 	const isRead = (): boolean => {
 		if (!data.status) {
 			if (data.sender == data.friend.username) {

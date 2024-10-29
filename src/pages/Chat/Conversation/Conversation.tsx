@@ -8,6 +8,12 @@ import { ReadyState } from 'react-use-websocket';
 import { isEmpty } from '../../../utils/validation';
 import { dateMeta } from '../../../utils/global';
 import { useGlobalContext } from '../../../contexts/store';
+// import chatBot from "/icons/chatBot.svg"
+// import chatGif from "/icons/chatGif.gif"
+import chatBotLottie from '../../../../public/icons/chatBotLottie.json'
+import Lottie from 'lottie-react'
+import Title from '../../../components/Title';
+import './index.css'
 
 function Conversation() {
 	const { state, dispatch, sendJsonMessage, readyState } = useChatContext();
@@ -102,8 +108,6 @@ function Conversation() {
 	}, [state.isFocus])
 
 	useEffect(() => {
-		console.log('update')
-		console.table(state.lastMessage)
 		if (state.lastMessage) {
 			const msgsContainer = document.querySelector('.messages-container');
 			if (msgsContainer) {
@@ -132,7 +136,17 @@ function Conversation() {
 				}}
 				className="w-full h-full flex flex-col fixed top-0 left-0 lg:static z-10 bg-secondary">
 				{!state.conversation.state &&
-					<div className='h-full flex justify-center items-center'>Welcome to chat</div>
+					<div className='h-full flex justify-center items-center py-10'>
+						<div className='flex flex-col gap-5 items-center'>
+							<Lottie
+								animationData={chatBotLottie}
+								className='chat-bot w-3/4 sm:w-52 2xl:w-96'
+								/>
+							{/* <img src={chatGif} className='w-3/4 sm:w-52 2xl:w-96' /> */}
+							<Title firstCharClassName='text-2xl text-primary' restWordClassName='text-primary'>Chat</Title>
+							<p>lorem ipsum dolor sit amet.</p>
+						</div>
+					</div>
 				}
 				{state.conversation.state && <>
 					<ConversationHeader />

@@ -5,42 +5,64 @@ import InfiniteScrollObserver from "./InfiniteScrollObserver";
 import { FriendsData } from "../types/profile";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../contexts/store";
+import User from "./User";
+import { twMerge } from "tailwind-merge";
 
-function UserSkelton() {
+interface UserSkeltonProps {
+    className?: string
+}
+
+function UserSkelton({className}: UserSkeltonProps) {
     return (
-        <div className="flex justify-between items-center w-full gap-3 h-[70px] rounded-md border border-border bg-gray3 px-5 animate-pulse">
-            <div className="flex items-center gap-4 cursor-pointer shrink overflow-hidden whitespace-nowrap">
-                <div className="size-[38px] rounded-full overflow-hidden shrink-0 bg-border"/>
-                <span className="rounded-full bg-border h-4 w-24" />
-            </div>
+        <div className={twMerge("flex items-center gap-4 cursor-pointer shrink overflow-hidden whitespace-nowrap", className)}>
+            <div className="size-[38px] rounded-full overflow-hidden shrink-0 bg-border"/>
+            <span className="rounded-full bg-border h-4 w-24" />
         </div>
     )
 }
 
-function Result({users}: {users: FriendsData[]}) {
+function Result({users, isLoading}: {users: FriendsData[], isLoading: boolean}) {
     const navigate = useNavigate();
     const { dispatch } = useGlobalContext();
+    const [isFirstTime, setIsFirstTime] = useState(true);
 
     const clickHandler = (profile: string) => {
         dispatch({ type: "SEARCH" });
         navigate(profile)
     }
 
+    useEffect(() => {
+        if (isLoading) {
+            setIsFirstTime(false);
+        }
+    }, [isLoading])
+
     return (
-        <div className="space-y-3">
+        <div className="max-h-[168px] overflow-auto">
             {
-                (users.length !== 0) ? users.map((elem: FriendsData, index: number) => {
+                !isFirstTime && !isLoading && users.length == 0 && <div className="text-center">No results found.</div>
+            }
+            {
+                !isFirstTime && !isLoading && users.length !== 0 && users.map((elem: FriendsData, index: number) => {
                     return (
-                        <div onClick={() => clickHandler(elem.profile)} key={index} className="flex justify-between items-center w-full gap-3 h-[70px] rounded-md border border-border bg-gray3 px-5 cursor-pointer">
+                        <div onClick={() => clickHandler(elem.profile)} key={index} className="flex justify-between items-center w-full gap-3 rounded-md hover:bg-gray3 p-2 cursor-pointer">
                             <div className="flex items-center gap-4 cursor-pointer shrink overflow-hidden whitespace-nowrap">
-                                <img src={elem.profile_image} alt={"icon"} width={38} height={38} className="rounded-full overflow-hidden shrink-0"/>
+                                <User border url={elem.profile_image} />
                                 <span className="shrink overflow-hidden text-ellipsis">{elem.username}</span>
                             </div>
                         </div>
                     )
                 })
-                :
-                <UserSkelton />
+            }
+            {
+                isLoading && [1,2,3].map((elem) => {
+                    return (
+                        <UserSkelton 
+                            key={elem} 
+                            className="py-1 animate-pulse"
+                        />
+                    )
+                })
             }
         </div>   
     );
@@ -50,12 +72,15 @@ function SearchUsers() {
     const [input, setInput] = useState<string>('');
     const [data, setData] = useState<FriendsData[]>([]);
     const [isFetched, setIsFetched] = useState(true);
-    
+    const [isLoading, setIsLoading] = useState(false);
+
     const whenFetched = (result: FriendsData[]) => {
         setData(result);
+        setIsLoading(false);
     }
 
     const submitHandler = (e: any) => {
+        setIsLoading(true);
         e.preventDefault();
         setIsFetched(false);
     }
@@ -80,7 +105,7 @@ function SearchUsers() {
                     <FiSearch />
                 </button>
             </form>
-            {<Result users={data} />}
+            {<Result users={data} isLoading={isLoading} />}
             {isFetched && <InfiniteScrollObserver
                 endPoint={`search/?filter=${input}`}
                 whenFetched={whenFetched}

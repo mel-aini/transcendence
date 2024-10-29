@@ -2,7 +2,7 @@ import User from "../../../components/User";
 import { useChatContext } from "../../../contexts/chatProvider";
 import { IoIosArrowBack } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useIsOnline from "../../../hooks/useIsOnline";
 import FriendActions from "./FriendActions";
 import { useState } from "react";
@@ -11,7 +11,6 @@ import { AnimatePresence } from "framer-motion";
 function ConversationHeader() {
 	const { state, dispatch } = useChatContext();
 	const isOnline = useIsOnline(state.conversation_header.username);
-	const location = useLocation();
 	const [ moreOptions, setMoreOptions ] = useState(false);
 
 	const handler = () => {

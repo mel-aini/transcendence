@@ -10,7 +10,6 @@ import { BiUser } from "react-icons/bi";
 export type DropMenuTypes = null | 'profile' | 'notification' | 'navbar';
 
 interface DropMenuProps {
-	setDropMenu: any, 
 	type: DropMenuTypes
 }
 
@@ -31,13 +30,12 @@ export const dropDownVariants: Variants = {
 	}
 }
 
-function DropMenu({ setDropMenu, type }: DropMenuProps) {
+function DropMenu({ type }: DropMenuProps) {
 	const {dispatch} = useGlobalContext();
 	const navigate = useNavigate();
 	const action = useLog();
 
 	const goToProfile = () => {
-		setDropMenu(false)
 		dispatch({type: 'LOADING', state: true})
 		navigate('/profile')
 	}

@@ -58,7 +58,7 @@ const NavBar = ({ className }: {className?: string}) => {
 					url={state.userData?.profile_image || ''}>
 				</User>
 				<AnimatePresence>
-					{dropMenu && <DropMenu setDropMenu={setDropMenu} type={dropMenuType.current} />}
+					{dropMenu && <DropMenu type={dropMenuType.current} />}
 				</AnimatePresence>
 				<NewNotifications />
 				<div className="relative lg:hidden">

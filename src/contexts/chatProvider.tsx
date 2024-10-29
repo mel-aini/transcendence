@@ -144,6 +144,8 @@ const reducer = (state: ChatStateProps, action: any) => {
 				messages: action.messages
 			}
 		case 'ONLINE':
+			// todo: to remove
+			console.log('dispatching online friends...')
 			return { 
 				...state, 
 				onlineFriends: action.onlineFriends
@@ -318,6 +320,9 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 		if (lastJsonMessage) {
 			if (lastJsonMessage.online) {
+				// todo: to remove
+				console.log('lastJsonMessage.online')
+				console.log(lastJsonMessage.online)
 				dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})
 			}
 			if (lastJsonMessage.conversations) {
@@ -369,6 +374,9 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				updateConversations(lastJsonMessage.data.id, lastJsonMessage.data);
 			}
 			if (lastJsonMessage.type == 'update_data') {
+				// todo: to remove
+				console.log('update_data')
+				console.log(lastJsonMessage)
 				// for update online users status
 				let newList: OnlineFriend[] = [];
 				const data: responseData = lastJsonMessage.data
@@ -395,7 +403,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				dispatch({type: 'ONLINE', onlineFriends: newList})
 			}
 			if (lastJsonMessage.type == 'getConversation') {
-				console.log('trying to open chat with this friend');
 				dispatch({type: 'FOCUS', state: true})
 				dispatch({type: 'CONVERSATION', conversation: {
 					id: lastJsonMessage.id,
@@ -408,6 +415,9 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				})
 			}
 			if (lastJsonMessage.type == 'update_after_accept_request') {
+				// todo: to remove
+				console.log('update_after_accept_request')
+				console.log(lastJsonMessage)
 				// add to online friends
 				const friend: OnlineFriend = {
 					username: lastJsonMessage.online.username,
@@ -421,6 +431,9 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				// add to conversation list
 			}
 			if (lastJsonMessage.type == 'delete_data') {
+				// todo: to remove
+				console.log('delete_data')
+				console.log(lastJsonMessage)
 				const newConvs = state.conversations.filter((conv: Conversation) => {
 					return conv.id != lastJsonMessage.conversation
 				})
@@ -467,10 +480,10 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	}, [state.conversation])
 
 	useEffect(() => {
-		if (location.pathname != '/chat' || !state.isFocus) {
+		if (location.pathname != '/chat') {
 			dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
 				username: '',
-				avatar: ''
+				avatar: '',
 			}})
 		}
 	}, [state.isFocus, location.pathname])

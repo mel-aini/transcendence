@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useChatContext } from "../contexts/chatProvider";
 
-function useIsOnline2(username: string) {
+function useIsOnline(username: string) {
 	const { state } = useChatContext();
     const [isOnline, setIsOnline] = useState(false);
 
 	useEffect(() => {
         const is = state.onlineFriends.some((friend) => {
-			return friend.username = username
+			return friend.username == username
 		})
         setIsOnline(is)
     }, [state.onlineFriends, username])
@@ -15,4 +15,4 @@ function useIsOnline2(username: string) {
 	return isOnline
 }
 
-export default useIsOnline2;
+export default useIsOnline;

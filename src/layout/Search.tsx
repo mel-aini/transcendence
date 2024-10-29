@@ -10,7 +10,7 @@ function Search() {
 		<>
 			<FiSearch
 				onClick={() => dispatch({type: 'SEARCH'})} 
-				className="text-2xl lg:hidden" />
+				className="text-2xl lg:hidden cursor-pointer" />
 			<div 
 				onClick={() => dispatch({type: 'SEARCH'})} 
 				className="hidden lg:flex items-center text-gray1 h-10 pl-4 pr-32 rounded-md cursor-pointer border border-border">search</div>

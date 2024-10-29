@@ -1,7 +1,6 @@
 import ConversationBar from "./ConversationBar";
 import { Conversation, useChatContext } from "../../../contexts/chatProvider";
 import { useEffect } from "react";
-import useIsOnline from "../../../hooks/useIsOnline";
 
 interface Props {
 	className?: string
