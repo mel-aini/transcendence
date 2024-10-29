@@ -382,12 +382,12 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		else if (message.type == "disconnect")
 		{
 			// console.log(message);
-			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: 0, isEndGame: true}});
 			message.status == "win"
 			?
 			dispatch({type: "SCORE", score: {...state.score, my: 3, side: 0}})
 			:
 			dispatch({type: "SCORE", score: {...state.score, my: 0, side: 3}});
+			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: 0, isEndGame: true}});
 			// dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
 		}
 	}

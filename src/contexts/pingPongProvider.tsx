@@ -205,8 +205,8 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	const messageHandler = (message: any) => {
-		// if (message.type != "ball" && message.type != "paddle")
-		// 	console.log(message);
+		if (message.type != "ball" && message.type != "paddle")
+			console.log(message);
 		if (message.type == "opponents")
 		{
 			if (message.user1.username == username)
@@ -278,12 +278,12 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 		else if (message.type == "disconnect")
 		{
 			// console.log(message);
-			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp:  message.xp, isEndGame: true}});
 			message.status == "win"
 			?
 			dispatch({type: "SCORE", score: {...state.score, my: 3, side: 0}})
 			:
 			dispatch({type: "SCORE", score: {...state.score, my: 0, side: 3}});
+			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp:  message.xp, isEndGame: true}});
 		}
 	}
 
@@ -292,12 +292,6 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 			messageHandler(lastJsonMessage);
 		
 	}, [lastJsonMessage]);
-
-	// useEffect(() => {
-	// 	if (!isEmptyObject(tournMessage))
-	// 		messageHandler(tournMessage);
-		
-	// }, [tournMessage]);
 	
 	return (
 		<PingPongContext.Provider value={{state, dispatch, lastJsonMessage, sendJsonMessage}}>
