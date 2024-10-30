@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useGlobalContext } from "../contexts/store";
+import { useGlobalContext } from "@/contexts/store";
 import { useEffect, useState } from "react";
 
 const Alert = () => {

@@ -1,12 +1,12 @@
 import { FormEvent, useRef, useState } from "react";
-import { useGlobalContext } from "../../contexts/store";
+import { useGlobalContext } from "@/contexts/store";
 import axios from "axios";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../components/Loading";
-import { validate } from "../../utils/validation";
-import { invalidColor } from "../../utils/colors";
+import Loading from "@/components/Loading";
+import { validate } from "@/utils/validation";
+import { invalidColor } from "@/utils/colors";
 
 interface Props {
 	token: string

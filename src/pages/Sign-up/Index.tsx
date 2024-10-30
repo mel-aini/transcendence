@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import useOAuth from "../../hooks/useOAuth";
+import useOAuth from "@/hooks/useOAuth";
 import Welcome from "./Welcome";
 import { useEffect, useState } from "react";
 import EmailForm from "./EmailForm";

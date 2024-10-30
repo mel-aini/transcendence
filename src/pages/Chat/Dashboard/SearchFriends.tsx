@@ -1,11 +1,11 @@
-import Input from "../../../components/Input";
+import Input from "@/components/Input";
 import { FiSearch } from "react-icons/fi";
-import { useChatContext } from "../../../contexts/chatProvider";
-import { useAuthContext } from "../../../contexts/authProvider";
+import { useChatContext } from "@/contexts/chatProvider";
+import { useAuthContext } from "@/contexts/authProvider";
 import { FormEvent, useRef, useState } from "react";
-import { isEmpty } from "../../../utils/validation";
-import api from "../../../api/axios";
-import User from "../../../components/User";
+import { isEmpty } from "@/utils/validation";
+import api from "@/api/axios";
+import User from "@/components/User";
 import send_icon from "/send_icon.svg"
 import { ImSpinner8 } from "react-icons/im";
 

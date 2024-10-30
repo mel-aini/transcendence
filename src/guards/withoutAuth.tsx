@@ -1,7 +1,7 @@
 import { ComponentType } from "react";
 import { Navigate } from "react-router-dom";
-import jwt from "../utils/jwt";
-import { useAuthContext } from "../contexts/authProvider";
+import jwt from "@/utils/jwt";
+import { useAuthContext } from "@/contexts/authProvider";
 import UpdateToken from "./UpdateToken";
 
 function withoutAuth(Component: ComponentType) {

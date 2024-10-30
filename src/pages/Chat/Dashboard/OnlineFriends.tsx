@@ -1,5 +1,5 @@
-import User from "../../../components/User";
-import { useChatContext } from "../../../contexts/chatProvider";
+import User from "@/components/User";
+import { useChatContext } from "@/contexts/chatProvider";
 
 function OnlineFriends() {
 	const { state, dispatch } = useChatContext()

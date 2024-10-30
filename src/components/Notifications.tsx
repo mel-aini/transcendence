@@ -1,12 +1,12 @@
 import InfiniteScrollObserver from "./InfiniteScrollObserver";
-import { INotification } from "../contexts/store";
+import { INotification } from "@/contexts/store";
 import Notification from "./Notification";
 import { useEffect, useState } from "react";
-import { useNotificationsContext } from "../contexts/notificationsProvider";
+import { useNotificationsContext } from "@/contexts/notificationsProvider";
 import { MdOutlineClearAll } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
-import api from "../api/axios";
-import { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
+import api from "@/api/axios";
+import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 async function getNotifications() {

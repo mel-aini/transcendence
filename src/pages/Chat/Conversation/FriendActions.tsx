@@ -1,14 +1,14 @@
 import { ComponentProps, useEffect, useState } from "react";
-import { useChatContext } from "../../../contexts/chatProvider";
-import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore"
-import { useGlobalContext } from "../../../contexts/store";
+import { useChatContext } from "@/contexts/chatProvider";
+import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore"
+import { useGlobalContext } from "@/contexts/store";
 import { twMerge } from "tailwind-merge";
-import play_icon from "/play_icon.svg"
-import blockIcon from "/block.svg"
+// import play_icon from "/play_icon.svg"
+// import blockIcon from "/block.svg"
 import { MdBlock } from "react-icons/md";
 import { TbPingPong } from "react-icons/tb";
 import { motion } from "framer-motion";
-import { dropDownVariants } from "../../../layout/DropMenu";
+import { dropDownVariants } from "@/layout/DropMenu";
 import { ImSpinner8 } from "react-icons/im";
 
 interface Props extends ComponentProps<'div'> {

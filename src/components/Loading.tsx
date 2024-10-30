@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useGlobalContext } from "../contexts/store";
+import { useGlobalContext } from "@/contexts/store";
 import { AnimatePresence, motion } from "framer-motion"
 
 const Loading = () => {

@@ -1,12 +1,11 @@
 import { Dispatch, FormEvent, useEffect, useState } from "react";
-import Input from "../../components/Input";
-import useInputChecker from "../../hooks/useInputChecker";
-import { primaryColor, invalidColor, whiteColor } from "../../utils/colors";
-import { useGlobalContext } from "../../contexts/store";
-import callToApi from "../../utils/callToApi";
-import Button from "../../components/Button";
-import { API_END_POINT } from "../../utils/urls";
-import Loading from "../../components/Loading";
+import Input from "@/components/Input";
+import useInputChecker from "@/hooks/useInputChecker";
+import { invalidColor } from "@/utils/colors";
+import { useGlobalContext } from "@/contexts/store";
+import callToApi from "@/utils/callToApi";
+import Button from "@/components/Button";
+import { API_END_POINT } from "@/utils/urls";
 
 interface IBody {
 	username: string,

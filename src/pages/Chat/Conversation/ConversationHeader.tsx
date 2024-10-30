@@ -1,9 +1,9 @@
-import User from "../../../components/User";
-import { useChatContext } from "../../../contexts/chatProvider";
+import User from "@/components/User";
+import { useChatContext } from "@/contexts/chatProvider";
 import { IoIosArrowBack } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import useIsOnline from "../../../hooks/useIsOnline";
+import useIsOnline from "@/hooks/useIsOnline";
 import FriendActions from "./FriendActions";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";

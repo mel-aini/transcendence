@@ -1,6 +1,6 @@
 import Welcome from "../Sign-up/Welcome";
 import { useEffect, useRef, useState } from "react";
-import Loading from "../../components/Loading";
+import Loading from "@/components/Loading";
 import { useSearchParams } from "react-router-dom";
 import EnterEmail from "./EnterEmail";
 import UpdatePassword from "./UpdatePassword";

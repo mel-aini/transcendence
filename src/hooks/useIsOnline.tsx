@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useChatContext } from "../contexts/chatProvider";
+import { useChatContext } from "@/contexts/chatProvider";
 
 function useIsOnline(username: string) {
 	const { state } = useChatContext();

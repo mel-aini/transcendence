@@ -2,17 +2,15 @@ import {AnimatePresence, motion} from 'framer-motion'
 import ConversationHeader from "./ConversationHeader";
 import { FormEvent, InputHTMLAttributes, MouseEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
 import ConversationMessages from './ConversationMessages';
-import { useChatContext } from '../../../contexts/chatProvider';
-import { useAuthContext } from '../../../contexts/authProvider';
+import { useChatContext } from '@/contexts/chatProvider';
+import { useAuthContext } from '@/contexts/authProvider';
 import { ReadyState } from 'react-use-websocket';
-import { isEmpty } from '../../../utils/validation';
-import { dateMeta } from '../../../utils/global';
-import { useGlobalContext } from '../../../contexts/store';
-// import chatBot from "/icons/chatBot.svg"
-// import chatGif from "/icons/chatGif.gif"
-import chatBotLottie from '../../../../public/icons/chatBotLottie.json'
+import { isEmpty } from '@/utils/validation';
+import { dateMeta } from '@/utils/global';
+import { useGlobalContext } from '@/contexts/store';
+import chatBotLottie from '@/assets/chatBotLottie.json'
 import Lottie from 'lottie-react'
-import Title from '../../../components/Title';
+import Title from '@/components/Title';
 import './index.css'
 
 function Conversation() {

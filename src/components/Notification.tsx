@@ -1,14 +1,16 @@
 import { FiBell } from "react-icons/fi";
-import { INotification, useGlobalContext } from "../contexts/store";
-import { useGlobalWebSocketContext } from "../contexts/globalWebSokcketStore";
+import { INotification, useGlobalContext } from "@/contexts/store";
+import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
 import { ProfileRequest } from "../types/profile";
 import { useEffect, useState } from "react";
-import { useChatContext } from "../contexts/chatProvider";
-import api from "../api/axios";
+import { useChatContext } from "@/contexts/chatProvider";
+import api from "@/api/axios";
 import { useNavigate } from "react-router-dom";
-import { LuMessagesSquare } from "react-icons/lu";
-import { useAuthContext } from "../contexts/authProvider";
-import { useNotificationsContext } from "../contexts/notificationsProvider";
+// import { LuMessagesSquare } from "react-icons/lu";
+import { useAuthContext } from "@/contexts/authProvider";
+import { useNotificationsContext } from "@/contexts/notificationsProvider";
+import chatBotLottie from '@/assets/chatBotLottie.json'
+import Lottie from 'lottie-react'
 
 interface Props {
 	notData: INotification
@@ -115,7 +117,10 @@ const Notification = ({ notData }: Props) => {
 				className={"flex gap-5 items-center"}>
 				<div className="shrink-0 w-8 flex justify-center items-center">
 					{data.type != 'message' && <FiBell className="text-3xl" />}
-					{data.type == 'message' && <LuMessagesSquare className="text-3xl" />}
+					{data.type == 'message' && <Lottie
+								animationData={chatBotLottie}
+								className=''
+								/>}
 				</div>
 				<div>
 					<p>{data.content}</p>

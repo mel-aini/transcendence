@@ -1,13 +1,12 @@
-import Input from "../../components/Input";
+import Input from "@/components/Input";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { invalidColor } from "../../utils/colors";
-import { useGlobalContext } from "../../contexts/store";
-import callToApi from "../../utils/callToApi";
-import OAuthBar from "../Sign-up/OAuthBar";
-import Button from "../../components/Button";
-import { useAuthContext } from "../../contexts/authProvider";
-import Loading from "../../components/Loading";
+import { Dispatch, SetStateAction, useState } from "react";
+import { invalidColor } from "@/utils/colors";
+import { useGlobalContext } from "@/contexts/store";
+import callToApi from "@/utils/callToApi";
+import Button from "@/components/Button";
+import { useAuthContext } from "@/contexts/authProvider";
+import Loading from "@/components/Loading";
 
 interface IResponse {
 	type: string,

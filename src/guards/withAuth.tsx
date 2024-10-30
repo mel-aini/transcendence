@@ -1,14 +1,14 @@
 import { ComponentType, useEffect } from "react";
-import { useAuthContext } from "../contexts/authProvider";
-import jwt from "../utils/jwt";
+import { useAuthContext } from "@/contexts/authProvider";
+import jwt from "@/utils/jwt";
 import UpdateToken from "./UpdateToken";
-import ChatContextProvider from "../contexts/chatProvider";
+import ChatContextProvider from "@/contexts/chatProvider";
 import { useLocation } from "react-router-dom";
-import { useGlobalContext } from "../contexts/store";
-import TournamentContextProvider from "../contexts/TournamentProvider";
-import ProfileContextProvider, { useProfileContext } from "../contexts/profileStore";
-import GlobalWebSocketContextProvider from "../contexts/globalWebSokcketStore";
-import { usePingPongContext } from "../contexts/pingPongProvider";
+import { useGlobalContext } from "@/contexts/store";
+import TournamentContextProvider from "@/contexts/TournamentProvider";
+import ProfileContextProvider from "@/contexts/profileStore";
+import GlobalWebSocketContextProvider from "@/contexts/globalWebSokcketStore";
+// import { usePingPongContext } from "@/contexts/pingPongProvider";
 
 export function Nested({ Component }: { Component: ComponentType }) {
 	const { state } = useLocation();

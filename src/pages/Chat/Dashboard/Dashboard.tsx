@@ -4,14 +4,14 @@ import { IoAddCircle } from "react-icons/io5";
 import OnlineFriends from "./OnlineFriends";
 import { FiSearch } from "react-icons/fi";
 import { FormEvent, useEffect, useState } from "react";
-import useLog from "../../../hooks/useLog";
+import useLog from "@/hooks/useLog";
 import SearchFriends from "./SearchFriends";
-import { useChatContext } from "../../../contexts/chatProvider";
-import { useAuthContext } from "../../../contexts/authProvider";
-import { isEmpty } from "../../../utils/validation";
-import Input from "../../../components/Input";
+import { useChatContext } from "@/contexts/chatProvider";
+import { useAuthContext } from "@/contexts/authProvider";
+import { isEmpty } from "@/utils/validation";
+import Input from "@/components/Input";
 import SearchConversationsList from "./SearchConversationsList";
-import Modal from "../../../components/Modal";
+import Modal from "@/components/Modal";
 
 function Dashboard() {
 	const [toggleSearch, setToggleSearch] = useState(false);

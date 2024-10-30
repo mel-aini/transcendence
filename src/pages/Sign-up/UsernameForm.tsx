@@ -1,12 +1,12 @@
 import { Dispatch, useState } from "react";
-import Input from "../../components/Input";
-import { invalidColor, primaryColor, whiteColor } from "../../utils/colors";
-import Button from "../../components/Button";
-import { useGlobalContext } from "../../contexts/store";
-import useInputChecker from "../../hooks/useInputChecker";
-import callToApi from "../../utils/callToApi";
+import Input from "@/components/Input";
+import { invalidColor } from "@/utils/colors";
+import Button from "@/components/Button";
+import { useGlobalContext } from "@/contexts/store";
+import useInputChecker from "@/hooks/useInputChecker";
+import callToApi from "@/utils/callToApi";
 import { useNavigate } from "react-router-dom";
-import { API_END_POINT } from "../../utils/urls";
+import { API_END_POINT } from "@/utils/urls";
 
 interface IBody {
 	username: string,

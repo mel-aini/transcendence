@@ -1,4 +1,4 @@
-import { useChatContext } from "../contexts/chatProvider";
+import { useChatContext } from "@/contexts/chatProvider";
 
 function useGetConversation() {
 	const { dispatch } = useChatContext();

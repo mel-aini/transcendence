@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useChatContext } from "../../contexts/chatProvider";
+import { useChatContext } from "@/contexts/chatProvider";
 import Dashboard from "./Dashboard/Dashboard";
 import Conversation from "./Conversation/Conversation";
 import { AnimatePresence } from 'framer-motion'

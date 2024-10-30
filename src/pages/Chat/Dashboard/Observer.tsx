@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { useChatContext } from "../../../contexts/chatProvider";
+import { useChatContext } from "@/contexts/chatProvider";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useAuthContext } from "../../../contexts/authProvider";
+import { useAuthContext } from "@/contexts/authProvider";
 
 function Observer() {
 	const { state, sendJsonMessage } = useChatContext();

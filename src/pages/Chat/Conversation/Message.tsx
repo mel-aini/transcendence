@@ -1,7 +1,7 @@
 import { HTMLAttributes, MutableRefObject } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { MdError } from "react-icons/md";
-import { dateMeta } from "../../../utils/global";
+import { dateMeta } from "@/utils/global";
 
 type ArrivedMsg = "arrive";
 type SentMessage = "sent";

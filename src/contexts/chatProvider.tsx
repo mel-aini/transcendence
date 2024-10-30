@@ -1,13 +1,12 @@
 import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
 import { useAuthContext } from "./authProvider";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { dateMeta } from "../utils/global";
+import { dateMeta } from "@/utils/global";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import Modal from "../components/Modal";
+import Modal from "@/components/Modal";
 import { useNotificationsContext } from "./notificationsProvider";
-import { WS_END_POINT } from "../utils/urls";
-import api from "../api/axios";
+import { WS_END_POINT } from "@/utils/urls";
 import { useLocation } from "react-router-dom";
 
 type Url = string;

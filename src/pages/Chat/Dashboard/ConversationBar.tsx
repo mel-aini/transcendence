@@ -1,7 +1,7 @@
 import { HTMLAttributes } from "react";
-import User from "../../../components/User";
-import { Conversation } from "../../../contexts/chatProvider";
-import { useAuthContext } from "../../../contexts/authProvider";
+import User from "@/components/User";
+import { Conversation } from "@/contexts/chatProvider";
+import { useAuthContext } from "@/contexts/authProvider";
 
 function getDate(last_date: string) {
 	const parsedDate = last_date.split(' ');

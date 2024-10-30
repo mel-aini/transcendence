@@ -1,11 +1,11 @@
 import { ChangeEvent, Dispatch, FormEvent, MutableRefObject, SetStateAction, useRef, useState } from "react";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
-import { useGlobalContext } from "../../contexts/store";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import { useGlobalContext } from "@/contexts/store";
 import axios from "axios";
-import { validate } from "../../utils/validation";
-import Loading from "../../components/Loading";
-import { invalidColor } from "../../utils/colors";
+import { validate } from "@/utils/validation";
+import Loading from "@/components/Loading";
+import { invalidColor } from "@/utils/colors";
 import { Link } from "react-router-dom";
 
 interface Props {

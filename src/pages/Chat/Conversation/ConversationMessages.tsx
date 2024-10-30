@@ -1,8 +1,7 @@
-import { Fragment, useEffect, useRef } from "react";
-import { useChatContext } from "../../../contexts/chatProvider";
+import { useEffect, useRef } from "react";
+import { useChatContext } from "@/contexts/chatProvider";
 import Message from "./Message";
-import { IoIosArrowDown } from "react-icons/io";
-import { useAuthContext } from "../../../contexts/authProvider";
+import { useAuthContext } from "@/contexts/authProvider";
 import Observer from "../Dashboard/Observer";
 
 function ConversationMessages() {
