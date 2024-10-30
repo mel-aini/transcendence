@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import Table from "./Table";
-import LayoutHeader from "../../../../layout/LayoutHeader";
+import LayoutHeader from "@/layout/LayoutHeader";
 
 function Game({isTournament}: {isTournament: boolean}) {
 	const refParent = useRef<HTMLDivElement>(null);

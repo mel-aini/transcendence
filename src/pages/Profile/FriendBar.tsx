@@ -1,4 +1,4 @@
-import { FriendsData, Relation } from "../../types/profile"
+import { FriendsData, Relation } from "@/types/profile"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import FriendActions from "./userActions/FriendActions"
@@ -7,7 +7,7 @@ import PendingInvitation from "./userActions/PendingInvitation"
 import Blocked from "./userActions/Blocked"
 import SendingInvitation from "./userActions/SendingInvitation"
 import WaitingAction from "./userActions/WaitingAction"
-import { Actions, useProfileContext } from "../../contexts/profileStore"
+import { Actions, useProfileContext } from "@/contexts/profileStore"
 import GoToProfile from "./userActions/GoToProfile"
 
 const Action = ({username, action}: {username: string, action: Actions | null}) => {

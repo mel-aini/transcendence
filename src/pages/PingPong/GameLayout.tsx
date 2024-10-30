@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
-import PingPongContextProvider from "../../contexts/pingPongProvider";
+import PingPongContextProvider from "@/contexts/pingPongProvider";
 import { Suspense, useEffect } from "react";
-import { useGlobalContext } from "../../contexts/store";
-import LoadingPage from "../../components/LoadingPage";
+import { useGlobalContext } from "@/contexts/store";
+import LoadingPage from "@/components/LoadingPage";
 
 function GameLayout() {
 	return (

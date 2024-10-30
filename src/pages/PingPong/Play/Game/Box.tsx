@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import Help from "./Help";
 import Ready from "./Ready";
-import { usePingPongContext } from "../../../../contexts/pingPongProvider";
-import { useTournamentContext } from "../../../../contexts/TournamentProvider";
+import { usePingPongContext } from "@/contexts/pingPongProvider";
+import { useTournamentContext } from "@/contexts/TournamentProvider";
 import { useEffect } from "react";
 
 function Box({isTournament} : {isTournament: boolean}) {

@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import Button from "../../../../components/Button";
-import { usePingPongContext } from "../../../../contexts/pingPongProvider";
+import Button from "@/components/Button";
+import { usePingPongContext } from "@/contexts/pingPongProvider";
 import UserBox from "./UserBox";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useTournamentContext } from "../../../../contexts/TournamentProvider";
-import { useGlobalContext } from "../../../../contexts/store";
-import LayoutHeader from "../../../../layout/LayoutHeader";
-import Title from "../../../../components/Title";
+import { useTournamentContext } from "@/contexts/TournamentProvider";
+import { useGlobalContext } from "@/contexts/store";
+import LayoutHeader from "@/layout/LayoutHeader";
+import Title from "@/components/Title";
 
 function Result({isTournament}: {isTournament: boolean}) {
 	const {state, dispatch} = isTournament ? useTournamentContext() : usePingPongContext();

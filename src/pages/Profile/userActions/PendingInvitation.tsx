@@ -1,6 +1,6 @@
-import { ProfileRequest } from "../../../types/profile"
-import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
-import { useProfileContext } from "../../../contexts/profileStore";
+import { ProfileRequest } from "@/types/profile"
+import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
+import { useProfileContext } from "@/contexts/profileStore";
 import deny from "/deny.svg"
 import accept from "/accept.svg"
 import { modifyObjectByName } from "../UserActions";

@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import User from "../../../../components/User";
+import User from "@/components/User";
 
 interface Props {
 	username?: string,

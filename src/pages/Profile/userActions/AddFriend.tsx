@@ -1,7 +1,7 @@
 import add_icon from "/add_icon.svg"
-import { ProfileRequest } from "../../../types/profile";
-import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
-import { useProfileContext } from "../../../contexts/profileStore";
+import { ProfileRequest } from "@/types/profile";
+import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
+import { useProfileContext } from "@/contexts/profileStore";
 import { modifyObjectByName } from "../UserActions";
 import block from "/block.svg"
 

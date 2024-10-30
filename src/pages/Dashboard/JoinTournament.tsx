@@ -1,16 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
 import trophy from "/trophy.svg"
-import Button from "../../components/Button";
+import Button from "@/components/Button";
 import { useContext, useEffect, useRef, useState } from "react";
 import { displayContext } from "./Tournaments";
 import { GiHumanPyramid } from "react-icons/gi";
-import { useTournamentContext } from "../../contexts/TournamentProvider";
-import { validate } from "../../utils/validation";
+import { useTournamentContext } from "@/contexts/TournamentProvider";
+import { validate } from "@/utils/validation";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../contexts/authProvider";
-import Modal from "../../components/Modal";
-import Title from "../../components/Title";
-import { WS_END_POINT } from "../../utils/urls";
+import { useAuthContext } from "@/contexts/authProvider";
+import Modal from "@/components/Modal";
+import Title from "@/components/Title";
+import { WS_END_POINT } from "@/utils/urls";
 
 function PlayersNum() {
 	const { state, dispatch } = useTournamentContext();

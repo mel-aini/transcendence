@@ -1,9 +1,9 @@
 import { createContext, useState } from "react";
-import Button from "../../components/Button";
+import Button from "@/components/Button";
 import { useNavigate } from "react-router-dom";
 import JoinTournament from "./JoinTournament";
-import Title from "../../components/Title";
-import { useTournamentContext } from "../../contexts/TournamentProvider";
+import Title from "@/components/Title";
+import { useTournamentContext } from "@/contexts/TournamentProvider";
 import { ReadyState } from "react-use-websocket";
 
 export const displayContext = createContext<any>({});

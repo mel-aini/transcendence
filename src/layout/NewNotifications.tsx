@@ -1,5 +1,5 @@
-import { useNotificationsContext } from "../contexts/notificationsProvider";
-import Notification from "../components/Notification";
+import { useNotificationsContext } from "@/contexts/notificationsProvider";
+import Notification from "@/components/Notification";
 import { AnimatePresence, motion } from "framer-motion";
 
 function NewNotifications() {

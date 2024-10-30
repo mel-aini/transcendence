@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
-import { UserData } from "../types/profile";
+import { UserData } from "@/types/profile";
 
 export interface INotification {
 	notification_id: string, 

@@ -1,12 +1,12 @@
 import pause from "/pause_icon.svg"
 import help from "/Help_icon.svg"
 import { GiDuration } from "react-icons/gi";
-import { usePingPongContext } from "../../../../contexts/pingPongProvider";
+import { usePingPongContext } from "@/contexts/pingPongProvider";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTimer } from 'react-timer-hook';
-import { useTournamentContext } from "../../../../contexts/TournamentProvider";
-import { useGlobalContext } from "../../../../contexts/store";
+import { useTournamentContext } from "@/contexts/TournamentProvider";
+import { useGlobalContext } from "@/contexts/store";
 
 const Goal = ({isTournament}: {isTournament: boolean}) => {
 	const { state } = isTournament ? useTournamentContext() : usePingPongContext();

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { Player, RoundData, useTournamentContext } from "../../contexts/TournamentProvider";
+import { Player, RoundData, useTournamentContext } from "@/contexts/TournamentProvider";
 import Match from "./Match";
 import PlayerBar from "./PlayerBar";
 import { useNavigate } from "react-router-dom";
-import LayoutHeader from "../../layout/LayoutHeader";
-import { Levels } from "../../contexts/pingPongProvider";
+import LayoutHeader from "@/layout/LayoutHeader";
+import { Levels } from "@/contexts/pingPongProvider";
 
 interface MatchData {
 	player1: Player | "player",

@@ -1,9 +1,9 @@
 import { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 import { useLocation, useNavigate } from "react-router-dom";
-import Polygon from "../components/helpers/Polygon";
-import Title from "../components/Title";
-import { useChatContext } from "../contexts/chatProvider";
+import Polygon from "@/components/helpers/Polygon";
+import Title from "@/components/Title";
+import { useChatContext } from "@/contexts/chatProvider";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface SideBarElemProps extends ComponentProps<'div'> {

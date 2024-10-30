@@ -3,7 +3,7 @@ import Result from "./Result/Result";
 import { useEffect, useRef, useState } from "react";
 import { Enum, GameLogic } from "./Logic";
 import { useTimer } from "react-timer-hook";
-import { useGlobalContext } from "../../../contexts/store";
+import { useGlobalContext } from "@/contexts/store";
 
 function Index({isAI}: {isAI: boolean}) {
 	const [isEndGame, setIsEndGame] = useState<boolean>(false);

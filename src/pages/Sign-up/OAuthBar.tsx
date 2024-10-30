@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import OAuth from "../../components/OAuth";
-import { API_END_POINT } from "../../utils/urls";
+import OAuth from "@/components/OAuth";
+import { API_END_POINT } from "@/utils/urls";
 
 // const clientID = 'u-s4t2ud-789ae11f20ba1b43a81ff49a1393e1f82bfd2a2c180d46f5d37b6af4d2be33af';
 

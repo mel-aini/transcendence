@@ -1,7 +1,7 @@
 import { FiBell } from "react-icons/fi";
 import { INotification, useGlobalContext } from "@/contexts/store";
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
-import { ProfileRequest } from "../types/profile";
+import { ProfileRequest } from "@/types/profile";
 import { useEffect, useState } from "react";
 import { useChatContext } from "@/contexts/chatProvider";
 import api from "@/api/axios";

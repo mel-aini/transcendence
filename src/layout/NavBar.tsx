@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useGlobalContext } from "../contexts/store";
-import User from "../components/User";
+import { useGlobalContext } from "@/contexts/store";
+import User from "@/components/User";
 import { twMerge } from "tailwind-merge";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { useChatContext } from "../contexts/chatProvider";
+import { useChatContext } from "@/contexts/chatProvider";
 import Search from "./Search";
 import NotificationsBell from "./NotificationsBell";
 import DropMenu, { DropMenuTypes } from "./DropMenu";
 import NewNotifications from "./NewNotifications";
-import Logo from "../components/Logo";
+import Logo from "@/components/Logo";
 import { variants } from "./SideBar";
 import { AnimatePresence, motion } from "framer-motion";
 

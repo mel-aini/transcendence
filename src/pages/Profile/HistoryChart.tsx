@@ -1,5 +1,5 @@
 import {  motion } from "framer-motion";
-import { MatchesData } from "../../types/profile";
+import { MatchesData } from "@/types/profile";
 
 const HistoryChart = ({width, height, data}: {width: number, height: number, data: MatchesData[] | null}) => {
 	let currentX = 0;

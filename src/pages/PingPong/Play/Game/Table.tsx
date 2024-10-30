@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import Box from "./Box";
-import { usePingPongContext } from "../../../../contexts/pingPongProvider";
-import { useTournamentContext } from "../../../../contexts/TournamentProvider";
-import { useGlobalContext } from "../../../../contexts/store";
+import { usePingPongContext } from "@/contexts/pingPongProvider";
+import { useTournamentContext } from "@/contexts/TournamentProvider";
+import { useGlobalContext } from "@/contexts/store";
 
 // width = 1.6 * height
 

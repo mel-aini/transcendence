@@ -1,7 +1,7 @@
 import { FiSearch } from "react-icons/fi";
-import { useGlobalContext } from "../contexts/store";
-import Modal from "../components/Modal";
-import SearchUsers from "../components/SearchUsers";
+import { useGlobalContext } from "@/contexts/store";
+import Modal from "@/components/Modal";
+import SearchUsers from "@/components/SearchUsers";
 
 function Search() {
 	const {state, dispatch} = useGlobalContext();

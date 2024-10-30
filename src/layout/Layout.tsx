@@ -2,11 +2,11 @@ import { Outlet } from 'react-router-dom';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
 import { useEffect } from 'react';
-import { useGlobalContext } from '../contexts/store';
+import { useGlobalContext } from '@/contexts/store';
 import { useQuery } from '@tanstack/react-query';
-import api from '../api/axios';
-import { useAuthContext } from '../contexts/authProvider';
-import { useProfileContext } from '../contexts/profileStore';
+import api from '@/api/axios';
+import { useAuthContext } from '@/contexts/authProvider';
+import { useProfileContext } from '@/contexts/profileStore';
 
 async function fetchData() {
 	const res = await api.get('profile/');

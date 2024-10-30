@@ -1,17 +1,17 @@
-import User from "../../../components/User";
-import { Levels, usePingPongContext } from "../../../contexts/pingPongProvider";
+import User from "@/components/User";
+import { Levels, usePingPongContext } from "@/contexts/pingPongProvider";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { primaryColor, secondaryColor } from "../../../utils/colors";
-import { useGlobalContext } from "../../../contexts/store";
+import { primaryColor, secondaryColor } from "@/utils/colors";
+import { useGlobalContext } from "@/contexts/store";
 import useWebSocket from "react-use-websocket";
 import Customize_icon from "/Customize_icon.svg"
 import { IoIosArrowBack ,IoIosArrowForward } from "react-icons/io";
 import CustomizeTab from "../../Settings/CustomizeTab";
 import { Section, SectionContent, SectionHeader } from "../../Settings/Index";
-import LayoutHeader from "../../../layout/LayoutHeader";
-import { useTournamentContext } from "../../../contexts/TournamentProvider";
+import LayoutHeader from "@/layout/LayoutHeader";
+import { useTournamentContext } from "@/contexts/TournamentProvider";
 
 export const customizeContext = createContext<any>({});
 

@@ -1,7 +1,7 @@
 import { Dispatch, forwardRef, SetStateAction, useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import Table from "./Table";
-import LayoutHeader from "../../../../layout/LayoutHeader";
+import LayoutHeader from "@/layout/LayoutHeader";
 
 interface Props {
 	rightPaddle: any,

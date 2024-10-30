@@ -1,6 +1,6 @@
 // import { useEffect, useState } from "react";
-// import { BACKEND_END_POINT } from "../utils/global";
-// import { useGlobalContext } from "../contexts/store";
+// import { BACKEND_END_POINT } from "@/utils/global";
+// import { useGlobalContext } from "@/contexts/store";
 
 // type TType = 'on demand';
 

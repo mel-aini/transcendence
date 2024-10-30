@@ -3,12 +3,12 @@ import History, { HistorySkeleton } from "./History";
 import Friends, { FriendsSkeleton } from "./Friends";
 import ProfileHeader, { ProfileHeaderSkeleton } from "./ProfileHeader";
 import { useEffect } from "react";
-import { useGlobalContext } from "../../contexts/store";
+import { useGlobalContext } from "@/contexts/store";
 import {  useParams } from "react-router-dom";
-import { useProfileContext } from "../../contexts/profileStore";
-import api from "../../api/axios";
+import { useProfileContext } from "@/contexts/profileStore";
+import api from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { useAuthContext } from "../../contexts/authProvider";
+import { useAuthContext } from "@/contexts/authProvider";
 import { PiSmileySad } from "react-icons/pi";
 
 async function fetchData(id: string | undefined) {

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Button from "../../components/Button";
-import Title from "../../components/Title";
+import Button from "@/components/Button";
+import Title from "@/components/Title";
 
 
 const PingPong = () => {

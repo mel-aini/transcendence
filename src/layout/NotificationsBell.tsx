@@ -3,8 +3,8 @@ import { FiBell } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
 import { DropMenuTypes } from "./DropMenu";
 import { AnimatePresence, motion } from "framer-motion";
-import { useNotificationsContext } from "../contexts/notificationsProvider";
-import api from "../api/axios";
+import { useNotificationsContext } from "@/contexts/notificationsProvider";
+import api from "@/api/axios";
 
 interface Props {
 	dropMenuType: MutableRefObject<DropMenuTypes>

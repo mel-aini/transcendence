@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import AllFriends from "./AllFriends";
-import { FriendsData } from "../../types/profile";
+import { FriendsData } from "@/types/profile";
 import { useNavigate, useParams } from "react-router-dom";
-import Container from "../../components/Container";
-import api from "../../api/axios";
+import Container from "@/components/Container";
+import api from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import Modal from "../../components/Modal";
+import Modal from "@/components/Modal";
 
 export const FriendsSkeleton = () => {
 	return (

@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import edit_icon from "/edit_icon.svg"
 import accept from "/accept.svg"
-import { validate } from "../../utils/validation";
+import { validate } from "@/utils/validation";
 import { motion } from "framer-motion";
 import { ring } from 'ldrs'
-import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
-import { UpdateReq } from "../../types/profile";
-import { useGlobalContext } from "../../contexts/store";
+import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
+import { UpdateReq } from "@/types/profile";
+import { useGlobalContext } from "@/contexts/store";
 
 ring.register()
 

@@ -1,6 +1,6 @@
-import { ProfileRequest } from "../../../types/profile";
-import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
-import { useProfileContext } from "../../../contexts/profileStore";
+import { ProfileRequest } from "@/types/profile";
+import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
+import { useProfileContext } from "@/contexts/profileStore";
 import unblock from "/unblock.svg"
 import { modifyObjectByName } from "../UserActions";
 

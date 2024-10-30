@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import PingPongContextProvider from "../contexts/pingPongProvider";
+import PingPongContextProvider from "@/contexts/pingPongProvider";
 
 function TournamentLayout() {
 	return (

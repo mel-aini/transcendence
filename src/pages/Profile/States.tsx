@@ -1,9 +1,9 @@
-import { darkColor, primaryColor } from "../../utils/colors";
-import { UserData } from "../../types/profile";
+import { darkColor, primaryColor } from "@/utils/colors";
+import { UserData } from "@/types/profile";
 import { motion } from "framer-motion";
 import { ComponentProps, useEffect, useState } from "react";
-import Container from "../../components/Container";
-import { useProfileContext } from "../../contexts/profileStore";
+import Container from "@/components/Container";
+import { useProfileContext } from "@/contexts/profileStore";
 
 export const StatesSkeleton = () => {
 	return (

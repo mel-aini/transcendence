@@ -5,9 +5,9 @@ import AddFriend from "./userActions/AddFriend";
 import SendingInvitation from "./userActions/SendingInvitation";
 import PendingInvitation from "./userActions/PendingInvitation";
 import Blocked from "./userActions/Blocked";
-import { Actions, useProfileContext } from "../../contexts/profileStore";
+import { Actions, useProfileContext } from "@/contexts/profileStore";
 import WaitingAction from "./userActions/WaitingAction";
-import { FriendsData } from "../../types/profile";
+import { FriendsData } from "@/types/profile";
 import GoToProfile from "./userActions/GoToProfile";
 
 export const modifyObjectByName = (array : FriendsData[] | null, username?: string) => {

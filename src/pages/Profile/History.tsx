@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import HistoryChart from "./HistoryChart";
 import { delay, motion } from "framer-motion";
-import { MatchesData, ProfileRes } from "../../types/profile";
-import { useGlobalContext } from "../../contexts/store";
+import { MatchesData, ProfileRes } from "@/types/profile";
+import { useGlobalContext } from "@/contexts/store";
 import { useNavigate, useParams } from "react-router-dom";
-import Container from "../../components/Container";
+import Container from "@/components/Container";
 import win from "/win.svg"
 import loss from "/deny.svg"
-import api from "../../api/axios";
-import { useProfileContext } from "../../contexts/profileStore";
+import api from "@/api/axios";
+import { useProfileContext } from "@/contexts/profileStore";
 import { useQuery } from "@tanstack/react-query";
 import { RxValueNone } from "react-icons/rx";
 

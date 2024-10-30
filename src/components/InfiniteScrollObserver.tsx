@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import api from "../api/axios";
+import api from "@/api/axios";
 
 interface InfiniteScrollObserverProps {
 	endPoint: string

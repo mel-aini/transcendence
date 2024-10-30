@@ -2,7 +2,7 @@ import { FiSearch } from "react-icons/fi";
 import Input from "./Input";
 import { useEffect, useState } from "react";
 import InfiniteScrollObserver from "./InfiniteScrollObserver";
-import { FriendsData } from "../types/profile";
+import { FriendsData } from "@/types/profile";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "@/contexts/store";
 import User from "./User";

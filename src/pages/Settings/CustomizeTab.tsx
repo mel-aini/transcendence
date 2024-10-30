@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
+import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
 import "react-color-palette/css";
-import { useGlobalContext } from "../../contexts/store";
+import { useGlobalContext } from "@/contexts/store";
 import Table from "./Display/Table";
 import BallCustomization from "./Display/BallCustomization";
 import PaddleCustomization from "./Display/PaddleCustomization";

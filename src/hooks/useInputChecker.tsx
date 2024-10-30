@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { validate } from "../utils/validation";
+import { validate } from "@/utils/validation";
 
 interface TACTIONS {
 	SET_ERROR: "setError",

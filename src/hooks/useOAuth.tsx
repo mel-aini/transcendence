@@ -1,8 +1,8 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useGlobalContext } from "../contexts/store";
-import { API_END_POINT } from "../utils/urls";
+import { useGlobalContext } from "@/contexts/store";
+import { API_END_POINT } from "@/utils/urls";
 import axios from "axios";
-import { useAuthContext } from "../contexts/authProvider";
+import { useAuthContext } from "@/contexts/authProvider";
 
 const useOAuth = (): [() => Promise<void>] => {
 	const [searchParams] = useSearchParams();

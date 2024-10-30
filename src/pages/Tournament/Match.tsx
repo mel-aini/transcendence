@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Player } from "../../contexts/TournamentProvider";
+import { Player } from "@/contexts/TournamentProvider";
 import Merge from "./Merge";
 import PlayerBar from "./PlayerBar";
 

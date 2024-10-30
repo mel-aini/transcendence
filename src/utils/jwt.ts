@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode'
-import api from '../api/axios';
+import api from '@/api/axios';
 import axios from 'axios';
 import { API_END_POINT } from './urls';
 

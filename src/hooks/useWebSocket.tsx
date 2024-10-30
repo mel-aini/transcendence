@@ -1,6 +1,6 @@
 // import { useEffect } from "react";
-// import { initWebSocket } from "../utils/socket";
-// import { useChatContext } from "../contexts/chatStore";
+// import { initWebSocket } from "@/utils/socket";
+// import { useChatContext } from "@/contexts/chatStore";
 
 // const url = 'ws://localhost:9000/ws/chat/?token=' + localStorage.getItem('access');
 

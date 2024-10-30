@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
-import { FriendsData, ProfileRes } from "../../types/profile"
+import { FriendsData, ProfileRes } from "@/types/profile"
 import FriendBar from "./FriendBar"
 import { AnimatePresence, motion } from "framer-motion"
-import { useGlobalContext } from "../../contexts/store"
+import { useGlobalContext } from "@/contexts/store"
 import { useNavigate, useParams } from "react-router-dom"
 import RelationBar from "./RelationBar"
-import { useProfileContext } from "../../contexts/profileStore"
-import api from "../../api/axios"
+import { useProfileContext } from "@/contexts/profileStore"
+import api from "@/api/axios"
 import { useQuery } from "@tanstack/react-query"
 
 const Skeleton = () => {

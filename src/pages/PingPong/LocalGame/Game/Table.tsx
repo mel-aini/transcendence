@@ -1,6 +1,6 @@
 import { Dispatch, forwardRef, SetStateAction, useEffect } from "react";
 import Box from "./Box";
-import { useGlobalContext } from "../../../../contexts/store";
+import { useGlobalContext } from "@/contexts/store";
 
 interface Props {
 	width: number,

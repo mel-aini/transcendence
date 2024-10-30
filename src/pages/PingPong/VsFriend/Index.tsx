@@ -1,12 +1,12 @@
 import { FiSearch } from "react-icons/fi";
-import api from "../../../api/axios";
+import api from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { FriendsData } from "../../../types/profile";
+import { FriendsData } from "@/types/profile";
 import { useNavigate } from "react-router-dom";
-import { usePingPongContext } from "../../../contexts/pingPongProvider";
-import LayoutHeader from "../../../layout/LayoutHeader";
-import { useGlobalWebSocketContext } from "../../../contexts/globalWebSokcketStore";
+import { usePingPongContext } from "@/contexts/pingPongProvider";
+import LayoutHeader from "@/layout/LayoutHeader";
+import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
 
 function FriendBar({friend} : {friend: FriendsData}) {
 	const [send, setSend] = useState<boolean>(false);

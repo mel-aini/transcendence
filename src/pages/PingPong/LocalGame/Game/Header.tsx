@@ -1,7 +1,7 @@
 import help from "/Help_icon.svg"
 import { AnimatePresence, motion } from "framer-motion";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useGlobalContext } from "../../../../contexts/store";
+import { useGlobalContext } from "@/contexts/store";
 
 interface Props {
 	rightScore: number,

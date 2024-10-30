@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../contexts/authProvider";
-import api from "../api/axios";
+import { useAuthContext } from "@/contexts/authProvider";
+import api from "@/api/axios";
 
 const useLog = () => {
 	const {dispatch} = useAuthContext()

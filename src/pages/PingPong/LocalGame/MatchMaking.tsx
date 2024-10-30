@@ -1,12 +1,12 @@
-import User from "../../../components/User";
+import User from "@/components/User";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { primaryColor, secondaryColor } from "../../../utils/colors";
-import { useGlobalContext } from "../../../contexts/store";
+import { primaryColor, secondaryColor } from "@/utils/colors";
+import { useGlobalContext } from "@/contexts/store";
 import CustomizeTab from "../../Settings/CustomizeTab";
 import { Section, SectionContent, SectionHeader } from "../../Settings/Index";
-import LayoutHeader from "../../../layout/LayoutHeader";
+import LayoutHeader from "@/layout/LayoutHeader";
 
 function MatchMaking({isAI}: {isAI: boolean}) {
 	const { state } =  useGlobalContext();

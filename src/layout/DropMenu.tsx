@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import Notifications from "../components/Notifications";
-import { useGlobalContext } from "../contexts/store";
+import Notifications from "@/components/Notifications";
+import { useGlobalContext } from "@/contexts/store";
 import { SideBarElem } from "./SideBar";
-import useLog from "../hooks/useLog";
+import useLog from "@/hooks/useLog";
 import { Variants, motion } from "framer-motion";
 import { MdOutlineLogout } from "react-icons/md";
 import { BiUser } from "react-icons/bi";

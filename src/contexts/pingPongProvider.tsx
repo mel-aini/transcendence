@@ -2,11 +2,11 @@ import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer }
 import { useGlobalContext } from "./store";
 import { useTournamentContext } from "./TournamentProvider";
 import { useNavigate } from "react-router-dom";
-import { UserData } from "../types/profile";
+import { UserData } from "@/types/profile";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useAuthContext } from "./authProvider";
 import useWebSocket from "react-use-websocket";
-import { WS_END_POINT } from "../utils/urls";
+import { WS_END_POINT } from "@/utils/urls";
 import { useNotificationsContext } from "./notificationsProvider";
 
 export interface Coordinates {

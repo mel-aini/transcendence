@@ -2,9 +2,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import AI from "/AI.svg"
 import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/Button";
-import { useGlobalContext } from "../../contexts/store";
-import Modal from "../../components/Modal";
+import Button from "@/components/Button";
+import { useGlobalContext } from "@/contexts/store";
+import Modal from "@/components/Modal";
 
 const timeData: number[] = [3, 5, 7];
 const goalsData: number[] = [5, 7, 10];

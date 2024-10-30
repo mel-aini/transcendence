@@ -4,7 +4,7 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useNotificationsContext } from "./notificationsProvider";
 import { Coordinates, Levels, score } from "./pingPongProvider";
-import { UserData } from "../types/profile";
+import { UserData } from "@/types/profile";
 import { useGlobalContext } from "./store";
 
 export interface Player {

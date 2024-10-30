@@ -4,7 +4,7 @@ import TFA from "./TFA";
 import { IoIosArrowDown } from "react-icons/io";
 import { ComponentProps, ReactNode, useState } from "react";
 import CustomizeTab from "./CustomizeTab";
-import LayoutHeader from "../../layout/LayoutHeader";
+import LayoutHeader from "@/layout/LayoutHeader";
 import ChangePassword from "./ChangePassword";
 import Security from "./Security";
 

@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, createContext, useContext, useLayoutEffect, useReducer } from "react";
-import api from "../api/axios";
+import api from "@/api/axios";
 import { useNavigate } from "react-router-dom";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import jwt from "@/utils/jwt";

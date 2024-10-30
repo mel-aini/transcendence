@@ -1,12 +1,12 @@
-import { useProfileContext } from "../../contexts/profileStore";
+import { useProfileContext } from "@/contexts/profileStore";
 import LevelBar from "./LevelBar";
 import UserActions from "./UserActions";
 import {  useEffect, useRef } from "react";
-import api from "../../api/axios";
+import api from "@/api/axios";
 import { useParams } from "react-router-dom";
 import edit_icon from "/edit_icon.svg"
-import { useGlobalWebSocketContext } from "../../contexts/globalWebSokcketStore";
-import { useGlobalContext } from "../../contexts/store";
+import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
+import { useGlobalContext } from "@/contexts/store";
 
 export const ProfileHeaderSkeleton = () => {
 	return (

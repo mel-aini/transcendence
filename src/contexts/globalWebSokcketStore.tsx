@@ -2,11 +2,11 @@ import { ReactNode, createContext, useContext, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useProfileContext } from "./profileStore";
-import { FriendsData, Relation } from "../types/profile";
+import { FriendsData, Relation } from "@/types/profile";
 import { useGlobalContext } from "./store";
 import { useAuthContext } from "./authProvider";
 import { useNotificationsContext } from "./notificationsProvider";
-import { WS_END_POINT } from "../utils/urls";
+import { WS_END_POINT } from "@/utils/urls";
 
 export const GlobalWebSocketContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
 	lastJsonMessage: '',

@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import Button from "../../../../components/Button";
+import Button from "@/components/Button";
 import UserBox from "./UserBox";
 import { motion } from "framer-motion";
-import LayoutHeader from "../../../../layout/LayoutHeader";
-import Title from "../../../../components/Title";
-import { useGlobalContext } from "../../../../contexts/store";
+import LayoutHeader from "@/layout/LayoutHeader";
+import Title from "@/components/Title";
+import { useGlobalContext } from "@/contexts/store";
 
 const Result = ({isAI, rightScore, leftScore}: {isAI: boolean, rightScore: number, leftScore: number}) => {
 	const navigate = useNavigate();

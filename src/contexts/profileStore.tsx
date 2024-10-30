@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
-import { FriendsData, MatchesData, UserData } from "../types/profile";
+import { FriendsData, MatchesData, UserData } from "@/types/profile";
 
 export enum Actions {
 	GoToProfile,
