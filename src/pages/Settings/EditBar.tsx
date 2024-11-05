@@ -11,10 +11,9 @@ import { useGlobalContext } from "@/contexts/store";
 ring.register()
 
 function EditBar({type}: {type: "username" | "email" | "tfa"}) {
-	// const { state, dispatchProfile } = useProfileContext();
 	const { state } = useGlobalContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
-	let newValue: string | undefined = (type === "username") ? state.userData?.username : ((type === "email") ? state.userData?.email : state.userData?.tfa.content);
+	let newValue: string | undefined = (type === "username") ? state.userData?.username : ((type === "email") ? state.userData?.email : state.userData?.tfa?.content);
 	const [editStatus, setEditStatus] = useState<"edit" | "wait" | "save">("edit");
 	const [Error, setError] = useState<boolean>(false);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -51,7 +50,7 @@ function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 		{
 			if ((type === "username" && newValue !== state.userData?.username)
 				|| (type === "email" && newValue !== state.userData?.email)
-					|| (type === "tfa" && newValue !== state.userData?.tfa.content))
+					|| (type === "tfa" && newValue !== state.userData?.tfa?.content))
 			{
 				makeReq();
 			}
@@ -64,11 +63,9 @@ function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 	}
 
 	useEffect(() => {
-		if (editStatus === "wait")
-			setEditStatus("edit");
-		
+		(editStatus === "wait") && setEditStatus("edit");
 		(inputRef.current && (inputRef.current.value = newValue ? newValue : ''));
-	}, [state.userData?.username ,state.userData?.email , state.userData?.tfa.content])
+	}, [state.userData?.username ,state.userData?.email , state.userData?.tfa?.content])
 
 	return (
 		<div className="flex gap-2 justify-between h-12 max-w-96">

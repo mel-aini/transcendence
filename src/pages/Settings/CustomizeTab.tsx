@@ -13,14 +13,14 @@ export const tableColors = [ '#141619', '#1D403D', '#343434' ]
 function CustomizeTab() {
 	const { state } = useGlobalContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
-	const [ ballColor, setBallColor ] = useState<string | undefined>(state.userData?.game_settings.ball);
-	const [ paddleColor, setPaddleColor ] = useState<string | undefined>(state.userData?.game_settings.paddle);
-	const [ tableColor, setTableColor ] = useState<string | undefined>(state.userData?.game_settings.background);
+	const [ ballColor, setBallColor ] = useState<string | undefined>(state.userData?.game_settings?.ball);
+	const [ paddleColor, setPaddleColor ] = useState<string | undefined>(state.userData?.game_settings?.paddle);
+	const [ tableColor, setTableColor ] = useState<string | undefined>(state.userData?.game_settings?.background);
 	
 	const saveChanges = () => {
-		if ((ballColor == state.userData?.game_settings.ball)
-			&& (paddleColor == state.userData?.game_settings.paddle)
-				&& (tableColor == state.userData?.game_settings.background))
+		if ((ballColor == state.userData?.game_settings?.ball)
+			&& (paddleColor == state.userData?.game_settings?.paddle)
+				&& (tableColor == state.userData?.game_settings?.background))
 				return ;
 		sendJsonMessage(
 			{

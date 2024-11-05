@@ -28,8 +28,7 @@ function ChangePassword() {
 	const [currentError, setCurrentError] = useState<boolean>(false);
 	const [newError, setNewError] = useState<boolean>(false);
 	const [reTypeNewError, setReTypeNewError] = useState<boolean>(false);
-	const {sendJsonMessage, lastJsonMessage} = useGlobalWebSocketContext();
-	const {dispatch} = useGlobalContext();
+	const {sendJsonMessage} = useGlobalWebSocketContext();
 	const [display, setDisplay] = useState<boolean>(false);
 
 	const clickHandler = () => {
@@ -47,29 +46,11 @@ function ChangePassword() {
 					new_password: newPass.current?.value
 				}
 			});
-		}
-	}
-
-	const isErrorObject = (obj: any) => {
-		if (obj === null)
-			return (true);
-		return JSON.stringify(obj) === '{}';
-	};
-
-	useEffect(() => {
-		console.log(lastJsonMessage);
-		
-		if (!isErrorObject(lastJsonMessage))
-		{
-			lastJsonMessage.code == 200 ?
-			dispatch({type: 'ALERT', message: "password changed successfuly", dispatch})
-			:
-			dispatch({type: 'ALERT', message: "invalid password", isError: true, dispatch});
 			current.current && (current.current.value = '');
 			newPass.current && (newPass.current.value = '');
 			reTypeNew.current && (reTypeNew.current.value = '');
 		}
-	}, [lastJsonMessage]);
+	}
 
 	return (
 		<div className="flex flex-col gap-2 justify-between">
