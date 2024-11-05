@@ -7,6 +7,9 @@ import { useGlobalContext } from "@/contexts/store";
 import CustomizeTab from "../../Settings/CustomizeTab";
 import { Section, SectionContent, SectionHeader } from "../../Settings/Index";
 import LayoutHeader from "@/layout/LayoutHeader";
+import AI_IMG from "/AI_IMG.svg"
+import P1_IMG from "/P1_IMG.svg"
+import P2_IMG from "/P2_IMG.svg"
 
 function MatchMaking({isAI}: {isAI: boolean}) {
 	const { state } =  useGlobalContext();
@@ -34,7 +37,7 @@ function MatchMaking({isAI}: {isAI: boolean}) {
 			<div>
 				<div className="flex justify-between items-center sm:flex-row flex-col gap-5 select-none py-4 border border-border rounded-lg px-10">
 					<div className="flex items-center gap-5 flex-1 justify-start self-start">
-						<User className="size-28 border-primary" border url={isAI ? '' : ''} />
+						<User className="size-28 border-primary" url={isAI ? AI_IMG : P2_IMG} />
 						<h3>{isAI ? 'AI' : 'player 2'}</h3>
 					</div>
 					<div className="relative w-[51px] h-[60px]">
@@ -43,7 +46,7 @@ function MatchMaking({isAI}: {isAI: boolean}) {
 					</div>
 					<div className="flex-1 flex justify-end items-center gap-5 self-end">
 						<h3>{ isAI ? 'you' : 'player 1' }</h3>
-						<User className="size-28 border-primary" border url={isAI ? state.userData?.profile_image : ''} />
+						<User className="size-28 border-primary" border={isAI} url={isAI ? state.userData?.profile_image : P1_IMG} />
 					</div>
 				</div>
 			</div>

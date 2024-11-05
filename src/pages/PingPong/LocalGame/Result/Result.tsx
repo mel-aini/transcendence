@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import LayoutHeader from "@/layout/LayoutHeader";
 import Title from "@/components/Title";
 import { useGlobalContext } from "@/contexts/store";
+import AI_IMG from "/AI_IMG.svg"
+import P1_IMG from "/P1_IMG.svg"
+import P2_IMG from "/P2_IMG.svg"
 
 const Result = ({isAI, rightScore, leftScore}: {isAI: boolean, rightScore: number, leftScore: number}) => {
 	const navigate = useNavigate();
@@ -34,7 +37,7 @@ const Result = ({isAI, rightScore, leftScore}: {isAI: boolean, rightScore: numbe
 				animate={{opacity: 1, top: '0rem'}}
 				transition={{duration: 0.3, delay: 1.5}}
 				className="border border-border shrink-0 flex sm:flex-row flex-col w-full justify-between items-center gap-4 p-5 rounded-md">
-					<UserBox username={isAI ? 'AI' : 'player 1'} userImage={''} className="self-start" />
+					<UserBox username={isAI ? 'AI' : 'player 2'} userImage={isAI ? AI_IMG : P2_IMG} className="self-start" />
 					<div className="flex gap-3 shrink-0" >
 						<div className="size-16 flex justify-center items-center rounded-[10px] border border-border bg-secondary text-[32px] ">
 							{leftScore}
@@ -43,7 +46,7 @@ const Result = ({isAI, rightScore, leftScore}: {isAI: boolean, rightScore: numbe
 							{rightScore}
 						</div>
 					</div>
-					<UserBox direction="right" username={isAI ? 'you' : 'player 2'} userImage={ isAI ? state.userData?.profile_image : '' } className="self-end" />
+					<UserBox direction="right" username={isAI ? 'you' : 'player 1'} userImage={ isAI ? state.userData?.profile_image : P1_IMG } className="self-end" />
 				</motion.div>
 				<motion.div
 				initial={{opacity: 0, top: '-5rem'}}
