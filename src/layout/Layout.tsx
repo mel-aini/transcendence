@@ -16,7 +16,7 @@ async function fetchData() {
 const Layout = () => {
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
-	const { dispatchProfile } = useProfileContext();
+	// const { dispatchProfile } = useProfileContext();
 
 	const {data, isLoading, isError} = useQuery({queryKey: ['getProfile'], queryFn: () => fetchData(), refetchOnMount: true});
 
@@ -24,7 +24,7 @@ const Layout = () => {
 		if (!isLoading) {
 			console.log("data", data?.data);
 			
-			dispatchProfile({type: "USER_DATA", userData: data?.data});
+			// dispatchProfile({type: "USER_DATA", userData: data?.data});
 			dispatch({type: "USER_DATA", userData: data?.data});
 			authDispatch({type: 'USERNAME', username: data?.data.username});
 		}
