@@ -40,11 +40,9 @@ const UserActions = ({isProfile}: {isProfile: boolean}) => {
 	}
 
 	useEffect(() => {
-		if (isProfile) {
-			setAction(Actions.EditProfile);
-		}
-		else
-			setActions(state.userData?.relation);
+		console.log("relation" , state.userData?.relation);
+		
+		isProfile ? setAction(Actions.EditProfile) : setActions(state.userData?.relation);
 	}, [state.userData?.relation])
 
 	return (

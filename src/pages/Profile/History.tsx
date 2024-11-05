@@ -44,8 +44,8 @@ const History = () => {
 	useEffect(() => {
 		
 		if (!isLoading) {
-			console.log(data?.data.data, data?.data);
-			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
+			console.log(data?.data);
+			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data});
 		}
 
 		if (!parentRef.current) return;
@@ -60,7 +60,7 @@ const History = () => {
 
 	useEffect(() => {
 		if (!isRefetching)
-			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data.data});
+			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data});
 	}, [isRefetching])
 	
 	if (isError) {

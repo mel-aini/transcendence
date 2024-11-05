@@ -38,7 +38,7 @@ function Result({users, isLoading}: {users: FriendsData[], isLoading: boolean}) 
     }, [isLoading])
 
     return (
-        <div className="max-h-[168px] overflow-auto">
+        <div className="max-h-[168px] overflow-auto scrollClass">
             {
                 !isFirstTime && !isLoading && users.length == 0 && <div className="text-center">No results found.</div>
             }

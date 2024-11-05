@@ -2,7 +2,7 @@ import States, { StatesSkeleton } from "./States";
 import History, { HistorySkeleton } from "./History";
 import Friends, { FriendsSkeleton } from "./Friends";
 import ProfileHeader, { ProfileHeaderSkeleton } from "./ProfileHeader";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGlobalContext } from "@/contexts/store";
 import {  useParams } from "react-router-dom";
 import { useProfileContext } from "@/contexts/profileStore";
@@ -19,7 +19,8 @@ async function fetchData(id: string | undefined) {
 
 const Index = () => {
 	const { id } = useParams();
-	const {data, isLoading, isError, isRefetching} = useQuery({queryKey: ['profile', id], queryFn: () => fetchData(id), refetchInterval: 5000});
+	const refetch = useRef<number | false>(5000);
+	const {data, isLoading, isError, isRefetching} = useQuery({queryKey: ['profile', id], queryFn: () => fetchData(id), refetchInterval: refetch.current});
 	const { state, dispatchProfile } = useProfileContext();
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
@@ -65,6 +66,7 @@ const Index = () => {
 	}
 
 	if (isError) {
+		refetch.current = false;
 		return (
 			<div className="flex flex-col gap-5 mt-20 items-center">
 				<PiSmileySad className="text-8xl fill-primary" />
