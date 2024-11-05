@@ -75,8 +75,6 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 				}
 				else if (lastJsonMessage.identifier === "email")
 					dispatch({type: "USER_DATA", userData: {...globalState.userData, email: lastJsonMessage.data.value}});
-				else if (lastJsonMessage.identifier === "password")
-					dispatch({type: 'ALERT', message: "password changed successfuly", dispatch});
 				else if (lastJsonMessage.identifier === "tfa-status")
 					dispatch({type: "USER_DATA", userData: {...globalState.userData, tfa: {...globalState.userData?.tfa, status: lastJsonMessage.data.value}}});
 				else if (lastJsonMessage.identifier === "tfa-change")
@@ -101,21 +99,13 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			else if (lastJsonMessage.type === "update")
 			{
 				if (lastJsonMessage.identifier === "tfa-status" || lastJsonMessage.identifier === "tfa-change")
-				{
 					dispatchProfile({type: "USER_DATA", userData: {...globalState.userData, tfa: {...globalState.userData?.tfa}}});
-				}
 				else if (lastJsonMessage.identifier === "username")
-				{
 					dispatchProfile({type: "USER_DATA", userData: {...globalState.userData, username: globalState.userData?.username}});
-				}
 				else if (lastJsonMessage.identifier === "email")
-				{
 					dispatchProfile({type: "USER_DATA", userData: {...globalState.userData, email: globalState.userData?.email}});
-				}
 				else if (lastJsonMessage.identifier === "game_settings")
-				{
 					dispatchProfile({type: "USER_DATA", userData: {...globalState.userData, game_settings: {...globalState.userData?.game_settings}}});
-				}
 				dispatch({type: 'ALERT', message: lastJsonMessage.message, isError: true, dispatch});
 			}
 		}
