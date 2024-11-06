@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useChatContext } from "@/contexts/chatProvider";
+import { CHAT_OPTIONS, useChatContext } from "@/contexts/chatProvider";
 import Dashboard from "./Dashboard/Dashboard";
 import Conversation from "./Conversation/Conversation";
 import { AnimatePresence } from 'framer-motion'
@@ -24,7 +24,7 @@ function Index() {
 	}, [])
 
 	useEffect(() => {
-		dispatch({type: 'UNREAD_CONVERSATION', status: false})
+		dispatch({type: CHAT_OPTIONS.UNREAD_CONVERSATION, status: false})
 	}, [state.unreadConv])
 
 	return (

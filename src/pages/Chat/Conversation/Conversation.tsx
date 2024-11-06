@@ -2,7 +2,7 @@ import {AnimatePresence, motion} from 'framer-motion'
 import ConversationHeader from "./ConversationHeader";
 import { FormEvent, InputHTMLAttributes, MouseEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
 import ConversationMessages from './ConversationMessages';
-import { useChatContext } from '@/contexts/chatProvider';
+import { CHAT_OPTIONS, useChatContext } from '@/contexts/chatProvider';
 import { useAuthContext } from '@/contexts/authProvider';
 import { ReadyState } from 'react-use-websocket';
 import { isEmpty } from '@/utils/validation';
@@ -48,7 +48,7 @@ function Conversation() {
 			receiver: state.conversation_header.username,
 		}
 
-		dispatch({type: 'LAST_MESSAGE', message: {
+		dispatch({type: CHAT_OPTIONS.LAST_MESSAGE, message: {
 			content: message_content,
 			date: dateMeta.getDate(),
 			sender: authState.username,
@@ -62,10 +62,10 @@ function Conversation() {
 				sendJsonMessage(ServerMessage);
 			}
 			if (readyState != ReadyState.OPEN) {
-				dispatch({type: 'LAST_MESSAGE', message: null});
+				dispatch({type: CHAT_OPTIONS.LAST_MESSAGE, message: null});
 			
 				// if error
-				dispatch({type: 'MESSAGE', message: {
+				dispatch({type: CHAT_OPTIONS.MESSAGE, message: {
 					content: message_content,
 					date: dateMeta.getDate(),
 					sender: authState.username,
@@ -78,16 +78,13 @@ function Conversation() {
 	}
 
 	useLayoutEffect(() => {
-		dispatch({type: 'FOCUS', state: window.innerWidth >= 1024})
+		dispatch({type: CHAT_OPTIONS.FOCUS, state: window.innerWidth >= 1024})
 
 		const resizeHandler = () => {
-			dispatch({type: 'FOCUS', state: false})
+			dispatch({type: CHAT_OPTIONS.FOCUS, state: false})
 		}
 
 		window.addEventListener('resize', resizeHandler)
-		// todo: to remove
-			// setIsOpen(true)
-		//
 		return () => {
 			window.removeEventListener('resize', resizeHandler);
 		}

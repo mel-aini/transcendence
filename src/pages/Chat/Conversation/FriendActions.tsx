@@ -1,5 +1,5 @@
 import { ComponentProps, useEffect, useState } from "react";
-import { useChatContext } from "@/contexts/chatProvider";
+import { CHAT_OPTIONS, useChatContext } from "@/contexts/chatProvider";
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore"
 import { useGlobalContext } from "@/contexts/store";
 import { twMerge } from "tailwind-merge";
@@ -52,8 +52,8 @@ function FriendActions({className, close}: Props) {
 		}
 		else if (lastJsonMessage?.type == "user-action" && lastJsonMessage?.data?.value == 'block') {
 			if (lastJsonMessage?.code == 200) {
-				dispatch({type: 'FOCUS', state: false});
-				dispatch({type: 'CONVERSATION', conversation: {
+				dispatch({type: CHAT_OPTIONS.FOCUS, state: false});
+				dispatch({type: CHAT_OPTIONS.CONVERSATION, conversation: {
 					id: null,
 					state: null
 				}})

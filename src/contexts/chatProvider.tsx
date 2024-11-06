@@ -10,6 +10,20 @@ import { WS_END_POINT } from "@/utils/urls";
 import { useLocation } from "react-router-dom";
 import { Conversation, ConversationState, Header, Message, OnlineFriend } from "@/types/chat";
 
+export const CHAT_OPTIONS = {
+	SOCKET: 'SOCKET',
+	FOCUS: 'FOCUS',
+	MESSAGE: 'MESSAGE',
+	LAST_MESSAGE: 'LAST_MESSAGE',
+	CONVERSATION: 'CONVERSATION',
+	CONVERSATION_HEADER: 'CONVERSATION_HEADER',
+	MESSAGES: 'MESSAGES',
+	ONLINE: 'ONLINE',
+	CONVERSATIONS: 'CONVERSATIONS',
+	SEARCH_CONVERSATIONS: 'SEARCH_CONVERSATIONS',
+	UNREAD_CONVERSATION: 'UNREAD_CONVERSATION'
+}
+
 export interface ChatStateProps {
 	isFocus: boolean,
 	messages: Message[],
@@ -55,12 +69,12 @@ export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispa
 const reducer = (state: ChatStateProps, action: any) => {
 	switch (action.type)
 	{
-		case 'SOCKET':
+		case CHAT_OPTIONS.SOCKET:
 			return { 
 				...state, 
 				ws: action.socket
 			}
-		case 'FOCUS':
+		case CHAT_OPTIONS.FOCUS:
 			if (action.state == true)
 				return {
 			 		...state, 
@@ -70,50 +84,48 @@ const reducer = (state: ChatStateProps, action: any) => {
 				...state, 
 				isFocus: false
 			}
-		case 'MESSAGE':
+		case CHAT_OPTIONS.MESSAGE:
 			return { 
 				...state,
 				messages: [...state.messages, action.message],
 				newMessageTriggered: !state.newMessageTriggered
 			}
-		case 'LAST_MESSAGE':
+		case CHAT_OPTIONS.LAST_MESSAGE:
 			return { 
 				...state,
 				lastMessage: action.message
 			}
-		case 'CONVERSATION':
+		case CHAT_OPTIONS.CONVERSATION:
 			return { 
 				...state, 
 				conversation: action.conversation
 			}
-		case 'CONVERSATION_HEADER':
+		case CHAT_OPTIONS.CONVERSATION_HEADER:
 			return { 
 				...state, 
 				conversation_header: action.conversation_header
 			}
-		case 'MESSAGES':
+		case CHAT_OPTIONS.MESSAGES:
 			return { 
 				...state, 
 				messages: action.messages
 			}
-		case 'ONLINE':
-			// todo: to remove
-			console.log('dispatching online friends...')
+		case CHAT_OPTIONS.ONLINE:
 			return { 
 				...state, 
 				onlineFriends: action.onlineFriends
 			}
-		case 'CONVERSATIONS':
+		case CHAT_OPTIONS.CONVERSATIONS:
 			return { 
 				...state, 
 				conversations: action.conversations
 			}
-		case 'SEARCH_CONVERSATIONS':
+		case CHAT_OPTIONS.SEARCH_CONVERSATIONS:
 			return { 
 				...state, 
 				searchConversations: action.conversations
 			}
-		case 'UNREAD_CONVERSATION':
+		case CHAT_OPTIONS.UNREAD_CONVERSATION:
 			return { 
 				...state, 
 				unreadConv: action.status
@@ -154,8 +166,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	function setErrorInLastMessage() {
 		if (state.lastMessage != null) {
 			const content = state.lastMessage.content;
-			dispatch({type: 'LAST_MESSAGE', message: null});
-			dispatch({type: 'MESSAGE', message: {
+			dispatch({type: CHAT_OPTIONS.LAST_MESSAGE, message: null});
+			dispatch({type: CHAT_OPTIONS.MESSAGE, message: {
 				content: content,
 				date: dateMeta.getDate(),
 				sender: authState.username,
@@ -208,7 +220,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				}
 				
 			}
-			dispatch({type: 'CONVERSATIONS', conversations: [...state.conversations]})
+			dispatch({type: CHAT_OPTIONS.CONVERSATIONS, conversations: [...state.conversations]})
 		}
 		else {
 			if (!data) return;
@@ -229,10 +241,10 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				}, dispatch: notDispatch})
 
 				if (location.pathname != '/chat') {
-					dispatch({type: 'UNREAD_CONVERSATION', status: true})
+					dispatch({type: CHAT_OPTIONS.UNREAD_CONVERSATION, status: true})
 				}
 			}
-			dispatch({type: 'CONVERSATIONS', conversations: [...newArr]})
+			dispatch({type: CHAT_OPTIONS.CONVERSATIONS, conversations: [...newArr]})
 		}
 	}
 
@@ -255,11 +267,11 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			return conv;
 		});
-		dispatch({type: 'CONVERSATIONS', conversations: conversations_update});
+		dispatch({type: CHAT_OPTIONS.CONVERSATIONS, conversations: conversations_update});
 		// update conversation header
 		// console.log(data.id, state.conversation_header.id);
 		if (data.id == state.conversation_header.id) {
-			dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
+			dispatch({type: CHAT_OPTIONS.CONVERSATION_HEADER, conversation_header: {
 				username: data.username,
 				avatar: data.avatar_link,
 				id: data.id
@@ -276,16 +288,16 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				// todo: to remove
 				console.log('lastJsonMessage.online')
 				console.log(lastJsonMessage.online)
-				dispatch({type: 'ONLINE', onlineFriends: lastJsonMessage.online})
+				dispatch({type: CHAT_OPTIONS.ONLINE, onlineFriends: lastJsonMessage.online})
 			}
 			if (lastJsonMessage.conversations) {
 				const conv = lastJsonMessage.conversations.find((conv: Conversation) => conv.status == false && conv.sender != authState.username);
-				dispatch({type: 'CONVERSATIONS', conversations: lastJsonMessage.conversations})
-				dispatch({type: 'UNREAD_CONVERSATION', status: conv ? true : false})
+				dispatch({type: CHAT_OPTIONS.CONVERSATIONS, conversations: lastJsonMessage.conversations})
+				dispatch({type: CHAT_OPTIONS.UNREAD_CONVERSATION, status: conv ? true : false})
 			}
 			if (lastJsonMessage.messages) {
-				dispatch({type: 'MESSAGES', messages: [ ...lastJsonMessage.messages, ...state.messages ]})
-				dispatch({type: 'CONVERSATION', conversation: {
+				dispatch({type: CHAT_OPTIONS.MESSAGES, messages: [ ...lastJsonMessage.messages, ...state.messages ]})
+				dispatch({type: CHAT_OPTIONS.CONVERSATION, conversation: {
 					id: state.conversation.id,
 					state: 'ok',
 					limitReached: lastJsonMessage.messages.length != 10
@@ -301,7 +313,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			if (lastJsonMessage.type == 'message') {
 				if (lastJsonMessage.receiver == authState.username) {
 					// I'm the receiver
-					dispatch({type: 'MESSAGE', message: {
+					dispatch({type: CHAT_OPTIONS.MESSAGE, message: {
 						content: lastJsonMessage.message,
 						date: dateMeta.getDate(),
 						sender: state.conversation_header.username,
@@ -312,8 +324,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					
 				} else {
 					// I'm the sender
-					dispatch({type: 'LAST_MESSAGE', message: null});
-					dispatch({type: 'MESSAGE', message: {
+					dispatch({type: CHAT_OPTIONS.LAST_MESSAGE, message: null});
+					dispatch({type: CHAT_OPTIONS.MESSAGE, message: {
 						content: lastJsonMessage.message,
 						date: dateMeta.getDate(),
 						sender: authState.username,
@@ -353,11 +365,11 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					})
 				}
 				updateFriendData(data);
-				dispatch({type: 'ONLINE', onlineFriends: newList})
+				dispatch({type: CHAT_OPTIONS.ONLINE, onlineFriends: newList})
 			}
 			if (lastJsonMessage.type == 'getConversation') {
-				dispatch({type: 'FOCUS', state: true})
-				dispatch({type: 'CONVERSATION', conversation: {
+				dispatch({type: CHAT_OPTIONS.FOCUS, state: true})
+				dispatch({type: CHAT_OPTIONS.CONVERSATION, conversation: {
 					id: lastJsonMessage.id,
 					state: 'loading'
 				}});
@@ -380,26 +392,23 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					conversation_id: lastJsonMessage.conversation.id
 				}
 				const newList = [...state.onlineFriends, friend]
-				dispatch({type: 'ONLINE', onlineFriends: newList})
+				dispatch({type: CHAT_OPTIONS.ONLINE, onlineFriends: newList})
 				// add to conversation list
 			}
 			if (lastJsonMessage.type == 'delete_data') {
-				// todo: to remove
-				console.log('delete_data')
-				console.log(lastJsonMessage)
 				const newConvs = state.conversations.filter((conv: Conversation) => {
 					return conv.id != lastJsonMessage.conversation
 				})
-				dispatch({type: 'CONVERSATIONS', conversations: [...newConvs]})
+				dispatch({type: CHAT_OPTIONS.CONVERSATIONS, conversations: [...newConvs]})
 				// filter online friends based on lastJsonMessage.user.id
 				const newFriends = state.onlineFriends.filter((friend: OnlineFriend) => {
 					return friend.username != lastJsonMessage.user.username
 				})
-				dispatch({type: 'ONLINE', onlineFriends: newFriends})
+				dispatch({type: CHAT_OPTIONS.ONLINE, onlineFriends: newFriends})
 
 				if (lastJsonMessage?.user?.username == state.conversation_header.username) {
-					dispatch({type: 'FOCUS', state: false});
-					dispatch({type: 'CONVERSATION', conversation: {
+					dispatch({type: CHAT_OPTIONS.FOCUS, state: false});
+					dispatch({type: CHAT_OPTIONS.CONVERSATION, conversation: {
 						id: null,
 						state: null
 					}})
@@ -407,7 +416,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			if (lastJsonMessage.error) {
 				// trying to send message after unfriend
-				dispatch({type: 'MESSAGE', message: {
+				dispatch({type: CHAT_OPTIONS.MESSAGE, message: {
 					content: state.lastMessage.content,
 					date: dateMeta.getDate(),
 					sender: authState.username,
@@ -415,14 +424,14 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					id: null,
 					state: 'error'
 				}});
-				dispatch({type: 'LAST_MESSAGE', message: null});
+				dispatch({type: CHAT_OPTIONS.LAST_MESSAGE, message: null});
 			}
 		}
 	}, [lastJsonMessage])
 
 	useEffect(() => {
 		if (state.conversation.state == 'loading') {
-			dispatch({type: 'MESSAGES', messages: []})
+			dispatch({type: CHAT_OPTIONS.MESSAGES, messages: []})
 			console.log(authState)
 			sendJsonMessage({
 				type: 'messages',
@@ -434,7 +443,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 	useEffect(() => {
 		if (location.pathname != '/chat') {
-			dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
+			dispatch({type: CHAT_OPTIONS.CONVERSATION_HEADER, conversation_header: {
 				username: '',
 				avatar: '',
 			}})
