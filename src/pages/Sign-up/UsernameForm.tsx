@@ -27,7 +27,7 @@ interface Props {
 const UsernameForm = ({dispatchLevel}: Props) => {
 	const [formError, setFormError] = useState<string>('');
 	const [username, setUsername] = useState<string>('')
-	const [formState, parseInput] = useInputChecker(API_END_POINT + 'register/');
+	const [ formState ] = useInputChecker(API_END_POINT + 'register/');
 	const { dispatch } = useGlobalContext();
 	const navigate = useNavigate();
 

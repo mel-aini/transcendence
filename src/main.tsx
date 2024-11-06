@@ -9,7 +9,6 @@ import {
 } from '@tanstack/react-query'
 import React from 'react';
 
-// Create a client
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

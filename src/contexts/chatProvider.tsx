@@ -8,53 +8,7 @@ import Modal from "@/components/Modal";
 import { useNotificationsContext } from "./notificationsProvider";
 import { WS_END_POINT } from "@/utils/urls";
 import { useLocation } from "react-router-dom";
-
-type Url = string;
-type Username = string;
-
-interface Header {
-	username: Username
-	avatar: Url
-	isOnline: boolean
-	id: string | number
-}
-
-export interface Conversation {
-	friend: {
-		id: string | number
-		username: Username
-		avatar: Url
-		online: boolean
-	}
-	id: string | number
-	last_date: string
-	last_message: string
-	sender: Username
-	status: boolean
-}
-
-interface OnlineFriend {
-	id: string | number
-	avatar_link: Url
-	conversation_id: string | number
-	username: Username
-	is_online?: boolean
-}
-
-interface Message {
-	content:  string
-	date: string
-	id: number
-	receiver: string
-	sender: string
-	state?: 'processing' | 'ok' | 'error'
-}
-
-interface ConversationState {
-	id: string | number | null,
-	state: null | 'loading' | 'ok'
-	limitReached?: boolean
-};
+import { Conversation, ConversationState, Header, Message, OnlineFriend } from "@/types/chat";
 
 export interface ChatStateProps {
 	isFocus: boolean,

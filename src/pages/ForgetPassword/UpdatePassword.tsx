@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading";
 import { validate } from "@/utils/validation";
 import { invalidColor } from "@/utils/colors";
+import { API_END_POINT } from "@/utils/urls";
 
 interface Props {
 	token: string
@@ -39,7 +40,7 @@ function UpdatePassword({ token }: Props) {
 					message: 'Mismatch Passwords'
 				}
 			}
-			await axios.post('http://localhost:8000/api/update-password/', {
+			await axios.post(API_END_POINT + 'update-password/', {
 				token: token,
 				data :
 				{

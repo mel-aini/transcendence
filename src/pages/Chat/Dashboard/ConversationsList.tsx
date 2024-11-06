@@ -1,5 +1,6 @@
 import ConversationBar from "./ConversationBar";
-import { Conversation, useChatContext } from "@/contexts/chatProvider";
+import { useChatContext } from "@/contexts/chatProvider";
+import { Conversation } from "@/types/chat";
 import { useEffect } from "react";
 
 interface Props {

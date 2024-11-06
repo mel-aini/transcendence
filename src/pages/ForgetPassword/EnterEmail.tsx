@@ -7,6 +7,7 @@ import { validate } from "@/utils/validation";
 import Loading from "@/components/Loading";
 import { invalidColor } from "@/utils/colors";
 import { Link } from "react-router-dom";
+import { API_END_POINT } from "@/utils/urls";
 
 interface Props {
 	email: MutableRefObject<string>
@@ -30,7 +31,7 @@ function EnterEmail({ email, setStep }: Props) {
 					content: 'Invalid Email'
 				}
 			}
-			await axios.post('http://localhost:8000/api/forget-password/', {
+			await axios.post(API_END_POINT + 'forget-password/', {
 				email: email.current,
 				refer: ''
 			})

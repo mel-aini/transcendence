@@ -2,9 +2,7 @@ import { useRef } from "react";
 import OAuth from "@/components/OAuth";
 import { API_END_POINT } from "@/utils/urls";
 
-// const clientID = 'u-s4t2ud-789ae11f20ba1b43a81ff49a1393e1f82bfd2a2c180d46f5d37b6af4d2be33af';
-
-const OAuthBar = ({type}: {type: 'sign up' | 'sign in'}) => {
+const OAuthBar = () => {
 	const OAuthLink = useRef<string>('');
 
 	const generateLink = async (type: 'google' | '42') => {
@@ -28,7 +26,7 @@ const OAuthBar = ({type}: {type: 'sign up' | 'sign in'}) => {
 	return (
 		<div className="w-full flex justify-between gap-2">
 			<OAuth onClick={() => generateLink('42')} type="42"/>
-			<OAuth onClick={() => generateLink('42')} type="google"/>
+			<OAuth onClick={() => generateLink('google')} type="google"/>
 		</div>
 	)
 }

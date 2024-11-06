@@ -1,6 +1,7 @@
 import { ComponentProps } from "react";
-import { Conversation, useChatContext } from "@/contexts/chatProvider";
+import { useChatContext } from "@/contexts/chatProvider";
 import ConversationBar from "./ConversationBar";
+import { Conversation } from "@/types/chat";
 
 interface Props extends ComponentProps<'div'> {
 	input: string
