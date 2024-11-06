@@ -3,7 +3,7 @@ import AI from "/AI.svg"
 import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@/components/Button";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import Modal from "@/components/Modal";
 
 const timeData: number[] = [3, 5, 7];
@@ -17,11 +17,11 @@ function Chose({type, data}: {type: "min" | "goals" | "difficulty", data: string
 	const clickHandler = (e: any) => {
 		const value = e.target.value;
         if (type === "min")
-            dispatch({type: "LOCAL_GAME_DATA", localGameData: {...state.localGameData, time: timeData[value]}});
+            dispatch({type: STORE_OPTS.LOCAL_GAME_DATA, localGameData: {...state.localGameData, time: timeData[value]}});
         else if (type === "goals")
-            dispatch({type: "LOCAL_GAME_DATA", localGameData: {...state.localGameData, goals: goalsData[value]}});
+            dispatch({type: STORE_OPTS.LOCAL_GAME_DATA, localGameData: {...state.localGameData, goals: goalsData[value]}});
         else if (type === "difficulty")
-            dispatch({type: "LOCAL_GAME_DATA", localGameData: {...state.localGameData, difficulty: difficultyData[value]}});
+            dispatch({type: STORE_OPTS.LOCAL_GAME_DATA, localGameData: {...state.localGameData, difficulty: difficultyData[value]}});
 	}
 
 	return (

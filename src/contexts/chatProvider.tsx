@@ -5,23 +5,22 @@ import { dateMeta } from "@/utils/global";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Modal from "@/components/Modal";
-import { useNotificationsContext } from "./notificationsProvider";
+import { NOTIFICATION_OPTS, useNotificationsContext } from "./notificationsProvider";
 import { WS_END_POINT } from "@/utils/urls";
 import { useLocation } from "react-router-dom";
 import { Conversation, ConversationState, Header, Message, OnlineFriend } from "@/types/chat";
 
-export const CHAT_OPTIONS = {
-	SOCKET: 'SOCKET',
-	FOCUS: 'FOCUS',
-	MESSAGE: 'MESSAGE',
-	LAST_MESSAGE: 'LAST_MESSAGE',
-	CONVERSATION: 'CONVERSATION',
-	CONVERSATION_HEADER: 'CONVERSATION_HEADER',
-	MESSAGES: 'MESSAGES',
-	ONLINE: 'ONLINE',
-	CONVERSATIONS: 'CONVERSATIONS',
-	SEARCH_CONVERSATIONS: 'SEARCH_CONVERSATIONS',
-	UNREAD_CONVERSATION: 'UNREAD_CONVERSATION'
+export enum CHAT_OPTS  {
+	FOCUS,
+	MESSAGE,
+	LAST_MESSAGE,
+	CONVERSATION,
+	CONVERSATION_HEADER,
+	MESSAGES,
+	ONLINE,
+	CONVERSATIONS,
+	SEARCH_CONVERSATIONS,
+	UNREAD_CONVERSATION
 }
 
 export interface ChatStateProps {
@@ -69,12 +68,7 @@ export const ChatContext = createContext<{state: ChatStateProps, dispatch: Dispa
 const reducer = (state: ChatStateProps, action: any) => {
 	switch (action.type)
 	{
-		case CHAT_OPTIONS.SOCKET:
-			return { 
-				...state, 
-				ws: action.socket
-			}
-		case CHAT_OPTIONS.FOCUS:
+		case CHAT_OPTS.FOCUS:
 			if (action.state == true)
 				return {
 			 		...state, 
@@ -84,48 +78,48 @@ const reducer = (state: ChatStateProps, action: any) => {
 				...state, 
 				isFocus: false
 			}
-		case CHAT_OPTIONS.MESSAGE:
+		case CHAT_OPTS.MESSAGE:
 			return { 
 				...state,
 				messages: [...state.messages, action.message],
 				newMessageTriggered: !state.newMessageTriggered
 			}
-		case CHAT_OPTIONS.LAST_MESSAGE:
+		case CHAT_OPTS.LAST_MESSAGE:
 			return { 
 				...state,
 				lastMessage: action.message
 			}
-		case CHAT_OPTIONS.CONVERSATION:
+		case CHAT_OPTS.CONVERSATION:
 			return { 
 				...state, 
 				conversation: action.conversation
 			}
-		case CHAT_OPTIONS.CONVERSATION_HEADER:
+		case CHAT_OPTS.CONVERSATION_HEADER:
 			return { 
 				...state, 
 				conversation_header: action.conversation_header
 			}
-		case CHAT_OPTIONS.MESSAGES:
+		case CHAT_OPTS.MESSAGES:
 			return { 
 				...state, 
 				messages: action.messages
 			}
-		case CHAT_OPTIONS.ONLINE:
+		case CHAT_OPTS.ONLINE:
 			return { 
 				...state, 
 				onlineFriends: action.onlineFriends
 			}
-		case CHAT_OPTIONS.CONVERSATIONS:
+		case CHAT_OPTS.CONVERSATIONS:
 			return { 
 				...state, 
 				conversations: action.conversations
 			}
-		case CHAT_OPTIONS.SEARCH_CONVERSATIONS:
+		case CHAT_OPTS.SEARCH_CONVERSATIONS:
 			return { 
 				...state, 
 				searchConversations: action.conversations
 			}
-		case CHAT_OPTIONS.UNREAD_CONVERSATION:
+		case CHAT_OPTS.UNREAD_CONVERSATION:
 			return { 
 				...state, 
 				unreadConv: action.status
@@ -166,8 +160,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	function setErrorInLastMessage() {
 		if (state.lastMessage != null) {
 			const content = state.lastMessage.content;
-			dispatch({type: CHAT_OPTIONS.LAST_MESSAGE, message: null});
-			dispatch({type: CHAT_OPTIONS.MESSAGE, message: {
+			dispatch({type: CHAT_OPTS.LAST_MESSAGE, message: null});
+			dispatch({type: CHAT_OPTS.MESSAGE, message: {
 				content: content,
 				date: dateMeta.getDate(),
 				sender: authState.username,
@@ -220,7 +214,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				}
 				
 			}
-			dispatch({type: CHAT_OPTIONS.CONVERSATIONS, conversations: [...state.conversations]})
+			dispatch({type: CHAT_OPTS.CONVERSATIONS, conversations: [...state.conversations]})
 		}
 		else {
 			if (!data) return;
@@ -231,7 +225,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			newArr.unshift(data);
 			if (data.friend.username != state.conversation_header.username && data.sender != authState.username) {
 				// in case of new message comes
-				notDispatch({type: 'PUSH_NOTIFICATION', notification: {
+				notDispatch({type: NOTIFICATION_OPTS.PUSH_NOTIFICATION, notification: {
 					notification_id: undefined,
 					type: "message",
 					content: `new message from ${data.sender}`,
@@ -241,10 +235,10 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				}, dispatch: notDispatch})
 
 				if (location.pathname != '/chat') {
-					dispatch({type: CHAT_OPTIONS.UNREAD_CONVERSATION, status: true})
+					dispatch({type: CHAT_OPTS.UNREAD_CONVERSATION, status: true})
 				}
 			}
-			dispatch({type: CHAT_OPTIONS.CONVERSATIONS, conversations: [...newArr]})
+			dispatch({type: CHAT_OPTS.CONVERSATIONS, conversations: [...newArr]})
 		}
 	}
 
@@ -267,11 +261,11 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			return conv;
 		});
-		dispatch({type: CHAT_OPTIONS.CONVERSATIONS, conversations: conversations_update});
+		dispatch({type: CHAT_OPTS.CONVERSATIONS, conversations: conversations_update});
 		// update conversation header
 		// console.log(data.id, state.conversation_header.id);
 		if (data.id == state.conversation_header.id) {
-			dispatch({type: CHAT_OPTIONS.CONVERSATION_HEADER, conversation_header: {
+			dispatch({type: CHAT_OPTS.CONVERSATION_HEADER, conversation_header: {
 				username: data.username,
 				avatar: data.avatar_link,
 				id: data.id
@@ -288,16 +282,16 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				// todo: to remove
 				console.log('lastJsonMessage.online')
 				console.log(lastJsonMessage.online)
-				dispatch({type: CHAT_OPTIONS.ONLINE, onlineFriends: lastJsonMessage.online})
+				dispatch({type: CHAT_OPTS.ONLINE, onlineFriends: lastJsonMessage.online})
 			}
 			if (lastJsonMessage.conversations) {
 				const conv = lastJsonMessage.conversations.find((conv: Conversation) => conv.status == false && conv.sender != authState.username);
-				dispatch({type: CHAT_OPTIONS.CONVERSATIONS, conversations: lastJsonMessage.conversations})
-				dispatch({type: CHAT_OPTIONS.UNREAD_CONVERSATION, status: conv ? true : false})
+				dispatch({type: CHAT_OPTS.CONVERSATIONS, conversations: lastJsonMessage.conversations})
+				dispatch({type: CHAT_OPTS.UNREAD_CONVERSATION, status: conv ? true : false})
 			}
 			if (lastJsonMessage.messages) {
-				dispatch({type: CHAT_OPTIONS.MESSAGES, messages: [ ...lastJsonMessage.messages, ...state.messages ]})
-				dispatch({type: CHAT_OPTIONS.CONVERSATION, conversation: {
+				dispatch({type: CHAT_OPTS.MESSAGES, messages: [ ...lastJsonMessage.messages, ...state.messages ]})
+				dispatch({type: CHAT_OPTS.CONVERSATION, conversation: {
 					id: state.conversation.id,
 					state: 'ok',
 					limitReached: lastJsonMessage.messages.length != 10
@@ -313,7 +307,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			if (lastJsonMessage.type == 'message') {
 				if (lastJsonMessage.receiver == authState.username) {
 					// I'm the receiver
-					dispatch({type: CHAT_OPTIONS.MESSAGE, message: {
+					dispatch({type: CHAT_OPTS.MESSAGE, message: {
 						content: lastJsonMessage.message,
 						date: dateMeta.getDate(),
 						sender: state.conversation_header.username,
@@ -324,8 +318,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					
 				} else {
 					// I'm the sender
-					dispatch({type: CHAT_OPTIONS.LAST_MESSAGE, message: null});
-					dispatch({type: CHAT_OPTIONS.MESSAGE, message: {
+					dispatch({type: CHAT_OPTS.LAST_MESSAGE, message: null});
+					dispatch({type: CHAT_OPTS.MESSAGE, message: {
 						content: lastJsonMessage.message,
 						date: dateMeta.getDate(),
 						sender: authState.username,
@@ -365,11 +359,11 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					})
 				}
 				updateFriendData(data);
-				dispatch({type: CHAT_OPTIONS.ONLINE, onlineFriends: newList})
+				dispatch({type: CHAT_OPTS.ONLINE, onlineFriends: newList})
 			}
 			if (lastJsonMessage.type == 'getConversation') {
-				dispatch({type: CHAT_OPTIONS.FOCUS, state: true})
-				dispatch({type: CHAT_OPTIONS.CONVERSATION, conversation: {
+				dispatch({type: CHAT_OPTS.FOCUS, state: true})
+				dispatch({type: CHAT_OPTS.CONVERSATION, conversation: {
 					id: lastJsonMessage.id,
 					state: 'loading'
 				}});
@@ -392,23 +386,23 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					conversation_id: lastJsonMessage.conversation.id
 				}
 				const newList = [...state.onlineFriends, friend]
-				dispatch({type: CHAT_OPTIONS.ONLINE, onlineFriends: newList})
+				dispatch({type: CHAT_OPTS.ONLINE, onlineFriends: newList})
 				// add to conversation list
 			}
 			if (lastJsonMessage.type == 'delete_data') {
 				const newConvs = state.conversations.filter((conv: Conversation) => {
 					return conv.id != lastJsonMessage.conversation
 				})
-				dispatch({type: CHAT_OPTIONS.CONVERSATIONS, conversations: [...newConvs]})
+				dispatch({type: CHAT_OPTS.CONVERSATIONS, conversations: [...newConvs]})
 				// filter online friends based on lastJsonMessage.user.id
 				const newFriends = state.onlineFriends.filter((friend: OnlineFriend) => {
 					return friend.username != lastJsonMessage.user.username
 				})
-				dispatch({type: CHAT_OPTIONS.ONLINE, onlineFriends: newFriends})
+				dispatch({type: CHAT_OPTS.ONLINE, onlineFriends: newFriends})
 
 				if (lastJsonMessage?.user?.username == state.conversation_header.username) {
-					dispatch({type: CHAT_OPTIONS.FOCUS, state: false});
-					dispatch({type: CHAT_OPTIONS.CONVERSATION, conversation: {
+					dispatch({type: CHAT_OPTS.FOCUS, state: false});
+					dispatch({type: CHAT_OPTS.CONVERSATION, conversation: {
 						id: null,
 						state: null
 					}})
@@ -416,7 +410,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			}
 			if (lastJsonMessage.error) {
 				// trying to send message after unfriend
-				dispatch({type: CHAT_OPTIONS.MESSAGE, message: {
+				dispatch({type: CHAT_OPTS.MESSAGE, message: {
 					content: state.lastMessage.content,
 					date: dateMeta.getDate(),
 					sender: authState.username,
@@ -424,14 +418,14 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					id: null,
 					state: 'error'
 				}});
-				dispatch({type: CHAT_OPTIONS.LAST_MESSAGE, message: null});
+				dispatch({type: CHAT_OPTS.LAST_MESSAGE, message: null});
 			}
 		}
 	}, [lastJsonMessage])
 
 	useEffect(() => {
 		if (state.conversation.state == 'loading') {
-			dispatch({type: CHAT_OPTIONS.MESSAGES, messages: []})
+			dispatch({type: CHAT_OPTS.MESSAGES, messages: []})
 			console.log(authState)
 			sendJsonMessage({
 				type: 'messages',
@@ -443,7 +437,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 	useEffect(() => {
 		if (location.pathname != '/chat') {
-			dispatch({type: CHAT_OPTIONS.CONVERSATION_HEADER, conversation_header: {
+			dispatch({type: CHAT_OPTS.CONVERSATION_HEADER, conversation_header: {
 				username: '',
 				avatar: '',
 			}})

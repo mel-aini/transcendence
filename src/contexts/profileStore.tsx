@@ -23,6 +23,12 @@ const initialState: ProfileData = {
 	matchesData: null,
 };
 
+export enum PROFILE_OPTS {
+	USER_DATA,
+	FRIEND_DATA,
+	MATCHES_DATA
+}
+
 export const ProfileContext = createContext<{state: ProfileData, dispatchProfile: Dispatch<any>}>({
 	state: initialState,
 	dispatchProfile: () => {}
@@ -31,17 +37,17 @@ export const ProfileContext = createContext<{state: ProfileData, dispatchProfile
 const reducer = (state: ProfileData, action: any) => {
 	switch (action.type)
 	{
-		case 'USER_DATA':
+		case PROFILE_OPTS.USER_DATA:
 			return { 
 				...state, 
 				userData: action.userData
 			}
-		case 'FRIEND_DATA':
+		case PROFILE_OPTS.FRIEND_DATA:
 			return { 
 				...state, 
 				friendsData: action.friendsData
 			}
-		case 'MATCHES_DATA':
+		case PROFILE_OPTS.MATCHES_DATA:
 			return { 
 				...state, 
 				matchesData: action.matchesData

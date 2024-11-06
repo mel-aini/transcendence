@@ -1,5 +1,5 @@
 import { ComponentType, ReactNode, Suspense, useEffect } from "react";
-import { useAuthContext } from "@/contexts/authProvider";
+import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";
 import jwt from "@/utils/jwt";
 import Loading from "@/components/Loading";
 import { Navigate, useLocation } from "react-router-dom";
@@ -19,7 +19,7 @@ function UpdateToken({children, inFail = '/login', Component}: Props) {
 	const location = useLocation();
 	
 	useEffect(() => {
-		dispatch({type: 'TOKEN', token: token})
+		dispatch({type: AUTH_OPTS.TOKEN, token: token})
 	}, [])
 
 	return ( 

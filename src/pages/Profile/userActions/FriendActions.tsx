@@ -7,9 +7,9 @@ import deny from "/deny.svg"
 import { ProfileRequest } from "@/types/profile"
 import {  useState } from "react"
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore"
-import { useProfileContext } from "@/contexts/profileStore"
+import { PROFILE_OPTS, useProfileContext } from "@/contexts/profileStore"
 import { modifyObjectByName } from "../UserActions"
-import { useChatContext } from "@/contexts/chatProvider"
+import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider"
 import { useAuthContext } from "@/contexts/authProvider"
 import { useNavigate } from "react-router-dom"
 import api from "@/api/axios"
@@ -27,11 +27,11 @@ const FriendActions = ({username, origin}: {username?: string, origin: string}) 
 		if (origin === "profile") {
 			const updatedArray = modifyObjectByName(state.friendsData, username);
 			if (updatedArray) {
-				dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
+				dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: [...updatedArray]});
 			}
 		}
 		else if (origin === "user")
-			dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
+			dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...state.userData, relation: undefined}});
 		const request: ProfileRequest = {
 			type: type,
 			identifier: username,
@@ -48,7 +48,7 @@ const FriendActions = ({username, origin}: {username?: string, origin: string}) 
 		})
 		navigate('/chat');
 		const userData = await api.get('users/' + username);
-		chatDispatch({type: 'CONVERSATION_HEADER', conversation_header: {
+		chatDispatch({type: CHAT_OPTS.CONVERSATION_HEADER, conversation_header: {
 			username: userData.data.username,
 			avatar: userData.data.profile_image,
 			id: userData.data.id

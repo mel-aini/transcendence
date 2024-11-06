@@ -1,7 +1,7 @@
 import { ChangeEvent, Dispatch, FormEvent, MutableRefObject, SetStateAction, useRef, useState } from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import axios from "axios";
 import { validate } from "@/utils/validation";
 import Loading from "@/components/Loading";
@@ -24,7 +24,7 @@ function EnterEmail({ email, setStep }: Props) {
 	const submitHandler = async (e: FormEvent) => {
 		try {
 			e.preventDefault();
-			dispatch({type: 'LOADING', state: true})
+			dispatch({type: STORE_OPTS.LOADING, state: true})
 			if (!validate('email', email.current)) {
 				throw {
 					invalid: true,
@@ -50,7 +50,7 @@ function EnterEmail({ email, setStep }: Props) {
 				: 'an error while sending the email'
 			})
 		}
-		dispatch({type: 'LOADING', state: false})
+		dispatch({type: STORE_OPTS.LOADING, state: false})
     }
 
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {

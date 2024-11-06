@@ -1,8 +1,8 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import { API_END_POINT } from "@/utils/urls";
 import axios from "axios";
-import { useAuthContext } from "@/contexts/authProvider";
+import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";
 
 const useOAuth = (): [() => Promise<void>] => {
 	const [searchParams] = useSearchParams();
@@ -18,7 +18,7 @@ const useOAuth = (): [() => Promise<void>] => {
 
 		if (!code && !state) return;
 		
-		dispatch({type: 'LOADING', state: true});
+		dispatch({type: STORE_OPTS.LOADING, state: true});
 		try {
 			const data = {
 				type : "oauth",
@@ -37,7 +37,7 @@ const useOAuth = (): [() => Promise<void>] => {
 					}
 				})
 				// console.log('response: ', response)
-				authDispatch({type: 'TOKEN', token: response.data.access_token});
+				authDispatch({type: AUTH_OPTS.TOKEN, token: response.data.access_token});
 				navigate('/dashboard')
 
 			} catch (error) {
@@ -47,7 +47,7 @@ const useOAuth = (): [() => Promise<void>] => {
 		} catch (error) {
 			console.log(error);
 		}
-		dispatch({type: 'LOADING', state: false});
+		dispatch({type: STORE_OPTS.LOADING, state: false});
 	}
 
 	return [ handleOAuth ]

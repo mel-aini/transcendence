@@ -1,6 +1,6 @@
 import Input from "@/components/Input";
 import { FiSearch } from "react-icons/fi";
-import { useChatContext } from "@/contexts/chatProvider";
+import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
 import { useAuthContext } from "@/contexts/authProvider";
 import { FormEvent, useRef, useState } from "react";
 import { isEmpty } from "@/utils/validation";
@@ -41,7 +41,7 @@ function SearchFriends({onClose}: Props) {
 			user1: state.username, 
 			user2: friend.username
 		})
-		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
+		dispatch({type: CHAT_OPTS.CONVERSATION_HEADER, conversation_header: {
 			username: friend.username,
 			avatar: friend.profile_image,
 			id: friend.id

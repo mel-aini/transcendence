@@ -1,11 +1,11 @@
 import { ReactNode, createContext, useContext, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
-import { useProfileContext } from "./profileStore";
+import { PROFILE_OPTS, useProfileContext } from "./profileStore";
 import { FriendsData, Relation } from "@/types/profile";
-import { useGlobalContext } from "./store";
-import { useAuthContext } from "./authProvider";
-import { useNotificationsContext } from "./notificationsProvider";
+import { STORE_OPTS, useGlobalContext } from "./store";
+import { AUTH_OPTS, useAuthContext } from "./authProvider";
+import { NOTIFICATION_OPTS, useNotificationsContext } from "./notificationsProvider";
 import { WS_END_POINT } from "@/utils/urls";
 
 export const GlobalWebSocketContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage}>({
@@ -58,55 +58,55 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			if (lastJsonMessage.type === "user-action") {
 				const value = setValue(lastJsonMessage.data.value);
 				if (!isEmptyObject(state.userData) && lastJsonMessage.identifier === state.userData?.username) {
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: value}});
+					dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...state.userData, relation: value}});
 				}
 				else {
 					const updatedArray = modifyObjectByName(state.friendsData, lastJsonMessage.identifier, value);
 					if (updatedArray) {
-						dispatchProfile({type: "FRIEND_DATA", friendsData: updatedArray});
+						dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: updatedArray});
 					}
 				}
 			}
 			else if (lastJsonMessage.type === "update")
 			{
 				if (lastJsonMessage.identifier === "username") {
-					dispatch({type: "USER_DATA", userData: {...globalState.userData, username: lastJsonMessage.data.value}});
-					authDispatch({type: 'USERNAME', username: lastJsonMessage.data.value});
+					dispatch({type: STORE_OPTS.USER_DATA, userData: {...globalState.userData, username: lastJsonMessage.data.value}});
+					authDispatch({type: AUTH_OPTS.USERNAME, username: lastJsonMessage.data.value});
 				}
 				else if (lastJsonMessage.identifier === "email")
-					dispatch({type: "USER_DATA", userData: {...globalState.userData, email: lastJsonMessage.data.value}});
+					dispatch({type: STORE_OPTS.USER_DATA, userData: {...globalState.userData, email: lastJsonMessage.data.value}});
 				else if (lastJsonMessage.identifier === "tfa-status")
-					dispatch({type: "USER_DATA", userData: {...globalState.userData, tfa: {...globalState.userData?.tfa, status: lastJsonMessage.data.value}}});
+					dispatch({type: STORE_OPTS.USER_DATA, userData: {...globalState.userData, tfa: {...globalState.userData?.tfa, status: lastJsonMessage.data.value}}});
 				else if (lastJsonMessage.identifier === "tfa-change")
-					dispatch({type: "USER_DATA", userData: {...globalState.userData, tfa: {...globalState.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
+					dispatch({type: STORE_OPTS.USER_DATA, userData: {...globalState.userData, tfa: {...globalState.userData?.tfa, status: lastJsonMessage.data.status, content: lastJsonMessage.data.value}}});
 				else if (lastJsonMessage.identifier === "game_settings")
-					dispatch({type: "USER_DATA", userData: {...globalState.userData, game_settings: {...globalState.userData?.game_settings, paddle: lastJsonMessage.data.paddle, ball: lastJsonMessage.data.ball, background: lastJsonMessage.data.background}}});
-				dispatch({type: 'ALERT', message: lastJsonMessage.message, dispatch})
+					dispatch({type: STORE_OPTS.USER_DATA, userData: {...globalState.userData, game_settings: {...globalState.userData?.game_settings, paddle: lastJsonMessage.data.paddle, ball: lastJsonMessage.data.ball, background: lastJsonMessage.data.background}}});
+				dispatch({type: STORE_OPTS.ALERT, message: lastJsonMessage.message, dispatch})
 			}
 			else if (lastJsonMessage.type === "online")
-				dispatchProfile({type: "USER_DATA", userData: {...state.userData, online: lastJsonMessage.data.value}});
+				dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...state.userData, online: lastJsonMessage.data.value}});
 			else if (lastJsonMessage.type == 'notification')
-				notDispatch({type: 'PUSH_NOTIFICATION', notification: lastJsonMessage.data, dispatch: notDispatch})
+				notDispatch({type: NOTIFICATION_OPTS.PUSH_NOTIFICATION, notification: lastJsonMessage.data, dispatch: notDispatch})
 		}
 		else if (!isEmptyObject(lastJsonMessage)) { // lastJsonMessage.code === 404
 			if (lastJsonMessage.type === "user-action")
 			{
 				if (lastJsonMessage.identifier === state.userData?.username)
-					dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: state.userData?.relation}});
+					dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...state.userData, relation: state.userData?.relation}});
 				else
-					dispatchProfile({type: "FRIEND_DATA", friendsData: state.friendsData});
+					dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: state.friendsData});
 			}
 			else if (lastJsonMessage.type === "update")
 			{
 				if (lastJsonMessage.identifier === "tfa-status" || lastJsonMessage.identifier === "tfa-change")
-					dispatchProfile({type: "USER_DATA", userData: {...globalState.userData, tfa: {...globalState.userData?.tfa}}});
+					dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...globalState.userData, tfa: {...globalState.userData?.tfa}}});
 				else if (lastJsonMessage.identifier === "username")
-					dispatchProfile({type: "USER_DATA", userData: {...globalState.userData, username: globalState.userData?.username}});
+					dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...globalState.userData, username: globalState.userData?.username}});
 				else if (lastJsonMessage.identifier === "email")
-					dispatchProfile({type: "USER_DATA", userData: {...globalState.userData, email: globalState.userData?.email}});
+					dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...globalState.userData, email: globalState.userData?.email}});
 				else if (lastJsonMessage.identifier === "game_settings")
-					dispatchProfile({type: "USER_DATA", userData: {...globalState.userData, game_settings: {...globalState.userData?.game_settings}}});
-				dispatch({type: 'ALERT', message: lastJsonMessage.message, isError: true, dispatch});
+					dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...globalState.userData, game_settings: {...globalState.userData?.game_settings}}});
+				dispatch({type: STORE_OPTS.ALERT, message: lastJsonMessage.message, isError: true, dispatch});
 			}
 		}
 	}, [lastJsonMessage])

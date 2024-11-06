@@ -8,7 +8,7 @@ import Container from "@/components/Container";
 import win from "/win.svg"
 import loss from "/deny.svg"
 import api from "@/api/axios";
-import { useProfileContext } from "@/contexts/profileStore";
+import { PROFILE_OPTS, useProfileContext } from "@/contexts/profileStore";
 import { useQuery } from "@tanstack/react-query";
 import { RxValueNone } from "react-icons/rx";
 
@@ -45,7 +45,7 @@ const History = () => {
 		
 		if (!isLoading) {
 			console.log(data?.data);
-			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data});
+			dispatchProfile({type: PROFILE_OPTS.MATCHES_DATA, matchesData: data?.data});
 		}
 
 		if (!parentRef.current) return;
@@ -60,7 +60,7 @@ const History = () => {
 
 	useEffect(() => {
 		if (!isRefetching)
-			dispatchProfile({type: "MATCHES_DATA", matchesData: data?.data});
+			dispatchProfile({type: PROFILE_OPTS.MATCHES_DATA, matchesData: data?.data});
 	}, [isRefetching])
 	
 	if (isError) {

@@ -1,10 +1,9 @@
-import { Dispatch, forwardRef, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, forwardRef, SetStateAction, useEffect, useRef } from "react";
 import Header from "./Header";
 import Table from "./Table";
 import LayoutHeader from "@/layout/LayoutHeader";
-import { isMobile } from 'react-device-detect';
 import { twMerge } from "tailwind-merge";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 
 interface Props {
 	rightPaddle: any,
@@ -31,7 +30,7 @@ const Game = forwardRef((props: Props, ref: any) => {
 	useEffect(() => {
 		const handleResize = () => {
 			const orientation = window.screen.orientation.type;
-			dispatch({type: 'ORIENTATION', isOrientation: orientation == "landscape-primary"})
+			dispatch({type: STORE_OPTS.ORIENTATION, isOrientation: orientation == "landscape-primary"})
 		}
 		window.addEventListener('orientationchange', handleResize);
 		return () => {

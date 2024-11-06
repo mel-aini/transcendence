@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import InfiniteScrollObserver from "./InfiniteScrollObserver";
 import { FriendsData } from "@/types/profile";
 import { useNavigate } from "react-router-dom";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import User from "./User";
 import { twMerge } from "tailwind-merge";
 
@@ -27,7 +27,7 @@ function Result({users, isLoading}: {users: FriendsData[], isLoading: boolean}) 
     const [isFirstTime, setIsFirstTime] = useState(true);
 
     const clickHandler = (profile: string) => {
-        dispatch({ type: "SEARCH" });
+        dispatch({ type: STORE_OPTS.SEARCH });
         navigate(profile)
     }
 

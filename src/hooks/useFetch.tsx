@@ -11,7 +11,7 @@
 // 	const [res, setData] = useState<Object | string | null>(null);
 
 // 	const makeRequest = async () => {
-// 		dispatch({type: 'LOADING'});
+// 		dispatch({type: STORE_OPTS.LOADING});
 // 		try {
 // 			const method = data ? 'POST' : 'GET';
 // 			const headers = data ? [
@@ -35,7 +35,7 @@
 // 			console.log('error', error);
 // 			setError(error);
 // 		}
-// 		dispatch({type: 'LOADING'});
+// 		dispatch({type: STORE_OPTS.LOADING});
 // 	}
 
 // 	useEffect(() => {

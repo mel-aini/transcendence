@@ -2,10 +2,10 @@ import Input from "@/components/Input";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Dispatch, SetStateAction, useState } from "react";
 import { invalidColor } from "@/utils/colors";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import callToApi from "@/utils/callToApi";
 import Button from "@/components/Button";
-import { useAuthContext } from "@/contexts/authProvider";
+import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";
 import Loading from "@/components/Loading";
 
 interface IResponse {
@@ -60,7 +60,7 @@ const SignInForm = ({ setIsTwoFA }: Props) => {
 
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
-		dispatch({type: 'LOADING', state: true});
+		dispatch({type: STORE_OPTS.LOADING, state: true});
 
 		const data: IResponse = {
 			type: "normal",
@@ -89,7 +89,7 @@ const SignInForm = ({ setIsTwoFA }: Props) => {
 					localStorage.setItem('tfa', res.TFA.token);
 					setIsTwoFA(true);
 				} else {
-					authDispatch({type: 'TOKEN', token: res.access_token})
+					authDispatch({type: AUTH_OPTS.TOKEN, token: res.access_token})
 					setInvalidLogin(false);
 					navigate(location.state?.refer || '/dashboard', { 
 						replace: true, 
@@ -103,7 +103,7 @@ const SignInForm = ({ setIsTwoFA }: Props) => {
 			setIsValidPassword(true);
 			setInvalidLogin(true);
 		}
-		dispatch({type: 'LOADING', state: false});
+		dispatch({type: STORE_OPTS.LOADING, state: false});
 	}
     return (
         <>

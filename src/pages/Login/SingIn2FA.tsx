@@ -3,8 +3,8 @@ import Button from "@/components/Button";
 import { useNavigate } from "react-router-dom";
 import callToApi from "@/utils/callToApi";
 import { Dispatch, SetStateAction, useState } from "react";
-import { useGlobalContext } from "@/contexts/store";
-import { useAuthContext } from "@/contexts/authProvider";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
+import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";
 import Loading from "@/components/Loading";
 
 interface Props {
@@ -19,7 +19,7 @@ const SignIn2FA = ({setIsTwoFA}: Props) => {
     const [error, setError] = useState('');
     // const
     const handleSubmit = async () => {
-        dispatch({type: 'LOADING', state: true})
+        dispatch({type: STORE_OPTS.LOADING, state: true})
         const data = {
             otp: otpCode,
             token: localStorage.getItem('tfa') || '',
@@ -28,20 +28,20 @@ const SignIn2FA = ({setIsTwoFA}: Props) => {
 
         if (otpCode.length != 6) {
             setError('2fa code should be 6 digits')
-            dispatch({type: 'LOADING', state: false})
+            dispatch({type: STORE_OPTS.LOADING, state: false})
             return;
         }
 
         try {
             const res = await callToApi('2fa/', data);
             setError('');
-            authDispatch({type: 'TOKEN', token: res.access_token});
+            authDispatch({type: AUTH_OPTS.TOKEN, token: res.access_token});
             navigate('/dashboard');
         
         } catch (error) {
             setError('invalid code')
         }
-        dispatch({type: 'LOADING', state: false})
+        dispatch({type: STORE_OPTS.LOADING, state: false})
     }
 
     const tryAgain = () => {

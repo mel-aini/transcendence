@@ -1,9 +1,9 @@
-import { ComponentProps, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LayoutHeader from "@/layout/LayoutHeader";
 import { useTournamentContext } from "@/contexts/TournamentProvider";
 import { ReadyState } from "react-use-websocket";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import { SectionHeader } from "../Settings/Index";
 import LocalGameChoise from "./LocalGameChoise";
 
@@ -17,7 +17,7 @@ function Index() {
 	const clickHandler = (route: string) => {
 		if (readyState != ReadyState.OPEN)
 		{
-			dispatchGlobal({ type: 'GAME_ID', gameId: null });
+			dispatchGlobal({ type: STORE_OPTS.GAME_ID, gameId: null });
 			navigate(route);
 		}
 	}

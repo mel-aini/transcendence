@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { CHAT_OPTIONS, useChatContext } from "@/contexts/chatProvider";
+import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
 import ConversationBar from "./ConversationBar";
 import { Conversation } from "@/types/chat";
 
@@ -11,12 +11,12 @@ function SearchConversationsList({input, ...props}: Props) {
 	const { state, dispatch } = useChatContext();
 	
 	const handler = (conversation: Conversation) => {
-		dispatch({type: CHAT_OPTIONS.FOCUS, state: true})
-		dispatch({type: CHAT_OPTIONS.CONVERSATION, conversation: {
+		dispatch({type: CHAT_OPTS.FOCUS, state: true})
+		dispatch({type: CHAT_OPTS.CONVERSATION, conversation: {
 			id: conversation.id,
 			state: 'loading'
 		}});
-		dispatch({type: CHAT_OPTIONS.CONVERSATION_HEADER, conversation_header: {
+		dispatch({type: CHAT_OPTS.CONVERSATION_HEADER, conversation_header: {
 			username: conversation.friend.username,
 			avatar: conversation.friend.avatar,
 			id: conversation.friend.id

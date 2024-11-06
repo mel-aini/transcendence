@@ -2,7 +2,7 @@ import InfiniteScrollObserver from "./InfiniteScrollObserver";
 import { INotification } from "@/contexts/store";
 import Notification from "./Notification";
 import { useEffect, useState } from "react";
-import { useNotificationsContext } from "@/contexts/notificationsProvider";
+import { NOTIFICATION_OPTS, useNotificationsContext } from "@/contexts/notificationsProvider";
 import { MdOutlineClearAll } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/api/axios";
@@ -40,7 +40,7 @@ function Notifications() {
 	}
 
 	useEffect(() => {
-		dispatch({type: 'MARK_IS_READ', payload: true});
+		dispatch({type: NOTIFICATION_OPTS.MARK_IS_READ, payload: true});
 		sendJsonMessage({
 			type: "noti_read",
 			identifier: '--',

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useGlobalContext } from "@/contexts/store"
 import { useNavigate, useParams } from "react-router-dom"
 import RelationBar from "./RelationBar"
-import { useProfileContext } from "@/contexts/profileStore"
+import { PROFILE_OPTS, useProfileContext } from "@/contexts/profileStore"
 import api from "@/api/axios"
 import { useQuery } from "@tanstack/react-query"
 
@@ -50,15 +50,15 @@ const AllFriends = () => {
 			{
 				(ProfileRes.length < 10) && (stopScroll.current = true);
 				state.friendsData ?
-				dispatchProfile({type: "FRIEND_DATA", friendsData: state.friendsData.concat(ProfileRes)})
+				dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: state.friendsData.concat(ProfileRes)})
 				:
-				dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes});
+				dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: ProfileRes});
 			}
 			else
-				dispatchProfile({type: "FRIEND_DATA", friendsData: ProfileRes});
+				dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: ProfileRes});
 		}
 		catch (err: any) {
-			dispatchProfile({type: "FRIEND_DATA", friendsData: null});
+			dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: null});
 		}
 	}
 
@@ -81,7 +81,7 @@ const AllFriends = () => {
 	const HandleClick = (ref: any, newRelation: string, uri: string) => {
 		if (relation == newRelation)
 			return ;
-		dispatchProfile({type: "FRIEND_DATA", friendsData: null});
+		dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: null});
 		resetAll();
 		apply(ref.current);
 		
@@ -95,12 +95,12 @@ const AllFriends = () => {
 
 	useEffect(() => {
 		if (!isLoading)
-			dispatchProfile({type: "FRIEND_DATA", friendsData: data?.data});
+			dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: data?.data});
 	}, [isLoading]);
 
 	useEffect(() => {
 		if (!isRefetching)
-			dispatchProfile({type: "FRIEND_DATA", friendsData: data?.data});
+			dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: data?.data});
 	}, [isRefetching]);
 
 	if (isLoading) {

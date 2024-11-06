@@ -2,7 +2,7 @@ import { Dispatch, ReactNode, createContext, useCallback, useContext, useEffect,
 import { useNavigate } from "react-router-dom";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
-import { useNotificationsContext } from "./notificationsProvider";
+import { NOTIFICATION_OPTS, useNotificationsContext } from "./notificationsProvider";
 import { Coordinates, Levels, score } from "./pingPongProvider";
 import { UserData } from "@/types/profile";
 import { useGlobalContext } from "./store";
@@ -87,6 +87,31 @@ const initialState: TournamentData = {
 	time: 0,
 	timeResult: 5,
 };
+
+export enum TOURNAMENT_OPTS {
+	ALIAS,
+	OPPONENT_ALIAS,
+	PLAYERS_NUM,
+	ROUND_DATA,
+	WINNER,
+	SOCKET_URL,
+	CHLEVEL,
+	OPPONENT,
+	COUNTER,
+	STATUS,
+	BALL_DATA,
+	MY_PADDLE_DATA,
+	SIDE_PADDLE_DATA,
+	SCORE,
+	DIRECTIONS,
+	IS_END_GAME,
+	RESULT,
+	CUSTOM,
+	TIMER,
+	TIME_RESULT,
+	RESET_BETA,
+	RESET
+}
 
 export const TournamentContext = createContext<{lastJsonMessage: any, sendJsonMessage: SendJsonMessage, readyState: ReadyState, state: TournamentData, dispatch: Dispatch<any>}>({
 	lastJsonMessage: '',
@@ -326,7 +351,7 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		}
 		else if (message.type == "timing1")
 		{
-			message.time > 1 && notDispatch({type: 'PUSH_NOTIFICATION', notification: { type: 'text', content: "your next match in tournament will starts in a few seconds..." }, dispatch: notDispatch});
+			message.time > 1 && notDispatch({type: NOTIFICATION_OPTS.PUSH_NOTIFICATION, notification: { type: 'text', content: "your next match in tournament will starts in a few seconds..." }, dispatch: notDispatch});
 			// message.time == 0 && navigate('/tournament');
 		}
 		else if (message.type == "timing2")

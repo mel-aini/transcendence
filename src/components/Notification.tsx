@@ -1,14 +1,14 @@
 import { FiBell } from "react-icons/fi";
-import { INotification, useGlobalContext } from "@/contexts/store";
+import { INotification, STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
 import { ProfileRequest } from "@/types/profile";
 import { useEffect, useState } from "react";
-import { useChatContext } from "@/contexts/chatProvider";
+import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
 import api from "@/api/axios";
 import { useNavigate } from "react-router-dom";
 // import { LuMessagesSquare } from "react-icons/lu";
 import { useAuthContext } from "@/contexts/authProvider";
-import { useNotificationsContext } from "@/contexts/notificationsProvider";
+import { NOTIFICATION_OPTS, useNotificationsContext } from "@/contexts/notificationsProvider";
 import chatBotLottie from '@/assets/chatBotLottie.json'
 import Lottie from 'lottie-react'
 
@@ -53,7 +53,7 @@ const Notification = ({ notData }: Props) => {
 			data: {}
 		});
 		if (type == 'accept' || type == 'join') {
-			dispatchGlobal({ type: 'GAME_ID', gameId: data.id });
+			dispatchGlobal({ type: STORE_OPTS.GAME_ID, gameId: data.id });
 			navigate('/ping-pong/match-making');
 			// navigate('/ping-pong/match-making?gameId=' + data.id)
 		}
@@ -87,12 +87,12 @@ const Notification = ({ notData }: Props) => {
 		})
 		navigate('/chat');
 		const userData = await api.get('users/' + notData.sender);
-		chatDispatch({type: 'CONVERSATION_HEADER', conversation_header: {
+		chatDispatch({type: CHAT_OPTS.CONVERSATION_HEADER, conversation_header: {
 			username: userData.data.username,
 			avatar: userData.data.profile_image,
 			id: userData.data.id
 		}})
-		notDispatch({ type: 'POP_NOTIFICATION', auto: false })
+		notDispatch({ type: NOTIFICATION_OPTS.POP_NOTIFICATION, auto: false })
 	}
 
 	useEffect(() => {

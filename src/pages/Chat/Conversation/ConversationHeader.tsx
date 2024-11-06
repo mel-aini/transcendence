@@ -1,5 +1,5 @@
 import User from "@/components/User";
-import { CHAT_OPTIONS, useChatContext } from "@/contexts/chatProvider";
+import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
 import { IoIosArrowBack } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -14,7 +14,7 @@ function ConversationHeader() {
 	const [ moreOptions, setMoreOptions ] = useState(false);
 
 	const handler = () => {
-		dispatch({type: CHAT_OPTIONS.FOCUS, state: false})
+		dispatch({type: CHAT_OPTS.FOCUS, state: false})
 	}
 
 	return ( 
