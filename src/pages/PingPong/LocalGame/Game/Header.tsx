@@ -60,21 +60,21 @@ const Header = (props: Props) => {
 	}
 
 	return (
-		<div className="w-full gap-1 items-center grid grid-cols-3 grid-rows-2 lg:grid-rows-1">
-			<div className="flex col-start-1 col-end-2 ">
+		<div className="w-full gap-1 items-center flex justify-between">
+			<div className="flex">
 				<div className={"flex gap-1"}>
 					<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-						<div className="absolute w-[2px] top-full -translate-y-full bg-white" style={{height: `${props.leftScore * 100 / state.localGameData.goals}%`}}/>
+						<div className="absolute w-[2px] top-full -translate-y-full bg-white max-h-full" style={{height: `${props.leftScore * 100 / state.localGameData.goals}%`}}/>
 						<span className="absolute inline-flex items-center justify-center w-full h-full">{props.leftScore}</span>
 					</div>
 					<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-						<div className={"absolute w-[2px] top-full -translate-y-full " + (props.isAI ? 'bg-primary' : 'bg-white')} style={{height: `${props.rightScore * 100 / state.localGameData.goals}%`}}/>
+						<div className={"absolute w-[2px] top-full -translate-y-full max-h-full " + (props.isAI ? 'bg-primary' : 'bg-white')} style={{height: `${props.rightScore * 100 / state.localGameData.goals}%`}}/>
 						<span className={"absolute inline-flex items-center justify-center w-full h-full " + (props.isAI ? 'text-primary' : '')}>{props.rightScore}</span>
 					</div>
 				</div>
 			</div>
-			<Goal rightScore={props.rightScore} leftScore={props.leftScore} />
-			<div className="flex gap-1 shrink-0 justify-self-end col-start-3 col-end-4">
+			{/* <Goal rightScore={props.rightScore} leftScore={props.leftScore} /> */}
+			<div className="flex gap-1 shrink-0 justify-self-end">
 				<div className="bg-secondary px-1 h-[40px] w-[61px] flex justify-center items-center">
 					<span className="w-[44px]">
 						{String(props.minutes).padStart(2, '0')}

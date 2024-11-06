@@ -14,7 +14,7 @@ async function fetchData() {
 }
 
 const Layout = () => {
-	const { dispatch } = useGlobalContext();
+	const { state, dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
 	// const { dispatchProfile } = useProfileContext();
 
@@ -32,9 +32,9 @@ const Layout = () => {
 
 	return (
 		<>
-			<NavBar />
+			{!state.isOrientation && <NavBar />}
 			<div className='relative z-40 bg-bg flex gap-10 pl-5 pr-5 sm:pl-10 lg:pl-0 sm:pr-10'>
-				<SideBar className='px-5 py-10 hidden lg:block z-10 h-[calc(100vh-5rem)]' />
+				{!state.isOrientation && <SideBar className='px-5 py-10 hidden lg:block z-10 h-[calc(100vh-5rem)]' />}
 				<div className='w-full mx-auto bg-bg lg:px-5 py-10 overflow-hidden'>
 					<Outlet />
 				</div>

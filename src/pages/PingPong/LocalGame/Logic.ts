@@ -16,7 +16,7 @@ const toRad = (degrees: number): number => {
 
 class Ball {
     static reduisWidth: number = 3 / 2;
-    static reduisHeight: number = 1.6 * Ball.reduisWidth;
+    static reduisHeight: number = (16/9) * Ball.reduisWidth;
     private _x: number = 50;
     private _y: number = 50;
     private _xOrt: number = 0;
