@@ -2,6 +2,9 @@ import { Dispatch, forwardRef, SetStateAction, useEffect, useRef, useState } fro
 import Header from "./Header";
 import Table from "./Table";
 import LayoutHeader from "@/layout/LayoutHeader";
+import { isMobile } from 'react-device-detect';
+import { twMerge } from "tailwind-merge";
+import { useGlobalContext } from "@/contexts/store";
 
 interface Props {
 	rightPaddle: any,
@@ -22,27 +25,27 @@ interface Props {
 
 const Game = forwardRef((props: Props, ref: any) => {
 	const refParent = useRef<HTMLDivElement>(null);
-	const [width, setWidth] = useState<number>(0);
+	const {state, dispatch}  = useGlobalContext();
+	// const [width, setWidth] = useState<number>(0);
 
 	useEffect(() => {
-		if (refParent.current)
-			setWidth((refParent.current as HTMLElement).offsetWidth);
 		const handleResize = () => {
-			if (refParent.current)
-				setWidth((refParent.current as HTMLElement).offsetWidth);
+			const orientation = window.screen.orientation.type;
+			dispatch({type: 'ORIENTATION', isOrientation: orientation == "landscape-primary"})
 		}
-		window.addEventListener('resize', handleResize);
+		window.addEventListener('orientationchange', handleResize);
 		return () => {
-			window.removeEventListener('resize', handleResize);
+			window.removeEventListener('orientationchange', handleResize);
 		};
 	}, [])
-
+	// state.isOrientation ? 'aspect-video' : 'w-full'
 	return (
-		<div className="flex flex-col items-center w-full">
-			<LayoutHeader className="w-full">Playing...</LayoutHeader>
-			<div ref={refParent} className="flex flex-col h-full max-w-[1200px] w-full justify-between items-center gap-[26px]">
+		<div
+			className="flex flex-col items-center w-full">
+			{!state.isOrientation && <LayoutHeader className="w-full">Playing...</LayoutHeader>}
+			<div ref={refParent} className={twMerge("min-h-[calc(100vh-80px-40px)] max-w-[1200px] space-y-2", state.isOrientation ? 'w-[60%]' : 'w-full')}>
 				<Header isAI={props.isAI} counter={props.counter} setCounter={props.setCounter} status={props.status} setStatus={props.setStatus} leftScore={props.leftScore} rightScore={props.rightScore} minutes={props.minutes} seconds={props.seconds} />
-				<Table ref={ref} isAI={props.isAI} rightMoves={props.rightMoves} leftMoves={props.leftMoves} status={props.status} counter={props.counter} setCounter={props.setCounter} gameLogic={props.gameLogic} width={width} leftPaddle={props.leftPaddle} rightPaddle={props.rightPaddle} />
+				<Table ref={ref} isAI={props.isAI} rightMoves={props.rightMoves} leftMoves={props.leftMoves} status={props.status} counter={props.counter} setCounter={props.setCounter} gameLogic={props.gameLogic} leftPaddle={props.leftPaddle} rightPaddle={props.rightPaddle} />
 			</div>
 		</div>
 	);

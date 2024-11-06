@@ -66,11 +66,11 @@ const Header = ({isTournament}: {isTournament: boolean}) => {
 			<div className="flex col-start-1 col-end-2 ">
 				<div className={"flex gap-1 " + ((state.directions.my == "right") ? "flex-row-reverse" : "flex-row")}>
 					<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-						<div className="absolute w-[2px] top-full -translate-y-full bg-primary" style={{height: `${state.score.my * 10}%`}}/>
+						<div className="absolute w-[2px] top-full -translate-y-full bg-primary max-h-full" style={{height: `${state.score.my * 10}%`}}/>
 						<span className="absolute inline-flex items-center justify-center text-primary w-full h-full">{state.score.my}</span>
 					</div>
 					<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-						<div className="absolute w-[2px] top-full -translate-y-full bg-white" style={{height: `${state.score.side * 10}%`}}/>
+						<div className="absolute w-[2px] top-full -translate-y-full bg-white max-h-full" style={{height: `${state.score.side * 10}%`}}/>
 						<span className="absolute inline-flex items-center justify-center w-full h-full">{state.score.side}</span>
 					</div>
 					<div className="bg-secondary lg:w-full lg:max-w-[133px] h-[40px] flex md:justify-start justify-center items-center px-2 shrink-0 sm:shrink">
@@ -81,9 +81,6 @@ const Header = ({isTournament}: {isTournament: boolean}) => {
 			</div>
 			<Goal isTournament={isTournament}/>
 			<div className="flex gap-1 shrink-0 justify-self-end col-start-3 col-end-4">
-				{/* <div className="bg-secondary w-[40px] h-[40px] flex justify-center items-center">
-					<img src={pause} alt="pause" />
-				</div> */}
 				{
 					!isTournament &&
 					<div className="bg-secondary px-1 h-[40px] w-[61px] flex justify-center items-center">

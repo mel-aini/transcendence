@@ -7,7 +7,7 @@ export interface INotification {
 	content: string
 	read: boolean, 
 	id: string,
-	sender?: string
+	sender?: string,
 }
 
 export interface GlobalStateProps {
@@ -25,7 +25,8 @@ export interface GlobalStateProps {
 		time: number,
 		goals: number,
 		difficulty: "easy" | "medium" | "hard",
-	}
+	},
+	isOrientation: boolean
 }
 
 const initialState: GlobalStateProps = {
@@ -43,7 +44,8 @@ const initialState: GlobalStateProps = {
 		time: 3,
 		goals: 5,
 		difficulty: "medium",
-	}
+	},
+	isOrientation: false
 };
 
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
@@ -102,6 +104,11 @@ const reducer = (state: GlobalStateProps, action: any) => {
 			return { 
 				...state,
 				localGameData: action.localGameData
+			}
+		case 'ORIENTATION':
+			return { 
+				...state,
+				isOrientation: action.isOrientation
 			}
 		default:
 			return state;
