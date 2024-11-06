@@ -8,41 +8,6 @@ import { useTimer } from 'react-timer-hook';
 import { useTournamentContext } from "@/contexts/TournamentProvider";
 import { useGlobalContext } from "@/contexts/store";
 
-const Goal = ({isTournament}: {isTournament: boolean}) => {
-	const { state } = isTournament ? useTournamentContext() : usePingPongContext();
-	const [goal, setGoal] = useState<string>('');
-
-	useEffect(() => {
-		if (state.score.my !== 0)
-		{
-			setTimeout(() => {
-				setGoal("");
-			}, 1000);
-			setGoal("Goooooooooooal!");
-		}
-	}, [state.score.my]);
-
-	return (
-			<motion.span
-				className="w-full col-start-1 col-end-4 row-start-1 lg:col-start-2 lg:col-end-3 flex justify-center items-center"
-				>
-					<AnimatePresence>
-				{
-					(goal != "") &&
-						<motion.span
-							initial={{top: "1.5rem", opacity: 0}}
-							animate={{top: "0rem", opacity: 1}}
-							transition={{duration: 0.1}}
-							exit={{top: "1.5rem", opacity: 0}}
-							className="relative top-6 w-full text-primary text-center text-base">
-							{goal}
-						</motion.span>
-				}
-					</AnimatePresence>
-			</motion.span>
-	)
-}
-
 const timeConverter = (time: number) => {
 	const minutes = Math.floor(time / 60);
 	const seconds = Math.floor(time % 60);
@@ -79,7 +44,6 @@ const Header = ({isTournament}: {isTournament: boolean}) => {
 					</div>
 				</div>
 			</div>
-			<Goal isTournament={isTournament}/>
 			<div className="flex gap-1 shrink-0 justify-self-end col-start-3 col-end-4">
 				{
 					!isTournament &&

@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import Header from "./Header";
 import Table from "./Table";
 import LayoutHeader from "@/layout/LayoutHeader";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import { twMerge } from "tailwind-merge";
 
 function Game({isTournament}: {isTournament: boolean}) {
@@ -12,7 +12,7 @@ function Game({isTournament}: {isTournament: boolean}) {
 	useEffect(() => {
 		const handleOrientationChange = () => {
 			const orientation = window.screen.orientation.type;
-			dispatch({type: 'ORIENTATION', isOrientation: orientation == "landscape-primary"})
+			dispatch({type: STORE_OPTS.ORIENTATION, isOrientation: orientation == "landscape-primary"})
 		}
 		window.addEventListener('orientationchange', handleOrientationChange);
 		return () => {
