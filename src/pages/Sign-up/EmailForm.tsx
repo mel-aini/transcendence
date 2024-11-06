@@ -2,7 +2,7 @@ import { Dispatch, FormEvent, useEffect, useState } from "react";
 import Input from "@/components/Input";
 import useInputChecker from "@/hooks/useInputChecker";
 import { invalidColor } from "@/utils/colors";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import callToApi from "@/utils/callToApi";
 import Button from "@/components/Button";
 import { API_END_POINT } from "@/utils/urls";
@@ -41,7 +41,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 	}, [submit])
 
 	const submitForm = async () => {
-		dispatch({type: 'LOADING', state: true})
+		dispatch({type: STORE_OPTS.LOADING, state: true})
 		const data: IResponse = {
 			type: "normal",
 			data : {
@@ -70,7 +70,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 			}
 			setFormError(errorMsg)
 		}
-		dispatch({type: 'LOADING', state: false});
+		dispatch({type: STORE_OPTS.LOADING, state: false});
 	}
 	
 	const onChangeHandler = (e: any) => {

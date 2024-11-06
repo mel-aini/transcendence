@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "@/contexts/authProvider";
+import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";
 import api from "@/api/axios";
 
 const useLog = () => {
@@ -12,7 +12,7 @@ const useLog = () => {
 				// code
 				try {
 					await api.post('logout/');
-					dispatch({type: 'TOKEN', token: null})
+					dispatch({type: AUTH_OPTS.TOKEN, token: null})
 					navigate('/');
 					window.location.reload();
 				} catch (error) {

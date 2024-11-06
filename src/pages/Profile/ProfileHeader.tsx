@@ -1,4 +1,4 @@
-import { useProfileContext } from "@/contexts/profileStore";
+import { PROFILE_OPTS, useProfileContext } from "@/contexts/profileStore";
 import LevelBar from "./LevelBar";
 import UserActions from "./UserActions";
 import {  useEffect, useRef } from "react";
@@ -6,7 +6,7 @@ import api from "@/api/axios";
 import { useParams } from "react-router-dom";
 import edit_icon from "/edit_icon.svg"
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 
 export const ProfileHeaderSkeleton = () => {
 	return (
@@ -47,7 +47,7 @@ const ProfileHeader = () => {
 			const newImage = e.currentTarget.files[0];
 			if (!newImage) return ;
 			else if (newImage.size > 1048576) {
-				dispatch({type: 'ALERT', message: "failed: Maximum file size is 1MB.", isError: true, dispatch});
+				dispatch({type: STORE_OPTS.ALERT, message: "failed: Maximum file size is 1MB.", isError: true, dispatch});
 				return ;
 			}
 			const formData = new FormData(formRef.current as HTMLFormElement | undefined);
@@ -56,11 +56,11 @@ const ProfileHeader = () => {
 			
 			if (res.status === 200)
 			{
-				dispatch({type: 'ALERT', message: "Profile image changed successfuly.", dispatch});
-				dispatchProfile({type: "USER_DATA", userData: {...state.userData, profile_image: res.data.url}});
+				dispatch({type: STORE_OPTS.ALERT, message: "Profile image changed successfuly.", dispatch});
+				dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...state.userData, profile_image: res.data.url}});
 			}
 		} catch (err: any) {
-			dispatch({type: 'ALERT', message: err.response.data.error, isError: true, dispatch});
+			dispatch({type: STORE_OPTS.ALERT, message: err.response.data.error, isError: true, dispatch});
 		} finally {
 			inputRef.current && (inputRef.current.value = '');
 		}

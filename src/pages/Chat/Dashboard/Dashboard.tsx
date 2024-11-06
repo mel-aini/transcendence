@@ -6,7 +6,7 @@ import { FiSearch } from "react-icons/fi";
 import { FormEvent, useEffect, useState } from "react";
 import useLog from "@/hooks/useLog";
 import SearchFriends from "./SearchFriends";
-import { useChatContext } from "@/contexts/chatProvider";
+import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
 import { useAuthContext } from "@/contexts/authProvider";
 import { isEmpty } from "@/utils/validation";
 import Input from "@/components/Input";
@@ -41,7 +41,7 @@ function Dashboard() {
 			else if (conv.sender.includes(input)) return true
 			return false;
 		})
-		dispatch({type: 'SEARCH_CONVERSATIONS', conversations: result})
+		dispatch({type: CHAT_OPTS.SEARCH_CONVERSATIONS, conversations: result})
 	}, [input])
 
 	return ( 

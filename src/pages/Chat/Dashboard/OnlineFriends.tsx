@@ -1,16 +1,16 @@
 import User from "@/components/User";
-import { useChatContext } from "@/contexts/chatProvider";
+import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
 
 function OnlineFriends() {
 	const { state, dispatch } = useChatContext()
 
 	const clickHandler = (friend: Object & { id: string | number, username: string, avatar_link: string, conversation_id: string | number }) => {
-		dispatch({type: 'FOCUS', state: true})
-		dispatch({type: 'CONVERSATION', conversation: {
+		dispatch({type: CHAT_OPTS.FOCUS, state: true})
+		dispatch({type: CHAT_OPTS.CONVERSATION, conversation: {
 			id: friend.conversation_id,
 			state: 'loading'
 		}});
-		dispatch({type: 'CONVERSATION_HEADER', conversation_header: {
+		dispatch({type: CHAT_OPTS.CONVERSATION_HEADER, conversation_header: {
 			username: friend.username,
 			avatar: friend.avatar_link,
 			id: friend.id

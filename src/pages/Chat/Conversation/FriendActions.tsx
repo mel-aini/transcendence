@@ -1,7 +1,7 @@
 import { ComponentProps, useEffect, useState } from "react";
-import { useChatContext } from "@/contexts/chatProvider";
+import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore"
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import { twMerge } from "tailwind-merge";
 // import play_icon from "/play_icon.svg"
 // import blockIcon from "/block.svg"
@@ -44,23 +44,23 @@ function FriendActions({className, close}: Props) {
 	
 		if (lastJsonMessage?.type == 'invite') {
 			if (lastJsonMessage?.code == 200) {
-				gDispatch({type: 'ALERT', message: "Invitation sent successfully", dispatch: gDispatch});
+				gDispatch({type: STORE_OPTS.ALERT, message: "Invitation sent successfully", dispatch: gDispatch});
 			}
 			else {
-				gDispatch({type: 'ALERT', message: "Error happens while sending game invitation", isError: true, dispatch: gDispatch});
+				gDispatch({type: STORE_OPTS.ALERT, message: "Error happens while sending game invitation", isError: true, dispatch: gDispatch});
 			}
 		}
 		else if (lastJsonMessage?.type == "user-action" && lastJsonMessage?.data?.value == 'block') {
 			if (lastJsonMessage?.code == 200) {
-				dispatch({type: 'FOCUS', state: false});
-				dispatch({type: 'CONVERSATION', conversation: {
+				dispatch({type: CHAT_OPTS.FOCUS, state: false});
+				dispatch({type: CHAT_OPTS.CONVERSATION, conversation: {
 					id: null,
 					state: null
 				}})
-				gDispatch({type: 'ALERT', message: "user blocked successfully", dispatch: gDispatch});
+				gDispatch({type: STORE_OPTS.ALERT, message: "user blocked successfully", dispatch: gDispatch});
 			}
 			else {
-				gDispatch({type: 'ALERT', message: "Error happens while blocking.", isError: true, dispatch: gDispatch});
+				gDispatch({type: STORE_OPTS.ALERT, message: "Error happens while blocking.", isError: true, dispatch: gDispatch});
 			}
 		}
 		setIsInviting(false);

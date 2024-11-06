@@ -2,11 +2,10 @@ import { Outlet } from 'react-router-dom';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
 import { useEffect } from 'react';
-import { useGlobalContext } from '@/contexts/store';
+import { STORE_OPTS, useGlobalContext } from '@/contexts/store';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/api/axios';
-import { useAuthContext } from '@/contexts/authProvider';
-import { useProfileContext } from '@/contexts/profileStore';
+import { AUTH_OPTS, useAuthContext } from '@/contexts/authProvider';
 
 async function fetchData() {
 	const res = await api.get('profile/');
@@ -16,17 +15,13 @@ async function fetchData() {
 const Layout = () => {
 	const { state, dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
-	// const { dispatchProfile } = useProfileContext();
 
 	const {data, isLoading, isError} = useQuery({queryKey: ['getProfile'], queryFn: () => fetchData(), refetchOnMount: true});
 
 	useEffect(() => {
 		if (!isLoading) {
-			console.log("data", data?.data);
-			
-			// dispatchProfile({type: "USER_DATA", userData: data?.data});
-			dispatch({type: "USER_DATA", userData: data?.data});
-			authDispatch({type: 'USERNAME', username: data?.data.username});
+			dispatch({type: STORE_OPTS.USER_DATA, userData: data?.data});
+			authDispatch({type: AUTH_OPTS.USERNAME, username: data?.data.username});
 		}
 	}, [isLoading]);
 

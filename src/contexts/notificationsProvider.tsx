@@ -18,25 +18,29 @@ export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: D
 	dispatch: () => {}
 });
 
+export enum NOTIFICATION_OPTS {
+	PUSH_NOTIFICATION,
+	POP_NOTIFICATION,
+	MARK_IS_READ
+}
+
 const reducer = (state: GlobalStateProps, action: any) => {
 	switch (action.type)
 	{
-		case 'PUSH_NOTIFICATION':
+		case NOTIFICATION_OPTS.PUSH_NOTIFICATION:
 			const updated = [...state.newNotifications, action.notification];
 			setTimeout(() => {
-                action.dispatch({ type: 'POP_NOTIFICATION', auto: true });
+                action.dispatch({ type: NOTIFICATION_OPTS.POP_NOTIFICATION, auto: true });
             }, 3000);
 			return { ...state, newNotifications: updated, bell: true, isLastPopAuto: true }
-		case 'POP_NOTIFICATION':
+		case NOTIFICATION_OPTS.POP_NOTIFICATION:
 			const upObj = { ...state, isLastPopAuto: action.auto }
 			if (state.isLastPopAuto) {
 				const newNotifications = state.newNotifications.slice(1);
 				upObj.newNotifications = newNotifications;
 			};
 			return upObj
-		case 'MARK_IS_READ':
-			return { ...state, isRead: action.payload };
-		case 'CLEAR':
+		case NOTIFICATION_OPTS.MARK_IS_READ:
 			return { ...state, isRead: action.payload };
 		default:
 			return state;

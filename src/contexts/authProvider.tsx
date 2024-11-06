@@ -21,15 +21,20 @@ export const AuthContext = createContext<{state: GlobalStateProps, dispatch: Dis
 	dispatch: () => {}
 });
 
+export enum AUTH_OPTS {
+	TOKEN,
+	USERNAME,
+	USER_ID
+}
+
 const reducer = (state: GlobalStateProps, action: any) => {
 	switch (action.type)
 	{
-		case 'TOKEN':
-			// console.log('update token', action.token)
+		case AUTH_OPTS.TOKEN:
 			return { ...state, accessToken: action.token}
-		case 'USERNAME':
+		case AUTH_OPTS.USERNAME:
 			return { ...state, username: action.username}
-		case 'USER_ID':
+		case AUTH_OPTS.USER_ID:
 			return { ...state, user_id: action.userId}
 		default:
 			return state;
@@ -52,9 +57,9 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 		})
 		if (state.accessToken) {
 			const payload: JwtPayload & { user_id: string } = jwtDecode(state.accessToken);
-			dispatch({type: 'USER_ID', userId: payload.user_id})
+			dispatch({type: AUTH_OPTS.USER_ID, userId: payload.user_id})
 		} else {
-			dispatch({type: 'USER_ID', userId: undefined})
+			dispatch({type: AUTH_OPTS.USER_ID, userId: undefined})
 		}
 	
 		return () => {
@@ -78,13 +83,13 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 				if (!token) {
 					throw error;
 				}
-				dispatch({type: 'TOKEN', token: token})
+				dispatch({type: AUTH_OPTS.TOKEN, token: token})
 				// Update the authorization header with the new access token.
 				api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 				return api(originalRequest); // Retry the original request with the new access token.
 			} catch (refreshError) {
 				// Handle refresh token errors by clearing stored tokens and redirecting to the login page.
-				dispatch({type: 'TOKEN', token: null})
+				dispatch({type: AUTH_OPTS.TOKEN, token: null})
 				navigate('/login')
 				return Promise.reject(refreshError);
 			}

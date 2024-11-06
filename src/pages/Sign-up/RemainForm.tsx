@@ -3,7 +3,7 @@ import Input from "@/components/Input";
 import { useNavigate } from "react-router-dom";
 import useInputChecker from "@/hooks/useInputChecker";
 import { invalidColor } from "@/utils/colors";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import callToApi from "@/utils/callToApi";
 import Button from "@/components/Button";
 import { API_END_POINT } from "@/utils/urls";
@@ -69,7 +69,7 @@ const RemainForm = ({email}: Props) => {
 	}, [formState])
 
 	const submitForm = async () => {
-		dispatch({type: 'LOADING', state: true})
+		dispatch({type: STORE_OPTS.LOADING, state: true})
 		const data: IResponse = {
 			type: "normal",
 			data : {
@@ -87,7 +87,7 @@ const RemainForm = ({email}: Props) => {
 		catch (error: any) {
 			setFormError(error)
 		}
-		dispatch({type: 'LOADING', state: false});
+		dispatch({type: STORE_OPTS.LOADING, state: false});
 	}
 
 	const submitHandler = async (e: any) => {
@@ -104,7 +104,7 @@ const RemainForm = ({email}: Props) => {
 		if (username == '' || email == '' || password == '' || retypePassword == '') return;
 
 		setSubmit(true);
-		dispatch({type: 'LOADING', state: true});
+		dispatch({type: STORE_OPTS.LOADING, state: true});
 	}
 
 	return (

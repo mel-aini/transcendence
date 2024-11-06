@@ -2,12 +2,12 @@ import {AnimatePresence, motion} from 'framer-motion'
 import ConversationHeader from "./ConversationHeader";
 import { FormEvent, InputHTMLAttributes, MouseEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
 import ConversationMessages from './ConversationMessages';
-import { useChatContext } from '@/contexts/chatProvider';
+import { CHAT_OPTS, useChatContext } from '@/contexts/chatProvider';
 import { useAuthContext } from '@/contexts/authProvider';
 import { ReadyState } from 'react-use-websocket';
 import { isEmpty } from '@/utils/validation';
 import { dateMeta } from '@/utils/global';
-import { useGlobalContext } from '@/contexts/store';
+import { STORE_OPTS, useGlobalContext } from '@/contexts/store';
 import chatBotLottie from '@/assets/chatBotLottie.json'
 import Lottie from 'lottie-react'
 import Title from '@/components/Title';
@@ -28,7 +28,7 @@ function Conversation() {
 		}
 
 		if (message.length > 500) {
-			gDispatch({type: 'ALERT', isError: true, message: "Can't send more than 500 characters", dispatch: gDispatch})
+			gDispatch({type: STORE_OPTS.ALERT, isError: true, message: "Can't send more than 500 characters", dispatch: gDispatch})
 			return;
 		}
 		const message_content = message;
@@ -48,7 +48,7 @@ function Conversation() {
 			receiver: state.conversation_header.username,
 		}
 
-		dispatch({type: 'LAST_MESSAGE', message: {
+		dispatch({type: CHAT_OPTS.LAST_MESSAGE, message: {
 			content: message_content,
 			date: dateMeta.getDate(),
 			sender: authState.username,
@@ -62,10 +62,10 @@ function Conversation() {
 				sendJsonMessage(ServerMessage);
 			}
 			if (readyState != ReadyState.OPEN) {
-				dispatch({type: 'LAST_MESSAGE', message: null});
+				dispatch({type: CHAT_OPTS.LAST_MESSAGE, message: null});
 			
 				// if error
-				dispatch({type: 'MESSAGE', message: {
+				dispatch({type: CHAT_OPTS.MESSAGE, message: {
 					content: message_content,
 					date: dateMeta.getDate(),
 					sender: authState.username,
@@ -78,16 +78,13 @@ function Conversation() {
 	}
 
 	useLayoutEffect(() => {
-		dispatch({type: 'FOCUS', state: window.innerWidth >= 1024})
+		dispatch({type: CHAT_OPTS.FOCUS, state: window.innerWidth >= 1024})
 
 		const resizeHandler = () => {
-			dispatch({type: 'FOCUS', state: false})
+			dispatch({type: CHAT_OPTS.FOCUS, state: false})
 		}
 
 		window.addEventListener('resize', resizeHandler)
-		// todo: to remove
-			// setIsOpen(true)
-		//
 		return () => {
 			window.removeEventListener('resize', resizeHandler);
 		}

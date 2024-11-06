@@ -1,6 +1,6 @@
 import { ProfileRequest } from "@/types/profile"
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
-import { useProfileContext } from "@/contexts/profileStore";
+import { PROFILE_OPTS, useProfileContext } from "@/contexts/profileStore";
 import deny from "/deny.svg"
 import accept from "/accept.svg"
 import { modifyObjectByName } from "../UserActions";
@@ -14,11 +14,11 @@ const PendingInvitation = ({username, origin}: {username?: string, origin: strin
 		if (origin === "profile") {
 			const updatedArray = modifyObjectByName(state.friendsData, username);
 			if (updatedArray) {
-				dispatchProfile({type: "FRIEND_DATA", friendsData: [...updatedArray]});
+				dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: [...updatedArray]});
 			}
 		}
 		else if (origin === "user")
-			dispatchProfile({type: "USER_DATA", userData: {...state.userData, relation: undefined}});
+			dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...state.userData, relation: undefined}});
 		const request: ProfileRequest = {
 			type: type,
 			identifier: username,

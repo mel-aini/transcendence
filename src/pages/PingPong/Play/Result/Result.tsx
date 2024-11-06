@@ -5,7 +5,7 @@ import UserBox from "./UserBox";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTournamentContext } from "@/contexts/TournamentProvider";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import LayoutHeader from "@/layout/LayoutHeader";
 import Title from "@/components/Title";
 
@@ -18,7 +18,7 @@ function Result({isTournament}: {isTournament: boolean}) {
 	const clickHandler = () => {
 		if (!isTournament)
 		{
-			dispatchGlobal({ type: 'GAME_ID', gameId: null });
+			dispatchGlobal({ type: STORE_OPTS.GAME_ID, gameId: null });
 			navigate("/ping-pong");
 		}
 	}

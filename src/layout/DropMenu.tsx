@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Notifications from "@/components/Notifications";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import { SideBarElem } from "./SideBar";
 import useLog from "@/hooks/useLog";
 import { Variants, motion } from "framer-motion";
@@ -36,7 +36,7 @@ function DropMenu({ type }: DropMenuProps) {
 	const action = useLog();
 
 	const goToProfile = () => {
-		dispatch({type: 'LOADING', state: true})
+		dispatch({type: STORE_OPTS.LOADING, state: true})
 		navigate('/profile')
 	}
 

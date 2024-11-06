@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
-import { useGlobalContext } from "./store";
+import { STORE_OPTS, useGlobalContext } from "./store";
 import { useTournamentContext } from "./TournamentProvider";
 import { useNavigate } from "react-router-dom";
 import { UserData } from "@/types/profile";
@@ -230,7 +230,7 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 		}
 		else if (message.type == "ingame")
 		{
-			dispatchGlobal({type: 'ALERT', message: "you are already in game!!", isError: true, dispatch: dispatchGlobal})
+			dispatchGlobal({type: STORE_OPTS.ALERT, message: "you are already in game!!", isError: true, dispatch: dispatchGlobal})
 			navigate('/ping-pong');
 		}
 		else if (message.type == "init_paddle")

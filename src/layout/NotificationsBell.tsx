@@ -3,7 +3,7 @@ import { FiBell } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
 import { DropMenuTypes } from "./DropMenu";
 import { AnimatePresence, motion } from "framer-motion";
-import { useNotificationsContext } from "@/contexts/notificationsProvider";
+import { NOTIFICATION_OPTS, useNotificationsContext } from "@/contexts/notificationsProvider";
 import api from "@/api/axios";
 
 interface Props {
@@ -42,7 +42,7 @@ function NotificationBell({dropMenuType, setDropMenu}: Props) {
 		if (data) {
 			const notifications = data.data;
 			// notifications.length > 0 && setBell(!notifications[0].data.read)
-			notifications.length > 0 && dispatch({type: 'MARK_IS_READ', payload: notifications[0].read});
+			notifications.length > 0 && dispatch({type: NOTIFICATION_OPTS.MARK_IS_READ, payload: notifications[0].read});
 		}
 	}, [data])
 
@@ -50,7 +50,7 @@ function NotificationBell({dropMenuType, setDropMenu}: Props) {
 		if (state.newNotifications.length > 0) {
 			state.newNotifications.forEach(not => {
 				if (not.type != 'message') {
-					dispatch({type: 'MARK_IS_READ', payload: false});
+					dispatch({type: NOTIFICATION_OPTS.MARK_IS_READ, payload: false});
 				}
 			})
 		}

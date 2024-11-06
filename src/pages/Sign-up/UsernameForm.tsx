@@ -2,7 +2,7 @@ import { Dispatch, useState } from "react";
 import Input from "@/components/Input";
 import { invalidColor } from "@/utils/colors";
 import Button from "@/components/Button";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import useInputChecker from "@/hooks/useInputChecker";
 import callToApi from "@/utils/callToApi";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,7 @@ interface Props {
 const UsernameForm = ({dispatchLevel}: Props) => {
 	const [formError, setFormError] = useState<string>('');
 	const [username, setUsername] = useState<string>('')
-	const [formState, parseInput] = useInputChecker(API_END_POINT + 'register/');
+	const [ formState ] = useInputChecker(API_END_POINT + 'register/');
 	const { dispatch } = useGlobalContext();
 	const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ const UsernameForm = ({dispatchLevel}: Props) => {
 			}
 			setFormError(errorMsg)
 		}
-		dispatch({type: 'LOADING', state: false});
+		dispatch({type: STORE_OPTS.LOADING, state: false});
 	}
 
 	return (

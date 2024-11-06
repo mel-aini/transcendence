@@ -3,12 +3,12 @@ import History, { HistorySkeleton } from "./History";
 import Friends, { FriendsSkeleton } from "./Friends";
 import ProfileHeader, { ProfileHeaderSkeleton } from "./ProfileHeader";
 import { useEffect, useRef, useState } from "react";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import {  useParams } from "react-router-dom";
-import { useProfileContext } from "@/contexts/profileStore";
+import { PROFILE_OPTS, useProfileContext } from "@/contexts/profileStore";
 import api from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { useAuthContext } from "@/contexts/authProvider";
+import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";
 import { PiSmileySad } from "react-icons/pi";
 
 async function fetchData(id: string | undefined) {
@@ -28,11 +28,11 @@ const Index = () => {
 	useEffect(() => {
 		if (!isLoading)
 		{
-			dispatchProfile({type: "USER_DATA", userData: data?.data});
+			dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: data?.data});
 			if (!id)
 			{
-				dispatch({type: "USER_DATA", userData: data?.data});
-				authDispatch({type: 'USERNAME', username: data?.data.username});
+				dispatch({type: STORE_OPTS.USER_DATA, userData: data?.data});
+				authDispatch({type: AUTH_OPTS.USERNAME, username: data?.data.username});
 			}
 		}
 	} ,[isLoading, id])
@@ -40,11 +40,11 @@ const Index = () => {
 	useEffect(() => {
 		if (!isRefetching)
 		{
-			dispatchProfile({type: "USER_DATA", userData: data?.data});
+			dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: data?.data});
 			if (!id)
 			{
-				dispatch({type: "USER_DATA", userData: data?.data});
-				authDispatch({type: 'USERNAME', username: data?.data.username});
+				dispatch({type: STORE_OPTS.USER_DATA, userData: data?.data});
+				authDispatch({type: AUTH_OPTS.USERNAME, username: data?.data.username});
 			}
 		}
 	} ,[isRefetching])

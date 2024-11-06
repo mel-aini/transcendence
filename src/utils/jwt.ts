@@ -3,7 +3,6 @@ import api from '@/api/axios';
 import axios from 'axios';
 import { API_END_POINT } from './urls';
 
-
 class Jwt {
 
 	constructor() {}
@@ -23,7 +22,7 @@ class Jwt {
 		try {
 			let res;
 			if (access_expired) {
-				res = await axios.post('http://localhost:8000/api/' + 'token/refresh/', null, {
+				res = await axios.post(API_END_POINT + 'token/refresh/', null, {
 					withCredentials: true
 				});
 			} else {

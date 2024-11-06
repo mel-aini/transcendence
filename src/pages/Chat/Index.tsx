@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useChatContext } from "@/contexts/chatProvider";
+import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
 import Dashboard from "./Dashboard/Dashboard";
 import Conversation from "./Conversation/Conversation";
 import { AnimatePresence } from 'framer-motion'
@@ -9,10 +9,10 @@ function Index() {
 
 	useEffect(() => {
 
-		dispatch({type: 'FOCUS', state: window.innerWidth >= 1024})
+		dispatch({type: CHAT_OPTS.FOCUS, state: window.innerWidth >= 1024})
 
 		const resizeHandler = () => {
-			dispatch({type: 'FOCUS', state: window.innerWidth >= 1024})
+			dispatch({type: CHAT_OPTS.FOCUS, state: window.innerWidth >= 1024})
 		}
 
 		window.addEventListener('resize', resizeHandler)
@@ -24,7 +24,7 @@ function Index() {
 	}, [])
 
 	useEffect(() => {
-		dispatch({type: 'UNREAD_CONVERSATION', status: false})
+		dispatch({type: CHAT_OPTS.UNREAD_CONVERSATION, status: false})
 	}, [state.unreadConv])
 
 	return (

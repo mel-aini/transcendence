@@ -8,7 +8,6 @@ import withAuth from  './guards/withAuth'
 import withoutAuth from  './guards/withoutAuth'
 import AuthContextProvider from "./contexts/authProvider";
 import GameLayout from "./pages/PingPong/GameLayout";
-import TournamentLayout from "./guards/TournamentLayout";
 import NotificationsProvider from "./contexts/notificationsProvider";
 
 const Home = lazy(() => import('./pages/Home/Index'));

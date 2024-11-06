@@ -1,5 +1,5 @@
 import { FormEvent, useRef, useState } from "react";
-import { useGlobalContext } from "@/contexts/store";
+import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import axios from "axios";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading";
 import { validate } from "@/utils/validation";
 import { invalidColor } from "@/utils/colors";
+import { API_END_POINT } from "@/utils/urls";
 
 interface Props {
 	token: string
@@ -25,7 +26,7 @@ function UpdatePassword({ token }: Props) {
 	const { state, dispatch } = useGlobalContext();
 	const submitHandler = async (e: FormEvent) => {
 		try {
-			dispatch({type: 'LOADING', state: true})
+			dispatch({type: STORE_OPTS.LOADING, state: true})
 			e.preventDefault();
 			if (!validate('password', password.current)) {
 				throw {
@@ -39,7 +40,7 @@ function UpdatePassword({ token }: Props) {
 					message: 'Mismatch Passwords'
 				}
 			}
-			await axios.post('http://localhost:8000/api/update-password/', {
+			await axios.post(API_END_POINT + 'update-password/', {
 				token: token,
 				data :
 				{
@@ -55,7 +56,7 @@ function UpdatePassword({ token }: Props) {
 				message: error?.response?.data?.error?.message || error.message
 			})
 		}
-		dispatch({type: 'LOADING', state: false})
+		dispatch({type: STORE_OPTS.LOADING, state: false})
     }
 
 	return ( 

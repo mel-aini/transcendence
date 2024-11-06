@@ -48,6 +48,17 @@ const initialState: GlobalStateProps = {
 	isOrientation: false
 };
 
+export enum STORE_OPTS {
+	LOADING,
+	ALERT,
+	ALERT_OFF,
+	SEARCH,
+	USER_DATA,
+	GAME_ID,
+	LOCAL_GAME_DATA,
+	ORIENTATION
+}
+
 export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: Dispatch<any>}>({
 	state: initialState,
 	dispatch: () => {}
@@ -56,15 +67,14 @@ export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: D
 const reducer = (state: GlobalStateProps, action: any) => {
 	switch (action.type)
 	{
-		case 'LOADING':
+		case STORE_OPTS.LOADING:
 			if (action.state == true) {
 				return { ...state, isLoading: true }
 			}
 			return { ...state, isLoading: false }
-		case 'ALERT':
-		
+		case STORE_OPTS.ALERT:
 			setTimeout(() => {
-                action.dispatch({ type: 'ALERT_OFF' });
+                action.dispatch({ type: STORE_OPTS.ALERT_OFF });
             }, action.timer || 1300);
 			return { 
 				...state, 
@@ -75,7 +85,7 @@ const reducer = (state: GlobalStateProps, action: any) => {
 					isError: action.isError
 				}
 			}
-		case 'ALERT_OFF':
+		case STORE_OPTS.ALERT_OFF:
 			return { 
 				...state, 
 				alert: {
@@ -85,27 +95,27 @@ const reducer = (state: GlobalStateProps, action: any) => {
 					isError: false
 				}
 			}
-		case 'SEARCH':
+		case STORE_OPTS.SEARCH:
 			return { 
 				...state,
 				search: !state.search
 			}
-		case 'USER_DATA':
+		case STORE_OPTS.USER_DATA:
 			return { 
 				...state,
 				userData: action.userData
 			}
-		case 'GAME_ID':
+		case STORE_OPTS.GAME_ID:
 			return { 
 				...state,
 				gameId: action.gameId
 			}
-		case 'LOCAL_GAME_DATA':
+		case STORE_OPTS.LOCAL_GAME_DATA:
 			return { 
 				...state,
 				localGameData: action.localGameData
 			}
-		case 'ORIENTATION':
+		case STORE_OPTS.ORIENTATION:
 			return { 
 				...state,
 				isOrientation: action.isOrientation
