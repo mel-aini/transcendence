@@ -1,8 +1,7 @@
-import { Dispatch, forwardRef, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, forwardRef, SetStateAction, useEffect, useRef } from "react";
 import Header from "./Header";
 import Table from "./Table";
 import LayoutHeader from "@/layout/LayoutHeader";
-import { isMobile } from 'react-device-detect';
 import { twMerge } from "tailwind-merge";
 import { useGlobalContext } from "@/contexts/store";
 
@@ -26,26 +25,24 @@ interface Props {
 const Game = forwardRef((props: Props, ref: any) => {
 	const refParent = useRef<HTMLDivElement>(null);
 	const {state, dispatch}  = useGlobalContext();
-	// const [width, setWidth] = useState<number>(0);
 
 	useEffect(() => {
-		const handleResize = () => {
+		const handleOrientationChange = () => {
 			const orientation = window.screen.orientation.type;
 			dispatch({type: 'ORIENTATION', isOrientation: orientation == "landscape-primary"})
 		}
-		window.addEventListener('orientationchange', handleResize);
+		window.addEventListener('orientationchange', handleOrientationChange);
 		return () => {
-			window.removeEventListener('orientationchange', handleResize);
+			window.removeEventListener('orientationchange', handleOrientationChange);
 		};
 	}, [])
-	// state.isOrientation ? 'aspect-video' : 'w-full'
+
 	return (
-		<div
-			className="flex flex-col items-center w-full">
+		<div className="flex flex-col items-center w-full">
 			{!state.isOrientation && <LayoutHeader className="w-full">Playing...</LayoutHeader>}
 			<div ref={refParent} className={twMerge("min-h-[calc(100vh-80px-40px)] max-w-[1200px] space-y-2", state.isOrientation ? 'w-[60%]' : 'w-full')}>
 				<Header isAI={props.isAI} counter={props.counter} setCounter={props.setCounter} status={props.status} setStatus={props.setStatus} leftScore={props.leftScore} rightScore={props.rightScore} minutes={props.minutes} seconds={props.seconds} />
-				<Table ref={ref} isAI={props.isAI} rightMoves={props.rightMoves} leftMoves={props.leftMoves} status={props.status} counter={props.counter} setCounter={props.setCounter} gameLogic={props.gameLogic} leftPaddle={props.leftPaddle} rightPaddle={props.rightPaddle} />
+				<Table ref={ref} isAI={props.isAI} leftScore={props.leftScore} rightScore={props.rightScore} rightMoves={props.rightMoves} leftMoves={props.leftMoves} status={props.status} counter={props.counter} setCounter={props.setCounter} gameLogic={props.gameLogic} leftPaddle={props.leftPaddle} rightPaddle={props.rightPaddle} />
 			</div>
 		</div>
 	);

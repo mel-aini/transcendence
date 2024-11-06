@@ -1,31 +1,31 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Header from "./Header";
 import Table from "./Table";
 import LayoutHeader from "@/layout/LayoutHeader";
+import { useGlobalContext } from "@/contexts/store";
+import { twMerge } from "tailwind-merge";
 
 function Game({isTournament}: {isTournament: boolean}) {
 	const refParent = useRef<HTMLDivElement>(null);
-	const [width, setWidth] = useState<number>(0);
+	const {state, dispatch}  = useGlobalContext();
 
 	useEffect(() => {
-		if (refParent.current)
-			setWidth((refParent.current as HTMLElement).offsetWidth);
-		const handleResize = () =>{
-			if (refParent.current)
-				setWidth((refParent.current as HTMLElement).offsetWidth);
+		const handleOrientationChange = () => {
+			const orientation = window.screen.orientation.type;
+			dispatch({type: 'ORIENTATION', isOrientation: orientation == "landscape-primary"})
 		}
-		window.addEventListener('resize', handleResize);
+		window.addEventListener('orientationchange', handleOrientationChange);
 		return () => {
-			window.removeEventListener('resize', handleResize);
+			window.removeEventListener('orientationchange', handleOrientationChange);
 		};
 	}, [])
 
 	return (
 		<div className="flex flex-col items-center w-full">
-			<LayoutHeader className="w-full">Playing...</LayoutHeader>
-			<div ref={refParent} className="flex flex-col h-full max-w-[1200px] w-full justify-between items-center gap-[26px]">
+			{!state.isOrientation && <LayoutHeader className="w-full">Playing...</LayoutHeader>}
+			<div ref={refParent} className={twMerge("flex flex-col h-full max-w-[1200px] w-full justify-between items-center gap-[26px]", !state.isOrientation ? 'w-[60%]' : 'w-full')}>
 				<Header isTournament={isTournament} />
-				<Table width={width} isTournament={isTournament} />
+				<Table isTournament={isTournament} />
 			</div>
 		</div>
 	);

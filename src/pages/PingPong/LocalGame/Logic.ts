@@ -167,7 +167,7 @@ export class Paddle {
             this.predictedY = _predictedY;
             return
         }
-        this.predictedY = this.y; // No change if ball isn't moving toward AI 
+        this.predictedY = this.y; // No change if ball isn't moving toward AI
     }
 
     private randomChoice<T>(arr: T[]): T {
