@@ -7,29 +7,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#14FFEC',
-        secondary: '#141619',
-        third: '#14FF67',
-        dark: '#2F2E39',
-        bg: '#111215',
-        white: '#FFFFFF',
-        gray1: '#858585',
-        gray2: '#313131',
-        gray3: '#0C0D0F',
-        gray4: '#222222',
-        black: '#000000',
-        invalid: '#ED4337',
-        border: 'rgba(255, 255, 255, 0.1)',
-        border2: 'rgba(255, 255, 255, 0.2)',
-      },
-      keyframes: {
-        test: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        }
-      },
-      animation: {
-        'test': 'test 0.3s',
+        primary: 'var(--primary-color)',
+        secondary: 'var(--secondary-color)',
+        third: 'var(--third-color)',
+        dark: 'var(--dark-color)',
+        bg: 'var(--bg-color)',
+        white: 'var(--white-color)',
+        gray1: 'var(--gray-shade1)',
+        gray2: 'var(--gray-shade2)',
+        gray3: 'var(--gray-shade3)',
+        gray4: 'var(--gray-shade4)',
+        black: 'var(--black-color)',
+        invalid: 'var(--invalid-color)',
+        border: 'var(--border-color)',
+        border2: 'var(--border-color2)',
       },
       screens: {
         smh: {'raw': '(min-height: 800px)'},

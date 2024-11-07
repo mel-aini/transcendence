@@ -176,16 +176,12 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 		WS_END_POINT + "chat/?token=" + authState.accessToken,
 		{
 			onOpen: () => {
-				console.log('connection opened')
 				setIsReconnect(false);
 			},
 			onClose: () => {
-				console.log('connection closed')
 				setErrorInLastMessage();
-				// setIsReconnect(true);
 			},
 			onError: () => {
-				console.log('error occured in websocket')
 				setErrorInLastMessage()
 			},
 			retryOnError: false,
@@ -195,7 +191,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			reconnectAttempts: 100,
 			reconnectInterval: 3000,
 			onReconnectStop: () => {
-				console.log('failed to reconnect');
 				setIsReconnect(false);
 			}
 		}
@@ -204,11 +199,9 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	  const updateConversations = async (id: string | number | null, data: updatedConv | null, type?: 'read') => {
 	
 		if (type == 'read') {
-			console.log('read event occured')
 			for (let i = 0; i < state.conversations.length; i++) {
 				const conv: Conversation = state.conversations[i];
 				if (conv.id == state.conversation.id) {
-					console.log('in conv', conv)
 					conv.status = true;
 					break;
 				}
@@ -244,11 +237,9 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 	const updateFriendData = (data: responseData) => {
 		// update conversations
-		console.log("data is:", data);
 		const conversations_update = state.conversations.map((conv: Conversation) => {
 			console.log(conv.friend.id, data.id)
 			if (conv.friend.id == data.id) {
-				console.log('it should changed in conversations');
 				return { 
 					...conv, 
 					friend: {
@@ -262,8 +253,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			return conv;
 		});
 		dispatch({type: CHAT_OPTS.CONVERSATIONS, conversations: conversations_update});
-		// update conversation header
-		// console.log(data.id, state.conversation_header.id);
 		if (data.id == state.conversation_header.id) {
 			dispatch({type: CHAT_OPTS.CONVERSATION_HEADER, conversation_header: {
 				username: data.username,
@@ -274,14 +263,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	}
 
 	useEffect(() => {
-		console.log('new message')
-		console.log(lastJsonMessage);
-
 		if (lastJsonMessage) {
 			if (lastJsonMessage.online) {
-				// todo: to remove
-				console.log('lastJsonMessage.online')
-				console.log(lastJsonMessage.online)
 				dispatch({type: CHAT_OPTS.ONLINE, onlineFriends: lastJsonMessage.online})
 			}
 			if (lastJsonMessage.conversations) {
@@ -301,9 +284,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					updateConversations(null, null, 'read')
 				}
 			}
-			// if (lastJsonMessage.search_conversation) {
-			// 	dispatch({type: 'SEARCH_CONVERSATIONS', conversations: lastJsonMessage.search_conversation});
-			// }
 			if (lastJsonMessage.type == 'message') {
 				if (lastJsonMessage.receiver == authState.username) {
 					// I'm the receiver
@@ -333,9 +313,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				updateConversations(lastJsonMessage.data.id, lastJsonMessage.data);
 			}
 			if (lastJsonMessage.type == 'update_data') {
-				// todo: to remove
-				console.log('update_data')
-				console.log(lastJsonMessage)
 				// for update online users status
 				let newList: OnlineFriend[] = [];
 				const data: responseData = lastJsonMessage.data
@@ -374,9 +351,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				})
 			}
 			if (lastJsonMessage.type == 'update_after_accept_request') {
-				// todo: to remove
-				console.log('update_after_accept_request')
-				console.log(lastJsonMessage)
 				// add to online friends
 				const friend: OnlineFriend = {
 					username: lastJsonMessage.online.username,
@@ -387,14 +361,12 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				}
 				const newList = [...state.onlineFriends, friend]
 				dispatch({type: CHAT_OPTS.ONLINE, onlineFriends: newList})
-				// add to conversation list
 			}
 			if (lastJsonMessage.type == 'delete_data') {
 				const newConvs = state.conversations.filter((conv: Conversation) => {
 					return conv.id != lastJsonMessage.conversation
 				})
 				dispatch({type: CHAT_OPTS.CONVERSATIONS, conversations: [...newConvs]})
-				// filter online friends based on lastJsonMessage.user.id
 				const newFriends = state.onlineFriends.filter((friend: OnlineFriend) => {
 					return friend.username != lastJsonMessage.user.username
 				})
@@ -461,5 +433,3 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 export const useChatContext = () => useContext(ChatContext);
 export default ChatContextProvider;
-
-// when change the username, he will be offline

@@ -6,7 +6,6 @@ import Button from "@/components/Button";
 import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading";
 import { validate } from "@/utils/validation";
-import { invalidColor } from "@/utils/colors";
 import { API_END_POINT } from "@/utils/urls";
 
 interface Props {
@@ -77,7 +76,7 @@ function UpdatePassword({ token }: Props) {
 						className="w-full"
 						type='password'
 						placeholder='password'
-						style={ error.password ? { borderColor:  invalidColor, color: invalidColor} : {}}
+						style={ error.password ? { borderColor:  'var(--invalid-color)', color: 'var(--invalid-color)'} : {}}
 					/>
 					<Input
 						onChange={(e) => {
@@ -92,7 +91,7 @@ function UpdatePassword({ token }: Props) {
 						className="w-full"
 						type='password'
 						placeholder='password confirmation'
-						style={ error.confirmationPassword ? { borderColor:  invalidColor, color: invalidColor} : {}}
+						style={ error.confirmationPassword ? { borderColor:  'var(--invalid-color)', color: 'var(--invalid-color)'} : {}}
 					/>
 					{(error.password || error.confirmationPassword) && <p className="text-sm self-end text-invalid">{error.message}</p>}
 				</div>

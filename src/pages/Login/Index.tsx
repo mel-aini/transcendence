@@ -20,7 +20,7 @@ const Index = () => {
 					{!isTwoFA &&
 					<>
 					<p>or</p>
-					<OAuthBar type="sign in" />
+					<OAuthBar />
 					<div className="flex items-center gap-2 text-sm">
 						<p className="text-gray1">Don't have an account?</p>
 						<Link to='/signup'>Sign up</Link>

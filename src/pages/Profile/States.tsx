@@ -1,4 +1,3 @@
-import { darkColor, primaryColor } from "@/utils/colors";
 import { UserData } from "@/types/profile";
 import { motion } from "framer-motion";
 import { ComponentProps, useEffect, useState } from "react";
@@ -88,13 +87,13 @@ const States = () => {
 				</div>
 				<motion.div
 					initial={{background: `conic-gradient(from -90deg, 
-						${primaryColor} 0%, 
-						${primaryColor} ${'0%'}, 
-						${darkColor} ${'0%'}, ${darkColor} 100%)`}}
+						var(--primary-color) 0%, 
+						var(--primary-color) ${'0%'}, 
+						var(--dark-color) ${'0%'}, var(--dark-color) 100%)`}}
 						animate={{background: `conic-gradient(from -90deg, 
-							${primaryColor} 0%, 
-							${primaryColor} ${percentage}, 
-							${darkColor} ${percentage}, ${darkColor} 100%)`}}
+							var(--primary-color) 0%, 
+							var(--primary-color) ${percentage}, 
+							var(--dark-color) ${percentage}, var(--dark-color) 100%)`}}
 							transition={{
 								duration: 2,
 								ease: 'easeOut'
@@ -102,12 +101,12 @@ const States = () => {
 							className="relative w-full aspect-square max-w-[300px] self-center rounded-full sm:shrink-0"
 							style={{
 								background: `conic-gradient(from -90deg, 
-									${primaryColor} 0%, 
-									${primaryColor} ${percentage}, 
-									${darkColor} ${percentage}, ${darkColor} 100%)`
+									var(--primary-color) 0%, 
+									var(--primary-color) ${percentage}, 
+									var(--dark-color) ${percentage}, var(--dark-color) 100%)`
 								}}
 								>
-					<div className="absolute inset-[20%] sm:inset-[60px] rounded-full bg-bg"></div>
+					<div className="absolute inset-[20%] sm:inset-[60px] rounded-full bg-bg" />
 					<Nisba className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" percentage={parseFloat(percentage)}/>
 				</motion.div>
 			</Container>

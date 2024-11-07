@@ -39,7 +39,6 @@ function App() {
                       <Route path="/signup" element={withoutAuth(SignUp)} />
                       <Route path="/login" element={withoutAuth(Login)} />
                       <Route path="/forget-password" element={withoutAuth(ForgetPassword)} />
-                      {/* <Route path="/chat" element={withAuth(Chat)} /> */}
                       <Route element={withAuth(Layout)}>
                         <Route path="/chat" element={<Chat />} />
                         <Route path="/settings" element={<Settings />} />
@@ -68,10 +67,8 @@ function App() {
                         </Route>
                         <Route path='/tournament' >
                           <Route index element={<Tournament />} />
-                          {/* <Route element={<GameLayout isTournament={true}/>}> */}
                             <Route path='play' element={<Play isTournament={true} />} />
                             <Route path='match-making' element={<MatchMaking isTournament={true} />} />
-                          {/* </Route> */}
                           <Route path='*' element={<NotFound />} />
                         </Route>
                       </Route>

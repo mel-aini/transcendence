@@ -1,4 +1,4 @@
-import { API_END_POINT } from "./urls";
+import { API_END_POINT } from "../utils/urls";
 
 type THeaders = HeadersInit | undefined;
 

@@ -6,7 +6,6 @@ import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";
 
 const useOAuth = (): [() => Promise<void>] => {
 	const [searchParams] = useSearchParams();
-	// const [toggle, setToggle] = useState<boolean>(false)
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
 	const navigate = useNavigate();
@@ -19,33 +18,26 @@ const useOAuth = (): [() => Promise<void>] => {
 		if (!code && !state) return;
 		
 		dispatch({type: STORE_OPTS.LOADING, state: true});
+		const data = {
+			type : "oauth",
+			data: {
+				code: code,
+				state: state
+			}
+		}
 		try {
-			const data = {
-				type : "oauth",
-				data: {
-					code: code,
-					state: state
+			
+			const response = await axios.post(API_END_POINT + 'register/', data, {
+				withCredentials: true,
+				headers: {
+					"Content-Type": "application/json",
 				}
-			}
-
-			try {
-				
-				const response = await axios.post(API_END_POINT + 'register/', data, {
-					withCredentials: true,
-					headers: {
-						"Content-Type": "application/json",
-					}
-				})
-				// console.log('response: ', response)
-				authDispatch({type: AUTH_OPTS.TOKEN, token: response.data.access_token});
-				navigate('/dashboard')
-
-			} catch (error) {
-				console.log('error in response', error)
-			}
+			})
+			authDispatch({type: AUTH_OPTS.TOKEN, token: response.data.access_token});
+			navigate('/dashboard')
 
 		} catch (error) {
-			console.log(error);
+			dispatch({type: STORE_OPTS.ALERT, message: 'Something wrong happened', isError: true, dispatch});
 		}
 		dispatch({type: STORE_OPTS.LOADING, state: false});
 	}

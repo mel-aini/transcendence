@@ -1,9 +1,8 @@
 import { Dispatch, FormEvent, useEffect, useState } from "react";
 import Input from "@/components/Input";
 import useInputChecker from "@/hooks/useInputChecker";
-import { invalidColor } from "@/utils/colors";
 import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
-import callToApi from "@/utils/callToApi";
+import callToApi from "@/api/callToApi";
 import Button from "@/components/Button";
 import { API_END_POINT } from "@/utils/urls";
 
@@ -99,7 +98,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 						className="w-full"
 						type='email'
 						placeholder='Email'
-						style={ formState[1].isError ? { borderColor:  invalidColor, color: invalidColor} : {}}
+						style={ formState[1].isError ? { borderColor:  'var(--invalid-color)', color: 'var(--invalid-color)'} : {}}
 					/>
 					{formState[1].isError && <p className="text-sm self-end text-invalid">{formState[1].error}</p>}
 				</div>

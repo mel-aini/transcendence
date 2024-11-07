@@ -2,9 +2,8 @@ import { Dispatch, useEffect, useState } from "react";
 import Input from "@/components/Input";
 import { useNavigate } from "react-router-dom";
 import useInputChecker from "@/hooks/useInputChecker";
-import { invalidColor } from "@/utils/colors";
 import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
-import callToApi from "@/utils/callToApi";
+import callToApi from "@/api/callToApi";
 import Button from "@/components/Button";
 import { API_END_POINT } from "@/utils/urls";
 import Loading from "@/components/Loading";
@@ -122,7 +121,7 @@ const RemainForm = ({email}: Props) => {
 						className="w-full" 
 						type='username'
 						placeholder='username'
-						style={formState[0].isError ? { borderColor: invalidColor, color: invalidColor } : {}}
+						style={formState[0].isError ? { borderColor: 'var(--invalid-color)', color: 'var(--invalid-color)' } : {}}
 						/>
 					<Input
 						onChange={(e) => {
@@ -133,7 +132,7 @@ const RemainForm = ({email}: Props) => {
 						className="w-full" 
 						type='password'
 						placeholder='password'
-						style={formState[2].isError ? { borderColor: invalidColor, color: invalidColor } : {}}
+						style={formState[2].isError ? { borderColor: 'var(--invalid-color)', color: 'var(--invalid-color)' } : {}}
 						/>
 					<Input
 						onChange={(e) => {
@@ -144,7 +143,7 @@ const RemainForm = ({email}: Props) => {
 						className="w-full" 
 						type='password'
 						placeholder='confirm password'
-						style={formState[3].isError ? { borderColor: invalidColor, color: invalidColor } : {}}
+						style={formState[3].isError ? { borderColor: 'var(--invalid-color)', color: 'var(--invalid-color)' } : {}}
 						/>
 				</>
 				{formError != '' && <p className="text-sm self-end text-invalid">{formError}</p>}

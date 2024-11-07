@@ -5,7 +5,6 @@ import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import axios from "axios";
 import { validate } from "@/utils/validation";
 import Loading from "@/components/Loading";
-import { invalidColor } from "@/utils/colors";
 import { Link } from "react-router-dom";
 import { API_END_POINT } from "@/utils/urls";
 
@@ -71,7 +70,7 @@ function EnterEmail({ email, setStep }: Props) {
 						className="w-full"
 						type='email'
 						placeholder='Enter your email'
-						style={ error.state ? { borderColor:  invalidColor, color: invalidColor} : {}}
+						style={ error.state ? { borderColor:  'var(--invalid-color)', color: 'var(--invalid-color)'} : {}}
 					/>
 					{error.state && <p className="text-sm self-end text-invalid">{error.content}</p>}
 				</div>

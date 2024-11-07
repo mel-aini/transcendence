@@ -68,33 +68,28 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 	}, [state.accessToken])
 
 	useLayoutEffect(() => {
-		// intercept responses
 		const id = api.interceptors.response.use(
-		response => response, // Directly return successful responses.
+		response => response,
 		async error => {
 			const originalRequest = error.config;
 			if (error.response.status === 401 && !originalRequest._retry) {
-			originalRequest._retry = true; // Mark the request as retried to avoid infinite loops.
+			originalRequest._retry = true;
 			try {
-				// const refreshToken = localStorage.getItem('refreshToken'); // Retrieve the stored refresh token.
-				// Make a request to your auth server to refresh the token.
 				const token = await jwt.refresh('access_expired');
 
 				if (!token) {
 					throw error;
 				}
 				dispatch({type: AUTH_OPTS.TOKEN, token: token})
-				// Update the authorization header with the new access token.
 				api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-				return api(originalRequest); // Retry the original request with the new access token.
+				return api(originalRequest);
 			} catch (refreshError) {
-				// Handle refresh token errors by clearing stored tokens and redirecting to the login page.
 				dispatch({type: AUTH_OPTS.TOKEN, token: null})
 				navigate('/login')
 				return Promise.reject(refreshError);
 			}
 			}
-			return Promise.reject(error); // For all other errors, return the error as is.
+			return Promise.reject(error);
 		}
 		);
 

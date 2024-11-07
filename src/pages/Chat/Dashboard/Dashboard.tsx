@@ -4,7 +4,6 @@ import { IoAddCircle } from "react-icons/io5";
 import OnlineFriends from "./OnlineFriends";
 import { FiSearch } from "react-icons/fi";
 import { FormEvent, useEffect, useState } from "react";
-import useLog from "@/hooks/useLog";
 import SearchFriends from "./SearchFriends";
 import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
 import { useAuthContext } from "@/contexts/authProvider";
@@ -16,7 +15,6 @@ import Modal from "@/components/Modal";
 function Dashboard() {
 	const [toggleSearch, setToggleSearch] = useState(false);
 	const [searchFriends, setSearchFriends] = useState(false);
-	const action = useLog();
 	const { state: chatState, dispatch, sendJsonMessage } = useChatContext();
 	const { state } = useAuthContext();
 	const [input, setInput] = useState('');

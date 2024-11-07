@@ -9,7 +9,6 @@ const useLog = () => {
 	const action = async (type: 'LOGIN' | 'LOGOUT') => {
 		switch (type) {
 			case 'LOGOUT':
-				// code
 				try {
 					await api.post('logout/');
 					dispatch({type: AUTH_OPTS.TOKEN, token: null})
