@@ -1,12 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import OAuthBar from "../Sign-up/OAuthBar";
 import Welcome from "../Sign-up/Welcome";
 import SignInForm from "./SignInForm";
 import SignIn2FA from "./SingIn2FA";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 const Index = () => {
 	const [isTwoFA, setIsTwoFA] = useState(false);
+	const location = useLocation();
+	
+	useLayoutEffect(() => {
+		location.state?.isTwoFA && setIsTwoFA(true);
+	}, [])
 
 	return (
 		<div className="bg-bg min-h-[100vh] flex">

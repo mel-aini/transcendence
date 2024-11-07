@@ -9,7 +9,7 @@ const useOAuth = (): [() => Promise<void>] => {
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
 	const navigate = useNavigate();
-
+	
 	const handleOAuth = async () => {
 
 		const code: string | null = searchParams.get('code');
@@ -33,8 +33,19 @@ const useOAuth = (): [() => Promise<void>] => {
 					"Content-Type": "application/json",
 				}
 			})
-			authDispatch({type: AUTH_OPTS.TOKEN, token: response.data.access_token});
-			navigate('/dashboard')
+			if ('TFA' in response) {
+				localStorage.setItem('tfa', response.data.TFA.token);
+				navigate('/login', { state: {
+					isTwoFA: true
+				}})
+			} else {
+				authDispatch({type: AUTH_OPTS.TOKEN, token: response.data.access_token});
+				navigate('/dashboard', { 
+					replace: true, 
+					state: {
+						message: 'You have logged in successfully'
+				} })
+			}
 
 		} catch (error) {
 			dispatch({type: STORE_OPTS.ALERT, message: 'Something wrong happened', isError: true, dispatch});

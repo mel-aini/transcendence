@@ -92,7 +92,7 @@ const SignInForm = ({ setIsTwoFA }: Props) => {
 						replace: true, 
 						state: {
 							message: 'You have logged in successfully'
-						} });
+					} });
 				}
 		}
 		catch (error: any) {
