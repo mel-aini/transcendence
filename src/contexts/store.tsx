@@ -1,5 +1,6 @@
-import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useLayoutEffect, useReducer } from "react";
 import { UserData } from "@/types/profile";
+import { useLocation } from "react-router-dom";
 
 export interface INotification {
 	notification_id: string, 
@@ -127,6 +128,11 @@ const reducer = (state: GlobalStateProps, action: any) => {
 
 const GlobalContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	const location = useLocation();
+
+	useLayoutEffect(() => {
+		dispatch({type: STORE_OPTS.ALERT_OFF})
+	}, [location.pathname])
 
 	return (
 		<GlobalContext.Provider value={{state, dispatch}}>

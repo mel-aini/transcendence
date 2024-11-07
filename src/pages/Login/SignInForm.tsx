@@ -70,7 +70,7 @@ const SignInForm = ({ setIsTwoFA }: Props) => {
 				},
 				password: password
 			},
-			refer: "/game/101123542145"
+			refer: ""
 		}
 		
 		try {
