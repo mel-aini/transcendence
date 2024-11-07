@@ -1,9 +1,8 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
-import { FriendsData, ProfileRes } from "@/types/profile"
+import { useEffect, useRef, useState } from "react"
+import { FriendsData } from "@/types/profile"
 import FriendBar from "./FriendBar"
 import { AnimatePresence, motion } from "framer-motion"
-import { useGlobalContext } from "@/contexts/store"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import RelationBar from "./RelationBar"
 import { PROFILE_OPTS, useProfileContext } from "@/contexts/profileStore"
 import api from "@/api/axios"
@@ -157,7 +156,7 @@ const AllFriends = () => {
 				animate={{opacity: 1}}
 				transition={{duration: 0.3}}
 				exit={{ opacity: 0}}
-				className="w-[600px] overflow-hidden bg-secondary p-5 sm:p-10 rounded-md space-y-5">
+				className="w-full overflow-hidden bg-secondary p-5 sm:p-10 rounded-md space-y-5">
 				<div className="flex justify-between max-w-[268px] w-full gap-2">
 					<RelationBar ref={refFriend} onClick={() => HandleClick(refFriend, "friend", id ? "friends/" + id : "friends")} width={59} name={"Friends"} active={true} />
 					{

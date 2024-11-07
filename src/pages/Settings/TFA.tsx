@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
-import { useProfileContext } from "@/contexts/profileStore";
+import { useState } from "react";
 import EditBar from "./EditBar";
 import { UpdateReq } from "@/types/profile";
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
 import { useGlobalContext } from "@/contexts/store";
 
 function TFA() {
-	// const {state} = useProfileContext();
 	const {state} = useGlobalContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	const [enableTFA, setEnableTFA] = useState<boolean | undefined>(state.userData?.tfa?.status);
 
 	const makeReq = () => {
-		if (state.userData?.tfa?.status === undefined)
+		if (state.userData?.tfa?.content === '')
 			return ;
 		const req : UpdateReq = {
 			type: "update",

@@ -69,7 +69,7 @@ const Friends = () => {
 				<div className="relative flex justify-between items-center w-full">
 					<h1 className="text-2xl font-semibold">Friends</h1>
 					<span className="cursor-pointer select-none" onClick={() => setSeeAllFriends(true)}>see all</span>
-					<Modal isOpen={seeAllFriends} onClose={() => setSeeAllFriends(false)}>
+					<Modal className="w-11/12 max-w-[600px]" isOpen={seeAllFriends} onClose={() => setSeeAllFriends(false)}>
 						<AllFriends />
 					</Modal>
 				</div>
