@@ -22,7 +22,7 @@ const Tournaments = () => {
 			<div className="grid grid-cols-1 sm:grid-cols-2 sm:h-[400px] bg-secondary rounded-md border-white">
 				<div className="flex flex-col justify-between p-5 sm:p-10 space-y-8">
 					<div className='space-y-8'>
-						<Title 
+						<Title
 							firstCharClassName='text-4xl sm:text-5xl'
 							restWordClassName="text-2xl sm:text-3xl md:text-4xl"
 								>Tournament

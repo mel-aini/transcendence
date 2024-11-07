@@ -46,10 +46,6 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 	const navigate = useNavigate();
 
 	useLayoutEffect(() => {
-		console.log('access token updated', state.accessToken)
-	}, [state.accessToken])
-
-	useLayoutEffect(() => {
 		// intercept requests
 		const id = api.interceptors.request.use((reqConfig) => {
 			reqConfig.headers.Authorization = `Bearer ${state.accessToken}`;

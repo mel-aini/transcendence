@@ -398,7 +398,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	useEffect(() => {
 		if (state.conversation.state == 'loading') {
 			dispatch({type: CHAT_OPTS.MESSAGES, messages: []})
-			console.log(authState)
 			sendJsonMessage({
 				type: 'messages',
 				conversation_id: state.conversation.id,

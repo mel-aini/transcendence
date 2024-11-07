@@ -12,6 +12,9 @@ function ConversationsList({className, ...props}: Props) {
 
 	const handler = (conversation: Conversation) => {
 		dispatch({type: CHAT_OPTS.FOCUS, state: true})
+
+		if (state.conversation.id == conversation.id) return;
+	
 		dispatch({type: CHAT_OPTS.CONVERSATION, conversation: {
 			id: conversation.id,
 			state: 'loading'
