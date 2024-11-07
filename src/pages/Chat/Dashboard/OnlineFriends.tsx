@@ -6,6 +6,9 @@ function OnlineFriends() {
 
 	const clickHandler = (friend: Object & { id: string | number, username: string, avatar_link: string, conversation_id: string | number }) => {
 		dispatch({type: CHAT_OPTS.FOCUS, state: true})
+
+		if (state.conversation.id == friend.conversation_id) return;
+	
 		dispatch({type: CHAT_OPTS.CONVERSATION, conversation: {
 			id: friend.conversation_id,
 			state: 'loading'

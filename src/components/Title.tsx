@@ -6,12 +6,24 @@ interface Props extends ComponentProps<'div'> {
 	firstCharClassName?: string
 	restWordClassName?: string
 	className?: string
+	shadow?: boolean
+	shadowVariant?: 'primary' | 'white' | 'red' | 'green'
 }
 
-function Title({ children, className, firstCharClassName, restWordClassName }: Props) {
+function Title({ 
+	children, 
+	className, 
+	firstCharClassName, 
+	restWordClassName, 
+	shadow = true,
+	shadowVariant = 'primary',
+	...props }: Props) {
 	const words = children.split(' ');
 	return ( 
-		<div className={className}>
+		<div 
+			className={className}
+			{...props}
+			>
 			{
 				words.map((word, index) => {
 					const firstChar = word.charAt(0);

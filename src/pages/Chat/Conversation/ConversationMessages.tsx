@@ -14,6 +14,7 @@ function ConversationMessages() {
 	}
 
 	useEffect(() => {
+		console.log('state updated ---> needs to scroll down')
 		if (state.conversation.state == 'ok') {
 			const parent = document.querySelector('.messages-container');
 			if (parent) {

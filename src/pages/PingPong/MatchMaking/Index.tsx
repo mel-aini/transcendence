@@ -3,7 +3,6 @@ import { Levels, usePingPongContext } from "@/contexts/pingPongProvider";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { primaryColor, secondaryColor } from "@/utils/colors";
 import { useGlobalContext } from "@/contexts/store";
 import useWebSocket from "react-use-websocket";
 import Customize_icon from "/Customize_icon.svg"
@@ -106,13 +105,13 @@ function Loader({isTournament}: {isTournament: boolean}) {
 	return (
 		<motion.div
 			initial={{background: `conic-gradient(from 0deg, 
-				${primaryColor} 0%, 
-				${primaryColor} ${'0%'}, 
-				${secondaryColor} ${'0%'}, ${secondaryColor} 100%)`}}
+				var(--primary-color) 0%, 
+				var(--primary-color) ${'0%'}, 
+				var(--secondary-color) ${'0%'}, var(--secondary-color) 100%)`}}
 			animate={{background: `conic-gradient(from 0deg, 
-				${primaryColor} 0%, 
-				${primaryColor} ${'100%'}, 
-				${secondaryColor} ${'100%'}, ${secondaryColor} 100%)`}}
+				var(--primary-color) 0%, 
+				var(--primary-color) ${'100%'}, 
+				var(--secondary-color) ${'100%'}, var(--secondary-color) 100%)`}}
 			transition={{
 				duration: state.timer - 3,
 				ease: 'easeIn'
@@ -120,9 +119,9 @@ function Loader({isTournament}: {isTournament: boolean}) {
 			className="relative size-[40px] self-center rounded-full sm:shrink-0 flex justify-center items-center"
 			style={{
 				background: `conic-gradient(from 0deg, 
-					${primaryColor} 0%, 
-					${primaryColor} ${'100%'}, 
-					${secondaryColor} ${'100%'}, ${secondaryColor} 100%)`
+					var(--primary-color) 0%, 
+					var(--primary-color) ${'100%'}, 
+					var(--secondary-color) ${'100%'}, var(--secondary-color) 100%)`
 				}}
 			>
 			<div className="size-[30px] text-sm bg-secondary rounded-full flex justify-center items-center">

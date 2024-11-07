@@ -1,15 +1,12 @@
 import Input from "@/components/Input";
 import { FiSearch } from "react-icons/fi";
-import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
-import { useAuthContext } from "@/contexts/authProvider";
 import { FormEvent, useRef, useState } from "react";
 import { isEmpty } from "@/utils/validation";
 import api from "@/api/axios";
-import User from "@/components/User";
-import send_icon from "/send_icon.svg"
 import { ImSpinner8 } from "react-icons/im";
+import FriendsResult from "./FriendsResult";
 
-interface Friend {
+export interface Friend {
 	profile_image: string
 	username: string
 }
@@ -19,8 +16,6 @@ interface Props {
 }
 
 function SearchFriends({onClose}: Props) {
-	const { state } = useAuthContext();
-	const { dispatch, sendJsonMessage: sendChatJsonMessage} = useChatContext();
 	const inputRef = useRef('');
 	const [friends, setFriends] = useState<Friend[] | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
@@ -33,20 +28,6 @@ function SearchFriends({onClose}: Props) {
 		setFriends(res.data);
 		inputRef.current = '';
 		setIsLoading(false)
-	}
-
-	const sendMessageHandler = (friend: any) => {
-		sendChatJsonMessage({
-			type: 'getConversation',
-			user1: state.username, 
-			user2: friend.username
-		})
-		dispatch({type: CHAT_OPTS.CONVERSATION_HEADER, conversation_header: {
-			username: friend.username,
-			avatar: friend.profile_image,
-			id: friend.id
-		}})
-		onClose();
 	}
 
 	return (
@@ -70,23 +51,7 @@ function SearchFriends({onClose}: Props) {
 			}
 			{
 				!isLoading && friends && friends.length > 0 &&
-				friends.map((friend, index) => {
-					return (
-						<div 
-							key={index}
-							className="flex justify-between items-center">
-							<div className="flex items-center gap-3">
-								<User border url={friend.profile_image} />
-								<h3>{friend.username}</h3>
-							</div>
-							<div 
-								onClick={() => sendMessageHandler(friend)}
-								className="bg-secondary border border-border size-[40px] flex justify-center items-center rounded-md cursor-pointer select-none">
-								<img src={send_icon} alt="" width={20} height={20}/>
-							</div>
-						</div>
-					)
-				})
+				<FriendsResult friends={friends} onClose={onClose} />
 			}
 			</div>
 		</div>

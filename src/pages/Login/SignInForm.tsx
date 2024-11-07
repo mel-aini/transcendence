@@ -1,9 +1,8 @@
 import Input from "@/components/Input";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Dispatch, SetStateAction, useState } from "react";
-import { invalidColor } from "@/utils/colors";
 import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
-import callToApi from "@/utils/callToApi";
+import callToApi from "@/api/callToApi";
 import Button from "@/components/Button";
 import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";
 import Loading from "@/components/Loading";
@@ -84,8 +83,6 @@ const SignInForm = ({ setIsTwoFA }: Props) => {
 				
 				const res = await callToApi('login/', data);
 				if ('TFA' in res) {
-					// console.log('2fa is enabled', res);
-					// console.log(res.TFA.token);
 					localStorage.setItem('tfa', res.TFA.token);
 					setIsTwoFA(true);
 				} else {
@@ -95,7 +92,7 @@ const SignInForm = ({ setIsTwoFA }: Props) => {
 						replace: true, 
 						state: {
 							message: 'You have logged in successfully'
-						} });
+					} });
 				}
 		}
 		catch (error: any) {
@@ -114,7 +111,7 @@ const SignInForm = ({ setIsTwoFA }: Props) => {
 						onChange={(e) => usernameHandler(e.target.value)}
 						onBlur={() => blurUserHandler()}
 						className={"w-full"} 
-						style={(!isValidUsername || emptyInput || invalidLogin) ? {borderColor: invalidColor, color: invalidColor} : {}}
+						style={(!isValidUsername || emptyInput || invalidLogin) ? {borderColor: 'var(--invalid-color)', color: 'var(--invalid-color)'} : {}}
 						type="username" 
 						placeholder="username"
 					/>
@@ -122,7 +119,7 @@ const SignInForm = ({ setIsTwoFA }: Props) => {
 						onChange={(e) => passwordHandler(e.target.value)} 
 						onBlur={() => blurPassHandler()}
 						className={"w-full"}  
-						style={(!isValidPassword || emptyInput || invalidLogin) ? {borderColor: invalidColor, color: invalidColor} : {}}
+						style={(!isValidPassword || emptyInput || invalidLogin) ? {borderColor: 'var(--invalid-color)', color: 'var(--invalid-color)'} : {}}
 						type="password" 
 						placeholder="password"
 					/>

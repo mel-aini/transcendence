@@ -20,9 +20,11 @@
 	--gray-shade1: #858585;
 	--gray-shade2: #313131;
 	--gray-shade3: #0C0D0F;
+	--gray-shade4: #222222;
 	--black-color: #000000;
 	--invalid-color: #ed4337;
-	--border-color: rgba(255, 255, 255, 0.5);
+	--border-color: rgba(255, 255, 255, 0.1);
+	--border-color2: rgba(255, 255, 255, 0.2);
 
 	/* button border */
 	--strock-width: 3px;

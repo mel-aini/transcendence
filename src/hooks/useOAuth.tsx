@@ -6,11 +6,10 @@ import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";
 
 const useOAuth = (): [() => Promise<void>] => {
 	const [searchParams] = useSearchParams();
-	// const [toggle, setToggle] = useState<boolean>(false)
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
 	const navigate = useNavigate();
-
+	
 	const handleOAuth = async () => {
 
 		const code: string | null = searchParams.get('code');
@@ -19,33 +18,37 @@ const useOAuth = (): [() => Promise<void>] => {
 		if (!code && !state) return;
 		
 		dispatch({type: STORE_OPTS.LOADING, state: true});
-		try {
-			const data = {
-				type : "oauth",
-				data: {
-					code: code,
-					state: state
-				}
+		const data = {
+			type : "oauth",
+			data: {
+				code: code,
+				state: state
 			}
-
-			try {
-				
-				const response = await axios.post(API_END_POINT + 'register/', data, {
-					withCredentials: true,
-					headers: {
-						"Content-Type": "application/json",
-					}
-				})
-				// console.log('response: ', response)
+		}
+		try {
+			
+			const response = await axios.post(API_END_POINT + 'register/', data, {
+				withCredentials: true,
+				headers: {
+					"Content-Type": "application/json",
+				}
+			})
+			if ('TFA' in response) {
+				localStorage.setItem('tfa', response.data.TFA.token);
+				navigate('/login', { state: {
+					isTwoFA: true
+				}})
+			} else {
 				authDispatch({type: AUTH_OPTS.TOKEN, token: response.data.access_token});
-				navigate('/dashboard')
-
-			} catch (error) {
-				console.log('error in response', error)
+				navigate('/dashboard', { 
+					replace: true, 
+					state: {
+						message: 'You have logged in successfully'
+				} })
 			}
 
 		} catch (error) {
-			console.log(error);
+			dispatch({type: STORE_OPTS.ALERT, message: 'Something wrong happened', isError: true, dispatch});
 		}
 		dispatch({type: STORE_OPTS.LOADING, state: false});
 	}

@@ -1,7 +1,7 @@
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import { useNavigate } from "react-router-dom";
-import callToApi from "@/utils/callToApi";
+import callToApi from "@/api/callToApi";
 import { Dispatch, SetStateAction, useState } from "react";
 import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";

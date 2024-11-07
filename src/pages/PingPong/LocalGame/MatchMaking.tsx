@@ -2,7 +2,6 @@ import User from "@/components/User";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { primaryColor, secondaryColor } from "@/utils/colors";
 import { useGlobalContext } from "@/contexts/store";
 import CustomizeTab from "../../Settings/CustomizeTab";
 import { Section, SectionContent, SectionHeader } from "../../Settings/Index";
@@ -68,13 +67,13 @@ function Loader({timer}: {timer: number}) {
 	return (
 		<motion.div
 			initial={{background: `conic-gradient(from 0deg, 
-				${primaryColor} 0%, 
-				${primaryColor} ${'0%'}, 
-				${secondaryColor} ${'0%'}, ${secondaryColor} 100%)`}}
+				var(--primary-color) 0%, 
+				var(--primary-color) ${'0%'}, 
+				var(--secondary-color) ${'0%'}, var(--secondary-color) 100%)`}}
 			animate={{background: `conic-gradient(from 0deg, 
-				${primaryColor} 0%, 
-				${primaryColor} ${'100%'}, 
-				${secondaryColor} ${'100%'}, ${secondaryColor} 100%)`}}
+				var(--primary-color) 0%, 
+				var(--primary-color) ${'100%'}, 
+				var(--secondary-color) ${'100%'}, var(--secondary-color) 100%)`}}
 			transition={{
 				duration: timer,
 				ease: 'easeOut'
@@ -82,9 +81,9 @@ function Loader({timer}: {timer: number}) {
 			className="relative size-[40px] self-center rounded-full sm:shrink-0 flex justify-center items-center"
 			style={{
 				background: `conic-gradient(from 0deg, 
-					${primaryColor} 0%, 
-					${primaryColor} ${'100%'}, 
-					${secondaryColor} ${'100%'}, ${secondaryColor} 100%)`
+					var(--primary-color) 0%, 
+					var(--primary-color) ${'100%'}, 
+					var(--secondary-color) ${'100%'}, var(--secondary-color) 100%)`
 				}}
 			>
 			<div className="size-[30px] text-sm bg-secondary rounded-full flex justify-center items-center">

@@ -1,10 +1,9 @@
 import { Dispatch, useState } from "react";
 import Input from "@/components/Input";
-import { invalidColor } from "@/utils/colors";
 import Button from "@/components/Button";
 import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import useInputChecker from "@/hooks/useInputChecker";
-import callToApi from "@/utils/callToApi";
+import callToApi from "@/api/callToApi";
 import { useNavigate } from "react-router-dom";
 import { API_END_POINT } from "@/utils/urls";
 
@@ -77,8 +76,8 @@ const UsernameForm = ({dispatchLevel}: Props) => {
 					type='username'
 					placeholder='Username'
 					style={formState[0].isError ? {
-						borderColor:  invalidColor,
-						color: invalidColor
+						borderColor:  'var(--invalid-color)',
+						color: 'var(--invalid-color)'
 					} : {}}
 				/>
 					{formError != '' && <p className="text-[12px] self-end text-invalid">{formError}</p>}
