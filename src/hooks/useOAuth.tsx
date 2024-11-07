@@ -26,22 +26,22 @@ const useOAuth = (): [() => Promise<void>] => {
 			}
 		}
 		try {
-			
 			const response = await axios.post(API_END_POINT + 'register/', data, {
 				withCredentials: true,
 				headers: {
 					"Content-Type": "application/json",
 				}
 			})
-			if ('TFA' in response) {
+			if ('TFA' in response.data) {
 				localStorage.setItem('tfa', response.data.TFA.token);
-				navigate('/login', { state: {
-					isTwoFA: true
+				navigate('/login', { 
+					state: {
+						isTwoFA: true
 				}})
 			} else {
 				authDispatch({type: AUTH_OPTS.TOKEN, token: response.data.access_token});
 				navigate('/dashboard', { 
-					replace: true, 
+					replace: true,
 					state: {
 						message: 'You have logged in successfully'
 				} })

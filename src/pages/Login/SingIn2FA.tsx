@@ -17,13 +17,13 @@ const SignIn2FA = ({setIsTwoFA}: Props) => {
     const { state, dispatch } = useGlobalContext();
     const { dispatch: authDispatch } = useAuthContext();
     const [error, setError] = useState('');
-    // const
+
     const handleSubmit = async () => {
         dispatch({type: STORE_OPTS.LOADING, state: true})
         const data = {
             otp: otpCode,
             token: localStorage.getItem('tfa') || '',
-            refer: 'url'
+            refer: ''
         }
 
         if (otpCode.length != 6) {
@@ -39,7 +39,7 @@ const SignIn2FA = ({setIsTwoFA}: Props) => {
             navigate('/dashboard');
         
         } catch (error) {
-            setError('invalid code')
+            setError('Invalid code')
         }
         dispatch({type: STORE_OPTS.LOADING, state: false})
     }
