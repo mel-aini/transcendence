@@ -31,8 +31,10 @@ const Game = forwardRef((props: Props, ref: any) => {
 			const orientation = window.screen.orientation.type;
 			dispatch({type: STORE_OPTS.ORIENTATION, isOrientation: orientation == "landscape-primary"})
 		}
+		handleOrientationChange();
 		window.addEventListener('orientationchange', handleOrientationChange);
 		return () => {
+			dispatch({type: STORE_OPTS.ORIENTATION, isOrientation: false});
 			window.removeEventListener('orientationchange', handleOrientationChange);
 		};
 	}, [])

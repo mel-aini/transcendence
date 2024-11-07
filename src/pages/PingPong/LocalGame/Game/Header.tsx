@@ -28,11 +28,11 @@ const Header = (props: Props) => {
 		<div className="w-full gap-1 flex items-center justify-between">
 			<div className="flex gap-1">
 				<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-					<div className="absolute w-[2px] top-full -translate-y-full bg-white max-h-full" style={{height: `${props.leftScore * 100 / state.localGameData.goals}%`}}/>
+					<div className="absolute w-[2px] top-full -translate-y-full bg-white max-h-full duration-300" style={{height: `${props.leftScore * 100 / state.localGameData.goals}%`}}/>
 					<span className="absolute inline-flex items-center justify-center w-full h-full">{props.leftScore}</span>
 				</div>
 				<div className="relative bg-secondary w-[40px] h-[40px] shrink-0">
-					<div className={"absolute w-[2px] top-full -translate-y-full max-h-full " + (props.isAI ? 'bg-primary' : 'bg-white')} style={{height: `${props.rightScore * 100 / state.localGameData.goals}%`}}/>
+					<div className={"absolute w-[2px] top-full -translate-y-full max-h-full duration-300 " + (props.isAI ? 'bg-primary' : 'bg-white')} style={{height: `${props.rightScore * 100 / state.localGameData.goals}%`}}/>
 					<span className={"absolute inline-flex items-center justify-center w-full h-full " + (props.isAI ? 'text-primary' : '')}>{props.rightScore}</span>
 				</div>
 			</div>
