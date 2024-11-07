@@ -1,13 +1,11 @@
 import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
 import { STORE_OPTS, useGlobalContext } from "./store";
-import { useTournamentContext } from "./TournamentProvider";
 import { useNavigate } from "react-router-dom";
 import { UserData } from "@/types/profile";
 import { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import { useAuthContext } from "./authProvider";
 import useWebSocket from "react-use-websocket";
 import { WS_END_POINT } from "@/utils/urls";
-import { useNotificationsContext } from "./notificationsProvider";
 
 export interface Coordinates {
 	x: number,
@@ -206,27 +204,21 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 
 	const messageHandler = (message: any) => {
 		if (message.type != "ball" && message.type != "paddle")
-			console.log(message);
 		if (message.type == "opponents")
 		{
 			if (message.user1.username == username)
 			{
 				dispatch({type: "OPPONENT", opponent: message.user2});
-				// isTournament && dispatch({type: "ALIAS", alias: tournMessage.user2.alias});
 			}
 			else
 			{
 				dispatch({type: "OPPONENT", opponent: message.user1});
-				// isTournament && dispatch({type: "ALIAS", alias: tournMessage.user1.alias});
 			}
 			dispatch({type: 'CHLEVEL', level: Levels.OpponentFound});
-			// isTournament && sendTournMessage( { type: 'handshake' } );
 		}
 		else if (message.type == "timing2")
 		{
 			dispatch({type: "TIMER", timer: message.time});
-			// message.time == 0 && dispatch({type: "TIMER", timer: 15});
-			// (isTournament && message.time == 15) && navigate('match-making');
 		}
 		else if (message.type == "ingame")
 		{
@@ -264,7 +256,6 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 		}
 		else if (message.type == "score")
 		{
-			// console.log(message);
 			(state.directions.my == "right") ?
 			dispatch({type: "SCORE", score: {...state.score, my: message.right, side: message.left}})
 			:
@@ -272,12 +263,10 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 		}
 		else if (message.type == "end")
 		{
-			// console.log(message);
 			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: message.xp, isEndGame: true}});
 		}
 		else if (message.type == "disconnect")
 		{
-			// console.log(message);
 			message.status == "win"
 			?
 			dispatch({type: "SCORE", score: {...state.score, my: 3, side: 0}})

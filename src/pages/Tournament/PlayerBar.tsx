@@ -1,7 +1,5 @@
-import { LegacyRef, forwardRef, useEffect } from "react";
+import { LegacyRef, forwardRef } from "react";
 import { Player, useTournamentContext } from "@/contexts/TournamentProvider";
-import { useGlobalContext } from "@/contexts/store";
-import { GiCrownOfThorns } from "react-icons/gi";
 import { GiCrenelCrown } from "react-icons/gi";
 
 interface playerProp {

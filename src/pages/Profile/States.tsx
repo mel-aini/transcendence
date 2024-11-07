@@ -1,4 +1,3 @@
-import { UserData } from "@/types/profile";
 import { motion } from "framer-motion";
 import { ComponentProps, useEffect, useState } from "react";
 import Container from "@/components/Container";

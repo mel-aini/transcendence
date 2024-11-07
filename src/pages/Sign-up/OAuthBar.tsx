@@ -15,7 +15,6 @@ const OAuthBar = () => {
 			const body = await response.json();
 	
 			if (!response.ok) throw new Error('response error');
-			// console.log(body.link);
 			OAuthLink.current = body.link;
 			location.href = OAuthLink.current
 		} catch (error) {

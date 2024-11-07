@@ -307,13 +307,11 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 	const {lastJsonMessage, sendJsonMessage, readyState } = useWebSocket(state.socketUrl,
 		{
 			onOpen: () => {
-				console.log('WebSocket connected')
 				dispatch({type: "ROUND_DATA", roundData: initRounds()});
 				dispatch({type: "WINNER", winner: "player"});
 				navigate("/tournament");
 			},
 			onClose: () => {
-				console.log('WebSocket disconnected');
 				dispatch({ type: "RESET" });
 				// navigate("/dashboard");
 			},
@@ -352,7 +350,6 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		else if (message.type == "timing1")
 		{
 			message.time > 1 && notDispatch({type: NOTIFICATION_OPTS.PUSH_NOTIFICATION, notification: { type: 'text', content: "your next match in tournament will starts in a few seconds..." }, dispatch: notDispatch});
-			// message.time == 0 && navigate('/tournament');
 		}
 		else if (message.type == "timing2")
 		{
@@ -392,7 +389,6 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		}
 		else if (message.type == "score")
 		{
-			// console.log(message);
 			(state.directions.my == "right") ?
 			dispatch({type: "SCORE", score: {...state.score, my: message.right, side: message.left}})
 			:
@@ -400,20 +396,16 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		}
 		else if (message.type == "end")
 		{
-			// console.log(message);
 			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: 0, isEndGame: true}});
-			// dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
 		}
 		else if (message.type == "disconnect")
 		{
-			// console.log(message);
 			message.status == "win"
 			?
 			dispatch({type: "SCORE", score: {...state.score, my: 3, side: 0}})
 			:
 			dispatch({type: "SCORE", score: {...state.score, my: 0, side: 3}});
 			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: 0, isEndGame: true}});
-			// dispatch({type: 'CHLEVEL', level: Levels.FindingOpponent});
 		}
 	}
 
@@ -424,7 +416,6 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 
 			if (lastJsonMessage.type == "dashboard")
 			{
-				// console.log(lastJsonMessage);
 				const isCompleted: boolean = (lastJsonMessage.rounds.length > state.roundData.length);
 				const roundData: RoundData[] = state.roundData;
 				lastJsonMessage.rounds.map((round: any, index: number) => {

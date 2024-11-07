@@ -2,7 +2,7 @@ import States, { StatesSkeleton } from "./States";
 import History, { HistorySkeleton } from "./History";
 import Friends, { FriendsSkeleton } from "./Friends";
 import ProfileHeader, { ProfileHeaderSkeleton } from "./ProfileHeader";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import {  useParams } from "react-router-dom";
 import { PROFILE_OPTS, useProfileContext } from "@/contexts/profileStore";

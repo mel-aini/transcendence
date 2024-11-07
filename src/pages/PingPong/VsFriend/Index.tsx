@@ -4,14 +4,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { FriendsData } from "@/types/profile";
 import { useNavigate } from "react-router-dom";
-import { usePingPongContext } from "@/contexts/pingPongProvider";
 import LayoutHeader from "@/layout/LayoutHeader";
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
 
 function FriendBar({friend} : {friend: FriendsData}) {
 	const [send, setSend] = useState<boolean>(false);
 	const navigate = useNavigate();
-	const { sendJsonMessage } = useGlobalWebSocketContext(); // refactor lastJsonMessage
+	const { sendJsonMessage } = useGlobalWebSocketContext();
 
 	const goToProfile = () => {
 		navigate(friend.profile);
@@ -80,7 +79,6 @@ function VsFriend() {
 
 	const fetchOtherFriends = async (uri: string, isScroll: boolean) => {
 		const res: FriendsData[] = await api.get(uri).then((e) => e.data);
-		console.log(res);
 		if (isScroll)
 		{
 			if (res.length < 10)
@@ -127,8 +125,6 @@ function VsFriend() {
 	useEffect(() => {
 		if (!isLoading)
 			setFriends(data?.data);
-		console.log(friends);
-		
 	}, [isLoading]);
 
 	return (
@@ -146,6 +142,8 @@ function VsFriend() {
 						</div>
 						<div ref={scrollRef} onScroll={(e) => scrollHandler(e)} className="flex flex-col gap-3 max-h-[180px] overflow-auto scrollClass pr-2">
 							{
+								isError ? <div className="text-center">No Result !!!</div>
+								:
 								isLoading ?
 								<div className="flex justify-between items-center h-[50px] gap-4 shrink-0 animate-pulse">
 									<div className="h-full w-full flex mobile:justify-between justify-center items-center border border-border rounded-md mobile:px-5 px-3 gap-2">

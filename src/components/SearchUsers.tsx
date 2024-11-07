@@ -79,12 +79,16 @@ function SearchUsers() {
         setIsLoading(false);
     }
 
+    const whenError = (result: FriendsData[]) => {
+        setData(result);
+        setIsLoading(false);
+    }
+
     const submitHandler = (e: any) => {
         setIsLoading(true);
         e.preventDefault();
         setIsFetched(false);
     }
-
 
     useEffect(() => {
         if (!isFetched) {
@@ -109,6 +113,7 @@ function SearchUsers() {
             {isFetched && <InfiniteScrollObserver
                 endPoint={`search/?filter=${input}`}
                 whenFetched={whenFetched}
+                whenError={whenError}
                 searchUsers={true} />}
         </div>
     );

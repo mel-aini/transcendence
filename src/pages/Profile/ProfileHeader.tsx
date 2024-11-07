@@ -1,11 +1,10 @@
 import { PROFILE_OPTS, useProfileContext } from "@/contexts/profileStore";
 import LevelBar from "./LevelBar";
 import UserActions from "./UserActions";
-import {  useEffect, useRef } from "react";
+import { useRef } from "react";
 import api from "@/api/axios";
 import { useParams } from "react-router-dom";
 import edit_icon from "/edit_icon.svg"
-import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
 import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 
 export const ProfileHeaderSkeleton = () => {
@@ -37,7 +36,6 @@ export const ProfileHeaderSkeleton = () => {
 const ProfileHeader = () => {
 	const { dispatch } = useGlobalContext();
 	const { state, dispatchProfile } = useProfileContext();
-	const { sendJsonMessage } = useGlobalWebSocketContext();
 	const { id } = useParams();
 	const formRef = useRef<HTMLFormElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -52,7 +50,6 @@ const ProfileHeader = () => {
 			}
 			const formData = new FormData(formRef.current as HTMLFormElement | undefined);
 			const res = await api.post("upload-avatar/", formData);
-			console.log(res);
 			
 			if (res.status === 200)
 			{
@@ -65,14 +62,6 @@ const ProfileHeader = () => {
 			inputRef.current && (inputRef.current.value = '');
 		}
 	}
-
-	// useEffect(() => {
-	// 	if (id)
-	// 	{
-	// 		const checkOnline = setInterval(() => sendJsonMessage( { type: "online", identifier: state.userData?.username } ), 10000);
-	// 		return () => clearInterval(checkOnline);
-	// 	}
-	// }, [state.userData]);
 
 	return (
 		<>

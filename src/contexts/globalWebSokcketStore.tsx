@@ -54,7 +54,6 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 	useEffect(() => {
 		if (!isEmptyObject(lastJsonMessage) && lastJsonMessage.code === 200)
 		{
-			console.log(lastJsonMessage, state.userData);
 			if (lastJsonMessage.type === "user-action") {
 				const value = setValue(lastJsonMessage.data.value);
 				if (!isEmptyObject(state.userData) && lastJsonMessage.identifier === state.userData?.username) {

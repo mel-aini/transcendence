@@ -215,7 +215,6 @@ class GameLogic {
             this.ball.y = 100 - Ball.reduisHeight
         } if (this.ball.x > 100 - (Paddle.WIDTH + Ball.reduisWidth)
             || this.ball.x < Paddle.WIDTH + Ball.reduisWidth) {
-            // console.log(Paddle.WIDTH + Ball.reduisWidth, this.ball.x)
             if (this.ball.x > 50) {
                 this._leftScore++;
             } else {

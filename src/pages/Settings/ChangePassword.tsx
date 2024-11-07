@@ -1,8 +1,7 @@
-import { LegacyRef, forwardRef, useEffect, useRef, useState } from "react";
+import { LegacyRef, forwardRef, useRef, useState } from "react";
 import { CgEye } from "react-icons/cg";
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
-import { useGlobalContext } from "@/contexts/store";
 
 interface Props {
 	type: "current" | "newPass" | "reTypeNew",

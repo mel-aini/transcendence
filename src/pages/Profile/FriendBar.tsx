@@ -7,7 +7,7 @@ import PendingInvitation from "./userActions/PendingInvitation"
 import Blocked from "./userActions/Blocked"
 import SendingInvitation from "./userActions/SendingInvitation"
 import WaitingAction from "./userActions/WaitingAction"
-import { Actions, useProfileContext } from "@/contexts/profileStore"
+import { Actions } from "@/contexts/profileStore"
 import GoToProfile from "./userActions/GoToProfile"
 
 const Action = ({username, action}: {username: string, action: Actions | null}) => {
@@ -50,8 +50,6 @@ const FriendBar = ({friend, relation}: {friend: FriendsData, relation: Relation 
 	}
 
 	useEffect(() => {
-		console.log("relation", relation);
-		
 		setActions(relation);
 	}, [relation])
 

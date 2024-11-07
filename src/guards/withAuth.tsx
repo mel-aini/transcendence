@@ -16,7 +16,6 @@ export function Nested({ Component }: { Component: ComponentType }) {
 
 	useEffect(() => {
 		if (state?.message) {
-			console.log(state?.message)
 			dispatch({type: STORE_OPTS.ALERT, message: state.message, dispatch})
 		}
 	}, [])

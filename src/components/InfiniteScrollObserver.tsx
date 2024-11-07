@@ -19,7 +19,6 @@ function InfiniteScrollObserver({ endPoint, start = 0, chunkSize = 10, whenFetch
 	const callback = async (entries: IntersectionObserverEntry[]) => {
 		const element = entries[0];
 		if (element.isIntersecting) {
-			// fetch Data
 			try {
 				const start: string = searchUsers ? '&start=' : '/?start=';
 				const data = await api.get(endPoint + start + dataRange.current[0] + '&end=' + dataRange.current[1]);
@@ -33,7 +32,7 @@ function InfiniteScrollObserver({ endPoint, start = 0, chunkSize = 10, whenFetch
 				if (whenFetched) whenFetched(data.data);
 			} catch (error) {
 				setIsLimitReached(true);
-				if (whenError) whenError(error);
+				if (whenError) whenError([]);
 			}
 		}
 	}

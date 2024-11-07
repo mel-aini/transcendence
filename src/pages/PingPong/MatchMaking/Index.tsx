@@ -1,12 +1,9 @@
 import User from "@/components/User";
 import { Levels, usePingPongContext } from "@/contexts/pingPongProvider";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "@/contexts/store";
-import useWebSocket from "react-use-websocket";
-import Customize_icon from "/Customize_icon.svg"
-import { IoIosArrowBack ,IoIosArrowForward } from "react-icons/io";
 import CustomizeTab from "../../Settings/CustomizeTab";
 import { Section, SectionContent, SectionHeader } from "../../Settings/Index";
 import LayoutHeader from "@/layout/LayoutHeader";

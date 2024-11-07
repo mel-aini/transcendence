@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import HistoryChart from "./HistoryChart";
-import { delay, motion } from "framer-motion";
-import { MatchesData, ProfileRes } from "@/types/profile";
-import { useGlobalContext } from "@/contexts/store";
+import { motion } from "framer-motion";
+import { MatchesData } from "@/types/profile";
 import { useNavigate, useParams } from "react-router-dom";
 import Container from "@/components/Container";
 import win from "/win.svg"
@@ -44,7 +43,6 @@ const History = () => {
 	useEffect(() => {
 		
 		if (!isLoading) {
-			console.log(data?.data);
 			dispatchProfile({type: PROFILE_OPTS.MATCHES_DATA, matchesData: data?.data});
 		}
 

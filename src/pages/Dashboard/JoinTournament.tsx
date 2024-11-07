@@ -6,7 +6,6 @@ import { displayContext } from "./Tournaments";
 import { GiHumanPyramid } from "react-icons/gi";
 import { useTournamentContext } from "@/contexts/TournamentProvider";
 import { validate } from "@/utils/validation";
-import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/contexts/authProvider";
 import Modal from "@/components/Modal";
 import Title from "@/components/Title";
@@ -35,13 +34,10 @@ function PlayersNum() {
 function TournamentFrom() {
 	const [validAlias, setValidAlias] = useState<boolean>(true);
 	const inputRef = useRef<HTMLInputElement>(null);
-	// const alias = useRef<string>('');
 	const { state: token }  = useAuthContext();
 	const { state, dispatch } = useTournamentContext();
-	const navigate = useNavigate();
 
 	const changeHandler = () => {
-		// const input = inputRef.current;
 		(validate("username", inputRef.current ? inputRef.current.value : undefined)) ?
 		setValidAlias(true)
 		:
