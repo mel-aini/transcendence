@@ -22,7 +22,7 @@ function Box({isAI, counter, setCounter, status}: {isAI: boolean, counter: numbe
 				initial={{opacity: 0}}
 				animate={{opacity: 1}}
 				transition={{duration: 0.3}}
-				className={`flex flex-col justify-between items-center absolute duration-150 bg-gray3 rounded-[10px] left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[42%] h-[50%]`}>
+				className={`flex flex-col justify-between items-center absolute duration-150 bg-gray3 rounded-[10px] left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-1/2`}>
 				{
 					(status == "ready") ?
 					<Ready counter={counter}/>
