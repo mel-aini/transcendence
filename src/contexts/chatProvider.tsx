@@ -290,7 +290,7 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				if (lastJsonMessage.receiver == authState.username) {
 					// I'm the receiver
 					if (lastJsonMessage.sender == state.conversation_header?.username) {
-						// open conversation
+						// opened conversation
 						dispatch({type: CHAT_OPTS.MESSAGE, message: {
 							content: lastJsonMessage.message,
 							date: dateMeta.getDate(),
@@ -418,6 +418,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				avatar: '',
 			}})
 		}
+		dispatch({type: CHAT_OPTS.MESSAGES, messages: []})
+		dispatch({type: CHAT_OPTS.LAST_MESSAGE, message: null})
 	}, [state.isFocus, location.pathname])
 
 	return (

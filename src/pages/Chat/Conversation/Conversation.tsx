@@ -139,7 +139,7 @@ function Conversation() {
 								/>
 							{/* <img src={chatGif} className='w-3/4 sm:w-52 2xl:w-96' /> */}
 							<Title firstCharClassName='text-2xl text-primary' restWordClassName='text-primary'>Chat</Title>
-							<p>lorem ipsum dolor sit amet.</p>
+							<p className='text-gray1'>Welcome to your chat space</p>
 						</div>
 					</div>
 				}
