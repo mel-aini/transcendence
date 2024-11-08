@@ -4,6 +4,7 @@ import Table from "./Table";
 import LayoutHeader from "@/layout/LayoutHeader";
 import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import { twMerge } from "tailwind-merge";
+import { isMobile } from "react-device-detect";
 
 function Game({isTournament}: {isTournament: boolean}) {
 	const refParent = useRef<HTMLDivElement>(null);
@@ -24,8 +25,13 @@ function Game({isTournament}: {isTournament: boolean}) {
 
 	return (
 		<div className="flex flex-col items-center w-full">
-			{!state.isOrientation && <LayoutHeader className="w-full">Playing...</LayoutHeader>}
-			<div ref={refParent} className={twMerge("flex flex-col h-full max-w-[1200px] w-full justify-between items-center gap-[26px]", !state.isOrientation ? 'w-[60%]' : 'w-full')}>
+			{
+				state.isOrientation && isMobile ?
+				<></>
+				:
+				<LayoutHeader className="w-full">Playing...</LayoutHeader>
+			}
+			<div ref={refParent} className={twMerge("flex flex-col h-full max-w-[1200px] w-full justify-between items-center gap-[26px]", state.isOrientation && isMobile ? 'w-[60%]' : 'w-full')}>
 				<Header isTournament={isTournament} />
 				<Table isTournament={isTournament} />
 			</div>

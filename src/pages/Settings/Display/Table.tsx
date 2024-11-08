@@ -32,7 +32,7 @@ function Table({ tableColor, setTableColor, ballColor, paddleColor }: TableProps
 				<IoIosArrowBack className="text-xl" />
 			</button>
 			<div
-				style={{backgroundColor: tableColor}} 
+				style={{backgroundColor: tableColor + '1a'}} 
 				className="w-full relative flex-1 aspect-video border border-border rounded-md max-w-[1080px] duration-300">
 					<span
 						style={{backgroundColor: (paddleColor ? paddleColor : "#FFFFFF")}} 

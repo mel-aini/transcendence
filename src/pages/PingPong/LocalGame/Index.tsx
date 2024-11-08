@@ -36,24 +36,24 @@ function Index({isAI}: {isAI: boolean}) {
 			isAI ? game.current.updateAIGame(delta) : game.current.updateGame(delta);
 			(rightScore != game.current.rightScore) && setRightScore(game.current.rightScore);
 			(leftScore != game.current.leftScore) && setLeftScore(game.current.leftScore);
-            // if (game.current.rightScore >= state.localGameData.goals || game.current.leftScore >= state.localGameData.goals)
-			// {
-			// 	cancelAnimationFrame(animationRef.current);
-			// 	setIsEndGame(true);
-			// 	return ;
-			// }
+            if (game.current.rightScore >= state.localGameData.goals || game.current.leftScore >= state.localGameData.goals)
+			{
+				cancelAnimationFrame(animationRef.current);
+				setIsEndGame(true);
+				return ;
+			}
         }
         lastTime.current = time
         animationRef.current = requestAnimationFrame(loop_hook);
     }
 
-	// useEffect(() => {
-	// 	if (!isRunning && counter == 0) {
-	// 		cancelAnimationFrame(animationRef.current);
-	// 		setIsEndGame(true);
-	// 	}
+	useEffect(() => {
+		if (!isRunning && counter == 0) {
+			cancelAnimationFrame(animationRef.current);
+			setIsEndGame(true);
+		}
 		
-	// }, [isRunning]);
+	}, [isRunning]);
 
 	useEffect(() => {
 		if ((counter == 0) && (status == "ready") && (!animationRef.current))

@@ -8,16 +8,14 @@ import { PROFILE_OPTS, useProfileContext } from "@/contexts/profileStore"
 import api from "@/api/axios"
 import { useQuery } from "@tanstack/react-query"
 
-const Skeleton = () => {
+const FriendSkeleton = () => {
 	return (
-		<div className="w-[600px] overflow-hidden bg-secondary p-5 sm:p-10 rounded-md space-y-5">
-			<div className="flex justify-between max-w-[268px] w-full gap-2 animate-pulse">
-			{
-				[1, 2, 3].map((key: number) => <div key={key} className='h-[36px] w-[60px] flex flex-col justify-between items-center bg-[#2F2F2F] rounded-lg' />)
-			}
+		<div className="flex justify-between items-center w-full gap-3 h-[70px] rounded-md border border-border bg-gray3 px-5 animate-pulse">
+			<div className="flex items-center gap-4 cursor-pointer shrink overflow-hidden whitespace-nowrap">
+					<span className="rounded-full size-9 shrink-0 bg-[#2F2F2F]" />
+					<span className="shrink w-16 h-[15px] rounded-md bg-[#2F2F2F]" />
 			</div>
-			<div className="w-full h-[40px] bg-[#2F2F2F] rounded-lg animate-pulse" />
-			<div className="h-[226px] pr-2 space-y-2 bg-[#2F2F2F] rounded-lg animate-pulse" />
+			<div className="w-[100px] h-[30px] rounded-md bg-[#2F2F2F]" />
 		</div>
 	)
 }
@@ -37,6 +35,7 @@ const AllFriends = () => {
 	const refFriend = useRef();
 	const refPending = useRef();
 	const refBlocked = useRef();
+	const refInput = useRef<HTMLInputElement | null>(null);
 	const searchData = useRef<string>('');
 
 	const stopScroll = useRef(false);
@@ -80,6 +79,8 @@ const AllFriends = () => {
 	const HandleClick = (ref: any, newRelation: string, uri: string) => {
 		if (relation == newRelation)
 			return ;
+
+		(refInput.current) && (refInput.current.value = '');
 		dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: null});
 		resetAll();
 		apply(ref.current);
@@ -102,18 +103,6 @@ const AllFriends = () => {
 			dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: data?.data});
 	}, [isRefetching]);
 
-	if (isLoading) {
-		return (
-			<Skeleton />
-		)
-	}
-
-	if (isError) {
-		return (
-			<h1>Error</h1>
-		)
-	}
-
 	const scrollHandler  = (e: any) => {
 		const start: any = refScroll.current;
 		const end = e.target.lastChild;
@@ -124,12 +113,13 @@ const AllFriends = () => {
 		{
 			let name;
 			if (relation == "friend")
-				name = newUri.current;
+				name = id ? "friends/" + id : "friends";
 			else if (relation == "rec_req")
 				name = "pending";
 			else if (relation == "blocker")
 				name = "blocked";
-			collectData(name + "/?filter=" + searchData.current + "&start=" + countScroll.current.toString() + "&end=" + (countScroll.current + 10).toString(), true);
+			newUri.current = name + "/?filter=" + searchData.current + "&start=" + countScroll.current.toString() + "&end=" + (countScroll.current + 10).toString();
+			collectData(newUri.current, true);
 			countScroll.current += 10;
 		}
 	}
@@ -140,12 +130,13 @@ const AllFriends = () => {
 		searchData.current = e.currentTarget.value;
 		let name;
 		if (relation == "friend")
-			name = newUri;
+			name = id ? "friends/" + id : "friends";
 		else if (relation == "rec_req")
 			name = "pending";
 		else if (relation == "blocker")
 			name = "blocked";
-		collectData(name + "/?filter=" + searchData.current);
+		newUri.current = name + "/?filter=" + searchData.current;
+		collectData(newUri.current);
 	}
 
 	return (
@@ -167,18 +158,17 @@ const AllFriends = () => {
 						</>
 					}
 				</div>
-				<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="outline-none w-full bg-transparent border-b-[0.5px] px-3 py-[9px] font-thin" />
+				<input ref={refInput} onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="outline-none w-full bg-transparent border-b-[0.5px] px-3 py-[9px] font-thin" />
 				<div ref={refScroll} onScroll={scrollHandler} className="h-[226px] overflow-auto overscroll-none scrollClass pr-2 space-y-2">
-				{
-					state.friendsData && state.friendsData.length == 0 && <div className="text-center">empty list</div>
-				}
-				{
-					state.friendsData && state.friendsData.length > 0 && state.friendsData.map((friend: FriendsData, index: number) => {
-						return (
-							<FriendBar key={index} friend={friend} relation={friend.relation}/>
-						)
-					})
-				}
+					{ isLoading && <FriendSkeleton /> }
+					{ ((state.friendsData && state.friendsData.length == 0 && !isLoading) || isError) && <div className="text-center">empty list</div> }
+					{
+						!isLoading && !isError && state.friendsData && state.friendsData.length > 0 && state.friendsData.map((friend: FriendsData, index: number) => {
+							return (
+								<FriendBar key={index} friend={friend} relation={friend.relation}/>
+							)
+						})
+					}
 				</div>
 			</motion.div>
 		</AnimatePresence>
