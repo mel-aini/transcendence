@@ -9,8 +9,7 @@ import { useGlobalContext } from "./store";
 
 export interface Player {
 	username: string,
-	image: string,
-	isConnected: boolean,
+	image: string
 }
 
 export interface RoundData {
@@ -331,8 +330,8 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	const messageHandler = (message: any) => {
-		// if (message.type != "ball" && message.type != "paddle")
-		// 	console.log(message);
+		if (message.type != "ball" && message.type != "paddle")
+			console.log(message);
 		if (message.type == "opponents")
 		{
 			if (message.user1.username == username)
@@ -417,21 +416,17 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 			if (lastJsonMessage.type == "dashboard")
 			{
 				const isCompleted: boolean = (lastJsonMessage.rounds.length > state.roundData.length);
-				const roundData: RoundData[] = state.roundData;
+				const roundData: RoundData[] = initRounds();
 				lastJsonMessage.rounds.map((round: any, index: number) => {
 					let i = 0;
 					for (var player in round) {
 						const tmp: Player = {
 							image: "",
-							username: round[player],
-							isConnected: true
+							username: round[player]
 						};
 						if (isCompleted)
 						{
-							if (index == lastJsonMessage.rounds.length - 1)
-								dispatch({type: "WINNER", winner: tmp});
-							else
-								roundData[index].players[i] = tmp;
+							(index == lastJsonMessage.rounds.length - 1) ? dispatch({type: "WINNER", winner: tmp}) : roundData[index].players[i] = tmp;
 						}
 						else
 							roundData[index].players[i] = tmp;
