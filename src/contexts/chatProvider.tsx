@@ -349,11 +349,11 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 					id: lastJsonMessage.id,
 					state: 'loading'
 				}});
-				sendJsonMessage({
-					type: 'messages',
-					conversation_id: lastJsonMessage.id,
-					user_id: authState.user_id
-				})
+				// sendJsonMessage({
+				// 	type: 'messages',
+				// 	conversation_id: lastJsonMessage.id,
+				// 	user_id: authState.user_id
+				// })
 			}
 			if (lastJsonMessage.type == 'update_after_accept_request') {
 				// add to online friends

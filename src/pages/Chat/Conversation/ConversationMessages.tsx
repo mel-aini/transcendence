@@ -4,7 +4,11 @@ import Message from "./Message";
 import { useAuthContext } from "@/contexts/authProvider";
 import Observer from "../Dashboard/Observer";
 
-function ConversationMessages() {
+interface Props {
+	parent: HTMLDivElement | null
+}
+
+function ConversationMessages({parent}: Props) {
 	const { state } = useChatContext();
 	const { state: authState } = useAuthContext();
 	const lastDate = useRef<string | null>(null);
@@ -14,9 +18,7 @@ function ConversationMessages() {
 	}
 
 	useEffect(() => {
-		console.log('state updated ---> needs to scroll down')
 		if (state.conversation.state == 'ok') {
-			const parent = document.querySelector('.messages-container');
 			if (parent) {
 				scrollToBottom(parent)
 			}
@@ -24,7 +26,6 @@ function ConversationMessages() {
 	}, [state.conversation.state])
 
 	useEffect(() => {
-		const parent = document.querySelector('.messages-container');
 		if (parent) {
 			scrollToBottom(parent)
 		}

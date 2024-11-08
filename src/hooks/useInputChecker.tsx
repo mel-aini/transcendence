@@ -98,7 +98,6 @@ const useInputChecker = (url: string): ReturnType => {
 			dispatch({ type: ACTIONS.SET_DEFAULT, payload: { type: type } });
 		})
 		.catch((error) => {
-			console.log(error);
 			let errorMsg: string;
 			if (error.error.message[type]) {
 				errorMsg = error.error.message[type];

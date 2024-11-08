@@ -20,6 +20,7 @@ function Conversation() {
 	const { dispatch: gDispatch } = useGlobalContext();
 	const [isVisible, setIsVisible] = useState(() => window.innerWidth >= 1024);
 	const messageInput = useRef<HTMLInputElement>(null);
+	const msgsContainer = useRef<HTMLDivElement>(null);
 
 	const sendMessage = async (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -34,12 +35,6 @@ function Conversation() {
 		const message_content = message;
 		setMessage('');
 		((e.target as HTMLElement).firstChild as InputHTMLAttributes<HTMLInputElement>).value = '';
-		// const newMessage: Imessage = {
-		// 	content: message.current,
-		// 	date: getDate(),
-		// 	receiver: 'salam',
-		// 	sender: 'user1'
-		// }
 		const ServerMessage = {
 			id: state.conversation.id,
 			type: 'send_message',
@@ -104,11 +99,10 @@ function Conversation() {
 
 	useEffect(() => {
 		if (state.lastMessage) {
-			const msgsContainer = document.querySelector('.messages-container');
-			if (msgsContainer) {
-				(msgsContainer as HTMLDivElement).style.scrollBehavior = 'smooth';
-				msgsContainer.scrollTo(0, msgsContainer.scrollHeight);
-				(msgsContainer as HTMLDivElement).style.scrollBehavior = '';
+			if (msgsContainer.current) {
+				msgsContainer.current.style.scrollBehavior = 'smooth';
+				msgsContainer.current.scrollTo(0, msgsContainer.current.scrollHeight);
+				msgsContainer.current.style.scrollBehavior = '';
 			}
 			if (state.lastMessage.state != 'processing') {
 				messageInput.current && messageInput.current.focus();
@@ -136,7 +130,7 @@ function Conversation() {
 							<Lottie
 								animationData={chatBotLottie}
 								className='chat-bot w-3/4 sm:w-52 2xl:w-96'
-								/>
+							/>
 							{/* <img src={chatGif} className='w-3/4 sm:w-52 2xl:w-96' /> */}
 							<Title firstCharClassName='text-2xl text-primary' restWordClassName='text-primary'>Chat</Title>
 							<p className='text-gray1'>Welcome to your chat space</p>
@@ -145,8 +139,8 @@ function Conversation() {
 				}
 				{state.conversation.state && <>
 					<ConversationHeader />
-					<div className="messages-container grow flex flex-col bg-secondary overflow-auto p-5">
-						<ConversationMessages />
+					<div ref={msgsContainer} className="messages-container grow flex flex-col bg-secondary overflow-auto p-5">
+						<ConversationMessages parent={msgsContainer.current} />
 					</div>
 					<form onSubmit={(e) => sendMessage(e)} className="w-full flex gap-3 items-center px-5 h-[70px] bg-secondary shrink-0">
 						<input

@@ -9,12 +9,10 @@ const useOAuth = (): [() => Promise<void>] => {
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
 	const navigate = useNavigate();
-	
 	const handleOAuth = async () => {
-
 		const code: string | null = searchParams.get('code');
 		const state: string | null = searchParams.get('state');
-
+		
 		if (!code && !state) return;
 		
 		dispatch({type: STORE_OPTS.LOADING, state: true});
@@ -41,10 +39,10 @@ const useOAuth = (): [() => Promise<void>] => {
 			} else {
 				authDispatch({type: AUTH_OPTS.TOKEN, token: response.data.access_token});
 				navigate('/dashboard', { 
-					replace: true,
+					replace: true, 
 					state: {
 						message: 'You have logged in successfully'
-				} })
+				} });
 			}
 
 		} catch (error) {

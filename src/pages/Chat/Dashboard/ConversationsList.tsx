@@ -21,7 +21,7 @@ function ConversationsList({className, ...props}: Props) {
 		}});
 		dispatch({type: CHAT_OPTS.CONVERSATION_HEADER, conversation_header: {
 			username: conversation.friend.username,
-			avatar: conversation.friend.avatar,
+			avatar: conversation.friend.avatar_link,
 			id: conversation.friend.id
 		}})
 	}

@@ -33,7 +33,7 @@ const ConversationBar = ({className, data, ...props}: Props) => {
 			className={"w-full flex justify-between items-center duration-300 cursor-pointer " + (className ? ` ${className}` : '')} 
 			{...props}>
 			<div className="overflow-hidden shrink flex items-center text-[14px]">
-				<User border className="shrink-0 mr-2" url={data?.friend?.avatar || ''} />
+				<User border className="shrink-0 mr-2" url={data?.friend?.avatar_link || ''} />
 				{data.sender == authState.username && <h1 className=" font-light pr-1">to</h1>}
 				<h3 className="shrink-0 overflow-hidden whitespace-nowrap text-ellipsi font-medium">{data.friend.username}</h3>
 				<span className="shrink-0 mr-2">:</span>

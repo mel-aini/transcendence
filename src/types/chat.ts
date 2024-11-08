@@ -12,7 +12,7 @@ export interface Conversation {
 	friend: {
 		id: string | number
 		username: Username
-		avatar: Url
+		avatar_link: Url
 		online: boolean
 	}
 	id: string | number

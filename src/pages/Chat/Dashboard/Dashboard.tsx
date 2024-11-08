@@ -3,11 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { IoAddCircle } from "react-icons/io5";
 import OnlineFriends from "./OnlineFriends";
 import { FiSearch } from "react-icons/fi";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SearchFriends from "./SearchFriends";
 import { CHAT_OPTS, useChatContext } from "@/contexts/chatProvider";
-import { useAuthContext } from "@/contexts/authProvider";
-import { isEmpty } from "@/utils/validation";
 import Input from "@/components/Input";
 import SearchConversationsList from "./SearchConversationsList";
 import Modal from "@/components/Modal";
@@ -15,22 +13,8 @@ import Modal from "@/components/Modal";
 function Dashboard() {
 	const [toggleSearch, setToggleSearch] = useState(false);
 	const [searchFriends, setSearchFriends] = useState(false);
-	const { state: chatState, dispatch, sendJsonMessage } = useChatContext();
-	const { state } = useAuthContext();
+	const { state: chatState, dispatch } = useChatContext();
 	const [input, setInput] = useState('');
-
-	const onSubmit = (e: FormEvent) => {
-		e.preventDefault();
-		if (isEmpty(input)) return;
-		sendJsonMessage({
-			user_id: state.user_id,
-			type: 'search_conversation',
-			search: input,
-			offset: 0,
-			limit: 10
-		})
-		setInput('');
-	}
 
 	useEffect(() => {
 		const result = chatState.conversations.filter((conv) => {
@@ -76,7 +60,8 @@ function Dashboard() {
 								transition={{duration: 0.3}}
 								className="pb-5"
 								>
-								<form onSubmit={onSubmit} className="flex justify-between gap-2">
+								<form onSubmit={e => { e.preventDefault(); }} 
+									className="flex justify-between gap-2">
 									<Input onChange={(e) => setInput(e.target.value)} type="text" placeholder="search" className='w-full bg-transparent border border-border h-[48px] px-3 rounded-md outline-none' />
 								</form>
 							</motion.div>
