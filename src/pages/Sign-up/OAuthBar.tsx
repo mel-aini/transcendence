@@ -21,7 +21,6 @@ const OAuthBar = () => {
 			location.href = OAuthLink.current
 		} catch (error) {
 			dispatch({type: STORE_OPTS.ALERT, message: 'An Error Occured, try after a while', isError: true, dispatch})
-			// console.log(error);
 		}
 	}
 

@@ -6,6 +6,7 @@ import EmailForm from "./EmailForm";
 import UsernameForm from "./UsernameForm";
 import RemainForm from "./RemainForm";
 import OAuthBar from "./OAuthBar";
+import Loading from "@/components/Loading";
 
 enum Level {
 	Email,
@@ -35,7 +36,7 @@ const Index = () => {
 						</div>
 						{registerLevel == Level.Email && <>
 							<p>or</p>
-							<OAuthBar type="sign up" />
+							<OAuthBar />
 							<div className="flex items-center gap-2 text-sm">
 								<p className="text-gray1">Have an account?</p>
 								<Link to='/login'>Sign in</Link>
@@ -44,6 +45,7 @@ const Index = () => {
 					</div>
 				</div>
 			</div>
+			<Loading />
 		</div>
 	);
 }

@@ -1,6 +1,5 @@
-import { Dispatch, ReactNode, createContext, useContext, useLayoutEffect, useReducer } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 import { INotification } from "./store";
-import { useLocation } from "react-router-dom";
 
 export interface GlobalStateProps {
 	newNotifications: INotification[],
