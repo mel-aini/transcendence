@@ -264,6 +264,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 	useEffect(() => {
 		if (lastJsonMessage) {
+			console.log('new message')
+			console.log(lastJsonMessage)
 			if (lastJsonMessage.online) {
 				dispatch({type: CHAT_OPTS.ONLINE, onlineFriends: lastJsonMessage.online})
 			}
@@ -287,13 +289,16 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 			if (lastJsonMessage.type == 'message') {
 				if (lastJsonMessage.receiver == authState.username) {
 					// I'm the receiver
-					dispatch({type: CHAT_OPTS.MESSAGE, message: {
-						content: lastJsonMessage.message,
-						date: dateMeta.getDate(),
-						sender: state.conversation_header.username,
-						receiver: authState.username,
-						state: 'ok'
-					}});
+					if (lastJsonMessage.sender == state.conversation_header?.username) {
+						// opened conversation
+						dispatch({type: CHAT_OPTS.MESSAGE, message: {
+							content: lastJsonMessage.message,
+							date: dateMeta.getDate(),
+							sender: state.conversation_header.username,
+							receiver: authState.username,
+							state: 'ok'
+						}});
+					}
 					updateConversations(null, null, 'read')
 					
 				} else {
@@ -413,6 +418,8 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				avatar: '',
 			}})
 		}
+		dispatch({type: CHAT_OPTS.MESSAGES, messages: []})
+		dispatch({type: CHAT_OPTS.LAST_MESSAGE, message: null})
 	}, [state.isFocus, location.pathname])
 
 	return (

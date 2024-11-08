@@ -2,6 +2,8 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { useChatContext } from "@/contexts/chatProvider";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useAuthContext } from "@/contexts/authProvider";
+import Lottie from "lottie-react";
+import chatBotLottie from '@/assets/chatBotLottie.json'
 
 function Observer() {
 	const { state, sendJsonMessage } = useChatContext();
@@ -61,8 +63,12 @@ function Observer() {
 				<AiOutlineLoading3Quarters className='animate-spin' />
 			</div>}
 			{state.conversation.limitReached && 
-				<div className="h-40 flex justify-center items-center">
-					you have reached the limit!
+				<div className="flex flex-col gap-10 justify-center items-center my-24">
+					<Lottie
+						animationData={chatBotLottie}
+						className='chat-bot w-1/2 max-w-52'
+						/>
+					<h1 className="font-light text-gray1">Your conversation started here</h1>
 				</div>
 			}
 		</>

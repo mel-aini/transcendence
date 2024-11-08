@@ -1,5 +1,6 @@
-import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useLayoutEffect, useReducer } from "react";
 import { INotification } from "./store";
+import { useLocation } from "react-router-dom";
 
 export interface GlobalStateProps {
 	newNotifications: INotification[],
@@ -21,7 +22,8 @@ export const GlobalContext = createContext<{state: GlobalStateProps, dispatch: D
 export enum NOTIFICATION_OPTS {
 	PUSH_NOTIFICATION,
 	POP_NOTIFICATION,
-	MARK_IS_READ
+	MARK_IS_READ,
+	CLEAR
 }
 
 const reducer = (state: GlobalStateProps, action: any) => {
@@ -42,6 +44,8 @@ const reducer = (state: GlobalStateProps, action: any) => {
 			return upObj
 		case NOTIFICATION_OPTS.MARK_IS_READ:
 			return { ...state, isRead: action.payload };
+		case NOTIFICATION_OPTS.CLEAR:
+			return { ...state,  newNotifications: []}
 		default:
 			return state;
 	}
@@ -49,6 +53,11 @@ const reducer = (state: GlobalStateProps, action: any) => {
 
 const NotificationsProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	const location = useLocation();
+	
+	useLayoutEffect(() => {
+		dispatch({type: NOTIFICATION_OPTS.CLEAR})
+	}, [location.pathname])
 
 	return (
 		<GlobalContext.Provider value={{state, dispatch }}>
