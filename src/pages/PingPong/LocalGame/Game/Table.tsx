@@ -2,6 +2,10 @@ import { Dispatch, forwardRef, SetStateAction, useEffect, useState } from "react
 import Box from "./Box";
 import { useGlobalContext } from "@/contexts/store";
 import { AnimatePresence, motion } from "framer-motion";
+import { twMerge } from "tailwind-merge";
+import MOVE_UP from '/MOVE_UP.svg'
+import MOVE_DOWN from '/MOVE_DOWN.svg'
+import { isMobile } from "react-device-detect";
 
 interface Props {
 	leftScore: number,
@@ -101,6 +105,36 @@ const Table = forwardRef((props: Props, ref: any) => {
 		}
 	}
 
+	const handleTouchStart = (type: "UP_RIGHT" | "DOWN_RIGHT" | "UP_LEFT" | "DOWN_LEFT") => {
+		if (type == "UP_RIGHT") {
+			props.rightMoves.current = -1;
+		}
+		if (!props.isAI && type == "DOWN_RIGHT") {
+			props.rightMoves.current = 1;
+		}
+		if (!props.isAI && type == "UP_LEFT") {
+			props.leftMoves.current = -1;
+		}
+		if (type == "DOWN_LEFT") {
+			!props.isAI ?
+			props.leftMoves.current = 1
+			:
+			props.rightMoves.current = 1;
+		}
+	}
+
+	const handleTouchEnd = (type: "UP_RIGHT" | "DOWN_RIGHT" | "UP_LEFT" | "DOWN_LEFT") => {
+		if (type == "UP_RIGHT" || (!props.isAI && type == "DOWN_RIGHT")) {
+			props.rightMoves.current = 0;
+		}
+		if ((!props.isAI && type == "UP_LEFT") || type == "DOWN_LEFT") {
+			!props.isAI ?
+			props.leftMoves.current = 0
+			:
+			props.rightMoves.current = 0;
+		}
+	}
+
 	useEffect(() => {
 		window.addEventListener('keydown', handleKeyDown);
 		window.addEventListener('keyup', handleKeyUp);
@@ -127,6 +161,20 @@ const Table = forwardRef((props: Props, ref: any) => {
 				<line x1={'100%'} x2={'0%'} y1={'0%'} y2={'100%'} className="stroke-1 stroke-border2" />
 			</svg>
 			<Box isAI={props.isAI} status={props.status} counter={props.counter} setCounter={props.setCounter} />
+			{
+				isMobile &&
+				<div className={twMerge("absolute left-1/2 -translate-x-1/2 flex justify-between items-center", state.isOrientation ?
+					"top-1/2 -translate-y-1/2 w-[150%]" : "top-[105%] -translate-y-0 w-full")}>
+					<div className="flex gap-2 items-center">
+						<img onTouchStart={() => handleTouchStart("DOWN_LEFT")} onTouchEnd={() => handleTouchEnd("DOWN_LEFT")} src={MOVE_DOWN} alt="MOVE_DOWN" className="size-9 cursor-pointer" />
+						{ !props.isAI && <img onTouchStart={() => handleTouchStart("UP_LEFT")} onTouchEnd={() => handleTouchEnd("UP_LEFT")} src={MOVE_UP} alt="MOVE_UP" className="size-9 cursor-pointer" /> }
+					</div>
+					<div className="flex gap-2 items-center">
+						{ !props.isAI && <img onTouchStart={() => handleTouchStart("DOWN_RIGHT")} onTouchEnd={() => handleTouchEnd("DOWN_RIGHT")} src={MOVE_DOWN} alt="MOVE_DOWN" className="size-9 cursor-pointer" /> }
+						<img onTouchStart={() => handleTouchStart("UP_RIGHT")} onTouchEnd={() => handleTouchEnd("UP_RIGHT")} src={MOVE_UP} alt="MOVE_UP" className="size-9 cursor-pointer" />
+					</div>
+				</div>
+			}
 		</div>
 	)
 })

@@ -6,13 +6,8 @@ import PADDEL_DIRECTIONS from '/PADDEL_DIRECTIONS.svg'
 import MOVE_UP from '/MOVE_UP.svg'
 import MOVE_DOWN from '/MOVE_DOWN.svg'
 import {isMobile, isBrowser} from 'react-device-detect';
-import { useEffect } from 'react'
 
 const Help = ({isAI}: {isAI: boolean}) => {
-
-	useEffect(() => {
-		console.log(isMobile);
-	}, [isMobile]);
 
 	return (
 		<div className="p-8 space-y-8 w-full">

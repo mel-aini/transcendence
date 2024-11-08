@@ -203,7 +203,7 @@ const PingPongContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	const messageHandler = (message: any) => {
-		if (message.type != "ball" && message.type != "paddle")
+		// if (message.type != "ball" && message.type != "paddle")
 		if (message.type == "opponents")
 		{
 			if (message.user1.username == username)
