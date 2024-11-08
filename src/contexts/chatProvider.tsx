@@ -418,8 +418,13 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				avatar: '',
 			}})
 		}
-		dispatch({type: CHAT_OPTS.MESSAGES, messages: []})
-		dispatch({type: CHAT_OPTS.LAST_MESSAGE, message: null})
+		if (!state.isFocus) {
+			dispatch({type: CHAT_OPTS.LAST_MESSAGE, message: null})
+			dispatch({type: CHAT_OPTS.CONVERSATION, conversation: {
+				id: null,
+				state: null
+			}})
+		}
 	}, [state.isFocus, location.pathname])
 
 	return (

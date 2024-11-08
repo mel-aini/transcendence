@@ -53,11 +53,6 @@ const reducer = (state: GlobalStateProps, action: any) => {
 
 const NotificationsProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const location = useLocation();
-	
-	useLayoutEffect(() => {
-		dispatch({type: NOTIFICATION_OPTS.CLEAR})
-	}, [location.pathname])
 
 	return (
 		<GlobalContext.Provider value={{state, dispatch }}>

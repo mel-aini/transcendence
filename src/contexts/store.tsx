@@ -99,7 +99,7 @@ const reducer = (state: GlobalStateProps, action: any) => {
 		case STORE_OPTS.SEARCH:
 			return { 
 				...state,
-				search: !state.search
+				search: action.state
 			}
 		case STORE_OPTS.USER_DATA:
 			return { 
@@ -128,11 +128,6 @@ const reducer = (state: GlobalStateProps, action: any) => {
 
 const GlobalContextProvider = ({children} : {children: ReactNode}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const location = useLocation();
-
-	useLayoutEffect(() => {
-		dispatch({type: STORE_OPTS.ALERT_OFF})
-	}, [location.pathname])
 
 	return (
 		<GlobalContext.Provider value={{state, dispatch}}>

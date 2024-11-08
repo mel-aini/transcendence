@@ -1,11 +1,12 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { STORE_OPTS, useGlobalContext } from '@/contexts/store';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/api/axios';
 import { AUTH_OPTS, useAuthContext } from '@/contexts/authProvider';
+import { NOTIFICATION_OPTS, useNotificationsContext } from '@/contexts/notificationsProvider';
 
 async function fetchData() {
 	const res = await api.get('profile/');
@@ -14,9 +15,10 @@ async function fetchData() {
 
 const Layout = () => {
 	const { state, dispatch } = useGlobalContext();
+	const { dispatch: notDispatch } = useNotificationsContext();
 	const { dispatch: authDispatch } = useAuthContext();
-
 	const {data, isLoading, isError} = useQuery({queryKey: ['getProfile'], queryFn: () => fetchData(), refetchOnMount: true});
+	const location = useLocation();
 
 	useEffect(() => {
 		if (!isLoading && !isError) {
@@ -24,6 +26,13 @@ const Layout = () => {
 			authDispatch({type: AUTH_OPTS.USERNAME, username: data?.data.username});
 		}
 	}, [isLoading]);
+
+	
+	useLayoutEffect(() => {
+		notDispatch({type: NOTIFICATION_OPTS.CLEAR})
+		dispatch({type: STORE_OPTS.SEARCH, state: false})
+		dispatch({type: STORE_OPTS.ALERT_OFF})
+	}, [location.pathname])
 
 	return (
 		<>
