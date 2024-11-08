@@ -35,6 +35,7 @@ const AllFriends = () => {
 	const refFriend = useRef();
 	const refPending = useRef();
 	const refBlocked = useRef();
+	const refInput = useRef<HTMLInputElement | null>(null);
 	const searchData = useRef<string>('');
 
 	const stopScroll = useRef(false);
@@ -78,6 +79,8 @@ const AllFriends = () => {
 	const HandleClick = (ref: any, newRelation: string, uri: string) => {
 		if (relation == newRelation)
 			return ;
+
+		(refInput.current) && (refInput.current.value = '');
 		dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: null});
 		resetAll();
 		apply(ref.current);
@@ -110,12 +113,13 @@ const AllFriends = () => {
 		{
 			let name;
 			if (relation == "friend")
-				name = newUri.current;
+				name = id ? "friends/" + id : "friends";
 			else if (relation == "rec_req")
 				name = "pending";
 			else if (relation == "blocker")
 				name = "blocked";
-			collectData(name + "/?filter=" + searchData.current + "&start=" + countScroll.current.toString() + "&end=" + (countScroll.current + 10).toString(), true);
+			newUri.current = name + "/?filter=" + searchData.current + "&start=" + countScroll.current.toString() + "&end=" + (countScroll.current + 10).toString();
+			collectData(newUri.current, true);
 			countScroll.current += 10;
 		}
 	}
@@ -126,12 +130,13 @@ const AllFriends = () => {
 		searchData.current = e.currentTarget.value;
 		let name;
 		if (relation == "friend")
-			name = newUri;
+			name = id ? "friends/" + id : "friends";
 		else if (relation == "rec_req")
 			name = "pending";
 		else if (relation == "blocker")
 			name = "blocked";
-		collectData(name + "/?filter=" + searchData.current);
+		newUri.current = name + "/?filter=" + searchData.current;
+		collectData(newUri.current);
 	}
 
 	return (
@@ -153,7 +158,7 @@ const AllFriends = () => {
 						</>
 					}
 				</div>
-				<input onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="outline-none w-full bg-transparent border-b-[0.5px] px-3 py-[9px] font-thin" />
+				<input ref={refInput} onChange={(e) => HandleChange(e)} type="text" placeholder="search" className="outline-none w-full bg-transparent border-b-[0.5px] px-3 py-[9px] font-thin" />
 				<div ref={refScroll} onScroll={scrollHandler} className="h-[226px] overflow-auto overscroll-none scrollClass pr-2 space-y-2">
 					{ isLoading && <FriendSkeleton /> }
 					{ ((state.friendsData && state.friendsData.length == 0 && !isLoading) || isError) && <div className="text-center">empty list</div> }
