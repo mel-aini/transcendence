@@ -18,7 +18,6 @@ const HistoryChart = ({width, height, data}: {width: number, height: number, dat
 				cy={currentY}
 				r={3}
 				className="fill-white stroke-primary stroke-1"
-				// variants={variantCircle}
 			/>
 			{data && data.map((match: MatchesData, key: number) => {
 				const saveX = currentX;

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps, useEffect, useMemo, useState } from "react";
 import Container from "@/components/Container";
 import { useProfileContext } from "@/contexts/profileStore";
 
@@ -54,15 +54,16 @@ interface NisbaProps extends ComponentProps<'span'> {
 }
 
 const Nisba = ({percentage, className, ...props}: NisbaProps) => {
-	const [nisba, setNisba] = useState<number>(0)
+	const [nisba, setNisba] = useState<number>(0);
 
 	useEffect(() => {
-		if (nisba < percentage) {
-			const timeout = setTimeout(() => {
-				setNisba((prev) => prev + 1.00);
-			}, 40);
-			return () => clearTimeout(timeout);
-		}
+		if (nisba == percentage) return ;
+		const timeout = setTimeout(() => {
+			if (nisba < percentage) setNisba((prev) => prev + 1.00);
+			else if (nisba > percentage) setNisba((prev) => prev - 1.00);
+		}, 30);
+		return () => clearTimeout(timeout);
+
 	}, [nisba, percentage])
 
 	return (
@@ -72,7 +73,11 @@ const Nisba = ({percentage, className, ...props}: NisbaProps) => {
 
 const States = () => {
 	const { state } = useProfileContext();
-	const percentage: string = state.userData ? (state.userData.matches.total != 0 ? parseFloat(((state.userData.matches.wins / state.userData.matches.total) * 100).toString()).toFixed(0) : 0) + '%' : '0%';
+	const [percentage, setPercentage] = useState<string>(state.userData ? (state.userData.matches.total != 0 ? parseFloat(((state.userData.matches.wins / state.userData.matches.total) * 100).toString()).toFixed(0) : 0) + '%' : '0%');
+
+	useEffect(() => {
+		setPercentage(state.userData ? (state.userData.matches.total != 0 ? parseFloat(((state.userData.matches.wins / state.userData.matches.total) * 100).toString()).toFixed(0) : 0) + '%' : '0%');
+	}, [state.userData]);
 
 	return (
 		<div className="row-span-3 row-start-2 xl:row-span-1 xl:row-start-1 xl:col-start-1 xl:col-end-4">
