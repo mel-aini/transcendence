@@ -1,6 +1,5 @@
-import { Dispatch, ReactNode, createContext, useContext, useLayoutEffect, useReducer } from "react";
+import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 import { UserData } from "@/types/profile";
-import { useLocation } from "react-router-dom";
 
 export interface INotification {
 	notification_id: string, 

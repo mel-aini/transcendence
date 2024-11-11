@@ -36,7 +36,11 @@ const SignIn2FA = ({setIsTwoFA}: Props) => {
             const res = await callToApi('2fa/', data);
             setError('');
             authDispatch({type: AUTH_OPTS.TOKEN, token: res.access_token});
-            navigate('/dashboard');
+            navigate('/dashboard', { 
+                replace: true, 
+                state: {
+                    message: 'You have logged in successfully'
+            } });
         
         } catch (error) {
             setError('Invalid code')

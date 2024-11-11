@@ -53,7 +53,6 @@ const UsernameForm = ({dispatchLevel}: Props) => {
 			}
 			else {
 				if (!error.error.message['username']) {
-					console.log('valid username');
 					dispatchLevel(0);
 					navigate('/profile');
 					

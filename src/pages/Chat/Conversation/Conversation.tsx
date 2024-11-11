@@ -42,7 +42,6 @@ function Conversation() {
 			sender: authState.username,
 			receiver: state.conversation_header.username,
 		}
-
 		dispatch({type: CHAT_OPTS.LAST_MESSAGE, message: {
 			content: message_content,
 			date: dateMeta.getDate(),

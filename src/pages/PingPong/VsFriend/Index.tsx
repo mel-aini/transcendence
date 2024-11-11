@@ -42,7 +42,7 @@ function FriendBar({friend} : {friend: FriendsData}) {
 							friend.online &&
 							<span className="absolute rounded-full h-[7px] w-[7px] bg-[#1ED947] -translate-x-full -translate-y-full top-full left-full" />
 						}
-						<img onClick={goToProfile} src={friend.profile_image} className="w-full h-full rounded-full border border-primary overflow-hidden shrink-0 cursor-pointer" />
+						<img onClick={goToProfile} src={friend.profile_image} alt="PROFILE_IMG" className="w-full h-full rounded-full border border-primary overflow-hidden shrink-0 cursor-pointer" />
 					</div>
 					<span className="font-normal text-base truncate mobile:w-16 w-10">{friend.username}</span>
 				</div>

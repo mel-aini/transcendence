@@ -1,14 +1,16 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import { API_END_POINT } from "@/utils/urls";
 import axios from "axios";
 import { AUTH_OPTS, useAuthContext } from "@/contexts/authProvider";
 
-const useOAuth = (): [() => Promise<void>] => {
+const useOAuth = (): [() => Promise<any>] => {
 	const [searchParams] = useSearchParams();
 	const { dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
 	const navigate = useNavigate();
+	const location = useLocation();
+
 	const handleOAuth = async () => {
 		const code: string | null = searchParams.get('code');
 		const state: string | null = searchParams.get('state');
@@ -38,11 +40,9 @@ const useOAuth = (): [() => Promise<void>] => {
 				}})
 			} else {
 				authDispatch({type: AUTH_OPTS.TOKEN, token: response.data.access_token});
-				navigate('/dashboard', { 
-					replace: true, 
-					state: {
-						message: 'You have logged in successfully'
-				} });
+				navigate(location.state?.refer || '/dashboard', { 
+					replace: true
+				})
 			}
 
 		} catch (error) {

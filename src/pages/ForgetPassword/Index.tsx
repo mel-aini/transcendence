@@ -15,7 +15,6 @@ const Index = () => {
 	
 	useEffect(() => {
 		const token = searchParams.get('token');
-		console.log('token: ', token)
 		if (token) {
 			acessToken.current = token;
 			setStep('update-password')

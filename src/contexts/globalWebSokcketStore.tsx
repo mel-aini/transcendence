@@ -33,8 +33,7 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 			return "friend";
 		if (relation == "deny" || relation == "unblock" || relation == "unfriend" || relation == "cancel")
 			return "none";
-		// if (relation == "block")
-			return "blocker";
+		return "blocker";
 	}
 
 	const isEmptyObject = (obj: any) => {
@@ -96,17 +95,7 @@ const GlobalWebSocketContextProvider = ({children} : {children: ReactNode}) => {
 					dispatchProfile({type: PROFILE_OPTS.FRIEND_DATA, friendsData: state.friendsData});
 			}
 			else if (lastJsonMessage.type === "update")
-			{
-				if (lastJsonMessage.identifier === "tfa-status" || lastJsonMessage.identifier === "tfa-change")
-					dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...globalState.userData, tfa: {...globalState.userData?.tfa}}});
-				else if (lastJsonMessage.identifier === "username")
-					dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...globalState.userData, username: globalState.userData?.username}});
-				else if (lastJsonMessage.identifier === "email")
-					dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...globalState.userData, email: globalState.userData?.email}});
-				else if (lastJsonMessage.identifier === "game_settings")
-					dispatchProfile({type: PROFILE_OPTS.USER_DATA, userData: {...globalState.userData, game_settings: {...globalState.userData?.game_settings}}});
 				dispatch({type: STORE_OPTS.ALERT, message: lastJsonMessage.message, isError: true, dispatch});
-			}
 		}
 	}, [lastJsonMessage])
 

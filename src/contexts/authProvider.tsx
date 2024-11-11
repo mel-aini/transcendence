@@ -71,7 +71,7 @@ const AuthContextProvider = ({children} : {children: ReactNode}) => {
 			if (error.response.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true;
 			try {
-				const token = await jwt.refresh('access_expired');
+				const token = await jwt.refresh();
 
 				if (!token) {
 					throw error;

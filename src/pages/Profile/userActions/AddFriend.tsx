@@ -31,11 +31,11 @@ const AddFriend = ({username, origin}: {username?: string, origin: string}) => {
 		<div className="flex items-center justify-between h-[40px] w-[180px] select-none gap-2">
 			<div onClick={() => clickHandler("add")} className="w-full h-full flex justify-center items-center bg-secondary rounded-md cursor-pointer gap-2">
 				<span>add</span>
-				<img src={add_icon} alt="" width={20} height={20}/>
+				<img src={add_icon} alt="ADD" width={20} height={20}/>
 			</div>
 			<div onClick={() => clickHandler("block")} className="bg-secondary flex justify-center items-center w-full h-full rounded-md cursor-pointer gap-2">
 				<span>block</span>
-				<img src={block} alt="" width={20} height={20}/>
+				<img src={block} alt="BLOCK" width={20} height={20}/>
 			</div>
 		</div>
 	)

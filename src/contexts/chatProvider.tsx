@@ -238,7 +238,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 	const updateFriendData = (data: responseData) => {
 		// update conversations
 		const conversations_update = state.conversations.map((conv: Conversation) => {
-			console.log(conv.friend.id, data.id)
 			if (conv.friend.id == data.id) {
 				return { 
 					...conv, 
@@ -264,8 +263,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 
 	useEffect(() => {
 		if (lastJsonMessage) {
-			console.log('new message')
-			console.log(lastJsonMessage)
 			if (lastJsonMessage.online) {
 				dispatch({type: CHAT_OPTS.ONLINE, onlineFriends: lastJsonMessage.online})
 			}
@@ -323,7 +320,6 @@ const ChatContextProvider = ({children} : {children: ReactNode}) => {
 				const data: responseData = lastJsonMessage.data
 				const isFound = state.onlineFriends.find((friend: OnlineFriend) => friend.id == data.id);
 				if (!isFound) {
-					console.log('user was offline');
 					newList = [...state.onlineFriends]
 					if (data.is_online) {
 						newList.push(data);

@@ -14,7 +14,6 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = ({height = 48, style, className, type, onBlur, onFocus, ...props  } : InputProps ) => {
-	const [isFocus, setIsFocus] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const inputRef: LegacyRef<HTMLInputElement> = useRef<HTMLInputElement>(null)
 
@@ -27,11 +26,9 @@ const Input = ({height = 48, style, className, type, onBlur, onFocus, ...props  
 				style={{height, ...style}}
 				{...props}
 				onFocus={() => { 
-					setIsFocus(true);
 					if (onFocus) onFocus();
 				}}
-				onBlur={(e) => {
-					e.target.value == '' ? setIsFocus(false) : setIsFocus(true)
+				onBlur={() => {
 					if (onBlur) onBlur();
 				}}
 			/>

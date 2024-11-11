@@ -5,6 +5,7 @@ import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
 import callToApi from "@/api/callToApi";
 import Button from "@/components/Button";
 import { API_END_POINT } from "@/utils/urls";
+import Loading from "@/components/Loading";
 
 interface IBody {
 	username: string,
@@ -27,8 +28,6 @@ interface EmailFormProps {
 }
 
 const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
-	const [formError, setFormError] = useState<string>('');
-	// const [email, setEmail] = useState<string>('');
 	const [submit, setSubmit] = useState<boolean>(false);
 	const { state, dispatch } = useGlobalContext();
 	const [formState, parseInput] = useInputChecker(API_END_POINT + 'register/');
@@ -55,19 +54,11 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 			await callToApi('register/', data);
 		}
 		catch (error: any) {
-			console.log(error)
-			let errorMsg: string = '';
-			if (typeof error == 'string') {
-				errorMsg = error;
-			}
-			else {
+			if (typeof error != 'string') {
 				if (!error.error.message['email']) {
 					dispatchLevel(1)
-				} else {
-					errorMsg = error.error.message['email']
 				}
 			}
-			setFormError(errorMsg)
 		}
 		dispatch({type: STORE_OPTS.LOADING, state: false});
 	}
@@ -109,7 +100,7 @@ const EmailForm = ({email, dispatchLevel}: EmailFormProps) => {
 						continue with email
 				</Button>
 			</form>
-			{/* <Loading /> */}
+			<Loading />
 		</>
 	)
 }

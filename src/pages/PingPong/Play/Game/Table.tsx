@@ -79,9 +79,11 @@ const Table = ({isTournament}: {isTournament: boolean}) => {
 
 	const handleKeyDown = (e: KeyboardEvent) => {
 		if (e.key === 'ArrowUp' || e.key === 'w') {
+			(e.key === 'ArrowUp') && e.preventDefault();
 			move.current = -1;
 		}
 		if (e.key === 'ArrowDown' || e.key === 's') {
+			(e.key === 'ArrowDown') && e.preventDefault();
 			move.current = 1;
 		}
 	}

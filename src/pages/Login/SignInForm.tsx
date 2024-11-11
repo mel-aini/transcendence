@@ -102,6 +102,7 @@ const SignInForm = ({ setIsTwoFA }: Props) => {
 		}
 		dispatch({type: STORE_OPTS.LOADING, state: false});
 	}
+
     return (
         <>
             <h1 className="font-semibold text-2xl italic mb-14">Welcome Back!</h1>

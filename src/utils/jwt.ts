@@ -1,5 +1,4 @@
 import { jwtDecode } from 'jwt-decode'
-import api from '@/api/axios';
 import axios from 'axios';
 import { API_END_POINT } from './urls';
 
@@ -18,16 +17,11 @@ class Jwt {
 		return true;
 	}
 
-	async refresh(access_expired?: string) {
+	async refresh() {
 		try {
-			let res;
-			if (access_expired) {
-				res = await axios.post(API_END_POINT + 'token/refresh/', null, {
-					withCredentials: true
-				});
-			} else {
-				res = await api.post('token/refresh/')
-			}
+			const res = await axios.post(API_END_POINT + 'token/refresh/', null, {
+				withCredentials: true
+			});
 			return res.data.access_token
 		} catch (error) {
 			return null;

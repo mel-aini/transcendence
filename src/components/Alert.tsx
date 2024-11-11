@@ -23,7 +23,6 @@ const Alert = () => {
 		}, 10)
 	
 		return () => {
-			console.log('cleared')
 			clearInterval(interval);
 			setProgress(0)
 		}

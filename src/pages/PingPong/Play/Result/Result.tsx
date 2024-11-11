@@ -122,13 +122,7 @@ function Result({isTournament}: {isTournament: boolean}) {
 				<UserBox direction="right" username={isTournament ? state.opponentAlias : state.opponent?.username} level={state.opponent?.level.current} userImage={state.opponent?.profile_image} className="self-end" />
 			</motion.div>
 			{
-				isTournament ?
-				<motion.span 
-					initial={{width: '100%'}}
-					animate={{width: '0%'}}
-					transition={{duration: state.timeResult, ease: 'easeOut'}}
-					className="self-start bg-primary h-[2px]" />
-					:
+				!isTournament &&
 				<motion.div
 				initial={{opacity: 0, top: '-5rem'}}
 				animate={{opacity: 1, top: '0rem'}}

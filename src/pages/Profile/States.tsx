@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ComponentProps, useEffect, useMemo, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import Container from "@/components/Container";
 import { useProfileContext } from "@/contexts/profileStore";
 

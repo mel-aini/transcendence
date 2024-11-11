@@ -61,33 +61,33 @@ const FriendActions = ({username, origin}: {username?: string, origin: string}) 
 				seeMore ?
 				<>
 					<div onClick={() => clickHandler("unfriend")} className="bg-secondary w-[40px] flex justify-center items-center h-full rounded-md cursor-pointer select-none">
-						<img src={unfriend} alt="" width={20} height={20}/>
+						<img src={unfriend} alt="UNFRIEND" width={20} height={20}/>
 					</div>
 					<div onClick={() => clickHandler("block")} className="bg-secondary w-[40px] flex justify-center items-center h-full rounded-md cursor-pointer select-none">
-						<img src={block} alt="" width={20} height={20}/>
+						<img src={block} alt="BLOCK" width={20} height={20}/>
 					</div>
 				</>
 				:
 				<>
 					<div onClick={() => clickHandler("invite")} className="bg-secondary w-[40px] flex justify-center items-center h-full rounded-md cursor-pointer select-none">
-						<img src={play_icon} alt="" width={20} height={20}/>
+						<img src={play_icon} alt="PLAY" width={20} height={20}/>
 					</div>
 					<div 
 						onClick={sendMessageHandler}
 						className="bg-secondary w-[40px] flex justify-center items-center h-full rounded-md cursor-pointer select-none">
-						<img src={send_icon} alt="" width={20} height={20}/>
+						<img src={send_icon} alt="SEND" width={20} height={20}/>
 					</div>
 				</>
 			}
 			<div onClick={() => setSeeMore(!seeMore)} className="flex gap-[0.5px] bg-secondary w-[40px] justify-center items-center h-full rounded-md cursor-pointer select-none">
 				{
 					seeMore ?
-						<img src={deny} alt="" width={20} height={20}/>
+						<img src={deny} alt="DENY" width={20} height={20}/>
 					:
 					<>
-						<img src={more_icon} alt="" width={5.36} height={5.36}/>
-						<img src={more_icon} alt="" width={5.36} height={5.36}/>
-						<img src={more_icon} alt="" width={5.36} height={5.36}/>
+						<img src={more_icon} alt="MORE" width={5.36} height={5.36}/>
+						<img src={more_icon} alt="MORE" width={5.36} height={5.36}/>
+						<img src={more_icon} alt="MORE" width={5.36} height={5.36}/>
 					</>
 				}
 			</div>

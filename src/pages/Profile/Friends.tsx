@@ -80,7 +80,7 @@ const Friends = () => {
 						:
 						friends && friends.map((friend: FriendsData, key: number) => {
 							return (
-								<img onClick={() => userClick(friend.profile)} key={key} className="min-w-[40px] h-[40px] cursor-pointer rounded-full" src={friend.profile_image}/>
+								<img onClick={() => userClick(friend.profile)} key={key} className="min-w-[40px] h-[40px] cursor-pointer rounded-full" src={friend.profile_image} alt="PROFILE_IMG" />
 							)
 						})
 					}

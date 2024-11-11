@@ -330,8 +330,6 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 	};
 
 	const messageHandler = (message: any) => {
-		if (message.type != "ball" && message.type != "paddle")
-			console.log(message);
 		if (message.type == "opponents")
 		{
 			if (message.user1.username == username)
@@ -348,6 +346,7 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		}
 		else if (message.type == "timing1")
 		{
+			(message.time == 5) && dispatch({ type: "RESET_BETA" });
 			message.time > 1 && notDispatch({type: NOTIFICATION_OPTS.PUSH_NOTIFICATION, notification: { type: 'text', content: "your next match in tournament will starts in a few seconds..." }, dispatch: notDispatch});
 		}
 		else if (message.type == "timing2")
@@ -357,6 +356,7 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		}
 		else if (message.type == "timingend")
 		{
+			(message.time == 5) && dispatch({type: "RESULT", result: {...state.result, isEndGame: true}});
 			dispatch({type: "TIME_RESULT", timeResult: message.time});
 		}
 		else if (message.type == "init_paddle")
@@ -395,15 +395,7 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 		}
 		else if (message.type == "end")
 		{
-			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: 0, isEndGame: true}});
-		}
-		else if (message.type == "disconnect")
-		{
-			message.status == "win"
-			?
-			dispatch({type: "SCORE", score: {...state.score, my: 3, side: 0}})
-			:
-			dispatch({type: "SCORE", score: {...state.score, my: 0, side: 3}});
+			// dispatch({ type: "RESET_BETA" });
 			dispatch({type: "RESULT", result: {...state.result, status: message.status, xp: 0, isEndGame: true}});
 		}
 	}
@@ -417,20 +409,20 @@ const TournamentContextProvider = ({children} : {children: ReactNode}) => {
 			{
 				const isCompleted: boolean = (lastJsonMessage.rounds.length > state.roundData.length);
 				const roundData: RoundData[] = initRounds();
-				lastJsonMessage.rounds.map((round: any, index: number) => {
-					let i = 0;
+				lastJsonMessage.rounds.map((round: any, key: number) => {
 					for (var player in round) {
+						const convertIndex = parseFloat(player);
+						const index = key === 0 ? convertIndex : (key === 1 ? Math.ceil(convertIndex / 2) : Math.ceil(convertIndex / 4));
 						const tmp: Player = {
-							image: "",
-							username: round[player]
+							username: round[player][0],
+							image: round[player][1]
 						};
 						if (isCompleted)
 						{
-							(index == lastJsonMessage.rounds.length - 1) ? dispatch({type: "WINNER", winner: tmp}) : roundData[index].players[i] = tmp;
+							(key == lastJsonMessage.rounds.length - 1) ? dispatch({type: "WINNER", winner: tmp}) : roundData[key].players[index - 1] = tmp;
 						}
 						else
-							roundData[index].players[i] = tmp;
-						i++;
+							roundData[key].players[index - 1] = tmp;
 					}
 				});
 				dispatch({type: "ROUND_DATA", roundData: roundData});

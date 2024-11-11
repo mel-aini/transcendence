@@ -22,11 +22,13 @@ const Tournaments = () => {
 			<div className="grid grid-cols-1 sm:grid-cols-2 sm:h-[400px] bg-secondary rounded-md border-white">
 				<div className="flex flex-col justify-between p-5 sm:p-10 space-y-8">
 					<div className='space-y-8'>
-						<Title
-							firstCharClassName='text-4xl sm:text-5xl'
-							restWordClassName="text-2xl sm:text-3xl md:text-4xl"
-								>Tournament
-						</Title>
+						<div style={{textShadow: '0px 0 34px rgba(20,255,236,0.5)'}}>
+							<Title
+								firstCharClassName='text-4xl sm:text-5xl'
+								restWordClassName="text-2xl sm:text-3xl md:text-4xl"
+									>Tournament
+							</Title>
+						</div>
 						<p>Join exciting ping pong tournaments, face skilled opponents, and rise up the leaderboard. Compete for the top spot and claim victory!</p>
 					</div>
 					<div onClick={clickHandler}>

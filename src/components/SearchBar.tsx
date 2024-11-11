@@ -1,10 +1,10 @@
-import { ComponentProps, FormEvent, useRef } from "react";
+import { ComponentProps, FormEvent } from "react";
 
 interface Props extends ComponentProps<'div'> {
 	className?: string
 }
 
-function SearchBar({ className, ...props }: Props) {
+function SearchBar({ className }: Props) {
 	const handler = (e: FormEvent) => {
 		e.preventDefault();
 	}

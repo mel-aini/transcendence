@@ -30,11 +30,11 @@ const PendingInvitation = ({username, origin}: {username?: string, origin: strin
 	return (
 		<div className="shrink-0 w-[140px] h-[40px] flex justify-between items-center">
 			<div onClick={() => clickHandler("deny")} className="h-full w-[40px] bg-secondary rounded-md select-none flex justify-center items-center">
-				<img src={deny} alt="" width={20} height={20}/>
+				<img src={deny} alt="DENY" width={20} height={20}/>
 			</div>
 			<div onClick={() => clickHandler("accept")} className="h-full w-[90px] bg-secondary rounded-md cursor-pointer select-none flex justify-center items-center gap-1">
 				<span>accept</span>
-				<img src={accept} alt="" width={20} height={20}/>
+				<img src={accept} alt="ACCEPT" width={20} height={20}/>
 			</div>
 		</div>
 	)

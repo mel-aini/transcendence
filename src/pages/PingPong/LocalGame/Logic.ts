@@ -99,11 +99,11 @@ export class Paddle {
                 this.gap = 40;
                 break;
             case Enum.MEDIUM:
-                this._reactionDelay = 40;
+                this._reactionDelay = 50;
                 this.gap = 10;
                 break;
             case Enum.HARD:
-                this._reactionDelay = 30;
+                this._reactionDelay = 10;
                 this.gap = 1;
                 break;
         }
@@ -142,9 +142,9 @@ export class Paddle {
 
     AI_update(): void {
         let moves = 0;
-        if (this.y < this.predictedY && Math.abs(this.y - this.predictedY) > 10) {
+        if (this.y < this.predictedY && Math.abs(this.y - this.predictedY) > 5) {
             moves = 1;
-        } else if (this.y > this.predictedY && Math.abs(this.y - this.predictedY) > 10) {
+        } else if (this.y > this.predictedY && Math.abs(this.y - this.predictedY) > 5) {
             moves = -1;
         }
         this.update(moves);

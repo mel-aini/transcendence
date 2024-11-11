@@ -83,12 +83,14 @@ const Table = forwardRef((props: Props, ref: any) => {
 
 	const handleKeyDown = (e: KeyboardEvent) => {
 		if (e.key === 'ArrowUp') {
+			e.preventDefault();
 			props.rightMoves.current = -1;
 		}
 		if (!props.isAI && e.key === 'w') {
 			props.leftMoves.current = -1;
 		}
 		if (e.key === 'ArrowDown') {
+			e.preventDefault();
 			props.rightMoves.current = 1;
 		}
 		if (!props.isAI && e.key === 's') {

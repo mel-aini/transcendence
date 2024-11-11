@@ -31,7 +31,7 @@ const SendingInvitation = ({username, origin}: {username?: string, origin: strin
 				pending...
 			</div>
 			<div onClick={clickHandler} className="h-full w-[40px] bg-secondary rounded-md cursor-pointer select-none flex justify-center items-center">
-				<img src={deny} alt="" width={20} height={20}/>
+				<img src={deny} alt="DENY" width={20} height={20}/>
 			</div>
 		</div>
 	)

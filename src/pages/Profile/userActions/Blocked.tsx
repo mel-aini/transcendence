@@ -28,7 +28,7 @@ const Blocked = ({username, origin}: {username?: string, origin: string}) => {
 	return (
 		<div onClick={clickHandler} className="bg-secondary flex items-center justify-center shrink-0 w-[110px] h-[40px] rounded-md select-none cursor-pointer gap-2">
 			<span>unblock</span>
-			<img src={unblock} alt="" width={20} height={20}/>
+			<img src={unblock} alt="UNBLOCK" width={20} height={20}/>
 		</div>
 	)
 }

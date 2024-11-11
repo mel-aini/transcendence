@@ -4,11 +4,11 @@ import Layout from "./layout/Layout";
 import MainLayout from "./MainLayout";
 import { Suspense, lazy } from "react";
 import LoadingPage from "./components/LoadingPage";
-import withAuth from  './guards/withAuth'
-import withoutAuth from  './guards/withoutAuth'
 import AuthContextProvider from "./contexts/authProvider";
 import GameLayout from "./pages/PingPong/GameLayout";
 import NotificationsProvider from "./contexts/notificationsProvider";
+import AuthRedirect from "./guards/AuthRedirect";
+import AuthGuard from "./guards/AuthGuard";
 
 const Home = lazy(() => import('./pages/Home/Index'));
 const Chat = lazy(() => import('./pages/Chat/Index'));
@@ -36,40 +36,44 @@ function App() {
                   <Routes>
                     <Route path="/" element={<MainLayout />}>
                       <Route index element={<Home />} />
-                      <Route path="/signup" element={withoutAuth(SignUp)} />
-                      <Route path="/login" element={withoutAuth(Login)} />
-                      <Route path="/forget-password" element={withoutAuth(ForgetPassword)} />
-                      <Route element={withAuth(Layout)}>
-                        <Route path="/chat" element={<Chat />} />
-                        <Route path="/settings" element={<Settings />} />
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path='/users'>
-                          <Route path=':id' element={<Profile />} />
-                          <Route path='*' element={<>Not Found</>} />
-                        </Route>
-                        <Route path='/ping-pong'>
-                          <Route index element={<PingPong />} />
-                          <Route element={<GameLayout />}>
-                            <Route path='play' element={<Play isTournament={false} />} />
-                            <Route path='match-making' element={<MatchMaking isTournament={false} />} />
+                      <Route element={<AuthRedirect />}>
+                        <Route path="/signup" element={<SignUp />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/forget-password" element={<ForgetPassword />} />
+                      </Route>
+                      <Route element={<AuthGuard />}>
+                        <Route element={<Layout />}>
+                          <Route path="/chat" element={<Chat />} />
+                          <Route path="/settings" element={<Settings />} />
+                          <Route path="/profile" element={<Profile />} />
+                          <Route path="/dashboard" element={<Dashboard />} />
+                          <Route path='/users'>
+                            <Route path=':id' element={<Profile />} />
+                            <Route path='*' element={<>Not Found</>} />
                           </Route>
-                          <Route path='vs-friend' element={<VsFriend />} />
-                          <Route path='vs-ai'>
-                            <Route index element={<LocalMatchMaking isAI={true} />} />
-                            <Route path='play' element={<LocalGame isAI={true} />} />
+                          <Route path='/ping-pong'>
+                            <Route index element={<PingPong />} />
+                            <Route element={<GameLayout />}>
+                              <Route path='play' element={<Play isTournament={false} />} />
+                              <Route path='match-making' element={<MatchMaking isTournament={false} />} />
+                            </Route>
+                            <Route path='vs-friend' element={<VsFriend />} />
+                            <Route path='vs-ai'>
+                              <Route index element={<LocalMatchMaking isAI={true} />} />
+                              <Route path='play' element={<LocalGame isAI={true} />} />
+                            </Route>
+                            <Route path='1vs1'>
+                              <Route index element={<LocalMatchMaking isAI={false} />} />
+                              <Route path='play' element={<LocalGame isAI={false} />} />
+                            </Route>
+                            <Route path='*' element={<NotFound />} />
                           </Route>
-                          <Route path='1vs1'>
-                            <Route index element={<LocalMatchMaking isAI={false} />} />
-                            <Route path='play' element={<LocalGame isAI={false} />} />
+                          <Route path='/tournament' >
+                            <Route index element={<Tournament />} />
+                              <Route path='play' element={<Play isTournament={true} />} />
+                              <Route path='match-making' element={<MatchMaking isTournament={true} />} />
+                            <Route path='*' element={<NotFound />} />
                           </Route>
-                          <Route path='*' element={<NotFound />} />
-                        </Route>
-                        <Route path='/tournament' >
-                          <Route index element={<Tournament />} />
-                            <Route path='play' element={<Play isTournament={true} />} />
-                            <Route path='match-making' element={<MatchMaking isTournament={true} />} />
-                          <Route path='*' element={<NotFound />} />
                         </Route>
                       </Route>
                       <Route path='*' element={<NotFound />} />

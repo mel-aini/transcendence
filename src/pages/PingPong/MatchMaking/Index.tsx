@@ -1,6 +1,6 @@
 import User from "@/components/User";
 import { Levels, usePingPongContext } from "@/contexts/pingPongProvider";
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "@/contexts/store";
@@ -15,6 +15,7 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 	const {state} = isTournament ? useTournamentContext() : usePingPongContext();
 	const {state: profileData} = useGlobalContext();
 	const navigate = useNavigate();
+	const [isActivated, setIsActivated] = useState(false);
 
 	const cancelAction = () => {
 		!isTournament && navigate("/ping-pong");
@@ -83,8 +84,8 @@ function MatchMaking({isTournament}: {isTournament: boolean}) {
 					}
 				</div>
 			</div>
-			<Section activated={true}>
-				<SectionHeader>Display Settings</SectionHeader>
+			<Section activated={isActivated}>
+				<SectionHeader onClick={() => setIsActivated(prev => !prev)}>Display Settings</SectionHeader>
 				{true && 
 					<SectionContent>
 						<CustomizeTab />

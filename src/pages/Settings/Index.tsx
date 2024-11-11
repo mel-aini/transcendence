@@ -37,7 +37,7 @@ export function SectionHeader({ children, activated, className, dropDown, ...pro
 	return (
 		<div 
 			className={
-				twMerge("h-14 hover:border-[rgba(255,255,255,0.5)] duration-300 flex items-center justify-between bg-secondary border border-border rounded-lg px-5 cursor-pointer", className)
+				twMerge("h-14 hover:border-[rgba(255,255,255,0.5)] select-none duration-300 flex items-center justify-between bg-secondary border border-border rounded-lg px-5 cursor-pointer", className)
 			}
 			{...props}
 			>

@@ -124,7 +124,7 @@ const useInputChecker = (url: string): ReturnType => {
 				dispatch({ type: ACTIONS.SET_DEFAULT, payload: { type: type } });
 			} else {
 				if (type == 'password') {
-					dispatch({ type: ACTIONS.SET_ERROR, payload: { type: type, error: 'Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, and one number.' } });
+					dispatch({ type: ACTIONS.SET_ERROR, payload: { type: type, error: 'Password must be at least 8 characters long, with at least char from [@$!%?&], one uppercase letter, one lowercase letter, and one number.' } });
 				} else {
 					dispatch({ type: ACTIONS.SET_ERROR, payload: { type: type, error: 'invalid ' + type } });
 				}

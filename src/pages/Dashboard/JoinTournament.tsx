@@ -87,7 +87,7 @@ function JoinTournament() {
 				transition={{duration: 0.3}}
 				exit={{ opacity: 0}}
 				className="w-[90vw] max-w-[400px] p-5 sm:p-10 bg-secondary flex flex-col items-center gap-5 rounded-md">
-					<img src={trophy} alt="" className="w-[150px] h-[150px]"/>
+					<img src={trophy} alt="TROPHY" className="w-[150px] h-[150px]"/>
 					<Title
 						className="mb-5 text-center"
 						firstCharClassName="text-3xl" 

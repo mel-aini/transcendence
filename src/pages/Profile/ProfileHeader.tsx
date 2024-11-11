@@ -68,14 +68,14 @@ const ProfileHeader = () => {
 			<div className="relative mb-[200px] xl:mb-[50px] flex flex-col w-full">
 				<div
 					style={{backgroundImage: `url(${state.userData?.level.image})`}}
-					className="w-full h-[209px] rounded-md bg-cover bg-center border border-border">
+					className="w-full h-[209px] rounded-md bg-cover bg-center bg-no-repeat overflow-hidden">
 				</div>
 				<div className="absolute left-1/2 xl:left-[15%] top-full translate-y-[-60px] -translate-x-1/2 flex flex-col justify-center items-center">
 					<div style={{backgroundImage: `url(${state.userData?.profile_image})`}} className="relative rounded-full border-2 border-primary w-[120px] h-[120px] mb-3 bg-cover overflow-hidden">
 						{
 							(!id) &&
 							<form ref={formRef} className="duration-300 hover:opacity-100 opacity-0 w-full h-full bg-[#000000CC]">
-								<label htmlFor="avatar_link" className="absolute -translate-y-1/2 top-1/2 -translate-x-1/2 left-1/2 cursor-pointer"><img src={edit_icon} alt="" width={32} height={32} /></label>
+								<label htmlFor="avatar_link" className="absolute -translate-y-1/2 top-1/2 -translate-x-1/2 left-1/2 cursor-pointer"><img src={edit_icon} alt="EDIT" width={32} height={32} /></label>
 								<input ref={inputRef} onChange={(e) => changehandler(e)} type="file" name="avatar_link" accept="image/*" id="avatar_link" className="hidden" />
 							</form>
 						}

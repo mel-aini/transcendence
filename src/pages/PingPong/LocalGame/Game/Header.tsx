@@ -45,7 +45,7 @@ const Header = (props: Props) => {
 					</span>
 				</div>
 				<div onClick={clickHandler} className="bg-secondary w-[40px] h-[40px] flex justify-center items-center">
-					<img src={help} alt="help" />
+					<img src={help} alt="HELP" />
 				</div>
 			</div>
 		</div>

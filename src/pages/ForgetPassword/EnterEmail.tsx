@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, FormEvent, MutableRefObject, SetStateAction, useRef, useState } from "react";
+import { ChangeEvent, Dispatch, FormEvent, MutableRefObject, SetStateAction, useState } from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { STORE_OPTS, useGlobalContext } from "@/contexts/store";
@@ -40,7 +40,6 @@ function EnterEmail({ email, setStep }: Props) {
 				content: ''
 			})
 		} catch (error: any & {message: string}) {
-			console.log('error', error)
 			setError({
 				state: true,
 				content: error?.response?.data.error.type == "email_not_found" 

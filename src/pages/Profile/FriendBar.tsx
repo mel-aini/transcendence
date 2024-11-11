@@ -56,7 +56,7 @@ const FriendBar = ({friend, relation}: {friend: FriendsData, relation: Relation 
 	return (
 		<div className="flex justify-between items-center w-full gap-3 h-[70px] rounded-md border border-border bg-gray3 px-5">
 			<div onClick={() => userClick(friend.profile)} className="flex items-center gap-4 cursor-pointer shrink overflow-hidden whitespace-nowrap">
-					<img src={friend.profile_image} alt={"icon"} width={38} height={38} className="rounded-full overflow-hidden shrink-0"/>
+					<img src={friend.profile_image} alt={"PROFILE_IMG"} width={38} height={38} className="rounded-full overflow-hidden shrink-0"/>
 					<span className="shrink overflow-hidden text-ellipsis">{friend.username}</span>
 			</div>
 			<Action username={friend.username} action={action} />

@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
 import { useEffect } from 'react';
@@ -17,6 +17,17 @@ const Layout = () => {
 	const { state, dispatch } = useGlobalContext();
 	const { dispatch: authDispatch } = useAuthContext();
 	const {data, isLoading, isError} = useQuery({queryKey: ['getProfile'], queryFn: () => fetchData(), refetchOnMount: true});
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (location.state?.message) {
+			dispatch({type: STORE_OPTS.ALERT, message: location.state.message, dispatch})
+			navigate(location.pathname, {
+				state: null
+			});
+		}
+	}, [])
 
 	useEffect(() => {
 		if (!isLoading && !isError) {

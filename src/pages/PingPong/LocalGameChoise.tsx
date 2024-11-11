@@ -75,7 +75,7 @@ const LocalGameChoise = ({display, setDisplay, isAI}: {display: boolean, setDisp
 					exit={{ opacity: 0}}
 					className="bg-secondary max-w-[521px] w-[90vw] rounded-md flex flex-col justify-center items-center gap-5 p-10">
 						<span className="text-3xl text-center">{isAI ? 'Vs AI' : '1 vs 1'}</span>
-						<img src={isAI ? AI : LOCAL_GAME_IMG} alt="" className={isAI ? "size-[150px]" : "w-[200px] h-[100px]"}/>
+						<img src={isAI ? AI : LOCAL_GAME_IMG} alt={isAI ? "AI" : "LOCAL_GAME_IMG"} className={isAI ? "size-[150px]" : "w-[200px] h-[100px]"}/>
 						<AIForm isAI={isAI} />
 					</motion.div>
 			}

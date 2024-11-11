@@ -20,8 +20,8 @@ const Index = () => {
 				 <div>		
 					<Logo animate className="text-3xl sm:text-5xl lg:text-7xl text-center" />
 					<h2 
-						className="max-w-[800px] text-center font-medium text-2xl mt-5"
-						>Lorem ipsum dolor sit amet consectetu
+						className="max-w-[800px] text-center font-medium sm:text-lg mt-5"
+						>Challenge your friends, chat live, and elevate your game—all in one place.
 					</h2>
 				 </div>
 				<Link to="/signup">

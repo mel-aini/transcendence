@@ -19,7 +19,7 @@ const PlayerBar = forwardRef((props: playerProp, ref: LegacyRef<HTMLDivElement>)
 					<>
 						<div className="relative shrink-0">
 							{ props.isWinner && <GiCrenelCrown className="absolute w-[41px] h-[41px] -translate-x-1/2 -translate-y-1/2 top-[-10%] left-1/2" fill="#14ffec"/> }
-							<img src={props.player.image} alt="" className="w-[41px] h-[41px] rounded-full border overflow-hidden shrink-0 border-border" />
+							<img src={props.player.image} alt="PLAYER_IMG" className="w-[41px] h-[41px] rounded-full border overflow-hidden shrink-0 border-border" />
 						</div>
 						<span className={"truncate " + ((state.alias == props.player.username) ? "text-primary" : "")}>{props.player.username}</span>
 					</>

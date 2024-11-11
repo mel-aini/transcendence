@@ -117,8 +117,8 @@ const History = () => {
 								variants={variant}
 								>
 									<div className="grid grid-cols-3 place-items-center h-full w-1/5">
-											{(status == "win") && <img className="w-[24px] h-[24px]" src={win}/>}
-											{(status == "lose") && <img className="w-[25px] h-[25px]" src={loss}/>}
+											{(status == "win") && <img className="w-[24px] h-[24px]" src={win} alt={"WIN"}/>}
+											{(status == "lose") && <img className="w-[25px] h-[25px]" src={loss} alt={"LOSS"}/>}
 											{(status == "draw") && <RxValueNone className="text-2xl " />}
 										{
 											status == "lose"
@@ -136,7 +136,7 @@ const History = () => {
 									</div>
 									<div className="flex justify-between items-center px-4 rounded-md border border-border w-4/5 h-full">
 										<div onClick={() =>userClick(match.opponent.profile)} className="flex justify-between items-center cursor-pointer gap-3">
-											<img className="shrink-0 w-[24px] h-[24px] rounded-full border-primary border" src={match.opponent.profile_image}/>
+											<img className="shrink-0 w-[24px] h-[24px] rounded-full border-primary border" src={match.opponent.profile_image} alt="PROFILE_IMG"/>
 											<span className="shrink overflow-hidden text-ellipsis">{match.opponent.username}</span>
 										</div>
 										<span className="shrink-0">lvl {match.opponent.level.current}</span>

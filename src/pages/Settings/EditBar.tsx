@@ -3,18 +3,15 @@ import edit_icon from "/edit_icon.svg"
 import accept from "/accept.svg"
 import { validate } from "@/utils/validation";
 import { motion } from "framer-motion";
-import { ring } from 'ldrs'
 import { useGlobalWebSocketContext } from "@/contexts/globalWebSokcketStore";
 import { UpdateReq } from "@/types/profile";
 import { useGlobalContext } from "@/contexts/store";
-
-ring.register()
 
 function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 	const { state } = useGlobalContext();
 	const { sendJsonMessage } = useGlobalWebSocketContext();
 	let newValue: string | undefined = (type === "username") ? state.userData?.username : ((type === "email") ? state.userData?.email : state.userData?.tfa?.content);
-	const [editStatus, setEditStatus] = useState<"edit" | "wait" | "save">("edit");
+	const [editStatus, setEditStatus] = useState<"edit" | "save">("edit");
 	const [Error, setError] = useState<boolean>(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -27,7 +24,6 @@ function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 	}
 
 	const makeReq = () => {
-		setEditStatus("wait");
 		const req : UpdateReq = {
 			type: "update",
 			identifier: (type === "tfa") ? "tfa-change" : type,
@@ -36,7 +32,7 @@ function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 			}
 		}
 		sendJsonMessage(req);
-		// setEditStatus("edit");
+		setEditStatus("edit");
 		(inputRef.current && (inputRef.current.disabled = true));
 	}
 
@@ -63,9 +59,8 @@ function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 	}
 
 	useEffect(() => {
-		(editStatus === "wait") && setEditStatus("edit");
 		(inputRef.current && (inputRef.current.value = newValue ? newValue : ''));
-	}, [state.userData?.username ,state.userData?.email , state.userData?.tfa?.content])
+	}, [state.userData?.username ,state.userData?.email , state.userData?.tfa])
 
 	return (
 		<div className="flex gap-2 justify-between h-12 max-w-96">
@@ -79,20 +74,10 @@ function EditBar({type}: {type: "username" | "email" | "tfa"}) {
 			</div>
 			<span onClick={() => clickHandler()} className="w-[48px] h-full border border-border rounded-[5px] flex justify-center items-center select-none cursor-pointer">
 			{
-				(editStatus === "edit") && <img src={edit_icon} alt="" width={32} height={32}/>
+				(editStatus === "edit") && <img src={edit_icon} alt="EDIT" width={32} height={32}/>
 			}
 			{
-				(editStatus === "wait") && 
-				<l-ring
-				size="24"
-				stroke="2"
-				bg-opacity="0"
-				speed="2" 
-				color="white"
-				/>
-			}
-			{
-				(editStatus === "save") && <img src={accept} alt="" width={24} height={24}/>
+				(editStatus === "save") && <img src={accept} alt="ACCEPT" width={24} height={24}/>
 			}
 			</span>
 		</div>

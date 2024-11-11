@@ -5,14 +5,14 @@ import S from '/S.svg'
 import PADDEL_DIRECTIONS from '/PADDEL_DIRECTIONS.svg'
 import MOVE_UP from '/MOVE_UP.svg'
 import MOVE_DOWN from '/MOVE_DOWN.svg'
-import {isMobile, isBrowser} from 'react-device-detect';
+import { isMobile } from 'react-device-detect';
 
 const Help = () => {
 	return (
 		<div className="p-8 space-y-8 w-full">
 			<div className="text-primary font-semibold text-center 2xl:text-[25px] text-[1.5vw]">How to play?</div>
 			{
-				!isBrowser ?
+				isMobile ?
 				<div className='flex justify-between w-full gap-3'>
 					<div className="flex flex-col justify-between gap-1 sm:gap-2 max-h-full">
 						<span className="font-normal font-montserrat 2xl:text-[29px] text-[1.2vw]">use these buttons to move the paddle up and down</span>

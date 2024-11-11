@@ -8,7 +8,7 @@ import { useLayoutEffect, useState } from "react";
 const Index = () => {
 	const [isTwoFA, setIsTwoFA] = useState(false);
 	const location = useLocation();
-	
+
 	useLayoutEffect(() => {
 		location.state?.isTwoFA && setIsTwoFA(true);
 	}, [])
